@@ -53,6 +53,8 @@ export class SaveSystem {
       ...defaults, ...save,
       profile: { ...defaults.profile, ...save.profile }, resources: { ...defaults.resources, ...save.resources },
       hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model },
+      allocation: { ...defaults.allocation, ...save.allocation }, market: { ...defaults.market, ...save.market },
+      tutorial: { ...defaults.tutorial, ...save.tutorial }, objectives: { ...defaults.objectives, ...save.objectives },
       settings: { ...defaults.settings, ...save.settings }, statistics: { ...defaults.statistics, ...save.statistics },
       session: { ...defaults.session, ...save.session }, ui: { ...defaults.ui, ...save.ui },
     };
