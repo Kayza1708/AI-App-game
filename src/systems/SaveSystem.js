@@ -1,4 +1,4 @@
-import { SAVE_VERSION } from '../data/defaultState.js';
+import { createDefaultState, SAVE_VERSION } from '../data/defaultState.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
 const SAVE_INTERVAL_MS = 15_000;
@@ -16,7 +16,7 @@ export class SaveSystem {
       const serializedSave = localStorage.getItem(STORAGE_KEY);
       if (!serializedSave) return null;
       const save = JSON.parse(serializedSave);
-      return this.#isValid(save) ? save : null;
+      return this.#isValid(save) ? this.#mergeWithDefaults(save) : null;
     } catch {
       return null;
     }
@@ -44,9 +44,24 @@ export class SaveSystem {
   }
 
   #isValid(save) {
-    return save?.version === SAVE_VERSION &&
-      typeof save.profile?.companyName === 'string' &&
-      typeof save.session?.elapsedMs === 'number' &&
-      typeof save.ui?.activeView === 'string';
+    return save?.version === SAVE_VERSION && typeof save.resources?.credits === 'number' && typeof save.model?.level === 'number';
+  }
+
+  #mergeWithDefaults(save) {
+    const defaults = createDefaultState();
+    return {
+      ...defaults, ...save,
+      profile: { ...defaults.profile, ...save.profile }, resources: { ...defaults.resources, ...save.resources },
+      hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model },
+      allocation: { ...defaults.allocation, ...save.allocation }, market: { ...defaults.market, ...save.market },
+      tutorial: { ...defaults.tutorial, ...save.tutorial }, objectives: { ...defaults.objectives, ...save.objectives },
+      meta: { ...defaults.meta, ...save.meta, achievements: { ...defaults.meta.achievements, ...save.meta?.achievements } },
+      world: { ...defaults.world, ...save.world }, company: { ...defaults.company, ...save.company, employees: { ...defaults.company.employees, ...save.company?.employees } },
+      energy: { ...defaults.energy, ...save.energy, buildings: { ...defaults.energy.buildings, ...save.energy?.buildings } },
+      patents: { ...defaults.patents, ...save.patents }, premium: { ...defaults.premium, ...save.premium, adCooldowns: { ...defaults.premium.adCooldowns, ...save.premium?.adCooldowns } },
+      retention: { ...defaults.retention, ...save.retention, claimedDaily: { ...defaults.retention.claimedDaily, ...save.retention?.claimedDaily } },
+      settings: { ...defaults.settings, ...save.settings }, statistics: { ...defaults.statistics, ...save.statistics },
+      session: { ...defaults.session, ...save.session }, ui: { ...defaults.ui, ...save.ui },
+    };
   }
 }
