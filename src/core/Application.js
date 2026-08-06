@@ -5,6 +5,7 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
+import { buyHardware, optimizeCode, tickGame, trainModel } from '../systems/GameSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -64,14 +65,14 @@ export class Application {
           ui: { ...state.ui, sidebarOpen: !state.ui.sidebarOpen },
         }), 'navigation');
       }),
+      this.#eventBus.on('hardware:buy', (itemId) => this.#store.update((state) => buyHardware(state, itemId), 'hardware')),
+      this.#eventBus.on('model:train', () => this.#store.update(trainModel, 'training')),
+      this.#eventBus.on('compute:optimize', () => this.#store.update(optimizeCode, 'manual')),
     );
   }
 
   #tick(deltaMs) {
-    this.#store.update((state) => ({
-      ...state,
-      session: { ...state.session, elapsedMs: state.session.elapsedMs + deltaMs },
-    }), 'game-loop');
+    this.#store.update((state) => tickGame(state, deltaMs), 'game-loop');
   }
 
   #handleUnload = () => this.stop();
