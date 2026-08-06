@@ -55,6 +55,8 @@ export class SaveSystem {
       hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model },
       allocation: { ...defaults.allocation, ...save.allocation }, market: { ...defaults.market, ...save.market },
       tutorial: { ...defaults.tutorial, ...save.tutorial }, objectives: { ...defaults.objectives, ...save.objectives },
+      meta: { ...defaults.meta, ...save.meta, achievements: { ...defaults.meta.achievements, ...save.meta?.achievements } },
+      world: { ...defaults.world, ...save.world }, company: { ...defaults.company, ...save.company, employees: { ...defaults.company.employees, ...save.company?.employees } },
       settings: { ...defaults.settings, ...save.settings }, statistics: { ...defaults.statistics, ...save.statistics },
       session: { ...defaults.session, ...save.session }, ui: { ...defaults.ui, ...save.ui },
     };

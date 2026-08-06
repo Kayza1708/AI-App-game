@@ -5,7 +5,7 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
-import { acquireModel, advanceTutorial, buyHardware, buyMarketing, buyUpgrade, claimObjective, optimizeCode, setAllocation, setPrice, tickGame, trainModel } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyHardware, buyMarketing, buyTechNode, buyUpgrade, claimObjective, optimizeCode, resolveWorldEvent, setAllocation, setPrice, startDevelopmentCycle, tickGame, trainModel } from '../systems/GameSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -75,6 +75,9 @@ export class Application {
       this.#eventBus.on('upgrade:buy', (upgradeId) => this.#store.update((state) => buyUpgrade(state, upgradeId), 'upgrade')),
       this.#eventBus.on('objective:claim', (objectiveId) => this.#store.update((state) => claimObjective(state, objectiveId), 'objective')),
       this.#eventBus.on('tutorial:advance', () => this.#store.update(advanceTutorial, 'tutorial')),
+      this.#eventBus.on('tech:buy', (nodeId) => this.#store.update((state) => buyTechNode(state, nodeId), 'tech')),
+      this.#eventBus.on('cycle:start', () => this.#store.update(startDevelopmentCycle, 'development-cycle')),
+      this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
     );
   }
 

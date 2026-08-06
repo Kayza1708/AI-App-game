@@ -11,4 +11,4 @@ npm run dev
 
 ## First playable loop
 
-Purchase exponentially scaling hardware to produce compute, train an evolving AI model, attract users, and reinvest the resulting revenue. A hundred progression upgrades, unique hardware milestones, active optimization, market bottlenecks, and live utilization telemetry keep the first hour moving while the responsive interface and autosave preserve every decision.
+Purchase exponentially scaling hardware to produce compute, train an evolving AI model, attract users, and reinvest the resulting revenue. More than 200 run upgrades, Development Cycles, eight permanent Intelligence specializations, strategic world events, and 120 rewarding achievements let every company develop a distinct identity across repeated runs.

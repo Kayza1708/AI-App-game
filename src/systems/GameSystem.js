@@ -1,6 +1,15 @@
-import { HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, UPGRADES } from '../data/defaultState.js';
+import { ACHIEVEMENTS, createDefaultState, HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, TECH_NODES, UPGRADES, WORLD_EVENTS } from '../data/defaultState.js';
 
 const COST_GROWTH = 1.17;
+
+function strategicBonus(state, effect) {
+  const tech = TECH_NODES.filter((node) => state.meta.techNodes.includes(node.id));
+  const positive = tech.filter((node) => node.effect === effect).reduce((sum, node) => sum + node.value, 0);
+  const penalties = tech.filter((node) => node.tradeoff === effect).reduce((sum, node) => sum + node.penalty, 0);
+  const events = state.world.modifiers.filter((modifier) => modifier.effect === effect).reduce((sum, modifier) => sum + modifier.value, 0);
+  const achievementBonus = Object.keys(state.meta.achievements).reduce((sum, id) => sum + (ACHIEVEMENTS.find((achievement) => achievement.id === id)?.reward ?? 0), 0);
+  return positive - penalties + events + (['allOutput', 'hardwareOutput', 'demand', 'revenue', 'training'].includes(effect) ? achievementBonus : 0);
+}
 
 export function hardwareCost(item, quantity) { return Math.ceil(item.baseCost * COST_GROWTH ** quantity); }
 
@@ -13,20 +22,21 @@ function milestoneBonus(state, effect, item = null) {
 }
 
 export function effectiveHardwareCost(state, item) {
-  const discount = Math.min(0.5, upgradeBonus(state, 'hardwareCost', item.id) + milestoneBonus(state, 'hardwareDiscount'));
+  const discount = Math.min(0.5, upgradeBonus(state, 'hardwareCost', item.id) + milestoneBonus(state, 'hardwareDiscount') - strategicBonus(state, 'hardwareCost'));
   return Math.ceil(hardwareCost(item, state.hardware[item.id]) * (1 - discount));
 }
 
 export function computePerSecond(state) {
-  const globalMultiplier = 1 + upgradeBonus(state, 'allOutput') + upgradeBonus(state, 'hardwareOutput');
+  const globalMultiplier = Math.max(0.1, 1 + upgradeBonus(state, 'allOutput') + upgradeBonus(state, 'hardwareOutput') + strategicBonus(state, 'allOutput') + strategicBonus(state, 'hardwareOutput'));
   return HARDWARE_CATALOG.reduce((total, item) => total + item.computePerSecond * state.hardware[item.id] * (1 + milestoneBonus(state, 'hardwareOutput', item) + upgradeBonus(state, 'hardwareOutput', item.id)), 0) * globalMultiplier;
 }
 
 export function energyUse(state) { return HARDWARE_CATALOG.reduce((total, item) => total + item.energy * state.hardware[item.id], 0); }
 export function activeModel(state) { return MODEL_CATALOG.find(({ id }) => id === state.model.activeId) ?? MODEL_CATALOG[0]; }
-export function revenuePerUser(state) { return 0.24 * state.market.priceMultiplier * (1 + upgradeBonus(state, 'revenue') + milestoneBonus(state, 'revenue')); }
+export function revenuePerUser(state) { return 0.24 * state.market.priceMultiplier * Math.max(0.1, 1 + upgradeBonus(state, 'revenue') + milestoneBonus(state, 'revenue') + strategicBonus(state, 'revenue') + strategicBonus(state, 'enterprise') * 0.7 - strategicBonus(state, 'adoption') * 0.25); }
 export function xpRequired(level) { return Math.floor(16 * level ** 1.4); }
 export function trainingRequired(level) { return Math.floor(12 * level ** 1.46); }
+export function trainingRequiredForState(state) { const scales = { tinyChat: 0.5, smartChat: 5, omni: 20, research: 45, agent: 120, agi: 480 }; return trainingRequired(state.model.level) * scales[state.model.activeId]; }
 
 export function marketMetrics(state) {
   const model = activeModel(state);
@@ -37,8 +47,8 @@ export function marketMetrics(state) {
   const marketingPower = 1 + state.market.marketing * (0.12 + upgradeBonus(state, 'marketing'));
   const reputationPower = Math.max(1, state.market.reputation * (1 + upgradeBonus(state, 'reputation')));
   const adoptionPower = 1 + Math.sqrt(state.market.adoption) * (0.08 + upgradeBonus(state, 'adoption'));
-  const capacity = computePerSecond(state) * state.allocation.inference / 100 * model.stats.efficiency * 1.45 * (1 + upgradeBonus(state, 'inference'));
-  const organicDemand = unlockedMarketSize * appeal * 0.14 * marketingPower * reputationPower * adoptionPower * priceResistance * (1 + upgradeBonus(state, 'demand') + milestoneBonus(state, 'demand'));
+  const capacity = computePerSecond(state) * state.allocation.inference / 100 * model.stats.efficiency * 1.45 * Math.max(0.1, 1 + upgradeBonus(state, 'inference') + strategicBonus(state, 'enterprise') * 0.35);
+  const organicDemand = unlockedMarketSize * appeal * 0.14 * marketingPower * reputationPower * adoptionPower * priceResistance * Math.max(0.1, 1 + upgradeBonus(state, 'demand') + milestoneBonus(state, 'demand') + strategicBonus(state, 'demand') + strategicBonus(state, 'adoption') - strategicBonus(state, 'enterprise') * 0.2);
   const distributionFloor = capacity * Math.min(0.22, 0.1 + highestTier * 0.006);
   const demand = Math.max(organicDemand, distributionFloor);
   const target = Math.floor(Math.min(demand, capacity));
@@ -60,23 +70,39 @@ export function tickGame(state, deltaMs) {
   const seconds = deltaMs / 1000;
   const rate = computePerSecond(state);
   const produced = rate * seconds;
-  const trainingGain = produced * state.allocation.training / 100;
-  const researchGain = produced * state.allocation.research / 100;
+  const rawTrainingGain = produced * state.allocation.training / 100;
+  const trainingGain = rawTrainingGain * Math.max(0.1, 1 + strategicBonus(state, 'training') + strategicBonus(state, 'quality') * 0.5);
+  const researchGain = produced * state.allocation.research / 100 * Math.max(0.1, 1 + strategicBonus(state, 'research'));
   const dataGain = produced * state.allocation.data / 100;
-  const agentGain = produced * state.allocation.agents / 100;
+  const agentGain = produced * state.allocation.agents / 100 * (1 + strategicBonus(state, 'agents'));
   const metrics = marketMetrics(state);
   const userStep = Math.max(0.2 * seconds, Math.abs(metrics.target - state.resources.users) * 0.18 * seconds);
   const users = metrics.target > state.resources.users ? Math.min(metrics.target, state.resources.users + userStep) : Math.max(metrics.target, state.resources.users - userStep);
   const creditGain = users * revenuePerUser(state) * seconds;
   const reputation = Math.min(10, state.market.reputation + dataGain * 0.00004);
   const adoption = Math.min(100, state.market.adoption + agentGain * 0.0002 + users * seconds * 0.00004);
-  const next = {
+  let trainingProgress = state.model.trainingProgress;
+  let trainingActive = state.model.trainingActive;
+  let level = state.model.level; let xp = state.model.xp; let quality = state.model.quality;
+  let completedTraining = false;
+  if (trainingActive) {
+    trainingProgress += trainingGain * (1 + upgradeBonus(state, 'training'));
+    const required = trainingRequiredForState(state);
+    if (trainingProgress >= required) { trainingProgress = 0; trainingActive = false; completedTraining = true; xp += required; quality += 0.3 + activeModel(state).stats.quality * 0.025; while (xp >= xpRequired(level)) { xp -= xpRequired(level); level += 1; quality += 0.2; } }
+  }
+  const eventCountdown = state.world.activeEvent ? state.world.nextEventMs : state.world.nextEventMs - deltaMs;
+  const event = !state.world.activeEvent && eventCountdown <= 0 ? WORLD_EVENTS[(state.meta.cycles + Math.floor(state.statistics.playTimeMs / 90_000)) % WORLD_EVENTS.length] : state.world.activeEvent;
+  let next = {
     ...state,
-    resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: state.resources.compute + trainingGain, users, research: state.resources.research + researchGain },
+    resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: state.resources.compute + (trainingActive ? 0 : trainingGain), users, research: state.resources.research + researchGain },
+    model: { ...state.model, level, xp, quality, trainingProgress, trainingActive },
     market: { ...state.market, reputation, adoption, demand: metrics.demand },
     statistics: { ...state.statistics, totalCreditsEarned: state.statistics.totalCreditsEarned + creditGain, totalComputeProduced: state.statistics.totalComputeProduced + produced, playTimeMs: state.statistics.playTimeMs + deltaMs },
     session: { ...state.session, elapsedMs: state.session.elapsedMs + deltaMs },
+    world: { ...state.world, activeEvent: event, nextEventMs: event ? Math.max(0, eventCountdown) : eventCountdown, modifiers: state.world.modifiers.filter((modifier) => modifier.expiresAt > state.statistics.playTimeMs) },
   };
+  if (completedTraining && state.tutorial.step === 4) next = { ...next, tutorial: { ...state.tutorial, step: 5 } };
+  next = applyAutomation(awardAchievements(next));
   return tutorialAfterTick(next);
 }
 
@@ -101,22 +127,12 @@ export function optimizeCode(state) {
 export function optimizeGain(state) {
   const rate = computePerSecond(state);
   const activeShare = 0.58 / (1 + Math.sqrt(rate / 350));
-  return Math.max(1.5 + state.model.level * 0.15, rate * activeShare);
+  return Math.max(0.5, Math.max(1.5 + state.model.level * 0.15, rate * activeShare) * Math.max(0.1, 1 + strategicBonus(state, 'click')));
 }
 
 export function trainModel(state) {
-  const required = trainingRequired(state.model.level);
-  const invested = Math.min(state.resources.compute, required - state.model.trainingProgress);
-  if (invested <= 0) return state;
-  let { level, xp, quality, trainingProgress } = state.model;
-  trainingProgress += invested * (1 + upgradeBonus(state, 'training'));
-  if (trainingProgress >= required) {
-    trainingProgress = 0; xp += required; quality += 0.3 + activeModel(state).stats.quality * 0.025;
-    while (xp >= xpRequired(level)) { xp -= xpRequired(level); level += 1; quality += 0.2; }
-  }
-  let next = { ...state, resources: { ...state.resources, compute: state.resources.compute - invested }, model: { ...state.model, level, xp, quality, trainingProgress } };
-  if (state.tutorial.step === 4 && trainingProgress === 0) next = { ...next, tutorial: { ...state.tutorial, step: 5 } };
-  return feedback(next, trainingProgress === 0 ? 'Training complete · Model improved' : `${invested.toFixed(1)} Compute invested`);
+  if (state.model.trainingActive || computePerSecond(state) <= 0) return state;
+  return feedback({ ...state, model: { ...state.model, trainingActive: true } }, `${activeModel(state).name} training run started`);
 }
 
 export function setAllocation(state, category, value) {
@@ -147,3 +163,48 @@ export function objectiveProgress(state, objective) { const values = { hardware:
 export function claimObjective(state, objectiveId) { const objective = OBJECTIVES.find(({ id }) => id === objectiveId); if (!objective || state.objectives[objectiveId] || objectiveProgress(state, objective) < objective.target) return state; return feedback({ ...state, resources: { ...state.resources, credits: state.resources.credits + objective.reward }, objectives: { ...state.objectives, [objectiveId]: true } }, `Objective complete · +${objective.reward} Credits`); }
 
 export function advanceTutorial(state) { const step = state.tutorial.step; if ([0, 3].includes(step)) return { ...state, tutorial: { ...state.tutorial, step: step + 1 }, ui: { ...state.ui, activeView: step === 0 ? 'hardware' : 'model' } }; if (step === 8) return { ...state, tutorial: { ...state.tutorial, step: 9 } }; if (step === 9) return { ...state, tutorial: { step: 10, completed: true } }; return state; }
+
+function achievementMetric(state, metric) {
+  const hardware = Object.values(state.hardware).reduce((sum, quantity) => sum + quantity, 0);
+  return { totalCreditsEarned: state.statistics.totalCreditsEarned, totalComputeProduced: state.statistics.totalComputeProduced, totalClicks: state.statistics.totalClicks, users: state.resources.users, quality: state.model.quality, hardware, level: state.model.level, research: state.resources.research, reputation: state.market.reputation, cycles: state.meta.cycles }[metric];
+}
+
+function awardAchievements(state) {
+  const earned = ACHIEVEMENTS.filter((achievement) => !state.meta.achievements[achievement.id] && achievementMetric(state, achievement.metric) >= achievement.target);
+  if (!earned.length) return state;
+  return feedback({ ...state, meta: { ...state.meta, achievements: { ...state.meta.achievements, ...Object.fromEntries(earned.map((achievement) => [achievement.id, Date.now()])) } } }, `${earned[0].name} achieved · permanent company bonus`);
+}
+
+function applyAutomation(state) {
+  let next = state;
+  if (state.meta.techNodes.includes('automation-1')) {
+    const metrics = marketMetrics(state); const desiredInference = metrics.utilization < 0.75 ? Math.max(15, state.allocation.inference - 1) : Math.min(65, state.allocation.inference + 1);
+    if (desiredInference !== state.allocation.inference) next = setAllocation(next, 'inference', desiredInference);
+  }
+  if (state.meta.techNodes.includes('automation-2')) {
+    const item = HARDWARE_CATALOG.find((hardware) => effectiveHardwareCost(next, hardware) <= next.resources.credits * 0.25);
+    if (item) next = buyHardware(next, item.id);
+  }
+  if (state.meta.techNodes.includes('automation-3') && !next.model.trainingActive && computePerSecond(next) > 0) next = { ...next, model: { ...next.model, trainingActive: true } };
+  return next;
+}
+
+export function cycleIntelligence(state) { return Math.max(1, Math.floor(Math.sqrt(state.statistics.totalCreditsEarned / 5_000) + state.model.level / 4 + Math.log10(1 + computePerSecond(state)))); }
+export function canDevelop(state) { return state.model.level >= 5 || state.statistics.totalCreditsEarned >= 10_000; }
+export function startDevelopmentCycle(state) {
+  if (!canDevelop(state)) return state;
+  const intelligence = cycleIntelligence(state); const fresh = createDefaultState();
+  return feedback({ ...fresh, settings: state.settings, statistics: state.statistics, meta: { ...state.meta, intelligence: state.meta.intelligence + intelligence, totalIntelligence: state.meta.totalIntelligence + intelligence, cycles: state.meta.cycles + 1 }, tutorial: { step: 10, completed: true } }, `Development Cycle complete · +${intelligence} INT`);
+}
+export function buyTechNode(state, nodeId) {
+  const node = TECH_NODES.find(({ id }) => id === nodeId); if (!node || state.meta.techNodes.includes(nodeId) || state.meta.intelligence < node.cost || (node.requires && !state.meta.techNodes.includes(node.requires))) return state;
+  return feedback({ ...state, meta: { ...state.meta, intelligence: state.meta.intelligence - node.cost, techNodes: [...state.meta.techNodes, nodeId] } }, `${node.name} permanently unlocked`);
+}
+export function resolveWorldEvent(state, choiceIndex) {
+  const event = state.world.activeEvent; const choice = event?.choices[choiceIndex]; if (!choice || (choice.cost && state.resources.credits < choice.cost)) return state;
+  const modifier = { effect: choice.effect, value: choice.value, expiresAt: state.statistics.playTimeMs + 180_000 };
+  const reputationPenalty = choice.penalty === 'reputation' ? -0.15 : 0;
+  return feedback({ ...state, resources: { ...state.resources, credits: state.resources.credits - (choice.cost ?? 0) + (choice.credits ?? 0) }, market: { ...state.market, reputation: Math.max(0.25, state.market.reputation + reputationPenalty) }, world: { activeEvent: null, nextEventMs: 120_000, modifiers: [...state.world.modifiers, modifier] } }, `${event.title}: ${choice.label}`);
+}
+
+export function companyStage(state) { const tier = HARDWARE_CATALOG.reduce((highest, hardware) => state.hardware[hardware.id] ? Math.max(highest, hardware.tier) : highest, 0); return ['Garage Developer', 'Startup', 'AI Company', 'Tech Giant', 'Global AI Infrastructure', 'Planetary Compute Network', 'Interplanetary AI', 'Technological Singularity'][Math.min(7, Math.floor(tier / 2))]; }

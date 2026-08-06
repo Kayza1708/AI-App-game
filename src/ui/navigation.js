@@ -7,6 +7,8 @@ export const NAV_ITEMS = [
   { id: 'allocation', label: 'Allocation', eyebrow: 'Compute' },
   { id: 'market', label: 'Market', eyebrow: 'Economy' },
   { id: 'objectives', label: 'Objectives', eyebrow: 'Missions' },
+  { id: 'strategy', label: 'Tech Tree', eyebrow: 'Intelligence' },
+  { id: 'achievements', label: 'Achievements', eyebrow: 'Legacy' },
 ];
 
 export function isKnownView(viewId) {

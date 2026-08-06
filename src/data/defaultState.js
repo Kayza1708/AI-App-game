@@ -1,4 +1,4 @@
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 5;
 
 export const HARDWARE_CATALOG = [
   ['calculator', '⌗', 'Calculator', 'A programmable calculator running its first tiny tensor operations.', 20, 0.5, 0.02],
@@ -37,9 +37,12 @@ export const MODEL_CATALOG = [
 ];
 
 const HARDWARE_UPGRADE_TYPES = [
-  ['cooling', 'Better Cooling', 'hardwareOutput', 0.08], ['overclock', 'Overclocking', 'hardwareOutput', 0.1],
-  ['accelerator', 'AI Accelerator', 'inference', 0.1], ['ssd', 'SSD Upgrade', 'training', 0.08],
-  ['psu', 'Efficient PSU', 'hardwareCost', 0.04],
+  ['cooling', 'GPU Cooling', 'hardwareOutput', 0.02], ['tensor', 'Tensor Optimizer', 'hardwareOutput', 0.03],
+  ['compiler', 'Compiler Optimization', 'training', 0.03], ['memory', 'Memory Compression', 'inference', 0.04],
+  ['scheduler', 'Distributed Scheduler', 'allOutput', 0.02], ['pipeline', 'Pipeline Optimization', 'training', 0.05],
+  ['ssd', 'SSD Cache', 'training', 0.03], ['kernel', 'Kernel Upgrade', 'hardwareOutput', 0.05],
+  ['batch', 'Batch Processing', 'training', 0.07], ['network', 'Network Compression', 'inference', 0.05],
+  ['routing', 'Dynamic Routing', 'inference', 0.07], ['psu', 'Efficient Power Supply', 'hardwareCost', 0.04],
 ];
 const COMPANY_UPGRADES = [
   ['brand', 'Better Marketing', 'marketing', 0.12], ['pricing', 'Pricing Analytics', 'revenue', 0.1],
@@ -81,16 +84,57 @@ export const OBJECTIVES = [
   { id: 'compute100', text: 'Reach 100 Compute/s', reward: 12_000, type: 'computeRate', target: 100 },
 ];
 
+const TECH_BRANCHES = {
+  compute: { label: 'Compute Empire', strength: 'hardwareOutput', weakness: 'demand', nodes: ['Parallel Kernels', 'Thermal Architecture', 'Photonic Interconnects', 'Cloud Fabric', 'Exascale Scheduling', 'Universal Compute'] },
+  market: { label: 'Market Dominance', strength: 'demand', weakness: 'hardwareOutput', nodes: ['Growth Analytics', 'Brand Network', 'Elastic Pricing', 'Global Distribution', 'Category Ownership', 'Ubiquitous AI'] },
+  research: { label: 'Research Lab', strength: 'research', weakness: 'revenue', nodes: ['Peer Review', 'Research Teams', 'Autonomous Research', 'Quantum Simulation', 'Scientific Commons', 'Theory Engine'] },
+  model: { label: 'Frontier Models', strength: 'quality', weakness: 'hardwareCost', nodes: ['Tokenizer Theory', 'Reasoning Traces', 'Architecture Search', 'Synthetic Data', 'Recursive Training', 'General Intelligence'] },
+  automation: { label: 'Autonomous Company', strength: 'automation', weakness: 'click', nodes: ['Smart Allocation', 'Purchase Rules', 'Auto Training', 'Operations Agent', 'Executive Agent', 'Self-Improving Company'] },
+  enterprise: { label: 'Enterprise Monopoly', strength: 'enterprise', weakness: 'adoption', nodes: ['Sales Pipeline', 'Developer API', 'Enterprise Contracts', 'Compliance Suite', 'Mission Critical AI', 'Industry Standard'] },
+  consumer: { label: 'Consumer Platform', strength: 'adoption', weakness: 'revenue', nodes: ['Viral Loops', 'Creator Program', 'Free Tier', 'Social Intelligence', 'Global Consumer Brand', 'Universal Assistant'] },
+  agent: { label: 'Agent Economy', strength: 'agents', weakness: 'hardwareCost', nodes: ['Tool Use', 'Agent Memory', 'Multi-Agent Teams', 'AI Agents', 'Agent Marketplace', 'Machine Economy'] },
+};
+
+export const TECH_NODES = Object.entries(TECH_BRANCHES).flatMap(([branch, config]) => config.nodes.map((name, rank) => ({
+  id: `${branch}-${rank + 1}`, branch, branchLabel: config.label, name, rank: rank + 1, cost: rank + 1,
+  requires: rank ? `${branch}-${rank}` : null, effect: config.strength, value: rank < 3 ? 0.08 + rank * 0.02 : 0.15 + rank * 0.03,
+  tradeoff: config.weakness, penalty: rank < 3 ? 0.015 : 0.025,
+  unlock: rank === 2 ? `Unlocks ${name} operations` : rank === 5 ? `Defines the ${config.label} endgame identity` : null,
+})));
+
+const ACHIEVEMENT_TRACKS = [
+  ['credits', 'Capital', 'totalCreditsEarned', 100], ['compute', 'Computation', 'totalComputeProduced', 100],
+  ['clicks', 'Optimizer', 'totalClicks', 25], ['users', 'Audience', 'users', 10], ['quality', 'Intelligence', 'quality', 2],
+  ['hardware', 'Infrastructure', 'hardware', 5], ['level', 'Model Builder', 'level', 3], ['research', 'Scientist', 'research', 10],
+  ['reputation', 'Trusted', 'reputation', 1.25], ['cycles', 'Rebuilder', 'cycles', 1],
+];
+export const ACHIEVEMENTS = ACHIEVEMENT_TRACKS.flatMap(([id, label, metric, base]) => Array.from({ length: 12 }, (_, tier) => ({
+  id: `${id}-${tier + 1}`, name: `${label} ${tier + 1}`, metric, target: base * 3 ** tier, reward: 0.002 + tier * 0.0005,
+})));
+
+export const WORLD_EVENTS = [
+  { id: 'shortage', title: 'Global GPU Shortage', description: 'Supply chains seize up as competitors buy every accelerator.', choices: [{ label: 'Secure inventory', cost: 500, effect: 'hardwareOutput', value: 0.2 }, { label: 'Wait it out', effect: 'hardwareCost', value: -0.15 }] },
+  { id: 'regulation', title: 'Government Regulation', description: 'Regulators demand a clear position on frontier AI safety.', choices: [{ label: 'Lead on compliance', cost: 1_500, effect: 'reputation', value: 0.35 }, { label: 'Move fast', effect: 'training', value: 0.2, penalty: 'reputation' }] },
+  { id: 'investor', title: 'Investor Offer', description: 'A global fund offers capital in return for aggressive growth.', choices: [{ label: 'Take investment', credits: 5_000, effect: 'demand', value: 0.1 }, { label: 'Stay independent', effect: 'revenue', value: 0.15 }] },
+  { id: 'breach', title: 'Security Breach', description: 'An intrusion threatens user trust and model data.', choices: [{ label: 'Emergency audit', cost: 2_000, effect: 'reputation', value: 0.25 }, { label: 'Contain quietly', effect: 'reputation', value: -0.2 }] },
+  { id: 'opensource', title: 'Open Source Breakthrough', description: 'A new training technique spreads across the community.', choices: [{ label: 'Contribute research', effect: 'research', value: 0.3 }, { label: 'Productize it', effect: 'quality', value: 0.2 }] },
+  { id: 'energy', title: 'Energy Crisis', description: 'Power prices spike across your primary compute region.', choices: [{ label: 'Optimize facilities', cost: 4_000, effect: 'hardwareOutput', value: 0.15 }, { label: 'Throttle training', effect: 'training', value: -0.2 }] },
+  { id: 'boom', title: 'Global AI Boom', description: 'Every company suddenly needs an intelligence strategy.', choices: [{ label: 'Target enterprises', effect: 'enterprise', value: 0.3 }, { label: 'Capture consumers', effect: 'adoption', value: 0.3 }] },
+];
+
 export function createDefaultState() {
   return {
     version: SAVE_VERSION,
     profile: { companyName: 'Singularity Labs', createdAt: Date.now() },
     resources: { credits: 45, compute: 0, users: 0, research: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
-    model: { level: 1, xp: 0, quality: 1, trainingProgress: 0, activeId: 'tinyChat', owned: ['tinyChat'] },
+    model: { level: 1, xp: 0, quality: 1, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', owned: ['tinyChat'] },
     allocation: { training: 40, inference: 35, research: 5, data: 10, agents: 10 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], objectives: {},
+    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, techNodes: [], achievements: {} },
+    world: { activeEvent: null, nextEventMs: 90_000, modifiers: [] },
+    company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     tutorial: { step: 0, completed: false },
     settings: { numberNotation: 'compact', sound: true },
     statistics: { totalCreditsEarned: 0, totalComputeProduced: 0, totalClicks: 0, playTimeMs: 0 },
