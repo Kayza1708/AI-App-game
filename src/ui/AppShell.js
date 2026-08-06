@@ -1,82 +1,99 @@
+import { HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, UPGRADES } from '../data/defaultState.js';
+import { activeModel, computePerSecond, energyUse, hardwareCost, marketMetrics, objectiveProgress, revenuePerUser, trainingRequired, xpRequired } from '../systems/GameSystem.js';
 import { NAV_ITEMS, isKnownView } from './navigation.js';
-
-const VIEW_COPY = {
-  overview: ['01 / FOUNDATION', 'The future starts with an empty room.', 'Your intelligence company is ready to be defined. Core operational systems will come online in the next development phase.'],
-  operations: ['02 / OPERATIONS', 'Operational layer standing by.', 'Infrastructure controls and company operations will be introduced as the simulation expands.'],
-  intelligence: ['03 / INTELLIGENCE', 'Intelligence systems are offline.', 'Model development remains secured until the underlying company infrastructure is established.'],
-  trajectory: ['04 / TRAJECTORY', 'The path is not yet visible.', 'Long-range objectives will emerge as your company approaches the frontier of machine intelligence.'],
-};
 
 export class AppShell {
   #eventBus;
   #root;
+  #lastView = null;
 
-  constructor(root, eventBus) {
-    this.#root = root;
-    this.#eventBus = eventBus;
-  }
+  constructor(root, eventBus) { this.#root = root; this.#eventBus = eventBus; }
 
   mount(state) {
-    this.#root.innerHTML = `
-      <div class="app-shell">
-        <header class="topbar">
-          <button class="icon-button menu-button" type="button" data-action="toggle-menu" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
-          <a class="brand" href="#overview" aria-label="AI Singularity overview"><span class="brand-mark" aria-hidden="true"><i></i></span><span><strong>AI</strong> SINGULARITY</span></a>
-          <div class="system-state"><span></span> SYSTEM NOMINAL</div>
-          <div class="topbar-meta"><span class="meta-label">LOCAL TIME</span><strong data-clock>--:--:--</strong></div>
-        </header>
-        <aside class="sidebar" data-sidebar>
-          <div class="sidebar-heading">Company interface</div>
-          <nav aria-label="Primary navigation">
-            ${NAV_ITEMS.map((item, index) => `<a class="nav-item" href="#${item.id}" data-view="${item.id}"><span class="nav-number">0${index + 1}</span><span class="nav-label">${item.label}<small>${item.eyebrow}</small></span><span class="nav-line"></span></a>`).join('')}
-          </nav>
-          <div class="sidebar-footer"><span class="meta-label">SESSION</span><strong data-session>00:00:00</strong><small>Autosave enabled</small></div>
-        </aside>
-        <main class="workspace" data-workspace tabindex="-1"></main>
-        <footer class="statusbar"><span>BUILD 0.1.0</span><span class="status-divider"></span><span data-save-status>Awaiting first save</span></footer>
-      </div>`;
-    this.#bindEvents();
+    this.#root.innerHTML = `<div class="app-shell">
+      <header class="topbar"><button class="menu-button" type="button" data-action="toggle-menu" aria-label="Toggle navigation"><span></span><span></span></button>
+        <a class="brand" href="#dashboard"><span class="brand-mark">AI</span><strong>AI SINGULARITY</strong></a>
+        <div class="top-resources"><div><small>CREDITS</small><strong data-top-credits></strong></div><div><small>COMPUTE / SEC</small><strong data-top-compute></strong></div><div><small>USERS</small><strong data-top-users></strong></div><div><small>MODEL</small><strong data-top-model></strong></div></div>
+      </header>
+      <aside class="sidebar" data-sidebar><p class="sidebar-heading">Company interface</p><nav>${NAV_ITEMS.map((item, index) => `<a href="#${item.id}" class="nav-item" data-view="${item.id}"><span>0${index + 1}</span><div>${item.label}<small>${item.eyebrow}</small></div></a>`).join('')}</nav><div class="sidebar-footer"><small>PLAY TIME</small><strong data-session></strong><span>● AUTOSAVE ONLINE</span></div></aside>
+      <main class="workspace" data-workspace></main>
+      <footer class="statusbar"><span>BUILD 0.2.0</span><span data-save-status>Awaiting first save</span></footer>
+      <div data-feedback></div><div data-tutorial></div>
+    </div>`;
+    this.#root.addEventListener('click', this.#handleClick);
+    this.#root.addEventListener('input', this.#handleInput);
     this.render(state);
   }
 
   render(state) {
-    const activeView = isKnownView(state.ui.activeView) ? state.ui.activeView : 'overview';
-    const [index, title, description] = VIEW_COPY[activeView];
-    this.#root.querySelectorAll('[data-view]').forEach((element) => {
-      const active = element.dataset.view === activeView;
-      element.classList.toggle('is-active', active);
-      active ? element.setAttribute('aria-current', 'page') : element.removeAttribute('aria-current');
-    });
+    const view = isKnownView(state.ui.activeView) ? state.ui.activeView : 'dashboard';
+    this.#root.querySelectorAll('[data-view]').forEach((node) => node.classList.toggle('is-active', node.dataset.view === view));
     this.#root.querySelector('[data-sidebar]').classList.toggle('is-open', state.ui.sidebarOpen);
-    this.#root.querySelector('[data-action="toggle-menu"]').setAttribute('aria-expanded', String(state.ui.sidebarOpen));
-    this.#root.querySelector('[data-workspace]').innerHTML = `
-      <section class="hero" aria-labelledby="view-title">
-        <div class="hero-grid" aria-hidden="true"></div><div class="signal-orbit" aria-hidden="true"><span></span><i></i></div>
-        <div class="hero-content"><p class="section-index">${index}</p><h1 id="view-title">${title}</h1><p class="hero-description">${description}</p>
-          <div class="foundation-card"><span class="card-icon" aria-hidden="true">◇</span><div><small>COMPANY DESIGNATION</small><strong>${this.#escape(state.profile.companyName)}</strong></div><span class="card-state">READY</span></div>
-        </div><div class="phase-marker"><span>PHASE</span><strong>00</strong><small>ORIGIN</small></div>
-      </section>`;
-    this.#root.querySelector('[data-session]').textContent = this.#formatDuration(state.session.elapsedMs);
-    this.#root.querySelector('[data-clock]').textContent = new Date().toLocaleTimeString('en-GB');
-    this.#root.querySelector('[data-save-status]').textContent = state.session.lastSavedAt ? `Saved ${new Date(state.session.lastSavedAt).toLocaleTimeString('en-GB')}` : 'Awaiting first save';
+    this.#text('[data-top-credits]', `◈ ${this.#number(state.resources.credits)}`);
+    this.#text('[data-top-compute]', `${this.#number(computePerSecond(state))} C`);
+    this.#text('[data-top-users]', this.#number(state.resources.users));
+    this.#text('[data-top-model]', `LVL ${state.model.level}`);
+    this.#text('[data-session]', this.#duration(state.statistics.playTimeMs));
+    this.#text('[data-save-status]', state.session.lastSavedAt ? `SAVED ${new Date(state.session.lastSavedAt).toLocaleTimeString('en-GB')}` : 'AUTOSAVE READY');
+    this.#renderTutorial(state);
+    this.#renderFeedback(state);
+    const workspace = this.#root.querySelector('[data-workspace]');
+    if (this.#lastView !== view) { workspace.innerHTML = this.#view(view, state); this.#lastView = view; }
+    this.#updateView(view, state);
   }
 
-  #bindEvents() {
-    this.#root.addEventListener('click', (event) => {
-      const link = event.target.closest('[data-view]');
-      if (link) this.#eventBus.emit('navigation:selected', link.dataset.view);
-      if (event.target.closest('[data-action="toggle-menu"]')) this.#eventBus.emit('navigation:toggled');
-    });
+  #view(view, state) {
+    const headings = { dashboard: ['COMMAND CENTER', 'From one machine to infinite intelligence.'], hardware: ['HARDWARE', 'Expand the infrastructure that powers your ambition.'], model: ['AI MODEL', 'Train and deploy models with distinct capabilities.'], company: ['COMPANY', 'Intelligence attracts attention. Attention creates revenue.'], statistics: ['STATISTICS', 'Every signal from your journey, measured.'], allocation: ['COMPUTE ALLOCATION', 'Decide where every operation of your infrastructure goes.'], market: ['MARKET', 'Balance price, demand, reputation, and adoption.'], objectives: ['OBJECTIVES', 'Clear missions turn progress into rewards.'] };
+    const [title, subtitle] = headings[view];
+    const body = {
+      dashboard: `<section class="economy-chain panel"><p class="eyebrow">LIVE ECONOMY CHAIN</p><div>${[['▦','HARDWARE','Produces'],['⌁','COMPUTE','Allocated to'],['△','TRAINING','Improves'],['◇','QUALITY','Attracts'],['♙','USERS','Generate'],['◈','CREDITS','Reinvest']].map(([icon,label,verb], index) => `<span data-tooltip="${this.#tooltip(label)}"><i>${icon}</i><b>${label}</b><small>${verb}</small></span>${index < 5 ? '<em>→</em>' : ''}`).join('')}</div></section><div class="dashboard-grid"><section class="panel resource-panel"><p class="eyebrow">LIVE RESOURCES</p><div class="big-stat" data-tooltip="${this.#tooltip('COMPUTE')}"><span>TRAINING COMPUTE</span><strong data-compute></strong><small data-compute-rate></small></div><div class="meter-row"><span>MODEL QUALITY</span><b data-quality></b></div></section><section class="panel optimize-panel"><div class="orb-wrap"><button class="optimize-button" data-action="optimize"><span>OPTIMIZE</span><strong>CODE</strong><small data-click-value></small></button></div><p>Tap to manually refine your stack and generate bonus training compute.</p></section><section class="panel next-panel"><p class="eyebrow">NEXT OBJECTIVE</p><h3 data-next-objective></h3><p data-next-detail></p><button class="primary-button" data-action="jump-hardware">OPEN HARDWARE</button></section><section class="panel company-snapshot"><p class="eyebrow">COMPANY PULSE</p><div class="split-stats"><div><span>USERS</span><strong data-users></strong></div><div><span>REVENUE / SEC</span><strong data-revenue></strong></div></div></section></div>`,
+      hardware: `<div class="hardware-summary panel"><span data-tooltip="Total electricity demand of all owned hardware">ENERGY DEMAND <strong data-energy></strong></span><span>GLOBAL COMPUTE <strong data-total-rate></strong></span><span>MILESTONES <small>10 / 25 / 50 / 100 owned grant +10% each</small></span></div><div class="hardware-grid">${HARDWARE_CATALOG.map((item) => `<article class="panel hardware-card" data-hardware-card="${item.id}"><div class="hardware-icon">${item.icon}</div><div class="hardware-copy"><h3>${item.name}</h3><p>${item.description}</p><span>+${this.#number(item.computePerSecond)} Compute/s · ${this.#number(item.energy)} MW</span><div class="milestones">${item.milestones.map((m) => `<i data-milestone="${item.id}-${m}">${m}</i>`).join('')}</div></div><div class="owned">OWNED <strong data-owned="${item.id}"></strong></div><button class="buy-button" data-buy="${item.id}"><span>BUY</span><strong data-cost="${item.id}"></strong></button></article>`).join('')}</div>`,
+      model: `<div class="model-layout"><section class="panel model-core"><div class="model-visual"><span data-active-model></span><strong data-model-level></strong></div><div class="quality"><small>MODEL QUALITY</small><strong data-quality></strong><p>Quality and model Appeal create demand.</p></div></section><section class="panel training-panel"><p class="eyebrow">TRAINING RUN</p><h3>Invest training compute</h3><p>Complete a run to gain XP and improve quality.</p><div class="progress-label"><span>TRAINING PROGRESS</span><strong data-training-label></strong></div><div class="progress"><i data-training-bar></i></div><button class="primary-button wide" data-action="train">INVEST COMPUTE</button><div class="progress-label"><span>LEVEL XP</span><strong data-xp-label></strong></div><div class="progress secondary"><i data-xp-bar></i></div></section></div><div class="model-catalog">${MODEL_CATALOG.map((model) => `<article class="panel model-card" data-model-card="${model.id}"><div><small>MODEL FAMILY</small><h3>${model.name}</h3></div><div class="model-stats">${Object.entries(model.stats).map(([key,value]) => `<span data-tooltip="${this.#modelTooltip(key)}">${key}<b>${value}</b></span>`).join('')}</div><button class="buy-button" data-model="${model.id}"></button></article>`).join('')}</div>`,
+      company: `<div class="company-grid"><section class="panel identity"><p class="eyebrow">COMPANY DESIGNATION</p><h2>${this.#escape(state.profile.companyName)}</h2><span>FOUNDED ${new Date(state.profile.createdAt).toLocaleDateString()}</span></section><section class="panel metric-card"><small>ACTIVE USERS</small><strong data-users></strong><p data-user-target></p></section><section class="panel metric-card"><small>REVENUE / USER</small><strong data-rpu></strong><p>Controlled by your market price</p></section><section class="panel metric-card accent"><small>REVENUE / SEC</small><strong data-revenue></strong><p>Automatically added to Credits</p></section></div><h2 class="subheading">RUN UPGRADES</h2><div class="upgrade-grid">${UPGRADES.map((upgrade) => `<article class="panel upgrade-card"><div><h3>${upgrade.name}</h3><p>${upgrade.description}</p></div><button class="buy-button" data-upgrade="${upgrade.id}">◈ ${this.#number(upgrade.cost)}</button></article>`).join('')}</div>`,
+      statistics: `<div class="stats-grid">${[['credits','TOTAL CREDITS EARNED'],['compute','TOTAL COMPUTE PRODUCED'],['clicks','OPTIMIZE CLICKS'],['playtime','PLAY TIME'],['hardware','HARDWARE OWNED'],['quality','CURRENT MODEL QUALITY']].map(([key,label]) => `<section class="panel stat-card"><small>${label}</small><strong data-stat="${key}"></strong><i></i></section>`).join('')}</div>`,
+      allocation: `<div class="allocation-layout"><section class="panel allocation-panel"><p class="eyebrow">100% OF LIVE COMPUTE</p>${[['training','Training','Stored to train and improve models'],['inference','Inference','Serves models and sets maximum users'],['research','Research','Builds knowledge for future systems'],['data','Data Processing','Slowly improves company reputation'],['agents','Agent Tasks','Improves adoption and market reach']].map(([id,name,description]) => `<label class="allocation-row"><span><b>${name}</b><small>${description}</small></span><input type="range" min="0" max="100" data-allocation="${id}"><strong data-allocation-value="${id}"></strong></label>`).join('')}</section><section class="panel allocation-result"><p class="eyebrow">LIVE OUTPUT</p><div data-allocation-output></div><p>Allocation always totals 100%. Moving one slider automatically balances the other workloads.</p></section></div>`,
+      market: `<div class="market-grid"><section class="panel pricing-panel"><p class="eyebrow">PRODUCT PRICING</p><h3>Price Multiplier <strong data-price-label></strong></h3><input type="range" min="0.5" max="3" step="0.05" data-price><p>Higher prices earn more per user, but reduce demand through price elasticity.</p></section>${[['demand','DEMAND'],['capacity','INFERENCE CAPACITY'],['reputation','REPUTATION'],['adoption','ADOPTION']].map(([id,label]) => `<section class="panel metric-card"><small>${label}</small><strong data-market="${id}"></strong><p data-market-detail="${id}"></p></section>`).join('')}<section class="panel marketing-card"><div><p class="eyebrow">MARKETING</p><h3>Campaign Level <span data-marketing-level></span></h3><p>Spend Credits to multiply demand and accelerate adoption.</p></div><button class="primary-button" data-action="marketing" data-marketing-cost></button></section></div>`,
+      objectives: `<div class="objectives-list">${OBJECTIVES.map((objective) => `<article class="panel objective-card"><div><small>MISSION</small><h3>${objective.text}</h3><div class="progress"><i data-objective-bar="${objective.id}"></i></div><span data-objective-progress="${objective.id}"></span></div><button class="buy-button" data-objective="${objective.id}">CLAIM ◈ ${this.#number(objective.reward)}</button></article>`).join('')}</div>`,
+    }[view];
+    return `<header class="view-header"><p>AI SINGULARITY / ${title}</p><h1>${title}</h1><span>${subtitle}</span></header>${body}`;
   }
 
-  #formatDuration(durationMs) {
-    const seconds = Math.floor(durationMs / 1000);
-    return [Math.floor(seconds / 3600), Math.floor((seconds % 3600) / 60), seconds % 60].map((value) => String(value).padStart(2, '0')).join(':');
+  #updateView(view, state) {
+    const set = (selector, value) => this.#text(`[data-workspace] ${selector}`, value);
+    const metrics = marketMetrics(state); const revenue = state.resources.users * revenuePerUser(state);
+    if (view === 'dashboard') {
+      set('[data-compute]', `${this.#number(state.resources.compute)} C`); set('[data-compute-rate]', `+${this.#number(computePerSecond(state))} per second`); set('[data-quality]', this.#number(state.model.quality)); set('[data-click-value]', `+${this.#number(1 + state.model.level * .35)} COMPUTE`); set('[data-users]', this.#number(state.resources.users)); set('[data-revenue]', `◈ ${this.#number(revenue)}`);
+      const next = HARDWARE_CATALOG.find((item) => state.resources.credits < hardwareCost(item, state.hardware[item.id])) ?? HARDWARE_CATALOG.at(-1); set('[data-next-objective]', `Acquire ${next.name}`); set('[data-next-detail]', `${this.#number(hardwareCost(next, state.hardware[next.id]))} credits required for the next unit.`);
+    } else if (view === 'hardware') { set('[data-energy]', `${this.#number(energyUse(state))} MW`); set('[data-total-rate]', `${this.#number(computePerSecond(state))} C/s`); HARDWARE_CATALOG.forEach((item) => { const cost = hardwareCost(item, state.hardware[item.id]); set(`[data-owned="${item.id}"]`, state.hardware[item.id]); set(`[data-cost="${item.id}"]`, `◈ ${this.#number(cost)}`); this.#root.querySelector(`[data-buy="${item.id}"]`).disabled = state.resources.credits < cost; item.milestones.forEach((milestone) => this.#root.querySelector(`[data-milestone="${item.id}-${milestone}"]`).classList.toggle('reached', state.hardware[item.id] >= milestone)); }); }
+    else if (view === 'model') { const training = trainingRequired(state.model.level), xp = xpRequired(state.model.level); set('[data-active-model]', activeModel(state).name); set('[data-model-level]', `LEVEL ${state.model.level}`); set('[data-quality]', this.#number(state.model.quality)); set('[data-training-label]', `${this.#number(state.model.trainingProgress)} / ${this.#number(training)} C`); set('[data-xp-label]', `${this.#number(state.model.xp)} / ${this.#number(xp)} XP`); this.#width('[data-training-bar]', state.model.trainingProgress / training); this.#width('[data-xp-bar]', state.model.xp / xp); this.#root.querySelector('[data-action="train"]').disabled = state.resources.compute <= 0; MODEL_CATALOG.forEach((model) => { const button = this.#root.querySelector(`[data-model="${model.id}"]`); const owned = state.model.owned.includes(model.id); const active = state.model.activeId === model.id; button.textContent = active ? 'ACTIVE' : owned ? 'DEPLOY' : state.model.level < model.unlockLevel ? `LEVEL ${model.unlockLevel} REQUIRED` : `ACQUIRE ◈ ${this.#number(model.cost)}`; button.disabled = active || (!owned && (state.model.level < model.unlockLevel || state.resources.credits < model.cost)); this.#root.querySelector(`[data-model-card="${model.id}"]`).classList.toggle('active-model', active); }); }
+    else if (view === 'company') { set('[data-users]', this.#number(state.resources.users)); set('[data-user-target]', `Demand ${this.#number(metrics.demand)} · capacity ${this.#number(metrics.capacity)}`); set('[data-rpu]', `◈ ${revenuePerUser(state).toFixed(3)}`); set('[data-revenue]', `◈ ${this.#number(revenue)}`); UPGRADES.forEach((upgrade) => { const button = this.#root.querySelector(`[data-upgrade="${upgrade.id}"]`); const owned = state.upgrades.includes(upgrade.id); button.disabled = owned || state.resources.credits < upgrade.cost; if (owned) button.textContent = 'INSTALLED'; }); }
+    else if (view === 'statistics') { const totalHardware = Object.values(state.hardware).reduce((a, b) => a + b, 0); const values = { credits: `◈ ${this.#number(state.statistics.totalCreditsEarned)}`, compute: `${this.#number(state.statistics.totalComputeProduced)} C`, clicks: this.#number(state.statistics.totalClicks), playtime: this.#duration(state.statistics.playTimeMs), hardware: this.#number(totalHardware), quality: this.#number(state.model.quality) }; Object.entries(values).forEach(([key, value]) => set(`[data-stat="${key}"]`, value)); }
+    else if (view === 'allocation') { Object.entries(state.allocation).forEach(([key, value]) => { const input = this.#root.querySelector(`[data-allocation="${key}"]`); if (document.activeElement !== input) input.value = value; set(`[data-allocation-value="${key}"]`, `${value}%`); }); const rate = computePerSecond(state); set('[data-allocation-output]', Object.entries(state.allocation).map(([key,value]) => `${key.toUpperCase()}  ${this.#number(rate * value / 100)} C/s`).join('\n')); }
+    else if (view === 'market') { const price = this.#root.querySelector('[data-price]'); if (document.activeElement !== price) price.value = state.market.priceMultiplier; set('[data-price-label]', `${state.market.priceMultiplier.toFixed(2)}×`); set('[data-market="demand"]', this.#number(metrics.demand)); set('[data-market="capacity"]', this.#number(metrics.capacity)); set('[data-market="reputation"]', state.market.reputation.toFixed(2)); set('[data-market="adoption"]', `${state.market.adoption.toFixed(1)}%`); set('[data-market-detail="demand"]', 'Interest at the current price'); set('[data-market-detail="capacity"]', 'Maximum users you can serve'); set('[data-market-detail="reputation"]', 'Improved by Data Processing'); set('[data-market-detail="adoption"]', 'Improved by Users and Agents'); set('[data-marketing-level]', state.market.marketing); const marketingCost = 100 * (state.market.marketing + 1) ** 1.6; set('[data-marketing-cost]', `LAUNCH CAMPAIGN · ◈ ${this.#number(marketingCost)}`); this.#root.querySelector('[data-marketing-cost]').disabled = state.resources.credits < marketingCost; }
+    else { OBJECTIVES.forEach((objective) => { const progress = objectiveProgress(state, objective); this.#width(`[data-objective-bar="${objective.id}"]`, progress / objective.target); set(`[data-objective-progress="${objective.id}"]`, `${this.#number(progress)} / ${this.#number(objective.target)}`); const button = this.#root.querySelector(`[data-objective="${objective.id}"]`); button.disabled = Boolean(state.objectives[objective.id]) || progress < objective.target; if (state.objectives[objective.id]) button.textContent = 'COMPLETED'; }); }
   }
 
-  #escape(value) {
-    const element = document.createElement('span');
-    element.textContent = value;
-    return element.innerHTML;
-  }
+  #handleClick = (event) => { const view = event.target.closest('[data-view]'); if (view) this.#eventBus.emit('navigation:selected', view.dataset.view); const buy = event.target.closest('[data-buy]'); if (buy && !buy.disabled) { this.#eventBus.emit('hardware:buy', buy.dataset.buy); this.#playFeedbackTone(); } const model = event.target.closest('[data-model]'); if (model && !model.disabled) { this.#eventBus.emit('model:acquire', model.dataset.model); this.#playFeedbackTone(); } const upgrade = event.target.closest('[data-upgrade]'); if (upgrade && !upgrade.disabled) { this.#eventBus.emit('upgrade:buy', upgrade.dataset.upgrade); this.#playFeedbackTone(); } const objective = event.target.closest('[data-objective]'); if (objective && !objective.disabled) { this.#eventBus.emit('objective:claim', objective.dataset.objective); this.#playFeedbackTone(); } const action = event.target.closest('[data-action]')?.dataset.action; if (action === 'toggle-menu') this.#eventBus.emit('navigation:toggled'); if (action === 'train') this.#eventBus.emit('model:train'); if (action === 'marketing') this.#eventBus.emit('market:marketing'); if (action === 'tutorial') this.#eventBus.emit('tutorial:advance'); if (action === 'optimize') { this.#eventBus.emit('compute:optimize'); event.target.closest('.optimize-button').animate([{ transform: 'scale(.96)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: 240 }); } if (action === 'jump-hardware') this.#eventBus.emit('navigation:selected', 'hardware'); };
+  #handleInput = (event) => { if (event.target.matches('[data-allocation]')) this.#eventBus.emit('allocation:set', { category: event.target.dataset.allocation, value: event.target.value }); if (event.target.matches('[data-price]')) this.#eventBus.emit('market:price', event.target.value); };
+  #renderTutorial(state) { const host = this.#root.querySelector('[data-tutorial]'); if (state.tutorial.completed) { host.innerHTML = ''; host.dataset.step = 'complete'; return; } if (host.dataset.step === String(state.tutorial.step)) return; host.dataset.step = state.tutorial.step; const steps = [
+    ['WELCOME TO AI SINGULARITY', 'You are starting an AI company with 25 Credits. We will build the complete economy together.', 'BEGIN'],
+    ['BUY A CALCULATOR', 'Open Hardware and purchase your first Calculator. It is the beginning of your compute empire.', null],
+    ['COMPUTE IS FLOWING', 'Your Calculator is now producing Compute every second.', null],
+    ['COMPUTE IS NOT MONEY', 'Compute is processing power. Your Training allocation stores part of it for improving AI models.', 'OPEN AI MODEL'],
+    ['TRAIN YOUR FIRST MODEL', 'Wait for 12 training Compute, then invest it to complete TinyChat’s first training run.', null],
+    ['YOUR MODEL ATTRACTS USERS', 'Quality creates demand, while Inference allocation determines how many users you can serve.', null],
+    ['USERS PAY CREDITS', 'Each active user pays your current price every second. Credits fund more hardware.', null],
+    ['EXPAND YOUR HARDWARE', 'Purchase a Home Computer to multiply production and keep the loop moving.', null],
+    ['CONTROL YOUR COMPUTE', 'Allocation lets you choose between Training, Inference, Research, Data Processing, and Agents.', 'SHOW ALLOCATION'],
+    ['THE LOOP IS YOURS', 'Hardware → Compute → Training → Quality → Users → Revenue → Credits. Make the intelligence company unstoppable.', 'FINISH'],
+  ]; const [title, copy, action] = steps[state.tutorial.step]; host.innerHTML = `<aside class="tutorial-card"><small>TUTORIAL ${state.tutorial.step + 1} / 10</small><h3>${title}</h3><p>${copy}</p>${action ? `<button class="primary-button" data-action="tutorial">${action}</button>` : '<span class="waiting">COMPLETE THE HIGHLIGHTED ACTION</span>'}</aside>`; if (state.tutorial.step === 8 && state.ui.activeView !== 'allocation') this.#eventBus.emit('navigation:selected', 'allocation'); }
+  #renderFeedback(state) { const host = this.#root.querySelector('[data-feedback]'); if (!state.ui.toast) { host.innerHTML = ''; return; } if (host.dataset.toastId === String(state.ui.toast.id)) return; host.dataset.toastId = state.ui.toast.id; host.innerHTML = `<div class="toast">✦ ${state.ui.toast.message}</div>`; host.firstElementChild.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }, { opacity: 1 }, { opacity: 0 }], { duration: 2600, fill: 'forwards' }); }
+  #tooltip(label) { return { HARDWARE: 'Machines that continuously produce Compute.', COMPUTE: 'Processing power used for training, inference, research, data, and agents.', TRAINING: 'Turns allocated Compute into model XP and Quality.', QUALITY: 'Model capability that increases market demand.', USERS: 'Customers served by your inference capacity who pay Credits.', CREDITS: 'Company currency earned from Users and spent on growth.' }[label]; }
+  #modelTooltip(stat) { return { quality: 'Base capability and training potential.', speed: 'How quickly the model responds.', context: 'How much information the model can remember.', reasoning: 'Ability to solve complex tasks.', efficiency: 'Users served per unit of inference Compute.', appeal: 'How strongly the model attracts market demand.' }[stat]; }
+  #playFeedbackTone() { const AudioContext = window.AudioContext ?? window.webkitAudioContext; if (!AudioContext) return; const context = new AudioContext(); const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.frequency.setValueAtTime(420, context.currentTime); oscillator.frequency.exponentialRampToValueAtTime(720, context.currentTime + 0.09); gain.gain.setValueAtTime(0.035, context.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.12); oscillator.connect(gain).connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + 0.12); oscillator.addEventListener('ended', () => context.close(), { once: true }); }
+  #text(selector, value) { const node = this.#root.querySelector(selector); if (node) node.textContent = value; }
+  #width(selector, ratio) { const node = this.#root.querySelector(selector); if (node) node.style.width = `${Math.min(100, ratio * 100)}%`; }
+  #number(value) { return new Intl.NumberFormat('en-US', { notation: Math.abs(value) >= 10000 ? 'compact' : 'standard', maximumFractionDigits: Math.abs(value) < 100 ? 1 : 0 }).format(value); }
+  #duration(ms) { const seconds = Math.floor(ms / 1000); return [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60].map((v) => String(v).padStart(2, '0')).join(':'); }
+  #escape(value) { const span = document.createElement('span'); span.textContent = value; return span.innerHTML; }
 }
