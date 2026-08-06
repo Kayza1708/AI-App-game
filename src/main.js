@@ -1,23 +1,10 @@
 import './styles/main.css';
-import { Game } from './core/Game.js';
-import { SaveSystem } from './systems/SaveSystem.js';
-import { AppRenderer } from './ui/AppRenderer.js';
+import { Application } from './core/Application.js';
 
-const rootElement = document.querySelector('#app');
+const root = document.querySelector('#app');
+if (!root) throw new Error('Application root was not found.');
 
-if (!rootElement) {
-  throw new Error('Application root element was not found.');
-}
+const application = new Application(root);
+application.start();
 
-const saveSystem = new SaveSystem();
-const game = new Game({
-  state: saveSystem.load(),
-  saveSystem,
-  renderer: new AppRenderer(rootElement),
-});
-
-game.start();
-
-if (import.meta.hot) {
-  import.meta.hot.dispose(() => game.stop());
-}
+if (import.meta.hot) import.meta.hot.dispose(() => application.stop());

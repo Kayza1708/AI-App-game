@@ -1,31 +1,52 @@
-import { CURRENT_SAVE_VERSION, createInitialState } from '../data/createInitialState.js';
+import { SAVE_VERSION } from '../data/defaultState.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
-
-function isValidSave(candidate) {
-  return candidate?.version === CURRENT_SAVE_VERSION
-    && typeof candidate.meta?.createdAt === 'number'
-    && typeof candidate.meta?.totalRuntimeMs === 'number';
-}
+const SAVE_INTERVAL_MS = 15_000;
 
 export class SaveSystem {
+  #intervalId = null;
+  #store;
+
+  constructor(store) {
+    this.#store = store;
+  }
+
   load() {
-    const serializedState = localStorage.getItem(STORAGE_KEY);
-
-    if (!serializedState) {
-      return createInitialState();
-    }
-
     try {
-      const savedState = JSON.parse(serializedState);
-      return isValidSave(savedState) ? savedState : createInitialState();
+      const serializedSave = localStorage.getItem(STORAGE_KEY);
+      if (!serializedSave) return null;
+      const save = JSON.parse(serializedSave);
+      return this.#isValid(save) ? save : null;
     } catch {
-      return createInitialState();
+      return null;
     }
   }
 
-  save(state) {
-    state.meta.lastSavedAt = Date.now();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  save() {
+    const state = this.#store.getState();
+    const nextState = {
+      ...state,
+      session: { ...state.session, lastSavedAt: Date.now() },
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
+    this.#store.replace(nextState, 'save');
+  }
+
+  startAutosave() {
+    if (this.#intervalId === null) {
+      this.#intervalId = window.setInterval(() => this.save(), SAVE_INTERVAL_MS);
+    }
+  }
+
+  stopAutosave() {
+    if (this.#intervalId !== null) window.clearInterval(this.#intervalId);
+    this.#intervalId = null;
+  }
+
+  #isValid(save) {
+    return save?.version === SAVE_VERSION &&
+      typeof save.profile?.companyName === 'string' &&
+      typeof save.session?.elapsedMs === 'number' &&
+      typeof save.ui?.activeView === 'string';
   }
 }

@@ -1,6 +1,6 @@
 # AI Singularity
 
-The foundation for a browser-based idle game about guiding artificial intelligence from a single old computer to the technological singularity.
+A premium browser-based idle game about building an AI company and steering intelligence toward the technological singularity.
 
 ## Development
 
@@ -9,4 +9,6 @@ npm install
 npm run dev
 ```
 
-Milestone 1 contains only the application shell, game and render loops, base state, and local save persistence. Gameplay systems will be added in later milestones.
+## Milestone 1
+
+The current foundation includes the application lifecycle, event bus, state store, game loop, versioned local save system, frame-coalesced render pipeline, and responsive navigation shell. Gameplay systems intentionally begin in later milestones.
