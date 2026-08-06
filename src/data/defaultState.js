@@ -1,4 +1,4 @@
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6;
 
 export const HARDWARE_CATALOG = [
   ['calculator', '⌗', 'Calculator', 'A programmable calculator running its first tiny tensor operations.', 20, 0.5, 0.02],
@@ -28,12 +28,12 @@ export const HARDWARE_CATALOG = [
 }));
 
 export const MODEL_CATALOG = [
-  { id: 'tinyChat', name: 'TinyChat', cost: 0, unlockLevel: 1, stats: { quality: 1, speed: 8, context: 2, reasoning: 1, efficiency: 8, appeal: 2 } },
-  { id: 'smartChat', name: 'SmartChat', cost: 2_500, unlockLevel: 3, stats: { quality: 3, speed: 7, context: 4, reasoning: 3, efficiency: 7, appeal: 4 } },
-  { id: 'omni', name: 'Omni', cost: 45_000, unlockLevel: 7, stats: { quality: 6, speed: 7, context: 6, reasoning: 5, efficiency: 6, appeal: 7 } },
-  { id: 'research', name: 'Research', cost: 900_000, unlockLevel: 12, stats: { quality: 9, speed: 4, context: 9, reasoning: 10, efficiency: 4, appeal: 5 } },
-  { id: 'agent', name: 'Agent', cost: 24_000_000, unlockLevel: 20, stats: { quality: 12, speed: 8, context: 10, reasoning: 11, efficiency: 7, appeal: 10 } },
-  { id: 'agi', name: 'AGI', cost: 1_000_000_000, unlockLevel: 30, stats: { quality: 20, speed: 10, context: 20, reasoning: 20, efficiency: 10, appeal: 20 } },
+  { id: 'tinyChat', name: 'TinyChat', role: 'Consumer', specialty: 'Low energy · free users · rapid adoption', cost: 0, unlockLevel: 1, stats: { quality: 1, speed: 8, context: 2, reasoning: 1, efficiency: 8, appeal: 2 } },
+  { id: 'smartChat', name: 'SmartChat', role: 'Coding', specialty: 'Research tools · developer demand', cost: 2_500, unlockLevel: 3, stats: { quality: 3, speed: 7, context: 4, reasoning: 3, efficiency: 7, appeal: 4 } },
+  { id: 'omni', name: 'Omni', role: 'Multimodal', specialty: 'Broad adoption · strong popularity', cost: 45_000, unlockLevel: 7, stats: { quality: 6, speed: 7, context: 6, reasoning: 5, efficiency: 6, appeal: 7 } },
+  { id: 'research', name: 'Research', role: 'Scientific', specialty: 'Patent research · exceptional reasoning', cost: 900_000, unlockLevel: 12, stats: { quality: 9, speed: 4, context: 9, reasoning: 10, efficiency: 4, appeal: 5 } },
+  { id: 'agent', name: 'Agent', role: 'Autonomous', specialty: 'Agent Tasks · company automation', cost: 24_000_000, unlockLevel: 20, stats: { quality: 12, speed: 8, context: 10, reasoning: 11, efficiency: 7, appeal: 10 } },
+  { id: 'agi', name: 'AGI', role: 'Enterprise', specialty: 'Extreme revenue · trust · intelligence', cost: 1_000_000_000, unlockLevel: 30, stats: { quality: 20, speed: 10, context: 20, reasoning: 20, efficiency: 10, appeal: 20 } },
 ];
 
 const HARDWARE_UPGRADE_TYPES = [
@@ -122,19 +122,96 @@ export const WORLD_EVENTS = [
   { id: 'boom', title: 'Global AI Boom', description: 'Every company suddenly needs an intelligence strategy.', choices: [{ label: 'Target enterprises', effect: 'enterprise', value: 0.3 }, { label: 'Capture consumers', effect: 'adoption', value: 0.3 }] },
 ];
 
+const PATENT_DEFINITIONS = [
+  ['cold-kernels','Cold Kernel Scheduling','hardwareOutput',.05,'Schedules workloads around thermal peaks to sustain compute output.'],
+  ['gradient-cache','Gradient Cache','training',.10,'Reuses stable gradients without sacrificing model quality.'],
+  ['viral-embedding','Viral Embeddings','demand',.08,'Represents cultural trends before they reach the wider market.'],
+  ['trust-ledger','Trust Ledger','reputationGrowth',.15,'Makes every model and dataset decision independently auditable.'],
+  ['lab-notebook','Autonomous Lab Notebook','flatResearch',1,'Produces one permanent Research point every second.'],
+  ['voltage-curve','Adaptive Voltage Curve','energyEfficiency',.05,'Reduces hardware energy consumption under variable workloads.'],
+  ['recursive-insight','Recursive Insight','intelligenceGain',.01,'Preserves more organizational insight between Development Cycles.'],
+  ['elastic-pricing','Elastic Price Map','priceElasticity',.08,'Predicts willingness to pay without collapsing demand.'],
+  ['compute-router','Compute Intent Router','allocationEfficiency',.02,'Routes unused allocation to the workload that needs it most.'],
+  ['agent-contracts','Agent Contract Protocol','agents',.12,'Lets autonomous agents negotiate and divide complex tasks.'],
+  ['sparse-attention','Sparse Attention Lattice','inference',.08,'Skips irrelevant context while maintaining coherent responses.'],
+  ['semantic-cache','Semantic Response Cache','inference',.10,'Serves equivalent requests from a shared semantic memory.'],
+  ['synthetic-curriculum','Synthetic Curriculum','quality',.08,'Creates progressively harder examples for every training run.'],
+  ['reputation-graph','Reputation Knowledge Graph','reputationGrowth',.12,'Connects product reliability to public trust signals.'],
+  ['market-telescope','Market Telescope','marketSize',.10,'Identifies valuable customer segments before competitors.'],
+  ['liquid-bus','Liquid-Cooled Bus','energyEfficiency',.07,'Combines cooling and interconnects into a single efficient layer.'],
+  ['checkpoint-delta','Delta Checkpoints','training',.08,'Stores only meaningful changes between model checkpoints.'],
+  ['context-folding','Context Folding','quality',.06,'Compresses long histories into durable working memories.'],
+  ['microgrid-ai','Predictive Microgrid','energyOutput',.10,'Forecasts generation and demand across every power source.'],
+  ['sales-copilot','Enterprise Sales Copilot','enterprise',.12,'Builds technical business cases for high-value customers.'],
+  ['privacy-learning','Private Collaborative Learning','reputationGrowth',.18,'Learns from customers without centralizing sensitive data.'],
+  ['optical-fabric','Optical Compute Fabric','hardwareOutput',.08,'Moves tensors with light instead of energy-intensive copper.'],
+  ['reward-model','Pluralistic Reward Model','appeal',.09,'Adapts model behavior to distinct customer expectations.'],
+  ['data-distillery','Data Distillery','research',.12,'Extracts reusable scientific signal from noisy datasets.'],
+  ['carbon-aware','Carbon-Aware Training','energyEfficiency',.08,'Moves training runs toward clean surplus generation.'],
+  ['federated-agents','Federated Agent Teams','agents',.15,'Coordinates agents across organizations without sharing secrets.'],
+  ['compiler-proof','Verified AI Compiler','training',.12,'Proves optimized training kernels preserve numerical behavior.'],
+  ['demand-simulator','Demand World Model','demand',.12,'Simulates adoption before committing marketing resources.'],
+  ['retention-memory','Personal Memory Vault','adoption',.10,'Gives users portable, private long-term model memory.'],
+  ['energy-arbitrage','Grid Energy Arbitrage','energyOutput',.12,'Stores power when cheap and releases it at peak demand.'],
+  ['neural-firewall','Neural Firewall','reputationGrowth',.20,'Detects adversarial behavior before it reaches deployed models.'],
+  ['mixture-routing','Expert Market Routing','revenue',.08,'Routes premium requests to specialized high-value experts.'],
+  ['research-swarm','Research Swarm','research',.15,'Many independent agents challenge every scientific claim.'],
+  ['zero-copy','Zero-Copy Inference','inference',.14,'Eliminates memory duplication across model serving processes.'],
+  ['thermal-storage','Thermal Energy Storage','energyOutput',.15,'Turns waste heat into dispatchable facility energy.'],
+  ['reasoning-distill','Reasoning Distillation','quality',.12,'Transfers deep reasoning into smaller efficient models.'],
+  ['global-api','Global API Mesh','marketSize',.15,'Places low-latency model endpoints near every customer.'],
+  ['safe-agency','Constrained Agency','agents',.18,'Makes autonomous action powerful, observable, and reversible.'],
+  ['dynamic-batching','Predictive Dynamic Batching','inference',.16,'Anticipates request bursts and assembles optimal batches.'],
+  ['fusion-control','Neural Fusion Control','energyOutput',.20,'Stabilizes fusion plasma using real-time learned control.'],
+  ['scientific-memory','Scientific Memory Palace','research',.18,'Links every experiment to all prior supporting evidence.'],
+  ['universal-tokenizer','Universal Tokenizer','appeal',.14,'Represents language, code, images, and scientific notation together.'],
+  ['autonomous-audit','Autonomous Compliance Audit','enterprise',.18,'Continuously proves enterprise deployments meet policy.'],
+  ['lossless-quant','Lossless Semantic Quantization','energyEfficiency',.12,'Reduces precision only where meaning remains unchanged.'],
+  ['market-maker','AI Service Market Maker','revenue',.12,'Matches spare inference capacity with real-time demand.'],
+  ['self-repair','Self-Repairing Datacenter','hardwareOutput',.15,'Predicts and replaces failing components without downtime.'],
+  ['collective-alignment','Collective Alignment Protocol','reputationGrowth',.25,'Lets communities participate directly in model governance.'],
+  ['stellar-load','Stellar Load Balancer','allocationEfficiency',.08,'Balances computation across planetary and orbital latency.'],
+  ['recursive-science','Recursive Science Engine','flatResearch',5,'Continuously proposes, tests, and criticizes new hypotheses.'],
+  ['singularity-proof','Singularity Safety Proof','intelligenceGain',.10,'Preserves critical knowledge through transformations of intelligence.'],
+];
+export const PATENTS = PATENT_DEFINITIONS.map(([id,name,effect,value,description], index) => ({ id,name,effect,value,description,index }));
+
+export const ENERGY_BUILDINGS = [
+  ['coal','Coal Plant','▰',25,1],['gas','Gas Plant','◒',180,7],['solar','Solar Farm','☀',1_200,45],
+  ['wind','Wind Farm','≋',8_000,260],['hydro','Hydroelectric Dam','≈',55_000,1_500],['nuclear','Nuclear Plant','⚛',420_000,9_000],
+  ['fusion','Fusion Reactor','✦',4_000_000,60_000],['orbitalSolar','Orbital Solar Array','◉',55_000_000,500_000],['dysonEnergy','Dyson Energy Swarm','☼',1_000_000_000,6_000_000],
+].map(([id,name,icon,cost,output]) => ({id,name,icon,cost,output}));
+
+export const GEM_SHOP_ITEMS = [
+  { id:'researchLab2',name:'Second Research Lab',category:'Research',cost:25,description:'+20% Patent research speed' },
+  { id:'researchLab3',name:'Third Research Lab',category:'Research',cost:60,description:'+25% Patent research speed' },
+  { id:'trainingQueue',name:'Training Queue',category:'Utilities',cost:20,description:'Automatically starts the next model run' },
+  { id:'objectiveSlot',name:'Objective Slot',category:'Utilities',cost:15,description:'Track one additional objective at once' },
+  { id:'allocationPresets',name:'Allocation Presets',category:'Automation',cost:30,description:'Save strategic Compute configurations' },
+  { id:'patentScanner',name:'Patent Scanner',category:'Research',cost:40,description:'Reveals the next Patent before discovery' },
+  { id:'statisticsPlus',name:'Advanced Statistics',category:'Utilities',cost:10,description:'Keeps deeper cycle histories' },
+  { id:'themeAurora',name:'Aurora Theme',category:'Visual',cost:12,description:'Unlocks an optional account theme' },
+  { id:'saveSlot',name:'Strategy Save Slot',category:'Utilities',cost:20,description:'Stores an additional allocation build' },
+  { id:'eventForecast',name:'Event Forecast',category:'Utilities',cost:18,description:'Shows the next world-event category' },
+];
+
 export function createDefaultState() {
   return {
     version: SAVE_VERSION,
     profile: { companyName: 'Singularity Labs', createdAt: Date.now() },
-    resources: { credits: 45, compute: 0, users: 0, research: 0 },
+    resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
-    model: { level: 1, xp: 0, quality: 1, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', owned: ['tinyChat'] },
+    model: { level: 1, xp: 0, quality: 1, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {} },
     allocation: { training: 40, inference: 35, research: 5, data: 10, agents: 10 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], objectives: {},
     meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, techNodes: [], achievements: {} },
-    world: { activeEvent: null, nextEventMs: 90_000, modifiers: [] },
+    world: { activeEvent: null, nextEventMs: 720_000, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
+    energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
+    patents: { discovered: [], progress: 0, history: [] },
+    premium: { purchases: [], adCooldowns: {} },
+    retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null },
     tutorial: { step: 0, completed: false },
     settings: { numberNotation: 'compact', sound: true },
     statistics: { totalCreditsEarned: 0, totalComputeProduced: 0, totalClicks: 0, playTimeMs: 0 },

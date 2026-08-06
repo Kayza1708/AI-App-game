@@ -11,4 +11,4 @@ npm run dev
 
 ## First playable loop
 
-Purchase exponentially scaling hardware to produce compute, train an evolving AI model, attract users, and reinvest the resulting revenue. More than 200 run upgrades, Development Cycles, eight permanent Intelligence specializations, strategic world events, and 120 rewarding achievements let every company develop a distinct identity across repeated runs.
+Purchase exponentially scaling hardware and energy infrastructure, train and specialize a portfolio of AI models, discover 50 permanent Patents, and reinvest user revenue. Development Cycles, eight Intelligence specializations, optional retention rewards, strategic events, 120 achievements, and a convenience-only Gem economy let every company develop a distinct long-term identity.

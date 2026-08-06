@@ -5,7 +5,7 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
-import { acquireModel, advanceTutorial, buyHardware, buyMarketing, buyTechNode, buyUpgrade, claimObjective, optimizeCode, resolveWorldEvent, setAllocation, setPrice, startDevelopmentCycle, tickGame, trainModel } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, claimRetentionMission, claimRewardedAd, dismissPatentDiscovery, improveModel, optimizeCode, resolveWorldEvent, setAllocation, setPrice, startDevelopmentCycle, tickGame, toggleModelDeployment, trainModel } from '../systems/GameSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -78,6 +78,14 @@ export class Application {
       this.#eventBus.on('tech:buy', (nodeId) => this.#store.update((state) => buyTechNode(state, nodeId), 'tech')),
       this.#eventBus.on('cycle:start', () => this.#store.update(startDevelopmentCycle, 'development-cycle')),
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
+      this.#eventBus.on('energy:buy', (buildingId) => this.#store.update((state) => buyEnergyBuilding(state, buildingId), 'energy')),
+      this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
+      this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => claimRewardedAd(state, reward), 'rewarded-ad')),
+      this.#eventBus.on('model:improve', ({ modelId, path }) => this.#store.update((state) => improveModel(state, modelId, path), 'model')),
+      this.#eventBus.on('model:deploy', (modelId) => this.#store.update((state) => toggleModelDeployment(state, modelId), 'model')),
+      this.#eventBus.on('retention:login', () => this.#store.update(claimLoginReward, 'retention')),
+      this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimRetentionMission(state, missionId), 'retention')),
+      this.#eventBus.on('patent:dismiss', () => this.#store.update(dismissPatentDiscovery, 'patent')),
     );
   }
 

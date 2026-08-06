@@ -57,6 +57,9 @@ export class SaveSystem {
       tutorial: { ...defaults.tutorial, ...save.tutorial }, objectives: { ...defaults.objectives, ...save.objectives },
       meta: { ...defaults.meta, ...save.meta, achievements: { ...defaults.meta.achievements, ...save.meta?.achievements } },
       world: { ...defaults.world, ...save.world }, company: { ...defaults.company, ...save.company, employees: { ...defaults.company.employees, ...save.company?.employees } },
+      energy: { ...defaults.energy, ...save.energy, buildings: { ...defaults.energy.buildings, ...save.energy?.buildings } },
+      patents: { ...defaults.patents, ...save.patents }, premium: { ...defaults.premium, ...save.premium, adCooldowns: { ...defaults.premium.adCooldowns, ...save.premium?.adCooldowns } },
+      retention: { ...defaults.retention, ...save.retention, claimedDaily: { ...defaults.retention.claimedDaily, ...save.retention?.claimedDaily } },
       settings: { ...defaults.settings, ...save.settings }, statistics: { ...defaults.statistics, ...save.statistics },
       session: { ...defaults.session, ...save.session }, ui: { ...defaults.ui, ...save.ui },
     };

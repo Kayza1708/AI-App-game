@@ -9,6 +9,10 @@ export const NAV_ITEMS = [
   { id: 'objectives', label: 'Objectives', eyebrow: 'Missions' },
   { id: 'strategy', label: 'Tech Tree', eyebrow: 'Intelligence' },
   { id: 'achievements', label: 'Achievements', eyebrow: 'Legacy' },
+  { id: 'patents', label: 'Patents', eyebrow: 'Permanent' },
+  { id: 'energy', label: 'Energy', eyebrow: 'Infrastructure' },
+  { id: 'gemshop', label: 'Gem Shop', eyebrow: 'Convenience' },
+  { id: 'missions', label: 'Missions', eyebrow: 'Daily' },
 ];
 
 export function isKnownView(viewId) {
