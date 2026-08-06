@@ -4,32 +4,49 @@ const COST_GROWTH = 1.17;
 
 export function hardwareCost(item, quantity) { return Math.ceil(item.baseCost * COST_GROWTH ** quantity); }
 
-function milestoneMultiplier(state, item) {
-  const reached = item.milestones.filter((milestone) => state.hardware[item.id] >= milestone).length;
-  return 1 + reached * 0.1;
+function upgradeBonus(state, effect, hardwareId = null) {
+  return UPGRADES.filter((upgrade) => state.upgrades.includes(upgrade.id) && upgrade.effect === effect && (!upgrade.hardwareId || upgrade.hardwareId === hardwareId)).reduce((total, upgrade) => total + upgrade.value, 0);
+}
+
+function milestoneBonus(state, effect, item = null) {
+  return HARDWARE_CATALOG.reduce((total, hardware) => total + hardware.milestones.filter((milestone) => state.hardware[hardware.id] >= milestone.quantity && milestone.effect === effect && (!item || hardware.id === item.id)).reduce((sum, milestone) => sum + milestone.value, 0), 0);
+}
+
+export function effectiveHardwareCost(state, item) {
+  const discount = Math.min(0.5, upgradeBonus(state, 'hardwareCost', item.id) + milestoneBonus(state, 'hardwareDiscount'));
+  return Math.ceil(hardwareCost(item, state.hardware[item.id]) * (1 - discount));
 }
 
 export function computePerSecond(state) {
-  const upgradeMultiplier = (state.upgrades.includes('cooling') ? 1.2 : 1) * (state.upgrades.includes('gpus') ? 1.35 : 1);
-  return HARDWARE_CATALOG.reduce((total, item) => total + item.computePerSecond * state.hardware[item.id] * milestoneMultiplier(state, item), 0) * upgradeMultiplier;
+  const globalMultiplier = 1 + upgradeBonus(state, 'allOutput') + upgradeBonus(state, 'hardwareOutput');
+  return HARDWARE_CATALOG.reduce((total, item) => total + item.computePerSecond * state.hardware[item.id] * (1 + milestoneBonus(state, 'hardwareOutput', item) + upgradeBonus(state, 'hardwareOutput', item.id)), 0) * globalMultiplier;
 }
 
 export function energyUse(state) { return HARDWARE_CATALOG.reduce((total, item) => total + item.energy * state.hardware[item.id], 0); }
 export function activeModel(state) { return MODEL_CATALOG.find(({ id }) => id === state.model.activeId) ?? MODEL_CATALOG[0]; }
-export function revenuePerUser(state) { return 0.08 * state.market.priceMultiplier; }
+export function revenuePerUser(state) { return 0.24 * state.market.priceMultiplier * (1 + upgradeBonus(state, 'revenue') + milestoneBonus(state, 'revenue')); }
 export function xpRequired(level) { return Math.floor(16 * level ** 1.4); }
 export function trainingRequired(level) { return Math.floor(12 * level ** 1.46); }
 
 export function marketMetrics(state) {
   const model = activeModel(state);
-  const appeal = model.stats.appeal * (1 + state.model.quality * 0.12);
+  const highestTier = HARDWARE_CATALOG.reduce((tier, item) => state.hardware[item.id] > 0 ? Math.max(tier, item.tier) : tier, 0);
+  const unlockedMarketSize = (30 + state.model.level * 18) * 2.15 ** highestTier * (1 + upgradeBonus(state, 'marketSize'));
+  const appeal = (model.stats.appeal + upgradeBonus(state, 'appeal') * 10) * (1 + state.model.quality * (0.2 + upgradeBonus(state, 'quality')));
   const priceResistance = 1 / state.market.priceMultiplier ** 1.35;
-  const marketingPower = 1 + state.market.marketing * 0.04 * (state.upgrades.includes('marketing') ? 1.3 : 1);
-  const demand = Math.max(0, appeal * state.market.reputation * marketingPower * priceResistance * 5);
-  const inferenceBoost = state.upgrades.includes('inference') ? 1.25 : 1;
-  const capacity = computePerSecond(state) * state.allocation.inference / 100 * model.stats.efficiency * 2.5 * inferenceBoost;
-  return { demand, capacity, target: Math.floor(Math.min(demand, capacity)), revenue: state.resources.users * revenuePerUser(state) };
+  const marketingPower = 1 + state.market.marketing * (0.12 + upgradeBonus(state, 'marketing'));
+  const reputationPower = Math.max(1, state.market.reputation * (1 + upgradeBonus(state, 'reputation')));
+  const adoptionPower = 1 + Math.sqrt(state.market.adoption) * (0.08 + upgradeBonus(state, 'adoption'));
+  const capacity = computePerSecond(state) * state.allocation.inference / 100 * model.stats.efficiency * 1.45 * (1 + upgradeBonus(state, 'inference'));
+  const organicDemand = unlockedMarketSize * appeal * 0.14 * marketingPower * reputationPower * adoptionPower * priceResistance * (1 + upgradeBonus(state, 'demand') + milestoneBonus(state, 'demand'));
+  const distributionFloor = capacity * Math.min(0.22, 0.1 + highestTier * 0.006);
+  const demand = Math.max(organicDemand, distributionFloor);
+  const target = Math.floor(Math.min(demand, capacity));
+  const utilization = capacity > 0 ? Math.min(1, demand / capacity) : 0;
+  return { demand, capacity, target, utilization, unlockedMarketSize, bottleneck: demand < capacity ? 'DEMAND LIMITED' : 'CAPACITY LIMITED', revenue: state.resources.users * revenuePerUser(state) };
 }
+
+export function userGrowthPerSecond(state) { const target = marketMetrics(state).target; return (target - state.resources.users) * 0.18; }
 
 function tutorialAfterTick(state) {
   let step = state.tutorial.step;
@@ -48,11 +65,11 @@ export function tickGame(state, deltaMs) {
   const dataGain = produced * state.allocation.data / 100;
   const agentGain = produced * state.allocation.agents / 100;
   const metrics = marketMetrics(state);
-  const userStep = Math.max(0.1 * seconds, Math.abs(metrics.target - state.resources.users) * 0.1 * seconds);
+  const userStep = Math.max(0.2 * seconds, Math.abs(metrics.target - state.resources.users) * 0.18 * seconds);
   const users = metrics.target > state.resources.users ? Math.min(metrics.target, state.resources.users + userStep) : Math.max(metrics.target, state.resources.users - userStep);
   const creditGain = users * revenuePerUser(state) * seconds;
-  const reputation = Math.min(10, state.market.reputation + dataGain * 0.00002);
-  const adoption = Math.min(100, state.market.adoption + agentGain * 0.0001 + users * seconds * 0.00002);
+  const reputation = Math.min(10, state.market.reputation + dataGain * 0.00004);
+  const adoption = Math.min(100, state.market.adoption + agentGain * 0.0002 + users * seconds * 0.00004);
   const next = {
     ...state,
     resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: state.resources.compute + trainingGain, users, research: state.resources.research + researchGain },
@@ -68,7 +85,7 @@ function feedback(state, message) { return { ...state, ui: { ...state.ui, toast:
 export function buyHardware(state, itemId) {
   const item = HARDWARE_CATALOG.find(({ id }) => id === itemId);
   if (!item) return state;
-  const cost = hardwareCost(item, state.hardware[itemId]);
+  const cost = effectiveHardwareCost(state, item);
   if (state.resources.credits < cost) return state;
   let next = { ...state, resources: { ...state.resources, credits: state.resources.credits - cost }, hardware: { ...state.hardware, [itemId]: state.hardware[itemId] + 1 } };
   if (state.tutorial.step === 1 && itemId === 'calculator') next = { ...next, tutorial: { ...state.tutorial, step: 2 } };
@@ -77,8 +94,14 @@ export function buyHardware(state, itemId) {
 }
 
 export function optimizeCode(state) {
-  const gain = 1 + state.model.level * 0.35;
+  const gain = optimizeGain(state);
   return feedback({ ...state, resources: { ...state.resources, compute: state.resources.compute + gain }, statistics: { ...state.statistics, totalComputeProduced: state.statistics.totalComputeProduced + gain, totalClicks: state.statistics.totalClicks + 1 } }, `Code optimized · +${gain.toFixed(1)} Compute`);
+}
+
+export function optimizeGain(state) {
+  const rate = computePerSecond(state);
+  const activeShare = 0.58 / (1 + Math.sqrt(rate / 350));
+  return Math.max(1.5 + state.model.level * 0.15, rate * activeShare);
 }
 
 export function trainModel(state) {
@@ -86,7 +109,7 @@ export function trainModel(state) {
   const invested = Math.min(state.resources.compute, required - state.model.trainingProgress);
   if (invested <= 0) return state;
   let { level, xp, quality, trainingProgress } = state.model;
-  trainingProgress += invested * (state.upgrades.includes('training') ? 1.25 : 1);
+  trainingProgress += invested * (1 + upgradeBonus(state, 'training'));
   if (trainingProgress >= required) {
     trainingProgress = 0; xp += required; quality += 0.3 + activeModel(state).stats.quality * 0.025;
     while (xp >= xpRequired(level)) { xp -= xpRequired(level); level += 1; quality += 0.2; }
@@ -117,7 +140,8 @@ export function acquireModel(state, modelId) {
   return feedback({ ...state, resources: { ...state.resources, credits: state.resources.credits - model.cost }, model: { ...state.model, activeId: modelId, owned: [...state.model.owned, modelId], quality: state.model.quality + model.stats.quality * 0.25 } }, `${model.name} deployed`);
 }
 
-export function buyUpgrade(state, upgradeId) { const upgrade = UPGRADES.find(({ id }) => id === upgradeId); if (!upgrade || state.upgrades.includes(upgradeId) || state.resources.credits < upgrade.cost) return state; return feedback({ ...state, resources: { ...state.resources, credits: state.resources.credits - upgrade.cost }, upgrades: [...state.upgrades, upgradeId] }, `${upgrade.name} installed`); }
+export function canBuyUpgrade(state, upgrade) { const balance = upgrade.category === 'research' ? state.resources.research : state.resources.credits; const unlocked = upgrade.category === 'hardware' ? state.hardware[upgrade.hardwareId] >= upgrade.unlock : state.model.level >= upgrade.unlock; return !state.upgrades.includes(upgrade.id) && unlocked && balance >= upgrade.cost; }
+export function buyUpgrade(state, upgradeId) { const upgrade = UPGRADES.find(({ id }) => id === upgradeId); if (!upgrade || !canBuyUpgrade(state, upgrade)) return state; const currency = upgrade.category === 'research' ? 'research' : 'credits'; return feedback({ ...state, resources: { ...state.resources, [currency]: state.resources[currency] - upgrade.cost }, upgrades: [...state.upgrades, upgradeId] }, `${upgrade.name} installed`); }
 
 export function objectiveProgress(state, objective) { const values = { hardware: state.hardware.calculator, level: state.model.level, users: state.resources.users, gamingPc: state.hardware.gamingPc, computeRate: computePerSecond(state) }; return Math.min(objective.target, values[objective.type]); }
 export function claimObjective(state, objectiveId) { const objective = OBJECTIVES.find(({ id }) => id === objectiveId); if (!objective || state.objectives[objectiveId] || objectiveProgress(state, objective) < objective.target) return state; return feedback({ ...state, resources: { ...state.resources, credits: state.resources.credits + objective.reward }, objectives: { ...state.objectives, [objectiveId]: true } }, `Objective complete · +${objective.reward} Credits`); }
