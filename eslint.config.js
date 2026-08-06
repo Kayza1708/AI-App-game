@@ -11,6 +11,7 @@ export default [
         localStorage: 'readonly',
         performance: 'readonly',
         requestAnimationFrame: 'readonly',
+        structuredClone: 'readonly',
         window: 'readonly',
       },
     },

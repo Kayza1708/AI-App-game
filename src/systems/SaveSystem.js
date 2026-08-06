@@ -1,4 +1,4 @@
-import { SAVE_VERSION } from '../data/defaultState.js';
+import { createDefaultState, SAVE_VERSION } from '../data/defaultState.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
 const SAVE_INTERVAL_MS = 15_000;
@@ -16,7 +16,7 @@ export class SaveSystem {
       const serializedSave = localStorage.getItem(STORAGE_KEY);
       if (!serializedSave) return null;
       const save = JSON.parse(serializedSave);
-      return this.#isValid(save) ? save : null;
+      return this.#isValid(save) ? this.#mergeWithDefaults(save) : null;
     } catch {
       return null;
     }
@@ -44,9 +44,17 @@ export class SaveSystem {
   }
 
   #isValid(save) {
-    return save?.version === SAVE_VERSION &&
-      typeof save.profile?.companyName === 'string' &&
-      typeof save.session?.elapsedMs === 'number' &&
-      typeof save.ui?.activeView === 'string';
+    return save?.version === SAVE_VERSION && typeof save.resources?.credits === 'number' && typeof save.model?.level === 'number';
+  }
+
+  #mergeWithDefaults(save) {
+    const defaults = createDefaultState();
+    return {
+      ...defaults, ...save,
+      profile: { ...defaults.profile, ...save.profile }, resources: { ...defaults.resources, ...save.resources },
+      hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model },
+      settings: { ...defaults.settings, ...save.settings }, statistics: { ...defaults.statistics, ...save.statistics },
+      session: { ...defaults.session, ...save.session }, ui: { ...defaults.ui, ...save.ui },
+    };
   }
 }
