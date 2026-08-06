@@ -9,6 +9,6 @@ npm install
 npm run dev
 ```
 
-## Milestone 1
+## First playable loop
 
-The current foundation includes the application lifecycle, event bus, state store, game loop, versioned local save system, frame-coalesced render pipeline, and responsive navigation shell. Gameplay systems intentionally begin in later milestones.
+Purchase exponentially scaling hardware to produce compute, train an evolving AI model, attract users, and reinvest the resulting revenue. More than 200 run upgrades, Development Cycles, eight permanent Intelligence specializations, strategic world events, and 120 rewarding achievements let every company develop a distinct identity across repeated runs.
