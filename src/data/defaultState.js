@@ -1,4 +1,5 @@
-export const SAVE_VERSION = 6;
+export const SAVE_VERSION = 7;
+export const GAME_VERSION = '0.7.1';
 
 export const HARDWARE_CATALOG = [
   ['calculator', '⌗', 'Calculator', 'A programmable calculator running its first tiny tensor operations.', 20, 0.5, 0.02],
@@ -209,7 +210,7 @@ export function createDefaultState() {
     world: { activeEvent: null, nextEventMs: 720_000, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
-    patents: { discovered: [], progress: 0, history: [] },
+    patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3 },
     premium: { purchases: [], adCooldowns: {} },
     retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null },
     tutorial: { step: 0, completed: false },

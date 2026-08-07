@@ -9,7 +9,7 @@ Developer mode is local and opt-in. Open the game with `?dev=1` (for example, `h
 The optional modules under `src/dev/` are deliberately separate from the game domain:
 
 - `telemetry-service.js` owns a session, observes immutable before/after state transitions, aggregates clicks, and coordinates analyzers.
-- `telemetry-events.js` defines analytics schema version 1, primitive immutable snapshots, monotonic clocks, validation, and bounded event history.
+- `telemetry-events.js` defines analytics schema version 2, primitive immutable snapshots, monotonic clocks, validation, and bounded event history.
 - `telemetry-sampler.js` reads effective values from `GameSystem`; it never reimplements production formulas. Sampling defaults to five seconds and supports 1/5/15/30-second intervals.
 - `meaningful-action-service.js`, `downtime-analyzer.js`, `overload-analyzer.js`, and `bottleneck-analyzer.js` provide focused pacing analysis.
 - `session-analyzer.js` produces summaries, balance flags, automatic prose, and the experimental Fun Density heuristic.
@@ -22,7 +22,9 @@ Analytics errors are caught at the application boundary so the game loop continu
 
 ## Event schema
 
-Every event includes `schemaVersion`, immutable `id`, monotonic `timestamp`, monotonic `sessionSeconds`, `runSeconds`, `developmentCycle`, `category`, `type`, `source`, `label`, severity and signal flags, numeric amount/cost, primitive before/after snapshots, and primitive metadata. Imported JSON must use the current analytics schema and contain event and sample arrays.
+Every event includes `schemaVersion`, immutable `id`, stable local `playerId`, `sessionId`, `runId`, save/game versions, prestige and breakthrough levels, monotonic `timestamp`, monotonic session/play/lifetime times, `developmentCycle`, `category`, `type`, `source`, `label`, severity and signal flags, numeric amount/cost, primitive before/after snapshots, and primitive metadata. Meaningful events additionally contain an immutable player snapshot with Credits, Compute production/usage, Energy production/usage, Users, Reputation, INT, Gems, Hardware/Model tiers, and allocation percentages. Cooling and Heat remain explicitly `null` until those domain systems exist. Imported JSON must use the current analytics schema and contain event and sample arrays.
+
+First-time funnel events cover initial Hardware, Training, Research, Patent, enterprise deployment, prestige, breakthrough, Agent, Datacenter, and future Quantum Hardware. Feature telemetry separately records unlock, first open, first use, cumulative use count, and delay between unlock and use.
 
 ## Meaningful actions
 
@@ -31,6 +33,8 @@ Purchases, material allocation or price changes, training start/completion, mode
 ## Sampling and safeguards
 
 Active play is sampled every five seconds by default. Samples contain resources, rates, market outputs, allocation, training and Patent ETAs, Energy, affordability, estimated purchase wait, Intelligence reward, modifiers, bottleneck, and Fun Density. Event and sample histories are capped at 10,000 records. Once capped, middle-era data is aggregated while the first 1,000 records remain intact. No full game state is cloned per frame, storage is written only when sessions end or session management is requested, event lists render only the latest filtered records, and charts update only while the dashboard is visible.
+
+Economy samples also retain income, earned/spent Credits, biggest purchase, average purchase interval, idle and unused Compute, unused Energy, and every allocation percentage. Hardware purchase events include tier, previous/new ownership, exact cost, affordability/unlock waits, alternatives, and Credits before/after.
 
 ## Downtime
 

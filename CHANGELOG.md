@@ -1,5 +1,11 @@
 # Changelog
 
+## Analytics context and permanent Patent loadouts
+
+- Added stable local player, session, run, version, prestige, breakthrough, and lifetime-play context to telemetry.
+- Added meaningful-event player snapshots, first-time funnels, feature discovery/use tracking, enriched Hardware purchases, session economy aggregates, and balancing wait signals.
+- Added three initial Patent slots, Gem-unlocked slots 4–8, equipping, swapping telemetry, and permanent Patent leveling with INT.
+
 ## Milestone 7 — Developer analytics and balance telemetry
 
 - Added query-gated, local-only Developer Analytics mode.

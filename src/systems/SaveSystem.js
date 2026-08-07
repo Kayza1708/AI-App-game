@@ -44,13 +44,13 @@ export class SaveSystem {
   }
 
   #isValid(save) {
-    return save?.version === SAVE_VERSION && typeof save.resources?.credits === 'number' && typeof save.model?.level === 'number';
+    return Number.isInteger(save?.version) && save.version > 0 && save.version <= SAVE_VERSION && typeof save.resources?.credits === 'number' && typeof save.model?.level === 'number';
   }
 
   #mergeWithDefaults(save) {
     const defaults = createDefaultState();
     return {
-      ...defaults, ...save,
+      ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...save.profile }, resources: { ...defaults.resources, ...save.resources },
       hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model },
       allocation: { ...defaults.allocation, ...save.allocation }, market: { ...defaults.market, ...save.market },

@@ -6,7 +6,7 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
-import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, claimRetentionMission, claimRewardedAd, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startDevelopmentCycle, tickGame, toggleModelDeployment, trainModel, trainingRequiredForState } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, claimRetentionMission, claimRewardedAd, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -101,6 +101,9 @@ export class Application {
       this.#eventBus.on('retention:login', () => this.#store.update(claimLoginReward, 'retention')),
       this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimRetentionMission(state, missionId), 'retention')),
       this.#eventBus.on('patent:dismiss', () => this.#store.update(dismissPatentDiscovery, 'patent')),
+      this.#eventBus.on('patent:equip', (patentId) => this.#store.update((state) => togglePatentEquipped(state, patentId), 'patent-equip')),
+      this.#eventBus.on('patent:upgrade', (patentId) => this.#store.update((state) => upgradePatent(state, patentId), 'patent-upgrade')),
+      this.#eventBus.on('patent:slot', () => this.#store.update(buyPatentSlot, 'patent-slot')),
       this.#eventBus.on('developer:cheat', (payload) => this.#applyDeveloperCheat(payload)),
       this.#eventBus.on('developer:opened', () => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'developer-dashboard-opened', source: 'developer', label: 'Developer Analytics opened' }, this.#store.getState()))),
       this.#eventBus.on('developer:tooltip', (label) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'tooltip-opened', source: 'tooltip', label }, this.#store.getState()))),
