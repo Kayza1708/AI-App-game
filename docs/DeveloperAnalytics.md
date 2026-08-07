@@ -85,3 +85,14 @@ The sampler reads live domain outputs and now distinguishes produced, consumed, 
 Navigation analytics retain first visit, visit count, total duration, and average duration for each player and developer screen. Session reports identify never-opened pages, unlocked-but-unused features, and ignored mechanics. The exported progression timeline is a chronological replay of real meaningful events rather than a reconstructed estimate.
 
 Waiting analysis runs with the one-second sampler even when a purchase is affordable. It distinguishes affordability inactivity, Objectives, Development Cycles, Credits, Compute, Research, Energy, Training, and Patents while retaining threshold crossings and concrete next actions. Automatic suggestions compare real Calculator, first Patent, and Development Cycle timestamps with their current balance targets and flag purchase gaps, idle Training, unused Compute, ignored Research, irrelevant Energy, skipped tiers, overload, and premature billion-Credit growth.
+
+## Milestone 10 canonical economy telemetry
+Telemetry samples now consume `economySnapshot()` rather than reconstructing the live economy. This guarantees that Credits/s, produced/consumed/wasted/stored Compute, Training Compute, Research, Users, Demand, Capacity, Market utilization, Energy supply/demand/efficiency, Model XP and Level, current Objective, Hardware tier, Model target, Patent, Intelligence, Gems, and Development Cycle match simulation output.
+
+The state now persists lifetime Credits spent and Compute consumed/wasted. Purchase events retain the actual resource transaction and effective before/after outputs; Hardware and Upgrade ROI use measured production/revenue differences, Patent ROI records bonus gained per INT, Training ROI records XP/Upgrade Points per Compute, and Prestige ROI records INT per run-hour. Rewarded-ad and world-event cooldown transitions are discrete events.
+
+Automatic reports add Compute, Energy, and Market utilization, idle percentage, meaningful actions per hour, permanent Model unlocks, Model Levels, Patent loadout actions, claims, and Gem purchases. Recommendations flag long tier gaps, low utilization by Hardware tier, Capacity/Demand divergence, ignored Marketing, excessive downtime, idle Training, unused stored Compute, weak Research allocation, irrelevant Energy, excessive XP velocity, and progression targets reached too early.
+
+## Milestone 11 progression telemetry
+
+Every one-second sample includes the complete active balance configuration, next lifetime-INT unlock, feature unlock order and timing, average INT per run, intervals between Development Cycles, Technology choices, abandoned unlock paths, and deployed Model usage distribution. These fields come from the same configuration and unlock predicates as the live simulation.

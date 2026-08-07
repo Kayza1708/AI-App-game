@@ -1,6 +1,6 @@
 export const ANALYTICS_SCHEMA_VERSION = 2;
 export const MAX_EVENTS = 10_000;
-export const EVENT_CATEGORIES = ['session','purchase','progression','economy','active-play','world','ui','developer','funnel','feature','balance','patent'];
+export const EVENT_CATEGORIES = ['session','purchase','progression','decision','economy','active-play','world','ui','developer','funnel','feature','balance','patent'];
 
 export function createTelemetryEvent(input, context) {
   const timestamp = Math.max(context.lastTimestamp ?? 0, Number(input.timestamp ?? Date.now()));

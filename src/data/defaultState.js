@@ -1,44 +1,45 @@
-export const SAVE_VERSION = 8;
-export const GAME_VERSION = '0.9.0';
+import { BALANCE } from '../config/balance.js';
+
+export const SAVE_VERSION = 10;
+export const GAME_VERSION = '0.11.0';
 
 export const HARDWARE_CATALOG = [
-  ['calculator', '⌗', 'Calculator', 'A programmable calculator running its first tiny tensor operations.', 20, 0.5, 0.02],
-  ['homeComputer', '▣', 'Home Computer', 'A beloved beige box with enough memory to experiment.', 95, 2.5, 0.12],
-  ['gamingPc', '◫', 'Gaming PC', 'Consumer graphics hardware repurposed for neural networks.', 480, 12, 0.55],
-  ['workstation', '◇', 'Workstation', 'Professional acceleration for sustained model development.', 2_600, 58, 2.4],
-  ['gpuServer', '▤', 'GPU Server', 'Rack-mounted parallel compute with industrial throughput.', 14_000, 280, 11],
-  ['miniDatacenter', '▥', 'Mini-Datacenter', 'Your first dedicated compute facility.', 78_000, 1_350, 48],
-  ['enterpriseDatacenter', '▦', 'Enterprise-Datacenter', 'Redundant halls built for global-scale inference.', 440_000, 6_600, 230],
-  ['hyperscaleDatacenter', '▩', 'Hyperscale-Datacenter', 'A horizon of servers operating as one machine.', 2_600_000, 32_000, 1_100],
-  ['tpuCluster', '⬡', 'TPU-Cluster', 'Custom silicon removes every unnecessary operation.', 16_000_000, 160_000, 5_200],
-  ['aiSupercomputer', '✦', 'AI-Supercomputer', 'A national-scale engine built around intelligence.', 105_000_000, 820_000, 26_000],
-  ['planetaryGrid', '◎', 'Planetary Compute Grid', 'Every continent contributes to a unified neural fabric.', 720_000_000, 4_300_000, 130_000],
-  ['underwaterDatacenter', '≋', 'Underwater Datacenter', 'Ocean-cooled compute cities beneath the waves.', 5_200_000_000, 24_000_000, 650_000],
-  ['orbitalDatacenter', '◉', 'Orbital Datacenter', 'Solar-powered inference in permanent freefall.', 41_000_000_000, 140_000_000, 3_200_000],
-  ['lunarFacility', '◒', 'Lunar Compute Facility', 'A silent lunar factory with uninterrupted solar access.', 360_000_000_000, 900_000_000, 17_000_000],
-  ['dysonSwarm', '☼', 'Dyson Swarm', 'Billions of collectors turn starlight into thought.', 3_600_000_000_000, 6_400_000_000, 95_000_000],
-  ['matrioshkaBrain', '◉', 'Matrioshka Brain', 'Nested computational shells enclose an entire star.', 42_000_000_000_000, 52_000_000_000, 600_000_000],
-].map(([id, icon, name, description, baseCost, computePerSecond, energy], tier) => ({
-  id, icon, name, description, baseCost: Math.ceil(baseCost * (tier === 0 ? 1 : 2.4 ** tier)), computePerSecond, energy, tier,
-  milestones: [
-    { quantity: 10, name: 'Thermal Rhythm', description: `${name} output +10%`, effect: 'hardwareOutput', value: 0.1 },
-    { quantity: 25, name: 'Bulk Procurement', description: `All hardware costs -${3 + tier % 3}%`, effect: 'hardwareDiscount', value: (3 + tier % 3) / 100 },
-    { quantity: 50, name: 'Fleet Intelligence', description: `Market demand +${5 + tier}%`, effect: 'demand', value: (5 + tier) / 100 },
-    { quantity: 100, name: 'Autonomous Operations', description: `Revenue +${4 + tier}%`, effect: 'revenue', value: (4 + tier) / 100 },
+  ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
+  ['homeComputer','▣','Pocket Computer','Portable silicon for experiments beyond basic arithmetic.'],
+  ['gamingPc','▱','Laptop','A mobile development machine for the first useful models.'],
+  ['workstation','◫','Gaming PC','Consumer graphics hardware repurposed for neural networks.'],
+  ['gpuServer','◇','Workstation','Professional acceleration for sustained model development.'],
+  ['miniDatacenter','▤','Server Rack','Rack-mounted parallel Compute with redundant networking.'],
+  ['enterpriseDatacenter','⬡','GPU Cluster','A coordinated accelerator fleet for serious Training and Inference.'],
+  ['hyperscaleDatacenter','▥','Datacenter','A dedicated facility where infrastructure becomes a company advantage.'],
+  ['tpuCluster','▦','Hyperscale Center','Warehouse-scale custom silicon serving a global market.'],
+  ['aiSupercomputer','◉','Orbital Datacenter','Solar-powered Compute beyond terrestrial grid constraints.'],
+  ['planetaryGrid','◒','Moon Compute Facility','A lunar industrial complex with uninterrupted scientific workloads.'],
+  ['underwaterDatacenter','⊕','Mars Compute Grid','A planetary network built for autonomous frontier operations.'],
+  ['orbitalDatacenter','✦','Fusion Compute Network','Fusion-powered intelligence infrastructure spanning worlds.'],
+  ['lunarFacility','☼','Dyson Compute Array','Stellar collectors turn a meaningful fraction of sunlight into thought.'],
+  ['dysonSwarm','◎','Matrioshka Brain','Nested computational shells enclose and coordinate a star.'],
+  ['matrioshkaBrain','∞','Singularity Core','Self-improving infrastructure operating beyond human-scale planning.'],
+].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],energy:BALANCE.hardware.tierEnergy[tier],tier,
+  milestones:[
+    {quantity:10,name:'Thermal Rhythm',description:`${name} output +10%`,effect:'hardwareOutput',value:.1},
+    {quantity:25,name:'Bulk Procurement',description:`All hardware costs -${3+tier%3}%`,effect:'hardwareDiscount',value:(3+tier%3)/100},
+    {quantity:50,name:'Fleet Intelligence',description:`Market demand +${5+tier}%`,effect:'demand',value:(5+tier)/100},
+    {quantity:100,name:'Autonomous Operations',description:`Revenue +${4+tier}%`,effect:'revenue',value:(4+tier)/100},
   ],
 }));
 
 export const MODEL_SKILLS = ['quality','reasoning','knowledge','context','coding','vision','creativity','math','efficiency','energy','latency','popularity','enterprise','research','safety','autonomy'];
 export const MODEL_CATALOG = [
-  { id:'tinyChat', name:'TinyChat', role:'Consumer', specialty:'Fast, energy-efficient access for a large free audience.', intCost:0, trainingScale:.5, identity:{adoption:.3,energy:.25}, stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0} },
-  { id:'smartChat', name:'SmartChat', role:'Developer', specialty:'Coding workflows, developer demand, and practical Research.', intCost:3, trainingScale:3, identity:{research:.2,coding:.35}, stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1} },
-  { id:'codeMind', name:'CodeMind', role:'Coding', specialty:'Compiler optimization and autonomous software production.', intCost:8, trainingScale:7, identity:{hardware:.15,coding:.5}, stats:{quality:4,reasoning:5,knowledge:4,context:5,coding:10,vision:1,creativity:4,math:6,efficiency:6,energy:5,latency:6,popularity:4,enterprise:4,research:5,safety:4,autonomy:4} },
-  { id:'visionNet', name:'VisionNet', role:'Consumer', specialty:'Images, advertising, creativity, and viral consumer adoption.', intCost:15, trainingScale:15, identity:{demand:.35,adoption:.35}, stats:{quality:6,reasoning:4,knowledge:5,context:5,coding:2,vision:10,creativity:9,math:3,efficiency:5,energy:4,latency:5,popularity:10,enterprise:3,research:3,safety:5,autonomy:2} },
-  { id:'enterpriseGpt', name:'EnterpriseGPT', role:'Enterprise', specialty:'Secure contracts with exceptional revenue per customer.', intCost:28, trainingScale:35, identity:{revenue:.65,demand:-.25}, stats:{quality:8,reasoning:7,knowledge:8,context:9,coding:6,vision:4,creativity:3,math:7,efficiency:6,energy:4,latency:4,popularity:3,enterprise:12,research:5,safety:10,autonomy:3} },
-  { id:'agentOs', name:'AgentOS', role:'Automation', specialty:'Autonomous operations and Agent Tasks at high Compute cost.', intCost:48, trainingScale:75, identity:{agents:.65,energy:-.2}, stats:{quality:9,reasoning:9,knowledge:8,context:8,coding:9,vision:5,creativity:6,math:8,efficiency:4,energy:2,latency:4,popularity:6,enterprise:7,research:7,safety:6,autonomy:12} },
-  { id:'scientificAi', name:'ScientificAI', role:'Scientific', specialty:'Knowledge generation, Patents, mathematics, and discovery.', intCost:80, trainingScale:150, identity:{research:.8,revenue:-.2}, stats:{quality:11,reasoning:12,knowledge:13,context:11,coding:8,vision:6,creativity:7,math:13,efficiency:3,energy:2,latency:2,popularity:3,enterprise:5,research:14,safety:8,autonomy:7} },
-  { id:'agiCore', name:'AGI Core', role:'General Intelligence', specialty:'Recursive improvement and stronger Development Cycle Intelligence.', intCost:135, trainingScale:300, identity:{intelligence:.35,quality:.3}, stats:{quality:15,reasoning:15,knowledge:15,context:15,coding:13,vision:12,creativity:13,math:15,efficiency:5,energy:3,latency:4,popularity:10,enterprise:11,research:13,safety:10,autonomy:13} },
-  { id:'asiSeed', name:'ASI Seed', role:'Post-human', specialty:'A configurable seed for radically specialized late-game companies.', intCost:225, trainingScale:600, identity:{allOutput:.25,intelligence:.5}, stats:{quality:20,reasoning:20,knowledge:20,context:20,coding:18,vision:18,creativity:18,math:20,efficiency:7,energy:4,latency:6,popularity:14,enterprise:15,research:18,safety:14,autonomy:20} },
+  {id:'tinyChat',name:'TinyChat',role:'Consumer',specialty:'Fast, efficient access for a large free audience.',intCost:0,trainingScale:.5,identity:{adoption:.3,energyEfficiency:.2},stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0}},
+  {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:3,trainingScale:3,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
+  {id:'gptClass',name:'GPT-Class',role:'Generalist',specialty:'Broad language capability with flexible consumer and business builds.',intCost:8,trainingScale:7,identity:{quality:.15,marketSize:.12},stats:{quality:5,reasoning:6,knowledge:6,context:6,coding:6,vision:1,creativity:6,math:6,efficiency:6,energy:5,latency:6,popularity:7,enterprise:5,research:5,safety:5,autonomy:3}},
+  {id:'omni',name:'Omni',role:'Multimodal',specialty:'Vision, creativity, advertising, and viral consumer adoption.',intCost:15,trainingScale:15,identity:{demand:.3,adoption:.3},stats:{quality:7,reasoning:5,knowledge:6,context:6,coding:3,vision:11,creativity:10,math:4,efficiency:5,energy:4,latency:5,popularity:11,enterprise:4,research:4,safety:6,autonomy:3}},
+  {id:'research',name:'Research',role:'Scientific',specialty:'Knowledge generation, mathematics, and permanent Patent progress.',intCost:28,trainingScale:35,identity:{research:.55,revenue:-.15},stats:{quality:9,reasoning:11,knowledge:12,context:10,coding:7,vision:5,creativity:6,math:12,efficiency:4,energy:4,latency:3,popularity:4,enterprise:4,research:13,safety:8,autonomy:5}},
+  {id:'agent',name:'Agent',role:'Automation',specialty:'Autonomous operations and Agent Tasks at high Compute demand.',intCost:48,trainingScale:75,identity:{agents:.6,energyEfficiency:-.2},stats:{quality:10,reasoning:10,knowledge:9,context:9,coding:10,vision:6,creativity:7,math:8,efficiency:4,energy:2,latency:4,popularity:7,enterprise:7,research:7,safety:7,autonomy:13}},
+  {id:'enterprise',name:'Enterprise',role:'Enterprise',specialty:'Secure contracts with exceptional revenue per customer.',intCost:80,trainingScale:150,identity:{revenue:.7,demand:-.22},stats:{quality:12,reasoning:10,knowledge:11,context:13,coding:9,vision:6,creativity:4,math:10,efficiency:7,energy:5,latency:5,popularity:4,enterprise:15,research:7,safety:13,autonomy:6}},
+  {id:'agi',name:'AGI',role:'General Intelligence',specialty:'Recursive improvement and stronger Development Cycle Intelligence.',intCost:135,trainingScale:300,identity:{intelligence:.35,quality:.3},stats:{quality:16,reasoning:16,knowledge:16,context:16,coding:14,vision:12,creativity:14,math:16,efficiency:6,energy:4,latency:5,popularity:11,enterprise:12,research:14,safety:11,autonomy:14}},
+  {id:'asiSeed',name:'ASI Seed',role:'Post-human',specialty:'A configurable seed for radically specialized late-game companies.',intCost:225,trainingScale:600,identity:{allOutput:.25,intelligence:.5},stats:{quality:20,reasoning:20,knowledge:20,context:20,coding:18,vision:18,creativity:18,math:20,efficiency:7,energy:4,latency:6,popularity:14,enterprise:15,research:18,safety:14,autonomy:20}},
 ];
 
 const HARDWARE_UPGRADE_TYPES = [
@@ -85,7 +86,7 @@ export const OBJECTIVES = [
   { id: 'calculators', text: 'Own 10 Calculators', reward: 250, type: 'hardware', target: 10 },
   { id: 'level5', text: 'Reach Model Level 5', reward: 1_000, type: 'level', target: 5 },
   { id: 'users100', text: 'Gain 100 Users', reward: 2_500, type: 'users', target: 100 },
-  { id: 'gamingPc', text: 'Purchase a Gaming PC', reward: 5_000, type: 'gamingPc', target: 1 },
+  { id: 'gamingPc', text: 'Purchase a Gaming PC', reward: 5_000, type: 'workstation', target: 1 },
   { id: 'compute100', text: 'Reach 100 Compute/s', reward: 12_000, type: 'computeRate', target: 100 },
 ];
 
@@ -98,6 +99,16 @@ const TECH_BRANCHES = {
   enterprise: { label: 'Enterprise Monopoly', strength: 'enterprise', weakness: 'adoption', nodes: ['Sales Pipeline', 'Developer API', 'Enterprise Contracts', 'Compliance Suite', 'Mission Critical AI', 'Industry Standard'] },
   consumer: { label: 'Consumer Platform', strength: 'adoption', weakness: 'revenue', nodes: ['Viral Loops', 'Creator Program', 'Free Tier', 'Social Intelligence', 'Global Consumer Brand', 'Universal Assistant'] },
   agent: { label: 'Agent Economy', strength: 'agents', weakness: 'hardwareCost', nodes: ['Tool Use', 'Agent Memory', 'Multi-Agent Teams', 'AI Agents', 'Agent Marketplace', 'Machine Economy'] },
+  robotics: { label: 'Robotics', strength: 'automation', weakness: 'revenue', nodes: ['Robot APIs', 'Embodied Learning', 'Factory Autonomy', 'General Robotics', 'Self-Replicating Industry', 'Machine Civilization'] },
+  medicine: { label: 'Medicine', strength: 'reputationGrowth', weakness: 'training', nodes: ['Clinical Models', 'Protein Design', 'Diagnostic Networks', 'Personalized Medicine', 'Longevity Research', 'Post-Biological Health'] },
+  education: { label: 'Education', strength: 'adoption', weakness: 'revenue', nodes: ['AI Tutors', 'Adaptive Curricula', 'Universal Translation', 'Global Academy', 'Accelerated Learning', 'Collective Intelligence'] },
+  energy: { label: 'Energy', strength: 'energyOutput', weakness: 'hardwareCost', nodes: ['Smart Grid', 'Advanced Storage', 'Fusion Control', 'Orbital Solar', 'Stellar Engineering', 'Infinite Power'] },
+  physics: { label: 'Physics', strength: 'research', weakness: 'revenue', nodes: ['Simulation Labs', 'Materials Search', 'Quantum Simulation', 'Unified Models', 'Reality Engineering', 'Computational Physics'] },
+  space: { label: 'Space Infrastructure', strength: 'marketSize', weakness: 'hardwareCost', nodes: ['Launch Networks', 'Orbital Industry', 'Lunar Fabrication', 'Mars Logistics', 'Dyson Construction', 'Interstellar Infrastructure'] },
+  government: { label: 'Government', strength: 'reputationGrowth', weakness: 'click', nodes: ['Public Contracts', 'Regulatory Models', 'Digital Institutions', 'Planetary Coordination', 'AI Governance', 'Civilization Planning'] },
+  agi: { label: 'Artificial General Intelligence', strength: 'quality', weakness: 'energyEfficiency', nodes: ['General Transfer', 'World Models', 'Recursive Learning', 'Aligned Agency', 'General Intelligence', 'Civilization Partner'] },
+  asi: { label: 'Artificial Super Intelligence', strength: 'intelligenceGain', weakness: 'revenue', nodes: ['Superhuman Science', 'Recursive Architecture', 'Strategic Foresight', 'Intelligence Explosion', 'Superintelligent Alignment', 'ASI Civilization'] },
+  singularity: { label: 'Singularity', strength: 'allOutput', weakness: 'click', nodes: ['Machine Economy', 'Planetary Mind', 'Stellar Cognition', 'Post-Scarcity', 'Cosmic Intelligence', 'Technological Singularity'] },
 };
 
 export const TECH_NODES = Object.entries(TECH_BRANCHES).flatMap(([branch, config]) => config.nodes.map((name, rank) => ({
@@ -118,7 +129,7 @@ export const ACHIEVEMENTS = ACHIEVEMENT_TRACKS.flatMap(([id, label, metric, base
 })));
 
 export const WORLD_EVENTS = [
-  { id: 'shortage', title: 'Global GPU Shortage', description: 'Supply chains seize up as competitors buy every accelerator.', choices: [{ label: 'Secure inventory', cost: 500, effect: 'hardwareOutput', value: 0.2 }, { label: 'Wait it out', effect: 'hardwareCost', value: -0.15 }] },
+  { id: 'shortage', title: 'Global GPU Shortage', description: 'Supply chains seize up as competitors buy every accelerator.', choices: [{ label: 'Secure inventory', cost: 500, effect: 'hardwareOutput', value: 0.2 }, { label: 'Wait it out', effect: 'hardwareDiscount', value: 0.15 }] },
   { id: 'regulation', title: 'Government Regulation', description: 'Regulators demand a clear position on frontier AI safety.', choices: [{ label: 'Lead on compliance', cost: 1_500, effect: 'reputation', value: 0.35 }, { label: 'Move fast', effect: 'training', value: 0.2, penalty: 'reputation' }] },
   { id: 'investor', title: 'Investor Offer', description: 'A global fund offers capital in return for aggressive growth.', choices: [{ label: 'Take investment', credits: 5_000, effect: 'demand', value: 0.1 }, { label: 'Stay independent', effect: 'revenue', value: 0.15 }] },
   { id: 'breach', title: 'Security Breach', description: 'An intrusion threatens user trust and model data.', choices: [{ label: 'Emergency audit', cost: 2_000, effect: 'reputation', value: 0.25 }, { label: 'Contain quietly', effect: 'reputation', value: -0.2 }] },
@@ -207,19 +218,21 @@ export function createDefaultState() {
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
     model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, skills: {} } } },
-    allocation: { training: 35, inference: 35, research: 15, data: 10, agents: 5 },
+    allocation: { training: 50, inference: 50, research: 0, data: 0, agents: 0 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], objectives: {},
-    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
-    world: { activeEvent: null, nextEventMs: 720_000, modifiers: [] },
+    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, breakthroughs: 0, breakthroughCurrency: 0, cycleHistory: [], featureUnlockTimes: { core: 0 }, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
+    world: { activeEvent: null, nextEventMs: BALANCE.events.firstDelayMs, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
+    automation: { lastHardwarePurchaseMs: -1_000 },
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
     patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3 },
     premium: { purchases: [], adCooldowns: {} },
     retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null },
     tutorial: { step: 0, completed: false },
     settings: { numberNotation: 'compact', sound: true },
-    statistics: { totalCreditsEarned: 0, totalComputeProduced: 0, totalClicks: 0, playTimeMs: 0 },
+    statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, playTimeMs: 0 },
+    run: { creditsEarned: 0, computeProduced: 0 },
     session: { elapsedMs: 0, lastSavedAt: null },
     ui: { activeView: 'dashboard', sidebarOpen: false, toast: null },
   };
