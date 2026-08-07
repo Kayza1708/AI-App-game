@@ -1,3 +1,5 @@
+import { viewUnlocked } from '../config/balance.js';
+
 export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', eyebrow: 'Command' },
   { id: 'hardware', label: 'Hardware', eyebrow: 'Infrastructure' },
@@ -18,4 +20,9 @@ export const DEVELOPER_NAV_ITEM = { id: 'developer', label: 'Developer Analytics
 
 export function isKnownView(viewId, includeDeveloper = false) {
   return NAV_ITEMS.some(({ id }) => id === viewId) || (includeDeveloper && viewId === DEVELOPER_NAV_ITEM.id);
+}
+
+export function navigationItemsForState(state, { includeDeveloper = false, developmentAvailable = false } = {}) {
+  const items = NAV_ITEMS.filter((item) => viewUnlocked(state, item.id) || (item.id === 'strategy' && developmentAvailable));
+  return includeDeveloper ? [...items, DEVELOPER_NAV_ITEM] : items;
 }

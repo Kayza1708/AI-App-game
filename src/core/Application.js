@@ -23,8 +23,10 @@ export class Application {
   #telemetry;
   #developerReset;
   #freshDeveloperReset = false;
+  #onRuntimeError;
 
-  constructor(root) {
+  constructor(root, { onRuntimeError = null } = {}) {
+    this.#onRuntimeError = onRuntimeError;
     this.#devMode = isDeveloperMode();
     this.#telemetry = this.#devMode ? new TelemetryService() : null;
     this.#developerReset = this.#devMode ? new DeveloperResetService() : null;
@@ -32,8 +34,8 @@ export class Application {
     this.#store = new StateStore(createDefaultState(), this.#eventBus);
     this.#saveSystem = new SaveSystem(this.#store);
     this.#shell = new AppShell(root, this.#eventBus, { devMode: this.#devMode, telemetry: this.#telemetry });
-    this.#renderPipeline = new RenderPipeline((state) => this.#shell.render(state));
-    this.#gameLoop = new GameLoop((deltaMs) => this.#tick(deltaMs));
+    this.#renderPipeline = new RenderPipeline((state) => this.#shell.render(state), (error) => this.#handleRuntimeError(error));
+    this.#gameLoop = new GameLoop((deltaMs) => this.#tick(deltaMs), (error) => this.#handleRuntimeError(error));
   }
 
   start() {
@@ -46,7 +48,16 @@ export class Application {
       if (!this.#freshDeveloperReset) this.#telemetry?.record({ category: 'session', type: save ? 'save-loaded' : 'save-created', source: 'save', label: save ? 'Save loaded' : 'New save created' }, this.#store.getState());
     });
     this.#bindEvents();
-    this.#shell.mount(this.#store.getState());
+    try {
+      this.#shell.mount(this.#store.getState());
+    } catch (error) {
+      this.#shell.unmount();
+      this.#unsubscribers.forEach((unsubscribe) => unsubscribe());
+      this.#unsubscribers = [];
+      this.#eventBus.clear();
+      this.#started = false;
+      throw error;
+    }
     this.#gameLoop.start();
     this.#saveSystem.startAutosave();
     window.addEventListener('beforeunload', this.#handleUnload);
@@ -61,6 +72,7 @@ export class Application {
     this.#saveSystem.stopAutosave();
     this.#gameLoop.stop();
     this.#renderPipeline.destroy();
+    this.#shell.unmount();
     this.#unsubscribers.forEach((unsubscribe) => unsubscribe());
     this.#unsubscribers = [];
     this.#eventBus.clear();
@@ -127,7 +139,14 @@ export class Application {
   #handleVisibility = () => this.#telemetryCall(() => document.hidden ? this.#telemetry?.pause(this.#store.getState()) : this.#telemetry?.resume(this.#store.getState()));
 
   #telemetryCall(callback) {
-    try { return callback(); } catch (error) { globalThis.console?.error('Developer telemetry failed; gameplay will continue.', error); return null; }
+    if (this.#telemetry?.disabled) return null;
+    try { return callback(); } catch (error) { if (this.#telemetry) this.#telemetry.disabled = true; globalThis.console?.error('Developer telemetry failed and was disabled; gameplay will continue.', error); return null; }
+  }
+
+  #handleRuntimeError(error) {
+    this.#gameLoop.stop();
+    globalThis.console?.error('Game rendering failed.', error);
+    this.#onRuntimeError?.(error);
   }
 
   async #performDeveloperReset() {

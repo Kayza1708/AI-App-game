@@ -112,34 +112,6 @@ export function economySnapshot(state) {
   };
 }
 
-export function economySnapshot(state) {
-  const compute = computePerSecond(state);
-  const market = marketMetrics(state);
-  const energyOut = energyProduction(state);
-  const energyDemand = energyUse(state);
-  const trainingRate = compute * state.allocation.training / 100;
-  const inferenceRate = compute * state.allocation.inference / 100;
-  const computeConsumed = inferenceRate * market.utilization + compute * (state.allocation.research + state.allocation.data + state.allocation.agents + (state.model.trainingActive ? state.allocation.training : 0)) / 100;
-  const storedComputeRate = state.model.trainingActive ? 0 : trainingRate;
-  const currentObjective = OBJECTIVES.find((objective) => !state.objectives[objective.id] && objectiveProgress(state, objective) < objective.target) ?? null;
-  return {
-    credits: state.resources.credits, creditsPerSecond: market.revenue, revenuePerSecond: market.revenue,
-    compute: state.resources.compute, computePerSecond: compute, computeConsumed, computeWasted: Math.max(0, inferenceRate * (1 - market.utilization)), storedComputeRate,
-    trainingCompute: trainingRate, research: state.resources.research, researchPerSecond: compute * state.allocation.research / 100,
-    users: state.resources.users, usersPerSecond: (market.target - state.resources.users) * .18, targetUsers: market.target, unlockedMarketSize: market.unlockedMarketSize, demand: market.demand, capacity: market.capacity,
-    utilization: market.utilization, revenuePerUser: revenuePerUser(state), priceMultiplier: state.market.priceMultiplier,
-    marketing: state.market.marketing, marketingBonus: 1 + state.market.marketing * (0.12 + upgradeBonus(state, 'marketing')),
-    reputation: state.market.reputation, adoption: state.market.adoption,
-    energyProduction: energyOut, energyDemand, energySurplus: energyOut - energyDemand, energyEfficiency: energyEfficiency(state),
-    currentHardwareTier: HARDWARE_CATALOG.reduce((tier, item) => state.hardware[item.id] > 0 ? Math.max(tier, item.tier) : tier, 0),
-    currentModel: state.model.activeId, trainingTarget: state.model.trainingTarget ?? state.model.activeId,
-    modelLevel: state.model.level, modelXp: state.model.xp, modelUpgradePoints: state.model.upgradePoints ?? 0,
-    currentPatent: PATENTS[state.patents.discovered.length]?.id ?? null, currentObjective: currentObjective?.id ?? null,
-    developmentCycle: state.meta.cycles, runCreditsEarned: state.run.creditsEarned, runComputeProduced: state.run.computeProduced, intelligence: state.meta.intelligence, gems: state.resources.gems,
-    bottleneck: market.bottleneck,
-  };
-}
-
 function tutorialAfterTick(state) {
   let step = state.tutorial.step;
   if (step === 2 && computePerSecond(state) > 0 && state.statistics.totalComputeProduced >= 0.25) step = 3;

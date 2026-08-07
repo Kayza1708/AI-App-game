@@ -1,5 +1,16 @@
 # Changelog
 
+## Emergency white-screen recovery
+
+- Removed a module-parse-time lookbehind expression from number formatting for compatibility with older mobile WebViews.
+- Added synchronous bootstrap and asynchronous render/game-loop recovery boundaries with a visible retry screen.
+- Hardened save migration against corrupt JSON and malformed nested arrays, records, Model IDs, Hardware values, events, and UI data.
+- Made view templates lazy so locked systems cannot execute or crash the first Dashboard render.
+- Fixed the fresh tutorial attempting to open the still-locked Allocation screen.
+- Made autosave and developer telemetry failures non-fatal; telemetry disables itself after its first exception.
+- Added transactional mount cleanup and AppShell listener teardown to prevent duplicate handlers after failed starts or hot reloads.
+- Added runtime regression coverage for first render, normal/developer initialization, feature navigation, corrupted saves, telemetry isolation, and white-screen recovery.
+
 ## 0.11.0 — Mathematical progression and unfolding prestige
 
 - Centralized Hardware, Training, Market, Patent, Intelligence, Breakthrough, and event curves in `src/config/balance.js`.

@@ -16,4 +16,6 @@ function alphabeticSuffix(index) {
   const second = index % 26;
   return String.fromCharCode(97 + first) + String.fromCharCode(97 + second);
 }
-function trim(value) { return value.replace(/\.0+$|(?<=\.[0-9]*[1-9])0+$/u, ''); }
+// Older embedded WebViews reject lookbehind expressions while parsing modules.
+// A module parse failure happens before bootstrap and presents as a white page.
+function trim(value) { return value.includes('.') ? value.replace(/0+$/u, '').replace(/\.$/u, '') : value; }

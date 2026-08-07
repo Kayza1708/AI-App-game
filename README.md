@@ -28,3 +28,5 @@ Milestone 9 turns Models into permanent INT unlocks and Training into XP-driven,
 Milestone 10 is based on a full gameplay audit. The early Energy hard-cap was removed, Hardware now advances sequentially through sixteen authored tiers, locked Models stay hidden until permanently unlocked with INT, stored Compute powers Training, and the Patent baseline reaches six months. See [`docs/GameplayAudit.md`](docs/GameplayAudit.md) for the traced logic and balance rationale.
 
 Milestone 11 centralizes all major economy curves, makes Development Cycles depend on run Compute, and reveals systems through lifetime Intelligence. See [`docs/ProgressionFramework.md`](docs/ProgressionFramework.md) for formulas, unlock thresholds, Breakthrough rules, and telemetry fields.
+
+The emergency runtime audit and white-screen recovery boundaries are documented in [`docs/RuntimeRecovery.md`](docs/RuntimeRecovery.md). Bootstrap, first render, malformed-save recovery, normal mode, and Developer Mode now have dedicated regression coverage.
