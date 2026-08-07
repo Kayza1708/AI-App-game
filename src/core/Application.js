@@ -1,5 +1,6 @@
 import { createDefaultState, WORLD_EVENTS } from '../data/defaultState.js';
 import { isDeveloperMode, TelemetryService } from '../dev/telemetry-service.js';
+import { DeveloperResetService } from '../dev/developer-reset-service.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
 import { AppShell } from '../ui/AppShell.js';
 import { EventBus } from './EventBus.js';
@@ -19,10 +20,14 @@ export class Application {
   #started = false;
   #devMode;
   #telemetry;
+  #developerReset;
+  #freshDeveloperReset = false;
 
   constructor(root) {
     this.#devMode = isDeveloperMode();
     this.#telemetry = this.#devMode ? new TelemetryService() : null;
+    this.#developerReset = this.#devMode ? new DeveloperResetService() : null;
+    this.#freshDeveloperReset = this.#developerReset?.consumeFreshResetMarker() ?? false;
     this.#store = new StateStore(createDefaultState(), this.#eventBus);
     this.#saveSystem = new SaveSystem(this.#store);
     this.#shell = new AppShell(root, this.#eventBus, { devMode: this.#devMode, telemetry: this.#telemetry });
@@ -36,8 +41,8 @@ export class Application {
     const save = this.#saveSystem.load();
     if (save) this.#store.replace(save, 'load');
     this.#telemetryCall(() => {
-      this.#telemetry?.start(this.#store.getState());
-      this.#telemetry?.record({ category: 'session', type: save ? 'save-loaded' : 'save-created', source: 'save', label: save ? 'Save loaded' : 'New save created' }, this.#store.getState());
+      this.#telemetry?.start(this.#store.getState(), { silent: this.#freshDeveloperReset });
+      if (!this.#freshDeveloperReset) this.#telemetry?.record({ category: 'session', type: save ? 'save-loaded' : 'save-created', source: 'save', label: save ? 'Save loaded' : 'New save created' }, this.#store.getState());
     });
     this.#bindEvents();
     this.#shell.mount(this.#store.getState());
@@ -105,6 +110,7 @@ export class Application {
       this.#eventBus.on('patent:upgrade', (patentId) => this.#store.update((state) => upgradePatent(state, patentId), 'patent-upgrade')),
       this.#eventBus.on('patent:slot', () => this.#store.update(buyPatentSlot, 'patent-slot')),
       this.#eventBus.on('developer:cheat', (payload) => this.#applyDeveloperCheat(payload)),
+      this.#eventBus.on('developer:reset', () => this.#performDeveloperReset()),
       this.#eventBus.on('developer:opened', () => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'developer-dashboard-opened', source: 'developer', label: 'Developer Analytics opened' }, this.#store.getState()))),
       this.#eventBus.on('developer:tooltip', (label) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'tooltip-opened', source: 'tooltip', label }, this.#store.getState()))),
     );
@@ -120,6 +126,19 @@ export class Application {
 
   #telemetryCall(callback) {
     try { return callback(); } catch (error) { globalThis.console?.error('Developer telemetry failed; gameplay will continue.', error); return null; }
+  }
+
+  async #performDeveloperReset() {
+    if (!this.#devMode || !window.confirm('Delete current save and restart from the beginning?')) return;
+    await this.#developerReset.reset({
+      telemetry: this.#telemetry,
+      replaceState: () => this.#store.replace(createDefaultState(), 'developer-reset'),
+      reload: () => {
+        const location = new URL(window.location.href);
+        location.searchParams.set('dev', '1');
+        window.location.replace(location.toString());
+      },
+    });
   }
 
   #applyDeveloperCheat({ type, eventId, value }) {

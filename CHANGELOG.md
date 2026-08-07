@@ -17,3 +17,7 @@
 ## Milestone 6 — Patents, energy and long-term economy
 
 - Added permanent Patents, Energy infrastructure, Gems, model portfolios, retention missions and optional rewarded boosts.
+
+## Developer Reset
+- Added a Developer Mode-only destructive reset that clears game saves, analytics sessions, telemetry, simulation caches, game-scoped browser storage, and IndexedDB data before recreating the default state.
+- Fresh reset reloads retain `?dev=1` for balancing while starting with new session and run identifiers and an empty analytics timeline.

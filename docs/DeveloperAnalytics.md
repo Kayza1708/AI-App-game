@@ -70,3 +70,6 @@ Every cheat emits `developer-cheat` and marks the session non-natural. Reports l
 ## Known limitations
 
 Telemetry begins when developer mode loads and does not reconstruct activity from older saves. There is no offline-progress system in the current game, so `offline-progress-applied` is reserved but cannot fire. “Useful purchase” is a configurable heuristic based on the active bottleneck, not a proof of optimal play. Browser storage quotas vary. Simulations are deterministic policy probes, not human behavior models.
+
+## Developer Reset
+The red **🗑 RESET GAME** control is available only on the Developer Analytics screen. After one browser confirmation, it removes every `ai-singularity`-scoped local/session storage entry, stored analytics sessions, telemetry and simulation data, and matching IndexedDB databases. The service then installs `createDefaultState()`, creates a one-use fresh-reset marker, and reloads with `?dev=1`. The reload creates new session/run identifiers but suppresses bootstrap events so the new timeline begins at zero. Storage belonging to unrelated applications is intentionally left untouched.
