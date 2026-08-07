@@ -1,0 +1,49 @@
+# Changelog
+
+## Analytics context and permanent Patent loadouts
+
+- Added stable local player, session, run, version, prestige, breakthrough, and lifetime-play context to telemetry.
+- Added meaningful-event player snapshots, first-time funnels, feature discovery/use tracking, enriched Hardware purchases, session economy aggregates, and balancing wait signals.
+- Added three initial Patent slots, Gem-unlocked slots 4–8, equipping, swapping telemetry, and permanent Patent leveling with INT.
+
+## Milestone 7 — Developer analytics and balance telemetry
+
+- Added query-gated, local-only Developer Analytics mode.
+- Added versioned immutable event recording, periodic effective-resource sampling, click-burst aggregation, bounded history, and separate session storage.
+- Added meaningful-action pacing, downtime, overload, bottleneck, growth and experimental Fun Density analysis.
+- Added live charts, event filtering, reports, purchase and decision analysis, imports, exports, session retention, cheats, and deterministic strategy simulations.
+- Added automated analytics tests and developer documentation.
+
+## Milestone 6 — Patents, energy and long-term economy
+
+- Added permanent Patents, Energy infrastructure, Gems, model portfolios, retention missions and optional rewarded boosts.
+
+## Developer Reset
+- Added a Developer Mode-only destructive reset that clears game saves, analytics sessions, telemetry, simulation caches, game-scoped browser storage, and IndexedDB data before recreating the default state.
+- Fresh reset reloads retain `?dev=1` for balancing while starting with new session and run identifiers and an empty analytics timeline.
+
+## Milestone 8 — Telemetry-driven balance
+- Changed active telemetry sampling to one-second snapshots containing complete economy, allocation, effective multiplier, hardware contribution, Energy, Patent, and bottleneck context.
+- Added purchase ROI/payback context, Hardware milestone timing, Model training/deployment duration, Patent ETA accuracy, and full Development Cycle run snapshots.
+- Expanded automatic reports with Hardware, Models, Patents, Prestige, dead-time thresholds, and actionable balancing suggestions.
+- Rebalanced Hardware costs, Patent discovery toward multi-month permanent progression, early Intelligence rewards, Development Cycle eligibility, and default Research allocation.
+- Added a persistent “What should I do next?” chase on player screens without changing the established visual structure.
+
+## Milestone 9 — Core gameplay redesign
+- Replaced Credit-purchased linear Models with nine permanent, INT-unlocked AI eras from TinyChat through ASI Seed.
+- Training now awards XP only; Model Levels award manual Upgrade Points for sixteen-stat per-model skill builds, with no automatic Quality growth.
+- Connected Model identities and skill choices to demand, adoption, enterprise revenue, Energy, Research, Patents, Agent Tasks, training, and Intelligence rewards.
+- Upgraded telemetry with real Compute consumption/waste, current progression context, all-resource purchase snapshots, permanent Model unlock events, waiting reasons, page-duration analytics, replayable timelines, ignored-system detection, and target-based balance suggestions.
+- Migrated version 7 saves into save version 8, including legacy Model IDs and permanent Model progress.
+
+## Milestone 10 — Audited economy and progression overhaul
+- Audited every live gameplay system and documented the complete production-to-prestige chain in `docs/GameplayAudit.md`.
+- Fixed the early Credit-growth stall at its source: the starter Energy grid no longer caps Compute after roughly five Calculators, and stored Optimize Compute is now genuinely consumed by Training.
+- Authored sixteen explicit Hardware tiers from Calculator to Singularity Core, removed the opaque per-tier cost exponent, and require each preceding tier so large Credit windfalls cannot skip eras.
+- Authored the permanent Model order TinyChat → SmartChat → GPT-Class → Omni → Research → Agent → Enterprise → AGI → ASI Seed. Locked Models are hidden from the Model workspace and the next era is unlocked with INT from Strategy.
+- Extended Patent 50 to a six-month baseline while reconnecting Research-model, skill, upgrade, Lab, Intelligence, Achievement, Tech, and equipped Patent acceleration.
+- Centralized effective economy values, Hardware contributions, Training rate, Credit spending, Credit grants, and Compute consumption statistics.
+- Upgraded telemetry and reports with canonical state values, lifetime spending/consumption, objectives, Model XP, cooldowns, utilization, idle percentage, action density, ROI signals, and additional concrete balance recommendations.
+- Bumped saves to version 9 and migrated Milestone 9 Model IDs and skill progress to the authored Model order.
+- Closed the repeat-Prestige exploit by requiring 250,000 Credits earned in the current run plus Model Level 5; lifetime Credits and permanent Model Levels can no longer make a fresh run immediately eligible.
+- Rate-limited automatic Hardware purchasing and record each automatic purchase as a real purchase event instead of hiding it behind a generic automation label.
