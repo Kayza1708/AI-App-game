@@ -155,10 +155,16 @@ export function trainModel(state) {
 }
 
 export function patentResearchRequired(index) {
-  const anchors = [[0,15],[4,40],[9,90],[19,240],[34,720],[49,4320]];
-  const upper = anchors.find(([patent]) => patent >= index) ?? anchors.at(-1); const lower = [...anchors].reverse().find(([patent]) => patent <= index) ?? anchors[0];
-  const ratio = upper[0] === lower[0] ? 0 : (index - lower[0]) / (upper[0] - lower[0]); const minutes = lower[1] + (upper[1] - lower[1]) * ratio;
-  return minutes * 60 * 0.025;
+  // Cumulative discovery targets: 25m, 2h, 6h, 2d, 1w, 3w, and 90d.
+  const anchors = [[0,25],[4,120],[9,360],[19,2880],[29,10080],[39,30240],[49,129600]];
+  const cumulative = (patentIndex) => {
+    const upper = anchors.find(([position]) => position >= patentIndex) ?? anchors.at(-1);
+    const lower = [...anchors].reverse().find(([position]) => position <= patentIndex) ?? anchors[0];
+    const ratio = upper[0] === lower[0] ? 0 : (patentIndex - lower[0]) / (upper[0] - lower[0]);
+    return lower[1] * (upper[1] / lower[1]) ** ratio;
+  };
+  const durationMinutes = cumulative(index) - (index ? cumulative(index - 1) : 0);
+  return durationMinutes * 60 * 0.025;
 }
 function patentLevel(state, patentId) { return state.patents.levels[patentId] ?? 1; }
 function patentLevelMultiplier(state, patentId) { return 1 + (patentLevel(state, patentId) - 1) * 0.5; }
@@ -173,7 +179,7 @@ export function patentResearchPerSecond(state) {
   const labs = 1 + (state.premium.purchases.includes('researchLab2') ? 0.2 : 0) + (state.premium.purchases.includes('researchLab3') ? 0.25 : 0);
   const researchModel = (state.model.deployed.includes('research') ? 1.3 : 1) * (state.model.deployed.includes('smartChat') ? 1.1 : 1); const achievementFactor = 1 + Object.keys(state.meta.achievements).length * 0.002;
   const researchUpgrades = UPGRADES.filter((upgrade) => upgrade.category === 'research' && state.upgrades.includes(upgrade.id)).length;
-  return (computePerSecond(state) * state.allocation.research / 100 + strategicBonus(state, 'flatResearch')) * Math.max(0.1, 1 + strategicBonus(state, 'research') + researchUpgrades * 0.04) * labs * researchModel * achievementFactor * (1 + state.meta.totalIntelligence * 0.005);
+  const computeFactor = computePerSecond(state) > 0 ? 1 + Math.log10(1 + computePerSecond(state)) * 0.04 : 0; return 0.025 * (state.allocation.research / 15) * computeFactor * Math.max(0.1, 1 + strategicBonus(state, 'research') + researchUpgrades * 0.04) * labs * researchModel * achievementFactor * (1 + Math.log10(1 + state.meta.totalIntelligence) * 0.03);
 }
 
 export function energyBuildingCost(state, building) { return Math.ceil(building.cost * 1.18 ** state.energy.buildings[building.id]); }
@@ -239,8 +245,8 @@ function applyAutomation(state) {
   return next;
 }
 
-export function cycleIntelligence(state) { return Math.max(1, Math.floor(Math.sqrt(state.statistics.totalCreditsEarned / 5_000) + state.model.level / 4 + Math.log10(1 + computePerSecond(state)))); }
-export function canDevelop(state) { return state.model.level >= 5 || state.statistics.totalCreditsEarned >= 10_000; }
+export function cycleIntelligence(state) { return Math.max(2, Math.floor(2 + Math.log10(1 + state.statistics.totalCreditsEarned / 10_000) * 1.5 + Math.max(0, state.model.level - 5) / 6 + state.meta.cycles * 0.5)); }
+export function canDevelop(state) { return state.model.level >= 10 || state.statistics.totalCreditsEarned >= 250_000; }
 export function startDevelopmentCycle(state) {
   if (!canDevelop(state)) return state;
   const intelligence = cycleIntelligence(state); const fresh = createDefaultState();

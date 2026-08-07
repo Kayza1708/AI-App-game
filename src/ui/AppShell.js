@@ -22,7 +22,7 @@ export class AppShell {
       </header>
       <aside class="sidebar" data-sidebar><p class="sidebar-heading">Company interface</p><nav>${[...NAV_ITEMS, ...(this.#devMode ? [DEVELOPER_NAV_ITEM] : [])].map((item, index) => `<a href="#${item.id}" class="nav-item ${item.id === 'developer' ? 'developer-nav' : ''}" data-view="${item.id}"><span>${String(index + 1).padStart(2, '0')}</span><div>${item.label}<small>${item.eyebrow}</small></div></a>`).join('')}</nav><div class="sidebar-footer"><small>PLAY TIME</small><strong data-session></strong><span>● AUTOSAVE ONLINE</span></div></aside>
       <main class="workspace" data-workspace></main>
-      <footer class="statusbar"><span>BUILD 0.6.0</span><span data-save-status>Awaiting first save</span></footer>
+      <footer class="statusbar"><span>BUILD 0.8.0</span><span data-save-status>Awaiting first save</span></footer>
       <div data-feedback></div><div data-tutorial></div><div data-world-event></div><div data-patent-popup></div>
     </div>`;
     this.#root.addEventListener('click', this.#handleClick);
@@ -72,13 +72,13 @@ export class AppShell {
       gemshop: `<section class="gem-balance panel"><div><small>ACCOUNT GEMS</small><strong data-gems></strong><p>Earned rarely from achievements, missions, logins, events, and landmark Patents.</p></div><button class="primary-button" data-action="login"></button></section>${[...new Set(GEM_SHOP_ITEMS.map(({category}) => category))].map((category) => `<h2 class="subheading">${category.toUpperCase()}</h2><div class="shop-grid">${GEM_SHOP_ITEMS.filter((item) => item.category === category).map((item) => `<article class="panel shop-card"><div><h3>${item.name}</h3><p>${item.description}</p></div><button class="buy-button" data-gem-item="${item.id}">◆ ${item.cost}</button></article>`).join('')}</div>`).join('')}<h2 class="subheading">OPTIONAL REWARDED BOOSTS</h2><p class="section-copy">No forced ads. Optional boosts never block progress and have a one-hour cooldown.</p><div class="ad-grid">${['credits','compute','training','marketing','energy','research'].map((reward) => `<button class="panel ad-card" data-ad="${reward}"><small>OPTIONAL REWARDED AD</small><strong>2× ${reward}</strong><span>30 MINUTES</span></button>`).join('')}</div>`,
       missions: `<div class="missions-list" data-missions-list></div>`,
     }[view];
-    return `<header class="view-header"><p>AI SINGULARITY / ${title}</p><h1>${title}</h1><span>${subtitle}</span></header>${body}`;
+    return `<header class="view-header"><p>AI SINGULARITY / ${title}</p><h1>${title}</h1><span>${subtitle}</span></header><section class="next-chase panel"><small>WHAT SHOULD I DO NEXT?</small><strong data-next-chase></strong><span data-next-chase-detail></span></section>${body}`;
   }
 
   #updateView(view, state) {
     if (view === 'developer') { this.#developerDashboard.update(this.#root.querySelector('[data-workspace]'), state); return; }
     const set = (selector, value) => this.#text(`[data-workspace] ${selector}`, value);
-    const metrics = marketMetrics(state); const revenue = state.resources.users * revenuePerUser(state);
+    const metrics = marketMetrics(state); const revenue = state.resources.users * revenuePerUser(state); const goal=nextGoal(state);set('[data-next-chase]',goal.title);set('[data-next-chase-detail]',goal.detail);
     if (view === 'dashboard') {
       set('[data-compute]', `${this.#number(state.resources.compute)} C`); set('[data-compute-rate]', `+${this.#number(computePerSecond(state) * state.allocation.training / 100)} allocated per second`); set('[data-quality]', this.#number(state.model.quality)); set('[data-click-value]', `+${this.#number(optimizeGain(state))} COMPUTE`); set('[data-users]', this.#number(state.resources.users)); set('[data-revenue]', `◈ ${this.#number(revenue)}`);
       const growth = userGrowthPerSecond(state); const telemetry = { 'credits-rate': `+${this.#number(revenue)}`, 'users-rate': `${growth >= 0 ? '+' : ''}${this.#number(growth)}`, demand: this.#number(metrics.demand), capacity: this.#number(metrics.capacity), utilization: `${(metrics.utilization * 100).toFixed(0)}%`, rpu: `◈ ${this.#number(revenuePerUser(state))}`, marketing: `+${Math.round(state.market.marketing * 12)}%`, reputation: `+${Math.round((state.market.reputation - 1) * 100)}%` }; Object.entries(telemetry).forEach(([key, value]) => set(`[data-telemetry="${key}"]`, value)); set('[data-bottleneck]', metrics.bottleneck);
@@ -126,3 +126,5 @@ export class AppShell {
   #duration(ms) { const seconds = Math.floor(ms / 1000); return [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60].map((v) => String(v).padStart(2, '0')).join(':'); }
   #escape(value) { const span = document.createElement('span'); span.textContent = value; return span.innerHTML; }
 }
+
+function nextGoal(state){const objective=OBJECTIVES.find(item=>!state.objectives[item.id]&&objectiveProgress(state,item)<item.target);if(objective)return{title:objective.text,detail:`${Math.floor(objectiveProgress(state,objective))} / ${objective.target} · Reward ${objective.reward} Credits`};const hardware=HARDWARE_CATALOG.find(item=>state.resources.credits<effectiveHardwareCost(state,item));if(hardware)return{title:`Save for ${hardware.name}`,detail:`${Math.floor(state.resources.credits)} / ${effectiveHardwareCost(state,hardware)} Credits`};const patent=PATENTS[state.patents.discovered.length];if(patent){const rate=patentResearchPerSecond(state),remaining=patentResearchRequired(state.patents.discovered.length)-state.patents.progress;return{title:`Discover Patent ${state.patents.discovered.length+1}`,detail:rate?`${Math.ceil(remaining/rate/60)} minutes estimated`:'Allocate Compute to Research'}}return{title:'Prepare the next Development Cycle',detail:`${cycleIntelligence(state)} Intelligence currently available`}}

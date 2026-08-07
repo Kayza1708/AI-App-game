@@ -1,5 +1,5 @@
 export const SAVE_VERSION = 7;
-export const GAME_VERSION = '0.7.1';
+export const GAME_VERSION = '0.8.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator', '⌗', 'Calculator', 'A programmable calculator running its first tiny tensor operations.', 20, 0.5, 0.02],
@@ -19,7 +19,7 @@ export const HARDWARE_CATALOG = [
   ['dysonSwarm', '☼', 'Dyson Swarm', 'Billions of collectors turn starlight into thought.', 3_600_000_000_000, 6_400_000_000, 95_000_000],
   ['matrioshkaBrain', '◉', 'Matrioshka Brain', 'Nested computational shells enclose an entire star.', 42_000_000_000_000, 52_000_000_000, 600_000_000],
 ].map(([id, icon, name, description, baseCost, computePerSecond, energy], tier) => ({
-  id, icon, name, description, baseCost, computePerSecond, energy, tier,
+  id, icon, name, description, baseCost: Math.ceil(baseCost * (tier === 0 ? 1 : 2.4 ** tier)), computePerSecond, energy, tier,
   milestones: [
     { quantity: 10, name: 'Thermal Rhythm', description: `${name} output +10%`, effect: 'hardwareOutput', value: 0.1 },
     { quantity: 25, name: 'Bulk Procurement', description: `All hardware costs -${3 + tier % 3}%`, effect: 'hardwareDiscount', value: (3 + tier % 3) / 100 },
@@ -203,7 +203,7 @@ export function createDefaultState() {
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
     model: { level: 1, xp: 0, quality: 1, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {} },
-    allocation: { training: 40, inference: 35, research: 5, data: 10, agents: 10 },
+    allocation: { training: 35, inference: 35, research: 15, data: 10, agents: 5 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], objectives: {},
     meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, techNodes: [], achievements: {} },
