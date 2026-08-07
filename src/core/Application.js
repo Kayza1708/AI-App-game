@@ -1,4 +1,5 @@
 import { createDefaultState, WORLD_EVENTS } from '../data/defaultState.js';
+import { BALANCE } from '../config/balance.js';
 import { isDeveloperMode, TelemetryService } from '../dev/telemetry-service.js';
 import { DeveloperResetService } from '../dev/developer-reset-service.js';
 import { SaveSystem } from '../systems/SaveSystem.js';
@@ -7,7 +8,7 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
-import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, claimRetentionMission, claimRewardedAd, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, claimRetentionMission, claimRewardedAd, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -97,6 +98,7 @@ export class Application {
       this.#eventBus.on('tutorial:advance', () => this.#store.update(advanceTutorial, 'tutorial')),
       this.#eventBus.on('tech:buy', (nodeId) => this.#store.update((state) => buyTechNode(state, nodeId), 'tech')),
       this.#eventBus.on('cycle:start', () => this.#store.update(startDevelopmentCycle, 'development-cycle')),
+      this.#eventBus.on('breakthrough:start', () => this.#store.update(startBreakthrough, 'breakthrough')),
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
       this.#eventBus.on('energy:buy', (buildingId) => this.#store.update((state) => buyEnergyBuilding(state, buildingId), 'energy')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
@@ -149,13 +151,13 @@ export class Application {
       if (type === 'compute') return { ...state, resources: { ...state.resources, compute: state.resources.compute + 100_000 } };
       if (type === 'research') return { ...state, resources: { ...state.resources, research: state.resources.research + 100_000 } };
       if (type === 'gems') return { ...state, resources: { ...state.resources, gems: state.resources.gems + 100 } };
-      if (type === 'intelligence') return { ...state, meta: { ...state.meta, intelligence: state.meta.intelligence + 100 } };
+      if (type === 'intelligence') return { ...state, meta: { ...state.meta, intelligence: state.meta.intelligence + 100, totalIntelligence: state.meta.totalIntelligence + 100 } };
       if (type === 'set-model-level') return { ...state, model: { ...state.model, level: Math.max(1, Math.floor(value || 1)) } };
       if (type === 'complete-training') return { ...state, model: { ...state.model, trainingActive: true, trainingProgress: trainingRequiredForState(state) - 0.001 } };
       if (type === 'advance-patent') return { ...state, patents: { ...state.patents, progress: patentResearchRequired(state.patents.discovered.length) - 0.001 } };
       if (type === 'low-energy') return { ...state, hardware: { ...state.hardware, gpuServer: state.hardware.gpuServer + 100 }, energy: { ...state.energy, buildings: Object.fromEntries(Object.keys(state.energy.buildings).map((id) => [id, 0])) } };
       if (type === 'trigger-event') return { ...state, world: { ...state.world, activeEvent: WORLD_EVENTS.find(({ id }) => id === eventId) ?? WORLD_EVENTS[0] } };
-      if (type === 'cycle-eligible') return { ...state, model: { ...state.model, level: Math.max(5, state.model.level) }, run: { ...state.run, creditsEarned: Math.max(250_000, state.run.creditsEarned) } };
+      if (type === 'cycle-eligible') return { ...state, run: { ...state.run, computeProduced: Math.max(BALANCE.intelligence.computeScale, state.run.computeProduced) } };
       if (type === 'reset-run') { const fresh = createDefaultState(); return { ...fresh, resources: { ...fresh.resources, gems: state.resources.gems }, meta: state.meta, patents: state.patents, premium: state.premium, retention: state.retention, settings: state.settings, tutorial: { step: 10, completed: true } }; }
       return state;
     }, 'developer-cheat');

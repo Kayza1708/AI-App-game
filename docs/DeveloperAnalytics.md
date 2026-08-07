@@ -92,3 +92,7 @@ Telemetry samples now consume `economySnapshot()` rather than reconstructing the
 The state now persists lifetime Credits spent and Compute consumed/wasted. Purchase events retain the actual resource transaction and effective before/after outputs; Hardware and Upgrade ROI use measured production/revenue differences, Patent ROI records bonus gained per INT, Training ROI records XP/Upgrade Points per Compute, and Prestige ROI records INT per run-hour. Rewarded-ad and world-event cooldown transitions are discrete events.
 
 Automatic reports add Compute, Energy, and Market utilization, idle percentage, meaningful actions per hour, permanent Model unlocks, Model Levels, Patent loadout actions, claims, and Gem purchases. Recommendations flag long tier gaps, low utilization by Hardware tier, Capacity/Demand divergence, ignored Marketing, excessive downtime, idle Training, unused stored Compute, weak Research allocation, irrelevant Energy, excessive XP velocity, and progression targets reached too early.
+
+## Milestone 11 progression telemetry
+
+Every one-second sample includes the complete active balance configuration, next lifetime-INT unlock, feature unlock order and timing, average INT per run, intervals between Development Cycles, Technology choices, abandoned unlock paths, and deployed Model usage distribution. These fields come from the same configuration and unlock predicates as the live simulation.

@@ -1,4 +1,5 @@
 import { createDefaultState, SAVE_VERSION } from '../data/defaultState.js';
+import { FEATURE_UNLOCKS } from '../config/balance.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
 const SAVE_INTERVAL_MS = 15_000;
@@ -55,13 +56,15 @@ export class SaveSystem {
     const migratedProgress = Object.fromEntries(Object.entries(save.model?.progress ?? {}).map(([id, value]) => [legacyModelIds[id] ?? id, value]));
     const progress = { ...defaults.model.progress, ...migratedProgress };
     progress[activeId] ??= { level: save.model?.level ?? 1, xp: save.model?.xp ?? 0, upgradePoints: save.model?.upgradePoints ?? 0, skills: save.model?.improvements?.[activeId] ?? {} };
+    const featureUnlockTimes = { ...defaults.meta.featureUnlockTimes, ...save.meta?.featureUnlockTimes };
+    for (const feature of FEATURE_UNLOCKS) if (feature.int <= (save.meta?.totalIntelligence ?? 0) && featureUnlockTimes[feature.id] === undefined) featureUnlockTimes[feature.id] = save.statistics?.playTimeMs ?? 0;
     return {
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...save.profile }, resources: { ...defaults.resources, ...save.resources },
       hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model, activeId, trainingTarget: activeId, owned, deployed: [...new Set((save.model?.deployed ?? defaults.model.deployed).map((id) => legacyModelIds[id] ?? id))], progress },
       allocation: { ...defaults.allocation, ...save.allocation }, market: { ...defaults.market, ...save.market },
       tutorial: { ...defaults.tutorial, ...save.tutorial }, objectives: { ...defaults.objectives, ...save.objectives },
-      meta: { ...defaults.meta, ...save.meta, unlockedModels: [...new Set([...(save.meta?.unlockedModels ?? []), ...owned])], achievements: { ...defaults.meta.achievements, ...save.meta?.achievements } },
+      meta: { ...defaults.meta, ...save.meta, unlockedModels: [...new Set([...(save.meta?.unlockedModels ?? []), ...owned])], achievements: { ...defaults.meta.achievements, ...save.meta?.achievements }, featureUnlockTimes, cycleHistory: save.meta?.cycleHistory ?? defaults.meta.cycleHistory },
       world: { ...defaults.world, ...save.world }, company: { ...defaults.company, ...save.company, employees: { ...defaults.company.employees, ...save.company?.employees } },
       automation: { ...defaults.automation, ...save.automation },
       energy: { ...defaults.energy, ...save.energy, buildings: { ...defaults.energy.buildings, ...save.energy?.buildings } },

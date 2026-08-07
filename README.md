@@ -26,3 +26,5 @@ Milestone 8 uses one-second local telemetry and automatic actionable balance rep
 Milestone 9 turns Models into permanent INT unlocks and Training into XP-driven, manual sixteen-stat builds. Developer reports now include page discovery, full resource-aware purchases, waiting causes, a replayable progression timeline, and target-based balance suggestions.
 
 Milestone 10 is based on a full gameplay audit. The early Energy hard-cap was removed, Hardware now advances sequentially through sixteen authored tiers, locked Models stay hidden until permanently unlocked with INT, stored Compute powers Training, and the Patent baseline reaches six months. See [`docs/GameplayAudit.md`](docs/GameplayAudit.md) for the traced logic and balance rationale.
+
+Milestone 11 centralizes all major economy curves, makes Development Cycles depend on run Compute, and reveals systems through lifetime Intelligence. See [`docs/ProgressionFramework.md`](docs/ProgressionFramework.md) for formulas, unlock thresholds, Breakthrough rules, and telemetry fields.

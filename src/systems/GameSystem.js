@@ -1,7 +1,7 @@
 import { ACHIEVEMENTS, createDefaultState, ENERGY_BUILDINGS, GEM_SHOP_ITEMS, HARDWARE_CATALOG, MODEL_CATALOG, MODEL_SKILLS, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES, WORLD_EVENTS } from '../data/defaultState.js';
+import { BALANCE, curveValue, FEATURE_UNLOCKS, featureUnlocked, powerCurve, skillUnlocked } from '../config/balance.js';
 
-const COST_GROWTH = 1.16;
-export const BASE_ENERGY_PRODUCTION = 1.5;
+export const BASE_ENERGY_PRODUCTION = BALANCE.hardware.energyBase;
 
 function strategicBonus(state, effect) {
   const tech = TECH_NODES.filter((node) => state.meta.techNodes.includes(node.id));
@@ -13,7 +13,7 @@ function strategicBonus(state, effect) {
   return positive - penalties + events + patents + (['allOutput', 'hardwareOutput', 'demand', 'revenue', 'training'].includes(effect) ? achievementBonus : 0);
 }
 
-export function hardwareCost(item, quantity) { return Math.ceil(item.baseCost * COST_GROWTH ** quantity); }
+export function hardwareCost(item, quantity) { return Math.ceil(curveValue(item.baseCost, BALANCE.hardware.costGrowth, quantity)); }
 export function isHardwareUnlocked(state, item) { return item.tier === 0 || state.hardware[HARDWARE_CATALOG[item.tier - 1].id] > 0; }
 
 function upgradeBonus(state, effect, hardwareId = null) {
@@ -25,7 +25,7 @@ function milestoneBonus(state, effect, item = null) {
 }
 
 export function effectiveHardwareCost(state, item) {
-  const discount = Math.min(0.5, upgradeBonus(state, 'hardwareCost', item.id) + milestoneBonus(state, 'hardwareDiscount') + strategicBonus(state, 'hardwareCost') + strategicBonus(state, 'hardwareDiscount'));
+  const discount = Math.min(BALANCE.hardware.bulkDiscountCap, upgradeBonus(state, 'hardwareCost', item.id) + milestoneBonus(state, 'hardwareDiscount') + strategicBonus(state, 'hardwareCost') + strategicBonus(state, 'hardwareDiscount'));
   return Math.ceil(hardwareCost(item, state.hardware[item.id]) * (1 - discount));
 }
 
@@ -45,17 +45,17 @@ export function computePerSecond(state) {
 
 export function rawEnergyDemand(state) { const hardware = HARDWARE_CATALOG.reduce((total, item) => total + item.energy * state.hardware[item.id], 0); const serving = state.model.deployed.reduce((total, id) => total + state.resources.users * 0.0002 / Math.max(1, effectiveModelStat(state,MODEL_CATALOG.find(model=>model.id===id)??MODEL_CATALOG[0],'energy')), 0); return (hardware + serving) * Math.max(0.1, 1 - strategicBonus(state, 'energyEfficiency') - deployedIdentityBonus(state, 'energyEfficiency')); }
 export function energyProduction(state) { return (BASE_ENERGY_PRODUCTION + ENERGY_BUILDINGS.reduce((total, building) => total + building.output * state.energy.buildings[building.id], 0)) * (1 + strategicBonus(state, 'energyOutput')); }
-export function energyEfficiency(state) { const demand = rawEnergyDemand(state); return demand <= 0 ? 1 : Math.min(1, energyProduction(state) / demand); }
+export function energyEfficiency(state) { if (!featureUnlocked(state, 'energy')) return 1; const demand = rawEnergyDemand(state); return demand <= 0 ? 1 : Math.min(1, energyProduction(state) / demand); }
 export function energyUse(state) { return rawEnergyDemand(state); }
 export function effectiveHardwareOutput(state, item) { const owned = state.hardware[item.id]; return owned ? hardwareContribution(state, item) / owned : item.computePerSecond * (1 + upgradeBonus(state, 'hardwareOutput', item.id)) * hardwareGlobalMultiplier(state) * energyEfficiency(state); }
 export function activeModel(state) { return MODEL_CATALOG.find(({ id }) => id === state.model.activeId) ?? MODEL_CATALOG[0]; }
 function deployedIdentityBonus(state,effect){return state.model.deployed.reduce((sum,id)=>sum+(MODEL_CATALOG.find(model=>model.id===id)?.identity?.[effect]??0),0)}
 function activeProgress(state){return state.model.progress?.[state.model.activeId]??{level:state.model.level,xp:state.model.xp,upgradePoints:state.model.upgradePoints??0,skills:state.model.improvements?.[state.model.activeId]??{}}}
 function modelImprovementLevel(state, modelId, path) { return state.model.progress?.[modelId]?.skills?.[path] ?? state.model.improvements[modelId]?.[path] ?? 0; }
-export function effectiveModelStat(state, model, stat) { const base=model.stats[stat]??0; return (base + modelImprovementLevel(state,model.id,stat) * 0.4) * (['quality','reasoning','knowledge','context','coding','vision','creativity','math'].includes(stat) ? 1 + strategicBonus(state,'quality') + deployedIdentityBonus(state,'quality') : 1); }
-export function revenuePerUser(state) { const enterpriseModels = state.model.deployed.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'enterprise')*.04:0)}, 0) + (state.model.deployed.includes('agi') ? 0.5 : 0); return 0.24 * state.market.priceMultiplier * Math.max(0.1, 1 + enterpriseModels + upgradeBonus(state, 'revenue') + milestoneBonus(state, 'revenue') + strategicBonus(state, 'revenue') + deployedIdentityBonus(state,'revenue') + strategicBonus(state, 'enterprise') * 0.7 - strategicBonus(state, 'adoption') * 0.25); }
-export function xpRequired(level) { return Math.floor(16 * level ** 1.4); }
-export function trainingRequired(level) { return Math.floor(12 * level ** 1.46); }
+export function effectiveModelStat(state, model, stat) { const base=model.stats[stat]??0; const points=skillUnlocked(state,stat)?modelImprovementLevel(state,model.id,stat):0; return (base + points * BALANCE.training.skillGain) * (['quality','reasoning','knowledge','context','coding','vision','creativity','math'].includes(stat) ? 1 + strategicBonus(state,'quality') + deployedIdentityBonus(state,'quality') : 1); }
+export function revenuePerUser(state) { const enterpriseModels = state.model.deployed.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'enterprise')*.04:0)}, 0) + (state.model.deployed.includes('agi') ? 0.5 : 0); return BALANCE.market.revenueBase * state.market.priceMultiplier * Math.max(0.1, 1 + enterpriseModels + upgradeBonus(state, 'revenue') + milestoneBonus(state, 'revenue') + strategicBonus(state, 'revenue') + deployedIdentityBonus(state,'revenue') + strategicBonus(state, 'enterprise') * 0.7 - strategicBonus(state, 'adoption') * 0.25); }
+export function xpRequired(level) { return Math.floor(powerCurve(BALANCE.training.xpBase, level, BALANCE.training.xpExponent)); }
+export function trainingRequired(level) { return Math.floor(powerCurve(BALANCE.training.workBase, level, BALANCE.training.workExponent)); }
 export function trainingRequiredForState(state) { return trainingRequired(activeProgress(state).level) * (activeModel(state).trainingScale??1); }
 function trainingMultiplier(state) { const skills=(modelImprovementLevel(state,state.model.activeId,'coding')+modelImprovementLevel(state,state.model.activeId,'reasoning')+modelImprovementLevel(state,state.model.activeId,'efficiency'))*.02;return Math.max(.1,1+upgradeBonus(state,'training')+strategicBonus(state,'training')+strategicBonus(state,'quality')*.5+deployedIdentityBonus(state,'coding')+skills) }
 export function trainingRatePerSecond(state) { return computePerSecond(state) * state.allocation.training / 100 * trainingMultiplier(state); }
@@ -65,15 +65,15 @@ export function marketMetrics(state) {
   const highestTier = HARDWARE_CATALOG.reduce((tier, item) => state.hardware[item.id] > 0 ? Math.max(tier, item.tier) : tier, 0);
   const deployedLevel = Math.max(1, ...deployed.map((model) => state.model.progress?.[model.id]?.level ?? 1));
   const deployedQuality = deployed.reduce((sum, model) => sum + effectiveModelStat(state, model, 'quality'), 0) / Math.max(1, deployed.length);
-  const unlockedMarketSize = (30 + deployedLevel * 18) * 2.15 ** highestTier * (1 + upgradeBonus(state, 'marketSize') + strategicBonus(state, 'marketSize') + deployedIdentityBonus(state, 'marketSize'));
+  const unlockedMarketSize = (30 + deployedLevel * 18) * BALANCE.market.tierMarketGrowth ** highestTier * (1 + upgradeBonus(state, 'marketSize') + strategicBonus(state, 'marketSize') + deployedIdentityBonus(state, 'marketSize'));
   const appeal = deployed.reduce((sum, deployedModel) => sum + effectiveModelStat(state,deployedModel,'popularity') + effectiveModelStat(state,deployedModel,'quality')*.5 + effectiveModelStat(state,deployedModel,'vision')*.2 + effectiveModelStat(state,deployedModel,'creativity')*.2 + effectiveModelStat(state,deployedModel,'context')*.1 + effectiveModelStat(state,deployedModel,'reasoning')*.1, 0) + upgradeBonus(state, 'appeal') * 10;
   const qualityAppeal = (appeal + strategicBonus(state, 'appeal') * 10 + deployedIdentityBonus(state,'demand') * 10) * (1 + deployedQuality * (0.2 + upgradeBonus(state, 'quality') + strategicBonus(state, 'quality')));
   const priceResistance = 1 / state.market.priceMultiplier ** Math.max(0.55, 1.35 - strategicBonus(state, 'priceElasticity'));
-  const marketingPower = 1 + state.market.marketing * (0.12 + upgradeBonus(state, 'marketing'));
+  const marketingPower = 1 + state.market.marketing * (BALANCE.market.marketingBase + upgradeBonus(state, 'marketing'));
   const reputationPower = Math.max(1, state.market.reputation * (1 + upgradeBonus(state, 'reputation')));
   const adoptionPower = 1 + Math.sqrt(state.market.adoption) * (0.08 + upgradeBonus(state, 'adoption'));
   const modelEfficiency = deployed.reduce((sum, deployedModel) => sum + effectiveModelStat(state,deployedModel,'efficiency') * (1+effectiveModelStat(state,deployedModel,'latency')*.04), 0) / Math.max(1, deployed.length);
-  const capacity = computePerSecond(state) * state.allocation.inference / 100 * modelEfficiency * 1.45 * Math.max(0.1, 1 + upgradeBonus(state, 'inference') + strategicBonus(state, 'enterprise') * 0.35);
+  const capacity = computePerSecond(state) * state.allocation.inference / 100 * modelEfficiency * BALANCE.market.capacityScale * Math.max(0.1, 1 + upgradeBonus(state, 'inference') + strategicBonus(state, 'enterprise') * 0.35);
   const organicDemand = unlockedMarketSize * qualityAppeal * 0.14 * marketingPower * reputationPower * adoptionPower * priceResistance * Math.max(0.1, 1 + upgradeBonus(state, 'demand') + milestoneBonus(state, 'demand') + strategicBonus(state, 'demand') + strategicBonus(state, 'adoption') - strategicBonus(state, 'enterprise') * 0.2);
   const distributionFloor = capacity * Math.min(0.22, 0.1 + highestTier * 0.006);
   const demand = Math.max(organicDemand, distributionFloor);
@@ -82,7 +82,35 @@ export function marketMetrics(state) {
   return { demand, capacity, target, utilization, unlockedMarketSize, bottleneck: demand < capacity ? 'DEMAND LIMITED' : 'CAPACITY LIMITED', revenue: state.resources.users * revenuePerUser(state) };
 }
 
-export function userGrowthPerSecond(state) { const target = marketMetrics(state).target; return (target - state.resources.users) * 0.18; }
+export function userGrowthPerSecond(state) { const target = marketMetrics(state).target; return (target - state.resources.users) * BALANCE.market.userConvergence; }
+
+export function economySnapshot(state) {
+  const compute = computePerSecond(state);
+  const market = marketMetrics(state);
+  const energyOut = energyProduction(state);
+  const energyDemand = energyUse(state);
+  const trainingRate = compute * state.allocation.training / 100;
+  const inferenceRate = compute * state.allocation.inference / 100;
+  const computeConsumed = inferenceRate * market.utilization + compute * (state.allocation.research + state.allocation.data + state.allocation.agents + (state.model.trainingActive ? state.allocation.training : 0)) / 100;
+  const storedComputeRate = state.model.trainingActive ? 0 : trainingRate;
+  const currentObjective = OBJECTIVES.find((objective) => !state.objectives[objective.id] && objectiveProgress(state, objective) < objective.target) ?? null;
+  return {
+    credits: state.resources.credits, creditsPerSecond: market.revenue, revenuePerSecond: market.revenue,
+    compute: state.resources.compute, computePerSecond: compute, computeConsumed, computeWasted: Math.max(0, inferenceRate * (1 - market.utilization)), storedComputeRate,
+    trainingCompute: trainingRate, research: state.resources.research, researchPerSecond: compute * state.allocation.research / 100,
+    users: state.resources.users, usersPerSecond: (market.target - state.resources.users) * BALANCE.market.userConvergence, targetUsers: market.target, unlockedMarketSize: market.unlockedMarketSize, demand: market.demand, capacity: market.capacity,
+    utilization: market.utilization, revenuePerUser: revenuePerUser(state), priceMultiplier: state.market.priceMultiplier,
+    marketing: state.market.marketing, marketingBonus: 1 + state.market.marketing * (BALANCE.market.marketingBase + upgradeBonus(state, 'marketing')),
+    reputation: state.market.reputation, adoption: state.market.adoption,
+    energyProduction: energyOut, energyDemand, energySurplus: energyOut - energyDemand, energyEfficiency: energyEfficiency(state),
+    currentHardwareTier: HARDWARE_CATALOG.reduce((tier, item) => state.hardware[item.id] > 0 ? Math.max(tier, item.tier) : tier, 0),
+    currentModel: state.model.activeId, trainingTarget: state.model.trainingTarget ?? state.model.activeId,
+    modelLevel: state.model.level, modelXp: state.model.xp, modelUpgradePoints: state.model.upgradePoints ?? 0,
+    currentPatent: PATENTS[state.patents.discovered.length]?.id ?? null, currentObjective: currentObjective?.id ?? null,
+    developmentCycle: state.meta.cycles, runCreditsEarned: state.run.creditsEarned, runComputeProduced: state.run.computeProduced, intelligence: state.meta.intelligence, gems: state.resources.gems,
+    bottleneck: market.bottleneck,
+  };
+}
 
 export function economySnapshot(state) {
   const compute = computePerSecond(state);
@@ -125,14 +153,16 @@ export function tickGame(state, deltaMs) {
   const rate = computePerSecond(state);
   const produced = rate * seconds;
   const allocationEfficiency = 1 + strategicBonus(state, 'allocationEfficiency');
+  const researchEnabled = featureUnlocked(state, 'research');
+  const patentEnabled = featureUnlocked(state, 'patents');
   const rawTrainingGain = produced * state.allocation.training / 100 * allocationEfficiency;
   const effectiveTrainingMultiplier = trainingMultiplier(state);
   const trainingGain = rawTrainingGain * effectiveTrainingMultiplier;
-  const researchGain = produced * state.allocation.research / 100 * Math.max(0.1, 1 + strategicBonus(state, 'research')) * allocationEfficiency;
+  const researchGain = researchEnabled ? produced * state.allocation.research / 100 * Math.max(0.1, 1 + strategicBonus(state, 'research')) * allocationEfficiency : 0;
   const dataGain = produced * state.allocation.data / 100 * allocationEfficiency;
   const autonomy=state.model.deployed.reduce((sum,id)=>{const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'autonomy')*.015:0)},0);const agentGain = produced * state.allocation.agents / 100 * (1 + strategicBonus(state, 'agents') + autonomy) * allocationEfficiency * (1 + deployedIdentityBonus(state,'agents'));
   const metrics = marketMetrics(state);
-  const userStep = Math.max(0.2 * seconds, Math.abs(metrics.target - state.resources.users) * 0.18 * seconds);
+  const userStep = Math.max(0.2 * seconds, Math.abs(metrics.target - state.resources.users) * BALANCE.market.userConvergence * seconds);
   const users = metrics.target > state.resources.users ? Math.min(metrics.target, state.resources.users + userStep) : Math.max(metrics.target, state.resources.users - userStep);
   const creditGain = users * revenuePerUser(state) * seconds;
   const safety = state.model.deployed.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'safety')*.1:0)}, 0);
@@ -149,13 +179,13 @@ export function tickGame(state, deltaMs) {
     const required = trainingRequiredForState(state);
     if (trainingProgress >= required) { trainingProgress = 0; trainingActive = false; completedTraining = true; xp += required; while (xp >= xpRequired(level)) { xp -= xpRequired(level); level += 1; upgradePoints += 1; } }
   }
-  const patentRate = patentResearchPerSecond(state);
+  const patentRate = patentEnabled ? patentResearchPerSecond(state) : 0;
   let patentProgress = state.patents.progress + patentRate * seconds;
   let discoveredPatents = state.patents.discovered; let patentHistory = state.patents.history; let equippedPatents = state.patents.equipped; let patentDiscovery = null;
   const nextPatent = PATENTS[discoveredPatents.length];
   if (nextPatent && patentProgress >= patentResearchRequired(discoveredPatents.length)) { patentProgress -= patentResearchRequired(discoveredPatents.length); discoveredPatents = [...discoveredPatents, nextPatent.id]; patentHistory = [...patentHistory, { id: nextPatent.id, discoveredAt: Date.now(), cycle: state.meta.cycles }]; if (equippedPatents.length < state.patents.slots) equippedPatents = [...equippedPatents, nextPatent.id]; patentDiscovery = nextPatent; }
-  const eventCountdown = state.world.activeEvent ? state.world.nextEventMs : state.world.nextEventMs - deltaMs;
-  const event = !state.world.activeEvent && eventCountdown <= 0 ? WORLD_EVENTS[(state.meta.cycles + Math.floor(state.statistics.playTimeMs / 90_000)) % WORLD_EVENTS.length] : state.world.activeEvent;
+  const eventCountdown = state.world.activeEvent ? state.world.nextEventMs : featureUnlocked(state,'marketing') ? state.world.nextEventMs - deltaMs : state.world.nextEventMs;
+  const event = featureUnlocked(state,'marketing') && !state.world.activeEvent && eventCountdown <= 0 ? WORLD_EVENTS[(state.meta.cycles + Math.floor(state.statistics.playTimeMs / 90_000)) % WORLD_EVENTS.length] : state.world.activeEvent;
   let next = {
     ...state,
     resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: Math.max(0, state.resources.compute - storedTrainingUsed + (wasTrainingActive ? 0 : rawTrainingGain)), users, research: state.resources.research + researchGain, gems: state.resources.gems + (patentDiscovery && discoveredPatents.length % 10 === 0 ? 1 : 0) },
@@ -206,7 +236,7 @@ export function trainModel(state) {
 
 export function patentResearchRequired(index) {
   // Cumulative discovery targets: 25m, 5h, 1d, 1w, 3w, 2mo, and 6mo.
-  const anchors = [[0,25],[4,300],[9,1440],[19,10080],[29,30240],[39,86400],[49,259200]];
+  const anchors = BALANCE.patents.targetMinutes;
   const cumulative = (patentIndex) => {
     const upper = anchors.find(([position]) => position >= patentIndex) ?? anchors.at(-1);
     const lower = [...anchors].reverse().find(([position]) => position <= patentIndex) ?? anchors[0];
@@ -214,36 +244,38 @@ export function patentResearchRequired(index) {
     return lower[1] * (upper[1] / lower[1]) ** ratio;
   };
   const durationMinutes = cumulative(index) - (index ? cumulative(index - 1) : 0);
-  return durationMinutes * 60 * 0.025;
+  return durationMinutes * 60 * BALANCE.patents.baseResearchRate;
 }
 function patentLevel(state, patentId) { return state.patents.levels[patentId] ?? 1; }
 function patentLevelMultiplier(state, patentId) { return 1 + (patentLevel(state, patentId) - 1) * 0.5; }
 export function patentUpgradeCost(state, patentId) { return Math.ceil(2 * patentLevel(state, patentId) ** 1.7); }
 export function patentCurrentBonus(state, patentId) { const patent = PATENTS.find(({ id }) => id === patentId); return patent ? patent.value * patentLevelMultiplier(state, patentId) : 0; }
-export function togglePatentEquipped(state, patentId) { if (!state.patents.discovered.includes(patentId)) return state; const alreadyEquipped = state.patents.equipped.includes(patentId); const swapping = !alreadyEquipped && state.patents.equipped.length >= state.patents.slots; const equipped = alreadyEquipped ? state.patents.equipped.filter((id) => id !== patentId) : swapping ? [...state.patents.equipped.slice(1), patentId] : [...state.patents.equipped, patentId]; return feedback({ ...state, patents: { ...state.patents, equipped } }, alreadyEquipped ? 'Patent unequipped' : swapping ? 'Patent loadout swapped' : 'Patent equipped'); }
+export function togglePatentEquipped(state, patentId) { if (!featureUnlocked(state,'patents') || !state.patents.discovered.includes(patentId)) return state; const alreadyEquipped = state.patents.equipped.includes(patentId); const swapping = !alreadyEquipped && state.patents.equipped.length >= state.patents.slots; const equipped = alreadyEquipped ? state.patents.equipped.filter((id) => id !== patentId) : swapping ? [...state.patents.equipped.slice(1), patentId] : [...state.patents.equipped, patentId]; return feedback({ ...state, patents: { ...state.patents, equipped } }, alreadyEquipped ? 'Patent unequipped' : swapping ? 'Patent loadout swapped' : 'Patent equipped'); }
 export function upgradePatent(state, patentId) { if (!state.patents.discovered.includes(patentId)) return state; const cost = patentUpgradeCost(state, patentId); if (state.meta.intelligence < cost) return state; return feedback({ ...state, meta: { ...state.meta, intelligence: state.meta.intelligence - cost }, patents: { ...state.patents, levels: { ...state.patents.levels, [patentId]: patentLevel(state, patentId) + 1 }, intInvested: { ...state.patents.intInvested, [patentId]: (state.patents.intInvested[patentId] ?? 0) + cost } } }, `${PATENTS.find(({id}) => id === patentId).name} upgraded`); }
 export const PATENT_SLOT_PRICES = { 4: 250, 5: 600, 6: 1_200, 7: 2_500, 8: 5_000 };
 export function buyPatentSlot(state) { const nextSlot = state.patents.slots + 1, cost = PATENT_SLOT_PRICES[nextSlot]; if (!cost || state.resources.gems < cost) return state; return feedback({ ...state, resources: { ...state.resources, gems: state.resources.gems - cost }, patents: { ...state.patents, slots: nextSlot } }, `Patent Slot ${nextSlot} unlocked`); }
 export function patentResearchPerSecond(state) {
-  if (state.patents.discovered.length >= PATENTS.length) return 0;
+  if (!featureUnlocked(state, 'patents') || state.patents.discovered.length >= PATENTS.length) return 0;
   const labs = 1 + (state.premium.purchases.includes('researchLab2') ? 0.2 : 0) + (state.premium.purchases.includes('researchLab3') ? 0.25 : 0);
   const researchModel = 1 + deployedIdentityBonus(state,'research') + state.model.deployed.reduce((sum,id)=>{const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?(effectiveModelStat(state,model,'research')+effectiveModelStat(state,model,'knowledge')+effectiveModelStat(state,model,'math'))*.008:0)},0); const achievementFactor = 1 + Object.keys(state.meta.achievements).length * 0.002;
   const researchUpgrades = UPGRADES.filter((upgrade) => upgrade.category === 'research' && state.upgrades.includes(upgrade.id)).length;
-  const computeFactor = computePerSecond(state) > 0 ? 1 + Math.log10(1 + computePerSecond(state)) * 0.04 : 0; return 0.025 * (state.allocation.research / 15) * computeFactor * Math.max(0.1, 1 + strategicBonus(state, 'research') + strategicBonus(state, 'flatResearch') * .04 + researchUpgrades * 0.04) * labs * researchModel * achievementFactor * (1 + Math.log10(1 + state.meta.totalIntelligence) * 0.03);
+  const computeFactor = computePerSecond(state) > 0 ? 1 + Math.log10(1 + computePerSecond(state)) * 0.04 : 0; return BALANCE.patents.baseResearchRate * (state.allocation.research / 15) * computeFactor * Math.max(0.1, 1 + strategicBonus(state, 'research') + strategicBonus(state, 'flatResearch') * .04 + researchUpgrades * 0.04) * labs * researchModel * achievementFactor * (1 + Math.log10(1 + state.meta.totalIntelligence) * 0.03);
 }
 
 export function energyBuildingCost(state, building) { return Math.ceil(building.cost * 1.18 ** state.energy.buildings[building.id]); }
-export function buyEnergyBuilding(state, buildingId) { const building = ENERGY_BUILDINGS.find(({id}) => id === buildingId); if (!building) return state; const cost = energyBuildingCost(state, building); if (state.resources.credits < cost) return state; const paid=spendCredits(state,cost);return feedback({ ...paid, energy: { ...paid.energy, buildings: { ...paid.energy.buildings, [buildingId]: paid.energy.buildings[buildingId] + 1 } } }, `${building.name} connected · +${building.output} energy`); }
+export function buyEnergyBuilding(state, buildingId) { const building = ENERGY_BUILDINGS.find(({id}) => id === buildingId); if (!featureUnlocked(state,'energy') || !building) return state; const cost = energyBuildingCost(state, building); if (state.resources.credits < cost) return state; const paid=spendCredits(state,cost);return feedback({ ...paid, energy: { ...paid.energy, buildings: { ...paid.energy.buildings, [buildingId]: paid.energy.buildings[buildingId] + 1 } } }, `${building.name} connected · +${building.output} energy`); }
 
 export function modelImprovementCost() { return 1; }
-export function improveModel(state, modelId, path) { if (!MODEL_SKILLS.includes(path) || !state.model.owned.includes(modelId)) return state; const progress=state.model.progress?.[modelId]??{level:1,xp:0,upgradePoints:0,skills:{}}; if(progress.upgradePoints<1)return state;const skills={...progress.skills,[path]:(progress.skills[path]??0)+1},nextProgress={...progress,upgradePoints:progress.upgradePoints-1,skills};const improvements={...state.model.improvements,[modelId]:skills};const active=modelId===state.model.activeId;return feedback({...state,model:{...state.model,upgradePoints:active?nextProgress.upgradePoints:state.model.upgradePoints,quality:active?(MODEL_CATALOG.find(model=>model.id===modelId)?.stats.quality??1)+(skills.quality??0)*.4:state.model.quality,progress:{...state.model.progress,[modelId]:nextProgress},improvements}},`${MODEL_CATALOG.find(({id})=>id===modelId).name} ${path} specialized`)}
+export function improveModel(state, modelId, path) { if (!featureUnlocked(state,'modelSkills') || !skillUnlocked(state,path) || !MODEL_SKILLS.includes(path) || !state.model.owned.includes(modelId)) return state; const progress=state.model.progress?.[modelId]??{level:1,xp:0,upgradePoints:0,skills:{}}; if(progress.upgradePoints<1)return state;const skills={...progress.skills,[path]:(progress.skills[path]??0)+1},nextProgress={...progress,upgradePoints:progress.upgradePoints-1,skills};const improvements={...state.model.improvements,[modelId]:skills};const active=modelId===state.model.activeId;return feedback({...state,model:{...state.model,upgradePoints:active?nextProgress.upgradePoints:state.model.upgradePoints,quality:active?effectiveModelStat({...state,model:{...state.model,progress:{...state.model.progress,[modelId]:nextProgress}}},MODEL_CATALOG.find(model=>model.id===modelId),'quality'):state.model.quality,progress:{...state.model.progress,[modelId]:nextProgress},improvements}},`${MODEL_CATALOG.find(({id})=>id===modelId).name} ${path} specialized`)}
 
-export function acquireModel(state, modelId) {const model=MODEL_CATALOG.find(({id})=>id===modelId),index=MODEL_CATALOG.findIndex(({id})=>id===modelId);if(!model||index>0&&!state.model.owned.includes(MODEL_CATALOG[index-1].id))return state;if(state.model.owned.includes(modelId)){const progress=state.model.progress?.[modelId]??{level:1,xp:0,upgradePoints:0,skills:{}};return{...state,model:{...state.model,activeId:modelId,trainingTarget:modelId,level:progress.level,xp:progress.xp,upgradePoints:progress.upgradePoints,quality:effectiveModelStat(state,model,'quality')}}}if(state.meta.intelligence<model.intCost)return state;const progress={level:1,xp:0,upgradePoints:0,skills:{}};return feedback({...state,meta:{...state.meta,intelligence:state.meta.intelligence-model.intCost,unlockedModels:[...new Set([...(state.meta.unlockedModels??state.model.owned),modelId])]},model:{...state.model,activeId:modelId,trainingTarget:modelId,level:1,xp:0,upgradePoints:0,quality:model.stats.quality,owned:[...state.model.owned,modelId],progress:{...state.model.progress,[modelId]:progress}}},`${model.name} permanently unlocked`)}
+export function acquireModel(state, modelId) {const model=MODEL_CATALOG.find(({id})=>id===modelId),index=MODEL_CATALOG.findIndex(({id})=>id===modelId);if(!model||index>0&&!featureUnlocked(state,'development')||index>0&&!state.model.owned.includes(MODEL_CATALOG[index-1].id))return state;if(state.model.owned.includes(modelId)){const progress=state.model.progress?.[modelId]??{level:1,xp:0,upgradePoints:0,skills:{}};return{...state,model:{...state.model,activeId:modelId,trainingTarget:modelId,level:progress.level,xp:progress.xp,upgradePoints:progress.upgradePoints,quality:effectiveModelStat(state,model,'quality')}}}if(state.meta.intelligence<model.intCost)return state;const progress={level:1,xp:0,upgradePoints:0,skills:{}};return feedback({...state,meta:{...state.meta,intelligence:state.meta.intelligence-model.intCost,unlockedModels:[...new Set([...(state.meta.unlockedModels??state.model.owned),modelId])]},model:{...state.model,activeId:modelId,trainingTarget:modelId,level:1,xp:0,upgradePoints:0,quality:model.stats.quality,owned:[...state.model.owned,modelId],progress:{...state.model.progress,[modelId]:progress}}},`${model.name} permanently unlocked`)}
 
 export function toggleModelDeployment(state, modelId) { if (!state.model.owned.includes(modelId)) return state; const deployed = state.model.deployed.includes(modelId) ? state.model.deployed.filter((id) => id !== modelId) : [...state.model.deployed, modelId]; if (!deployed.length || deployed.length > 3) return state; return { ...state, model: { ...state.model, deployed } }; }
 
 export function setAllocation(state, category, value) {
   if (!(category in state.allocation)) return state;
+  if (!featureUnlocked(state, 'research') && ['research', 'data', 'agents'].includes(category)) return state;
+  if (!featureUnlocked(state, 'agents') && category === 'agents') return state;
   const requested = Math.max(0, Math.min(100, Number(value)));
   const others = Object.keys(state.allocation).filter((key) => key !== category);
   const remaining = 100 - requested;
@@ -253,8 +285,8 @@ export function setAllocation(state, category, value) {
   return { ...state, allocation };
 }
 
-export function setPrice(state, value) { return { ...state, market: { ...state.market, priceMultiplier: Math.max(0.5, Math.min(3, Number(value))) } }; }
-export function buyMarketing(state) { const cost = 100 * (state.market.marketing + 1) ** 1.6; if(state.resources.credits<cost)return state;const paid=spendCredits(state,cost);return feedback({ ...paid, market: { ...paid.market, marketing: paid.market.marketing + 1 } }, 'Marketing reach increased'); }
+export function setPrice(state, value) { if (!featureUnlocked(state,'marketing')) return state; return { ...state, market: { ...state.market, priceMultiplier: Math.max(0.5, Math.min(3, Number(value))) } }; }
+export function buyMarketing(state) { if (!featureUnlocked(state,'marketing')) return state; const cost = 100 * (state.market.marketing + 1) ** 1.6; if(state.resources.credits<cost)return state;const paid=spendCredits(state,cost);return feedback({ ...paid, market: { ...paid.market, marketing: paid.market.marketing + 1 } }, 'Marketing reach increased'); }
 
 export function canBuyUpgrade(state, upgrade) { const balance = upgrade.category === 'research' ? state.resources.research : state.resources.credits; const unlocked = upgrade.category === 'hardware' ? state.hardware[upgrade.hardwareId] >= upgrade.unlock : state.model.level >= upgrade.unlock; return !state.upgrades.includes(upgrade.id) && unlocked && balance >= upgrade.cost; }
 export function buyUpgrade(state, upgradeId) { const upgrade = UPGRADES.find(({ id }) => id === upgradeId); if (!upgrade || !canBuyUpgrade(state, upgrade)) return state; const paid=upgrade.category==='research'?{...state,resources:{...state.resources,research:state.resources.research-upgrade.cost}}:spendCredits(state,upgrade.cost);return feedback({ ...paid, upgrades: [...paid.upgrades, upgradeId] }, `${upgrade.name} installed`); }
@@ -270,6 +302,7 @@ function achievementMetric(state, metric) {
 }
 
 function awardAchievements(state) {
+  if (!featureUnlocked(state, 'account')) return state;
   const earned = ACHIEVEMENTS.filter((achievement) => !state.meta.achievements[achievement.id] && achievementMetric(state, achievement.metric) >= achievement.target);
   if (!earned.length) return state;
   const gems = earned.filter((achievement) => Number(achievement.id.split('-').at(-1)) % 4 === 0).length;
@@ -290,29 +323,32 @@ function applyAutomation(state) {
   return next;
 }
 
-export function cycleIntelligence(state) { return Math.max(2, Math.floor(2 + Math.log10(1 + state.run.creditsEarned / 10_000) * 1.5 + Math.max(0, state.model.level - 5) / 6 + state.meta.cycles * 0.5)); }
-export function canDevelop(state) { return state.model.level >= 5 && state.run.creditsEarned >= 250_000; }
+export function cycleIntelligence(state) { const computeReward=Math.floor((state.run.computeProduced / BALANCE.intelligence.computeScale) ** BALANCE.intelligence.exponent);return Math.max(0,Math.floor(computeReward * BALANCE.intelligence.breakthroughMultiplier ** (state.meta.breakthroughs ?? 0))); }
+export function canDevelop(state) { return cycleIntelligence(state) >= BALANCE.intelligence.cycleRequirement; }
 export function startDevelopmentCycle(state) {
   if (!canDevelop(state)) return state;
   const intelligence = cycleIntelligence(state); const fresh = createDefaultState();
   const intelligenceMultiplier = 1 + strategicBonus(state, 'intelligenceGain') + deployedIdentityBonus(state,'intelligence');
-  const unlocked=state.meta.unlockedModels??state.model.owned;const progress=state.model.progress??{};const tinyProgress=progress.tinyChat??fresh.model.progress.tinyChat;return feedback({ ...fresh, resources: { ...fresh.resources, gems: state.resources.gems }, settings: state.settings, statistics: state.statistics, meta: { ...state.meta, unlockedModels:unlocked, intelligence: state.meta.intelligence + Math.floor(intelligence * intelligenceMultiplier), totalIntelligence: state.meta.totalIntelligence + Math.floor(intelligence * intelligenceMultiplier), cycles: state.meta.cycles + 1 }, model:{...fresh.model,level:tinyProgress.level,xp:tinyProgress.xp,upgradePoints:tinyProgress.upgradePoints,owned:unlocked,deployed:['tinyChat'],progress}, patents: state.patents, premium: state.premium, retention: state.retention, tutorial: { step: 10, completed: true } }, `Development Cycle complete · +${Math.floor(intelligence * intelligenceMultiplier)} INT`);
+  const unlocked=state.meta.unlockedModels??state.model.owned;const progress=state.model.progress??{};const tinyProgress=progress.tinyChat??fresh.model.progress.tinyChat;const gained=Math.floor(intelligence*intelligenceMultiplier),total=state.meta.totalIntelligence+gained;const featureUnlockTimes={...(state.meta.featureUnlockTimes??{})};for(const feature of FEATURE_UNLOCKS)if(feature.int<=total&&featureUnlockTimes[feature.id]===undefined)featureUnlockTimes[feature.id]=state.statistics.playTimeMs;return feedback({ ...fresh, resources: { ...fresh.resources, gems: state.resources.gems }, settings: state.settings, statistics: state.statistics, meta: { ...state.meta, unlockedModels:unlocked, intelligence: state.meta.intelligence + gained, totalIntelligence: total, cycles: state.meta.cycles + 1, featureUnlockTimes, cycleHistory:[...(state.meta.cycleHistory??[]),{at:state.statistics.playTimeMs,duration:state.session.elapsedMs,compute:state.run.computeProduced,intelligence:gained}] }, model:{...fresh.model,level:tinyProgress.level,xp:tinyProgress.xp,upgradePoints:tinyProgress.upgradePoints,owned:unlocked,deployed:['tinyChat'],progress}, patents: state.patents, premium: state.premium, retention: state.retention, tutorial: { step: 10, completed: true } }, `Development Cycle complete · +${gained} INT`);
 }
+export function breakthroughReward(state){if(!canBreakthrough(state))return 0;return Math.max(1,Math.floor((state.statistics.totalComputeProduced/BALANCE.breakthrough.requiredCompute)**BALANCE.breakthrough.exponent));}
+export function canBreakthrough(state){return state.meta.totalIntelligence>=BALANCE.breakthrough.requiredLifetimeIntelligence&&state.statistics.totalComputeProduced>=BALANCE.breakthrough.requiredCompute;}
+export function startBreakthrough(state){if(!canBreakthrough(state))return state;const reward=breakthroughReward(state),fresh=createDefaultState();return feedback({...fresh,profile:state.profile,resources:{...fresh.resources,gems:state.resources.gems},settings:state.settings,statistics:state.statistics,retention:state.retention,premium:state.premium,meta:{...fresh.meta,achievements:state.meta.achievements,breakthroughs:(state.meta.breakthroughs??0)+reward,breakthroughCurrency:(state.meta.breakthroughCurrency??0)+reward},tutorial:{step:10,completed:true}},`Breakthrough complete · +${reward} Insight`)}
 export function buyTechNode(state, nodeId) {
-  const node = TECH_NODES.find(({ id }) => id === nodeId); if (!node || state.meta.techNodes.includes(nodeId) || state.meta.intelligence < node.cost || (node.requires && !state.meta.techNodes.includes(node.requires))) return state;
+  const node = TECH_NODES.find(({ id }) => id === nodeId); if (!featureUnlocked(state,'automation') || !node || state.meta.techNodes.includes(nodeId) || state.meta.intelligence < node.cost || (node.requires && !state.meta.techNodes.includes(node.requires))) return state;
   return feedback({ ...state, meta: { ...state.meta, intelligence: state.meta.intelligence - node.cost, techNodes: [...state.meta.techNodes, nodeId] } }, `${node.name} permanently unlocked`);
 }
 export function resolveWorldEvent(state, choiceIndex) {
   const event = state.world.activeEvent; const choice = event?.choices[choiceIndex]; if (!choice || (choice.cost && state.resources.credits < choice.cost)) return state;
-  const modifier = { effect: choice.effect, value: choice.value, expiresAt: state.statistics.playTimeMs + 180_000 };
+  const modifier = { effect: choice.effect, value: choice.value, expiresAt: state.statistics.playTimeMs + BALANCE.events.durationMs };
   const reputationPenalty = choice.penalty === 'reputation' ? -0.15 : 0;
-  let next=choice.cost?spendCredits(state,choice.cost):state;if(choice.credits)next=grantCredits(next,choice.credits);return feedback({ ...next, market: { ...next.market, reputation: Math.max(0.25, next.market.reputation + reputationPenalty) }, world: { activeEvent: null, nextEventMs: 600_000 + (next.statistics.totalClicks % 600) * 1_000, modifiers: [...next.world.modifiers, modifier] } }, `${event.title}: ${choice.label}`);
+  let next=choice.cost?spendCredits(state,choice.cost):state;if(choice.credits)next=grantCredits(next,choice.credits);return feedback({ ...next, market: { ...next.market, reputation: Math.max(0.25, next.market.reputation + reputationPenalty) }, world: { activeEvent: null, nextEventMs: BALANCE.events.minimumDelayMs + (next.statistics.totalClicks % 600) * 1_000, modifiers: [...next.world.modifiers, modifier] } }, `${event.title}: ${choice.label}`);
 }
 
 export function companyStage(state) { const tier = HARDWARE_CATALOG.reduce((highest, hardware) => state.hardware[hardware.id] ? Math.max(highest, hardware.tier) : highest, 0); return ['Garage Developer', 'Startup', 'AI Company', 'Tech Giant', 'Global AI Infrastructure', 'Planetary Compute Network', 'Interplanetary AI', 'Technological Singularity'][Math.min(7, Math.floor(tier / 2))]; }
 export function dismissPatentDiscovery(state) { return { ...state, ui: { ...state.ui, patentDiscovery: null } }; }
 
-export function buyGemShopItem(state, itemId) { const item = GEM_SHOP_ITEMS.find(({id}) => id === itemId); if (!item || state.premium.purchases.includes(itemId) || state.resources.gems < item.cost) return state; return feedback({ ...state, resources: { ...state.resources, gems: state.resources.gems - item.cost }, premium: { ...state.premium, purchases: [...state.premium.purchases, itemId] } }, `${item.name} added to your account`); }
+export function buyGemShopItem(state, itemId) { const item = GEM_SHOP_ITEMS.find(({id}) => id === itemId); if (!featureUnlocked(state,'account') || !item || state.premium.purchases.includes(itemId) || state.resources.gems < item.cost) return state; return feedback({ ...state, resources: { ...state.resources, gems: state.resources.gems - item.cost }, premium: { ...state.premium, purchases: [...state.premium.purchases, itemId] } }, `${item.name} added to your account`); }
 
 export function claimRewardedAd(state, reward) {
   const now = Date.now(); if ((state.premium.adCooldowns[reward] ?? 0) > now) return state;

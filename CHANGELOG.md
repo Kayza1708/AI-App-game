@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.11.0 — Mathematical progression and unfolding prestige
+
+- Centralized Hardware, Training, Market, Patent, Intelligence, Breakthrough, and event curves in `src/config/balance.js`.
+- Replaced Credit/level prestige qualification with a fractional run-Compute INT curve and persistent cycle history.
+- Added lifetime-INT gates so fresh saves show only the core loop and later runs reveal Marketing, Research, Patents, Model skills, Energy, Automation, Agents, Enterprise, and late infrastructure.
+- Expanded the Technology Tree to 18 strategic branches spanning Robotics, Medicine, Education, Energy, Physics, Space, Government, AGI, ASI, and Singularity.
+- Added a functional late-game Breakthrough reset with persistent Insight, Gems, Achievements, account purchases, profile, and statistics.
+- Added staged Model skills and prevented locked Research, Patent, Energy, Market, event, and Achievement systems from progressing invisibly.
+- Added performant K/M/B/T and alphabetic huge-number notation without scientific notation.
+- Extended one-second telemetry with active progression constants, unlock timing/order, INT per run, prestige intervals, Technology choices, abandoned paths, and Model use distribution.
+- Bumped save data to version 10 with migration defaults for Breakthrough, cycle history, and feature unlock timing.
+
 ## Analytics context and permanent Patent loadouts
 
 - Added stable local player, session, run, version, prestige, breakthrough, and lifetime-play context to telemetry.

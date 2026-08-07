@@ -1,4 +1,5 @@
 import { ENERGY_BUILDINGS, HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES } from '../data/defaultState.js';
+import { BALANCE, FEATURE_UNLOCKS, nextFeatureUnlock } from '../config/balance.js';
 import {
   canBuyUpgrade, canDevelop, cycleIntelligence, economySnapshot, effectiveHardwareCost,
   effectiveModelStat, energyBuildingCost, energyEfficiency,
@@ -37,7 +38,7 @@ export function createGameplaySnapshot(state, seconds, context = {}) {
     saveVersion: context.saveVersion, gameVersion: context.gameVersion,
     timestamp: context.timestamp ?? Date.now(), sessionSeconds: seconds, sessionPlaytime: seconds,
     totalLifetimePlaytime: state.statistics.playTimeMs / 1000, runSeconds: state.session.elapsedMs / 1000,
-    prestigeLevel: state.meta.cycles, breakthroughLevel: Math.floor(state.patents.discovered.length / 10),
+    prestigeLevel: state.meta.cycles, breakthroughLevel: state.meta.breakthroughs ?? 0,
     ...economy,
     currentIntelligence: economy.intelligence, gems: economy.gems,
     lifetimeCredits: state.statistics.totalCreditsEarned,
@@ -74,6 +75,14 @@ export function createGameplaySnapshot(state, seconds, context = {}) {
     currentModelTier: Math.max(0, MODEL_CATALOG.findIndex(({ id }) => id === state.model.activeId)),
     intelligenceReward: cycleIntelligence(state), developmentCycleEligible: canDevelop(state),
     currentTechBranch: currentTechBranch(state),
+    progressionCurves: BALANCE,
+    nextFeatureUnlock: nextFeatureUnlock(state),
+    featureUnlockOrder: Object.entries(state.meta.featureUnlockTimes ?? {}).sort((a,b)=>a[1]-b[1]).map(([id,playtimeMs])=>({id,playtimeMs})),
+    averageIntelligencePerRun: average((state.meta.cycleHistory??[]).map((cycle)=>cycle.intelligence)),
+    timeBetweenPrestiges: intervals((state.meta.cycleHistory??[]).map((cycle)=>cycle.at)),
+    abandonedUnlockPaths: FEATURE_UNLOCKS.filter((feature)=>feature.int<=state.meta.totalIntelligence&&!Object.hasOwn(state.meta.featureUnlockTimes??{},feature.id)).map(({id})=>id),
+    technologyChoices: [...state.meta.techNodes],
+    modelUsageDistribution: Object.fromEntries(MODEL_CATALOG.map((model)=>[model.id,state.model.deployed.includes(model.id)?1/state.model.deployed.length:0])),
     hardwareTelemetry: hardwareTelemetry(state, economy),
     modelQuality: effectiveModelStat(state, MODEL_CATALOG.find((model) => model.id === state.model.activeId) ?? MODEL_CATALOG[0], 'quality'),
     activePatentBonuses: state.patents.equipped.map((id) => ({ id, level: state.patents.levels[id] ?? 1 })),
@@ -128,4 +137,5 @@ function hardwareTelemetry(state,economy){const multiplier=currentHardwareMultip
 function effectiveMultipliers(state, economy) { const raw = HARDWARE_CATALOG.reduce((sum, item) => sum + item.computePerSecond * state.hardware[item.id], 0); return { hardware: raw ? economy.computePerSecond / raw : 0, energy: economy.energyEfficiency, price: state.market.priceMultiplier, reputation: state.market.reputation, adoption: 1 + Math.sqrt(state.market.adoption) * .08, marketing: economy.marketingBonus }; }
 function currentTechBranch(state) { const counts = {}; for (const id of state.meta.techNodes) { const branch = id.split('-')[0]; counts[branch] = (counts[branch] ?? 0) + 1; } return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null; }
 function average(values) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
+function intervals(values){return values.slice(1).map((value,index)=>(value-values[index])/1000)}
 function boundedPush(array, item, max) { if (array.length >= max) { const preserve = 1000, old = array.slice(preserve, preserve + 20); if (old.length) array.splice(preserve, 20, Object.freeze({ ...old[0], aggregated: true, bucketCount: old.length, sessionSeconds: old.at(-1).sessionSeconds })); else array.splice(preserve, 1); } array.push(item); }

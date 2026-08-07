@@ -1,24 +1,26 @@
-export const SAVE_VERSION = 9;
-export const GAME_VERSION = '0.10.0';
+import { BALANCE } from '../config/balance.js';
+
+export const SAVE_VERSION = 10;
+export const GAME_VERSION = '0.11.0';
 
 export const HARDWARE_CATALOG = [
-  ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.',20,.5,.003],
-  ['homeComputer','▣','Pocket Computer','Portable silicon for experiments beyond basic arithmetic.',140,1.7,.018],
-  ['gamingPc','▱','Laptop','A mobile development machine for the first useful models.',850,5.5,.09],
-  ['workstation','◫','Gaming PC','Consumer graphics hardware repurposed for neural networks.',5_800,19,.42],
-  ['gpuServer','◇','Workstation','Professional acceleration for sustained model development.',42_000,72,1.8],
-  ['miniDatacenter','▤','Server Rack','Rack-mounted parallel Compute with redundant networking.',340_000,290,8],
-  ['enterpriseDatacenter','⬡','GPU Cluster','A coordinated accelerator fleet for serious Training and Inference.',3_100_000,1_250,36],
-  ['hyperscaleDatacenter','▥','Datacenter','A dedicated facility where infrastructure becomes a company advantage.',32_000_000,5_800,170],
-  ['tpuCluster','▦','Hyperscale Center','Warehouse-scale custom silicon serving a global market.',390_000_000,29_000,850],
-  ['aiSupercomputer','◉','Orbital Datacenter','Solar-powered Compute beyond terrestrial grid constraints.',5_800_000_000,160_000,4_600],
-  ['planetaryGrid','◒','Moon Compute Facility','A lunar industrial complex with uninterrupted scientific workloads.',105_000_000_000,980_000,27_000],
-  ['underwaterDatacenter','⊕','Mars Compute Grid','A planetary network built for autonomous frontier operations.',2_300_000_000_000,6_600_000,175_000],
-  ['orbitalDatacenter','✦','Fusion Compute Network','Fusion-powered intelligence infrastructure spanning worlds.',62_000_000_000_000,49_000_000,1_300_000],
-  ['lunarFacility','☼','Dyson Compute Array','Stellar collectors turn a meaningful fraction of sunlight into thought.',2_100_000_000_000_000,410_000_000,12_000_000],
-  ['dysonSwarm','◎','Matrioshka Brain','Nested computational shells enclose and coordinate a star.',92_000_000_000_000_000,4_100_000_000,130_000_000],
-  ['matrioshkaBrain','∞','Singularity Core','Self-improving infrastructure operating beyond human-scale planning.',5_000_000_000_000_000_000,52_000_000_000,1_800_000_000],
-].map(([id,icon,name,description,baseCost,computePerSecond,energy],tier)=>({id,icon,name,description,baseCost,computePerSecond,energy,tier,
+  ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
+  ['homeComputer','▣','Pocket Computer','Portable silicon for experiments beyond basic arithmetic.'],
+  ['gamingPc','▱','Laptop','A mobile development machine for the first useful models.'],
+  ['workstation','◫','Gaming PC','Consumer graphics hardware repurposed for neural networks.'],
+  ['gpuServer','◇','Workstation','Professional acceleration for sustained model development.'],
+  ['miniDatacenter','▤','Server Rack','Rack-mounted parallel Compute with redundant networking.'],
+  ['enterpriseDatacenter','⬡','GPU Cluster','A coordinated accelerator fleet for serious Training and Inference.'],
+  ['hyperscaleDatacenter','▥','Datacenter','A dedicated facility where infrastructure becomes a company advantage.'],
+  ['tpuCluster','▦','Hyperscale Center','Warehouse-scale custom silicon serving a global market.'],
+  ['aiSupercomputer','◉','Orbital Datacenter','Solar-powered Compute beyond terrestrial grid constraints.'],
+  ['planetaryGrid','◒','Moon Compute Facility','A lunar industrial complex with uninterrupted scientific workloads.'],
+  ['underwaterDatacenter','⊕','Mars Compute Grid','A planetary network built for autonomous frontier operations.'],
+  ['orbitalDatacenter','✦','Fusion Compute Network','Fusion-powered intelligence infrastructure spanning worlds.'],
+  ['lunarFacility','☼','Dyson Compute Array','Stellar collectors turn a meaningful fraction of sunlight into thought.'],
+  ['dysonSwarm','◎','Matrioshka Brain','Nested computational shells enclose and coordinate a star.'],
+  ['matrioshkaBrain','∞','Singularity Core','Self-improving infrastructure operating beyond human-scale planning.'],
+].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],energy:BALANCE.hardware.tierEnergy[tier],tier,
   milestones:[
     {quantity:10,name:'Thermal Rhythm',description:`${name} output +10%`,effect:'hardwareOutput',value:.1},
     {quantity:25,name:'Bulk Procurement',description:`All hardware costs -${3+tier%3}%`,effect:'hardwareDiscount',value:(3+tier%3)/100},
@@ -97,6 +99,16 @@ const TECH_BRANCHES = {
   enterprise: { label: 'Enterprise Monopoly', strength: 'enterprise', weakness: 'adoption', nodes: ['Sales Pipeline', 'Developer API', 'Enterprise Contracts', 'Compliance Suite', 'Mission Critical AI', 'Industry Standard'] },
   consumer: { label: 'Consumer Platform', strength: 'adoption', weakness: 'revenue', nodes: ['Viral Loops', 'Creator Program', 'Free Tier', 'Social Intelligence', 'Global Consumer Brand', 'Universal Assistant'] },
   agent: { label: 'Agent Economy', strength: 'agents', weakness: 'hardwareCost', nodes: ['Tool Use', 'Agent Memory', 'Multi-Agent Teams', 'AI Agents', 'Agent Marketplace', 'Machine Economy'] },
+  robotics: { label: 'Robotics', strength: 'automation', weakness: 'revenue', nodes: ['Robot APIs', 'Embodied Learning', 'Factory Autonomy', 'General Robotics', 'Self-Replicating Industry', 'Machine Civilization'] },
+  medicine: { label: 'Medicine', strength: 'reputationGrowth', weakness: 'training', nodes: ['Clinical Models', 'Protein Design', 'Diagnostic Networks', 'Personalized Medicine', 'Longevity Research', 'Post-Biological Health'] },
+  education: { label: 'Education', strength: 'adoption', weakness: 'revenue', nodes: ['AI Tutors', 'Adaptive Curricula', 'Universal Translation', 'Global Academy', 'Accelerated Learning', 'Collective Intelligence'] },
+  energy: { label: 'Energy', strength: 'energyOutput', weakness: 'hardwareCost', nodes: ['Smart Grid', 'Advanced Storage', 'Fusion Control', 'Orbital Solar', 'Stellar Engineering', 'Infinite Power'] },
+  physics: { label: 'Physics', strength: 'research', weakness: 'revenue', nodes: ['Simulation Labs', 'Materials Search', 'Quantum Simulation', 'Unified Models', 'Reality Engineering', 'Computational Physics'] },
+  space: { label: 'Space Infrastructure', strength: 'marketSize', weakness: 'hardwareCost', nodes: ['Launch Networks', 'Orbital Industry', 'Lunar Fabrication', 'Mars Logistics', 'Dyson Construction', 'Interstellar Infrastructure'] },
+  government: { label: 'Government', strength: 'reputationGrowth', weakness: 'click', nodes: ['Public Contracts', 'Regulatory Models', 'Digital Institutions', 'Planetary Coordination', 'AI Governance', 'Civilization Planning'] },
+  agi: { label: 'Artificial General Intelligence', strength: 'quality', weakness: 'energyEfficiency', nodes: ['General Transfer', 'World Models', 'Recursive Learning', 'Aligned Agency', 'General Intelligence', 'Civilization Partner'] },
+  asi: { label: 'Artificial Super Intelligence', strength: 'intelligenceGain', weakness: 'revenue', nodes: ['Superhuman Science', 'Recursive Architecture', 'Strategic Foresight', 'Intelligence Explosion', 'Superintelligent Alignment', 'ASI Civilization'] },
+  singularity: { label: 'Singularity', strength: 'allOutput', weakness: 'click', nodes: ['Machine Economy', 'Planetary Mind', 'Stellar Cognition', 'Post-Scarcity', 'Cosmic Intelligence', 'Technological Singularity'] },
 };
 
 export const TECH_NODES = Object.entries(TECH_BRANCHES).flatMap(([branch, config]) => config.nodes.map((name, rank) => ({
@@ -206,11 +218,11 @@ export function createDefaultState() {
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
     model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, skills: {} } } },
-    allocation: { training: 35, inference: 35, research: 15, data: 10, agents: 5 },
+    allocation: { training: 50, inference: 50, research: 0, data: 0, agents: 0 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], objectives: {},
-    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
-    world: { activeEvent: null, nextEventMs: 720_000, modifiers: [] },
+    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, breakthroughs: 0, breakthroughCurrency: 0, cycleHistory: [], featureUnlockTimes: { core: 0 }, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
+    world: { activeEvent: null, nextEventMs: BALANCE.events.firstDelayMs, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     automation: { lastHardwarePurchaseMs: -1_000 },
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
