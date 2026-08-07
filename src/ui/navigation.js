@@ -14,7 +14,8 @@ export const NAV_ITEMS = [
   { id: 'gemshop', label: 'Gem Shop', eyebrow: 'Convenience' },
   { id: 'missions', label: 'Missions', eyebrow: 'Daily' },
 ];
+export const DEVELOPER_NAV_ITEM = { id: 'developer', label: 'Developer Analytics', eyebrow: 'Internal' };
 
-export function isKnownView(viewId) {
-  return NAV_ITEMS.some(({ id }) => id === viewId);
+export function isKnownView(viewId, includeDeveloper = false) {
+  return NAV_ITEMS.some(({ id }) => id === viewId) || (includeDeveloper && viewId === DEVELOPER_NAV_ITEM.id);
 }

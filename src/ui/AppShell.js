@@ -1,13 +1,18 @@
 import { ACHIEVEMENTS, ENERGY_BUILDINGS, GEM_SHOP_ITEMS, HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES } from '../data/defaultState.js';
+import { DeveloperDashboard } from '../dev/developer-dashboard.js';
 import { activeModel, canBuyUpgrade, canDevelop, companyStage, computePerSecond, cycleIntelligence, effectiveHardwareCost, effectiveHardwareOutput, effectiveModelStat, energyBuildingCost, energyEfficiency, energyProduction, energyUse, marketMetrics, modelImprovementCost, objectiveProgress, optimizeGain, patentResearchPerSecond, patentResearchRequired, retentionMissions, revenuePerUser, trainingRequiredForState, userGrowthPerSecond, xpRequired } from '../systems/GameSystem.js';
-import { NAV_ITEMS, isKnownView } from './navigation.js';
+import { DEVELOPER_NAV_ITEM, NAV_ITEMS, isKnownView } from './navigation.js';
 
 export class AppShell {
   #eventBus;
   #root;
   #lastView = null;
+  #devMode;
+  #developerDashboard;
+  #currentState;
+  #seenTooltips = new Set();
 
-  constructor(root, eventBus) { this.#root = root; this.#eventBus = eventBus; }
+  constructor(root, eventBus, { devMode = false, telemetry = null } = {}) { this.#root = root; this.#eventBus = eventBus; this.#devMode = devMode; this.#developerDashboard = devMode ? new DeveloperDashboard(telemetry, eventBus) : null; }
 
   mount(state) {
     this.#root.innerHTML = `<div class="app-shell">
@@ -15,18 +20,21 @@ export class AppShell {
         <a class="brand" href="#dashboard"><span class="brand-mark">AI</span><strong>AI SINGULARITY</strong></a>
         <div class="top-resources"><div><small>CREDITS</small><strong data-top-credits></strong></div><div><small>COMPUTE / SEC</small><strong data-top-compute></strong></div><div><small>USERS</small><strong data-top-users></strong></div><div><small>MODEL</small><strong data-top-model></strong></div><div><small>GEMS</small><strong data-top-gems></strong></div></div>
       </header>
-      <aside class="sidebar" data-sidebar><p class="sidebar-heading">Company interface</p><nav>${NAV_ITEMS.map((item, index) => `<a href="#${item.id}" class="nav-item" data-view="${item.id}"><span>0${index + 1}</span><div>${item.label}<small>${item.eyebrow}</small></div></a>`).join('')}</nav><div class="sidebar-footer"><small>PLAY TIME</small><strong data-session></strong><span>● AUTOSAVE ONLINE</span></div></aside>
+      <aside class="sidebar" data-sidebar><p class="sidebar-heading">Company interface</p><nav>${[...NAV_ITEMS, ...(this.#devMode ? [DEVELOPER_NAV_ITEM] : [])].map((item, index) => `<a href="#${item.id}" class="nav-item ${item.id === 'developer' ? 'developer-nav' : ''}" data-view="${item.id}"><span>${String(index + 1).padStart(2, '0')}</span><div>${item.label}<small>${item.eyebrow}</small></div></a>`).join('')}</nav><div class="sidebar-footer"><small>PLAY TIME</small><strong data-session></strong><span>● AUTOSAVE ONLINE</span></div></aside>
       <main class="workspace" data-workspace></main>
       <footer class="statusbar"><span>BUILD 0.6.0</span><span data-save-status>Awaiting first save</span></footer>
       <div data-feedback></div><div data-tutorial></div><div data-world-event></div><div data-patent-popup></div>
     </div>`;
     this.#root.addEventListener('click', this.#handleClick);
     this.#root.addEventListener('input', this.#handleInput);
+    this.#root.addEventListener('change', this.#handleChange);
+    this.#root.addEventListener('pointerover', this.#handlePointerOver);
     this.render(state);
   }
 
   render(state) {
-    const view = isKnownView(state.ui.activeView) ? state.ui.activeView : 'dashboard';
+    this.#currentState = state;
+    const view = isKnownView(state.ui.activeView, this.#devMode) ? state.ui.activeView : 'dashboard';
     this.#root.querySelectorAll('[data-view]').forEach((node) => node.classList.toggle('is-active', node.dataset.view === view));
     this.#root.querySelector('[data-sidebar]').classList.toggle('is-open', state.ui.sidebarOpen);
     this.#text('[data-top-credits]', `◈ ${this.#number(state.resources.credits)}`);
@@ -41,7 +49,7 @@ export class AppShell {
     this.#renderWorldEvent(state);
     this.#renderPatentDiscovery(state);
     const workspace = this.#root.querySelector('[data-workspace]');
-    if (this.#lastView !== view) { workspace.innerHTML = this.#view(view, state); this.#lastView = view; }
+    if (this.#lastView !== view) { workspace.innerHTML = view === 'developer' ? this.#developerDashboard.template() : this.#view(view, state); this.#lastView = view; if (view === 'developer') this.#eventBus.emit('developer:opened'); }
     this.#updateView(view, state);
   }
 
@@ -68,6 +76,7 @@ export class AppShell {
   }
 
   #updateView(view, state) {
+    if (view === 'developer') { this.#developerDashboard.update(this.#root.querySelector('[data-workspace]'), state); return; }
     const set = (selector, value) => this.#text(`[data-workspace] ${selector}`, value);
     const metrics = marketMetrics(state); const revenue = state.resources.users * revenuePerUser(state);
     if (view === 'dashboard') {
@@ -89,8 +98,10 @@ export class AppShell {
     else { const missions=retentionMissions(state); this.#root.querySelector('[data-missions-list]').innerHTML=missions.map((mission)=>{const claimed=state.retention.claimedDaily[mission.id];return `<article class="panel objective-card"><div><small>${mission.period.toUpperCase()}</small><h3>${mission.text}</h3><div class="progress"><i style="width:${Math.min(100,mission.progress/mission.target*100)}%"></i></div><span>${this.#number(Math.min(mission.progress,mission.target))} / ${this.#number(mission.target)}</span></div><button class="buy-button" data-mission="${mission.id}" ${claimed||mission.progress<mission.target?'disabled':''}>${claimed?'COMPLETED':`CLAIM ${Object.entries(mission.reward).map(([key,value])=>`${value} ${key}`).join(' + ')}`}</button></article>`}).join(''); }
   }
 
-  #handleClick = (event) => { const view = event.target.closest('[data-view]'); if (view) this.#eventBus.emit('navigation:selected', view.dataset.view); const buy = event.target.closest('[data-buy]'); if (buy && !buy.disabled) { this.#eventBus.emit('hardware:buy', buy.dataset.buy); this.#playFeedbackTone(); } const energy = event.target.closest('[data-energy-buy]'); if (energy && !energy.disabled) this.#eventBus.emit('energy:buy',energy.dataset.energyBuy); const model = event.target.closest('[data-model]'); if (model && !model.disabled) { this.#eventBus.emit('model:acquire', model.dataset.model); this.#playFeedbackTone(); } const deploy=event.target.closest('[data-deploy]');if(deploy&&!deploy.disabled)this.#eventBus.emit('model:deploy',deploy.dataset.deploy);const improve=event.target.closest('[data-improve]');if(improve&&!improve.disabled){const [modelId,path]=improve.dataset.improve.split(':');this.#eventBus.emit('model:improve',{modelId,path});} const upgrade = event.target.closest('[data-upgrade]'); if (upgrade && !upgrade.disabled) { this.#eventBus.emit('upgrade:buy', upgrade.dataset.upgrade); this.#playFeedbackTone(); } const objective = event.target.closest('[data-objective]'); if (objective && !objective.disabled) { this.#eventBus.emit('objective:claim', objective.dataset.objective); this.#playFeedbackTone(); } const tech = event.target.closest('[data-tech]'); if (tech && !tech.disabled) { this.#eventBus.emit('tech:buy', tech.dataset.tech); this.#playFeedbackTone(); } const choice = event.target.closest('[data-event-choice]'); if (choice && !choice.disabled) this.#eventBus.emit('world:resolve', Number(choice.dataset.eventChoice));const gem=event.target.closest('[data-gem-item]');if(gem&&!gem.disabled)this.#eventBus.emit('premium:buy',gem.dataset.gemItem);const ad=event.target.closest('[data-ad]');if(ad&&!ad.disabled)this.#eventBus.emit('premium:ad',ad.dataset.ad);const mission=event.target.closest('[data-mission]');if(mission&&!mission.disabled)this.#eventBus.emit('retention:claim',mission.dataset.mission); const action = event.target.closest('[data-action]')?.dataset.action; if (action === 'toggle-menu') this.#eventBus.emit('navigation:toggled'); if (action === 'train') this.#eventBus.emit('model:train'); if (action === 'marketing') this.#eventBus.emit('market:marketing'); if (action === 'tutorial') this.#eventBus.emit('tutorial:advance'); if (action === 'cycle') this.#eventBus.emit('cycle:start');if(action==='login')this.#eventBus.emit('retention:login');if(action==='dismiss-patent')this.#eventBus.emit('patent:dismiss'); if (action === 'optimize') { this.#eventBus.emit('compute:optimize'); event.target.closest('.optimize-button').animate([{ transform: 'scale(.96)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: 240 }); } if (action === 'jump-hardware') this.#eventBus.emit('navigation:selected', 'hardware'); };
-  #handleInput = (event) => { if (event.target.matches('[data-allocation]')) this.#eventBus.emit('allocation:set', { category: event.target.dataset.allocation, value: event.target.value }); if (event.target.matches('[data-price]')) this.#eventBus.emit('market:price', event.target.value); };
+  #handleClick = (event) => { if (this.#devMode && event.target.closest('.dev-dashboard')) this.#developerDashboard.handle(event, this.#root.querySelector('[data-workspace]'), this.#currentState); const view = event.target.closest('[data-view]'); if (view) this.#eventBus.emit('navigation:selected', view.dataset.view); const buy = event.target.closest('[data-buy]'); if (buy && !buy.disabled) { this.#eventBus.emit('hardware:buy', buy.dataset.buy); this.#playFeedbackTone(); } const energy = event.target.closest('[data-energy-buy]'); if (energy && !energy.disabled) this.#eventBus.emit('energy:buy',energy.dataset.energyBuy); const model = event.target.closest('[data-model]'); if (model && !model.disabled) { this.#eventBus.emit('model:acquire', model.dataset.model); this.#playFeedbackTone(); } const deploy=event.target.closest('[data-deploy]');if(deploy&&!deploy.disabled)this.#eventBus.emit('model:deploy',deploy.dataset.deploy);const improve=event.target.closest('[data-improve]');if(improve&&!improve.disabled){const [modelId,path]=improve.dataset.improve.split(':');this.#eventBus.emit('model:improve',{modelId,path});} const upgrade = event.target.closest('[data-upgrade]'); if (upgrade && !upgrade.disabled) { this.#eventBus.emit('upgrade:buy', upgrade.dataset.upgrade); this.#playFeedbackTone(); } const objective = event.target.closest('[data-objective]'); if (objective && !objective.disabled) { this.#eventBus.emit('objective:claim', objective.dataset.objective); this.#playFeedbackTone(); } const tech = event.target.closest('[data-tech]'); if (tech && !tech.disabled) { this.#eventBus.emit('tech:buy', tech.dataset.tech); this.#playFeedbackTone(); } const choice = event.target.closest('[data-event-choice]'); if (choice && !choice.disabled) this.#eventBus.emit('world:resolve', Number(choice.dataset.eventChoice));const gem=event.target.closest('[data-gem-item]');if(gem&&!gem.disabled)this.#eventBus.emit('premium:buy',gem.dataset.gemItem);const ad=event.target.closest('[data-ad]');if(ad&&!ad.disabled)this.#eventBus.emit('premium:ad',ad.dataset.ad);const mission=event.target.closest('[data-mission]');if(mission&&!mission.disabled)this.#eventBus.emit('retention:claim',mission.dataset.mission); const action = event.target.closest('[data-action]')?.dataset.action; if (action === 'toggle-menu') this.#eventBus.emit('navigation:toggled'); if (action === 'train') this.#eventBus.emit('model:train'); if (action === 'marketing') this.#eventBus.emit('market:marketing'); if (action === 'tutorial') this.#eventBus.emit('tutorial:advance'); if (action === 'cycle') this.#eventBus.emit('cycle:start');if(action==='login')this.#eventBus.emit('retention:login');if(action==='dismiss-patent')this.#eventBus.emit('patent:dismiss'); if (action === 'optimize') { this.#eventBus.emit('compute:optimize'); event.target.closest('.optimize-button').animate([{ transform: 'scale(.96)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: 240 }); } if (action === 'jump-hardware') this.#eventBus.emit('navigation:selected', 'hardware'); };
+  #handleInput = (event) => { if (this.#devMode && event.target.closest('.dev-dashboard')) this.#developerDashboard.handle(event, this.#root.querySelector('[data-workspace]'), this.#currentState); if (event.target.matches('[data-allocation]')) this.#eventBus.emit('allocation:set', { category: event.target.dataset.allocation, value: event.target.value }); if (event.target.matches('[data-price]')) this.#eventBus.emit('market:price', event.target.value); };
+  #handleChange = (event) => { if (this.#devMode && event.target.closest('.dev-dashboard')) this.#developerDashboard.handle(event, this.#root.querySelector('[data-workspace]'), this.#currentState); };
+  #handlePointerOver = (event) => { const tooltip = event.target.closest('[data-tooltip]'); if (!this.#devMode || !tooltip || this.#seenTooltips.has(tooltip.dataset.tooltip)) return; this.#seenTooltips.add(tooltip.dataset.tooltip); this.#eventBus.emit('developer:tooltip', tooltip.dataset.tooltip); };
   #renderTutorial(state) { const host = this.#root.querySelector('[data-tutorial]'); if (state.tutorial.completed) { host.innerHTML = ''; host.dataset.step = 'complete'; return; } if (host.dataset.step === String(state.tutorial.step)) return; host.dataset.step = state.tutorial.step; const steps = [
     ['WELCOME TO AI SINGULARITY', 'You are starting an AI company with 45 Credits. We will build the complete economy together.', 'BEGIN'],
     ['BUY A CALCULATOR', 'Open Hardware and purchase your first Calculator. It is the beginning of your compute empire.', null],
