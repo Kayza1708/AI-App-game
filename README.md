@@ -22,3 +22,5 @@ Telemetry includes stable anonymous-local player/session/run context, meaningful
 Developer Mode also provides a destructive **🗑 RESET GAME** balancing control at the top of Developer Analytics. It clears all AI Singularity browser persistence and reloads a true first-launch state while keeping Developer Mode active.
 
 Milestone 8 uses one-second local telemetry and automatic actionable balance reports to evaluate the slower Hardware, Patent, and Development Cycle curves. Every player screen also surfaces the next concrete progression chase.
+
+Milestone 9 turns Models into permanent INT unlocks and Training into XP-driven, manual sixteen-stat builds. Developer reports now include page discovery, full resource-aware purchases, waiting causes, a replayable progression timeline, and target-based balance suggestions.

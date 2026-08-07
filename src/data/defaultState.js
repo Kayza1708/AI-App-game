@@ -1,5 +1,5 @@
-export const SAVE_VERSION = 7;
-export const GAME_VERSION = '0.8.0';
+export const SAVE_VERSION = 8;
+export const GAME_VERSION = '0.9.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator', '⌗', 'Calculator', 'A programmable calculator running its first tiny tensor operations.', 20, 0.5, 0.02],
@@ -28,13 +28,17 @@ export const HARDWARE_CATALOG = [
   ],
 }));
 
+export const MODEL_SKILLS = ['quality','reasoning','knowledge','context','coding','vision','creativity','math','efficiency','energy','latency','popularity','enterprise','research','safety','autonomy'];
 export const MODEL_CATALOG = [
-  { id: 'tinyChat', name: 'TinyChat', role: 'Consumer', specialty: 'Low energy · free users · rapid adoption', cost: 0, unlockLevel: 1, stats: { quality: 1, speed: 8, context: 2, reasoning: 1, efficiency: 8, appeal: 2 } },
-  { id: 'smartChat', name: 'SmartChat', role: 'Coding', specialty: 'Research tools · developer demand', cost: 2_500, unlockLevel: 3, stats: { quality: 3, speed: 7, context: 4, reasoning: 3, efficiency: 7, appeal: 4 } },
-  { id: 'omni', name: 'Omni', role: 'Multimodal', specialty: 'Broad adoption · strong popularity', cost: 45_000, unlockLevel: 7, stats: { quality: 6, speed: 7, context: 6, reasoning: 5, efficiency: 6, appeal: 7 } },
-  { id: 'research', name: 'Research', role: 'Scientific', specialty: 'Patent research · exceptional reasoning', cost: 900_000, unlockLevel: 12, stats: { quality: 9, speed: 4, context: 9, reasoning: 10, efficiency: 4, appeal: 5 } },
-  { id: 'agent', name: 'Agent', role: 'Autonomous', specialty: 'Agent Tasks · company automation', cost: 24_000_000, unlockLevel: 20, stats: { quality: 12, speed: 8, context: 10, reasoning: 11, efficiency: 7, appeal: 10 } },
-  { id: 'agi', name: 'AGI', role: 'Enterprise', specialty: 'Extreme revenue · trust · intelligence', cost: 1_000_000_000, unlockLevel: 30, stats: { quality: 20, speed: 10, context: 20, reasoning: 20, efficiency: 10, appeal: 20 } },
+  { id:'tinyChat', name:'TinyChat', role:'Consumer', specialty:'Fast, energy-efficient access for a large free audience.', intCost:0, trainingScale:.5, identity:{adoption:.3,energy:.25}, stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0} },
+  { id:'smartChat', name:'SmartChat', role:'Developer', specialty:'Coding workflows, developer demand, and practical Research.', intCost:3, trainingScale:3, identity:{research:.2,coding:.35}, stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1} },
+  { id:'codeMind', name:'CodeMind', role:'Coding', specialty:'Compiler optimization and autonomous software production.', intCost:8, trainingScale:7, identity:{hardware:.15,coding:.5}, stats:{quality:4,reasoning:5,knowledge:4,context:5,coding:10,vision:1,creativity:4,math:6,efficiency:6,energy:5,latency:6,popularity:4,enterprise:4,research:5,safety:4,autonomy:4} },
+  { id:'visionNet', name:'VisionNet', role:'Consumer', specialty:'Images, advertising, creativity, and viral consumer adoption.', intCost:15, trainingScale:15, identity:{demand:.35,adoption:.35}, stats:{quality:6,reasoning:4,knowledge:5,context:5,coding:2,vision:10,creativity:9,math:3,efficiency:5,energy:4,latency:5,popularity:10,enterprise:3,research:3,safety:5,autonomy:2} },
+  { id:'enterpriseGpt', name:'EnterpriseGPT', role:'Enterprise', specialty:'Secure contracts with exceptional revenue per customer.', intCost:28, trainingScale:35, identity:{revenue:.65,demand:-.25}, stats:{quality:8,reasoning:7,knowledge:8,context:9,coding:6,vision:4,creativity:3,math:7,efficiency:6,energy:4,latency:4,popularity:3,enterprise:12,research:5,safety:10,autonomy:3} },
+  { id:'agentOs', name:'AgentOS', role:'Automation', specialty:'Autonomous operations and Agent Tasks at high Compute cost.', intCost:48, trainingScale:75, identity:{agents:.65,energy:-.2}, stats:{quality:9,reasoning:9,knowledge:8,context:8,coding:9,vision:5,creativity:6,math:8,efficiency:4,energy:2,latency:4,popularity:6,enterprise:7,research:7,safety:6,autonomy:12} },
+  { id:'scientificAi', name:'ScientificAI', role:'Scientific', specialty:'Knowledge generation, Patents, mathematics, and discovery.', intCost:80, trainingScale:150, identity:{research:.8,revenue:-.2}, stats:{quality:11,reasoning:12,knowledge:13,context:11,coding:8,vision:6,creativity:7,math:13,efficiency:3,energy:2,latency:2,popularity:3,enterprise:5,research:14,safety:8,autonomy:7} },
+  { id:'agiCore', name:'AGI Core', role:'General Intelligence', specialty:'Recursive improvement and stronger Development Cycle Intelligence.', intCost:135, trainingScale:300, identity:{intelligence:.35,quality:.3}, stats:{quality:15,reasoning:15,knowledge:15,context:15,coding:13,vision:12,creativity:13,math:15,efficiency:5,energy:3,latency:4,popularity:10,enterprise:11,research:13,safety:10,autonomy:13} },
+  { id:'asiSeed', name:'ASI Seed', role:'Post-human', specialty:'A configurable seed for radically specialized late-game companies.', intCost:225, trainingScale:600, identity:{allOutput:.25,intelligence:.5}, stats:{quality:20,reasoning:20,knowledge:20,context:20,coding:18,vision:18,creativity:18,math:20,efficiency:7,energy:4,latency:6,popularity:14,enterprise:15,research:18,safety:14,autonomy:20} },
 ];
 
 const HARDWARE_UPGRADE_TYPES = [
@@ -202,11 +206,11 @@ export function createDefaultState() {
     profile: { companyName: 'Singularity Labs', createdAt: Date.now() },
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
-    model: { level: 1, xp: 0, quality: 1, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {} },
+    model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, skills: {} } } },
     allocation: { training: 35, inference: 35, research: 15, data: 10, agents: 5 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], objectives: {},
-    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, techNodes: [], achievements: {} },
+    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
     world: { activeEvent: null, nextEventMs: 720_000, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },

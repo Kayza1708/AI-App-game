@@ -49,13 +49,18 @@ export class SaveSystem {
 
   #mergeWithDefaults(save) {
     const defaults = createDefaultState();
+    const legacyModelIds = { omni: 'visionNet', research: 'scientificAi', agent: 'agentOs', agi: 'agiCore' };
+    const owned = [...new Set((save.model?.owned ?? defaults.model.owned).map((id) => legacyModelIds[id] ?? id))];
+    const activeId = legacyModelIds[save.model?.activeId] ?? save.model?.activeId ?? defaults.model.activeId;
+    const progress = { ...defaults.model.progress, ...save.model?.progress };
+    progress[activeId] ??= { level: save.model?.level ?? 1, xp: save.model?.xp ?? 0, upgradePoints: save.model?.upgradePoints ?? 0, skills: save.model?.improvements?.[activeId] ?? {} };
     return {
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...save.profile }, resources: { ...defaults.resources, ...save.resources },
-      hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model },
+      hardware: { ...defaults.hardware, ...save.hardware }, model: { ...defaults.model, ...save.model, activeId, trainingTarget: activeId, owned, deployed: (save.model?.deployed ?? defaults.model.deployed).map((id) => legacyModelIds[id] ?? id), progress },
       allocation: { ...defaults.allocation, ...save.allocation }, market: { ...defaults.market, ...save.market },
       tutorial: { ...defaults.tutorial, ...save.tutorial }, objectives: { ...defaults.objectives, ...save.objectives },
-      meta: { ...defaults.meta, ...save.meta, achievements: { ...defaults.meta.achievements, ...save.meta?.achievements } },
+      meta: { ...defaults.meta, ...save.meta, unlockedModels: [...new Set([...(save.meta?.unlockedModels ?? []), ...owned])], achievements: { ...defaults.meta.achievements, ...save.meta?.achievements } },
       world: { ...defaults.world, ...save.world }, company: { ...defaults.company, ...save.company, employees: { ...defaults.company.employees, ...save.company?.employees } },
       energy: { ...defaults.energy, ...save.energy, buildings: { ...defaults.energy.buildings, ...save.energy?.buildings } },
       patents: { ...defaults.patents, ...save.patents }, premium: { ...defaults.premium, ...save.premium, adCooldowns: { ...defaults.premium.adCooldowns, ...save.premium?.adCooldowns } },

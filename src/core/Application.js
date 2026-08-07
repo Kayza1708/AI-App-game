@@ -155,7 +155,7 @@ export class Application {
       if (type === 'advance-patent') return { ...state, patents: { ...state.patents, progress: patentResearchRequired(state.patents.discovered.length) - 0.001 } };
       if (type === 'low-energy') return { ...state, hardware: { ...state.hardware, gpuServer: state.hardware.gpuServer + 100 }, energy: { ...state.energy, buildings: Object.fromEntries(Object.keys(state.energy.buildings).map((id) => [id, 0])) } };
       if (type === 'trigger-event') return { ...state, world: { ...state.world, activeEvent: WORLD_EVENTS.find(({ id }) => id === eventId) ?? WORLD_EVENTS[0] } };
-      if (type === 'cycle-eligible') return { ...state, model: { ...state.model, level: Math.max(5, state.model.level) } };
+      if (type === 'cycle-eligible') return { ...state, model: { ...state.model, level: Math.max(10, state.model.level) } };
       if (type === 'reset-run') { const fresh = createDefaultState(); return { ...fresh, resources: { ...fresh.resources, gems: state.resources.gems }, meta: state.meta, patents: state.patents, premium: state.premium, retention: state.retention, settings: state.settings, tutorial: { step: 10, completed: true } }; }
       return state;
     }, 'developer-cheat');

@@ -28,3 +28,10 @@
 - Expanded automatic reports with Hardware, Models, Patents, Prestige, dead-time thresholds, and actionable balancing suggestions.
 - Rebalanced Hardware costs, Patent discovery toward multi-month permanent progression, early Intelligence rewards, Development Cycle eligibility, and default Research allocation.
 - Added a persistent “What should I do next?” chase on player screens without changing the established visual structure.
+
+## Milestone 9 — Core gameplay redesign
+- Replaced Credit-purchased linear Models with nine permanent, INT-unlocked AI eras from TinyChat through ASI Seed.
+- Training now awards XP only; Model Levels award manual Upgrade Points for sixteen-stat per-model skill builds, with no automatic Quality growth.
+- Connected Model identities and skill choices to demand, adoption, enterprise revenue, Energy, Research, Patents, Agent Tasks, training, and Intelligence rewards.
+- Upgraded telemetry with real Compute consumption/waste, current progression context, all-resource purchase snapshots, permanent Model unlock events, waiting reasons, page-duration analytics, replayable timelines, ignored-system detection, and target-based balance suggestions.
+- Migrated version 7 saves into save version 8, including legacy Model IDs and permanent Model progress.
