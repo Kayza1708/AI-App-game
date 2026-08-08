@@ -30,12 +30,13 @@ export const STORE_PRODUCTS = [
 ];
 
 export const REWARDED_BOOSTS = [
-  {id:'credits',name:'Credit Boost',effect:'revenue',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:4},
-  {id:'compute',name:'Compute Boost',effect:'hardwareOutput',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:4},
-  {id:'training',name:'Training Boost',effect:'training',value:.5,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:4},
-  {id:'research',name:'Research Boost',effect:'research',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:3},
-  {id:'energy',name:'Energy Boost',effect:'energyOutput',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:3},
-  {id:'gems',name:'Small Gem Reward',effect:'gems',value:1,durationMs:0,cooldownMs:21_600_000,dailyCap:1},
+  {id:'credits',placement:'CREDIT_BOOST',name:'Credit Boost',effect:'revenue',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:4},
+  {id:'compute',placement:'COMPUTE_BOOST',name:'Compute Boost',effect:'hardwareOutput',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:4},
+  {id:'training',placement:'TRAINING_BOOST',name:'Training Boost',effect:'training',value:.5,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:4},
+  {id:'research',placement:'RESEARCH_BOOST',name:'Research Boost',effect:'research',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:3},
+  {id:'patent',placement:'PATENT_BOOST',name:'Patent Boost',effect:'research',value:.5,durationMs:1_800_000,cooldownMs:7_200_000,dailyCap:2},
+  {id:'energy',placement:'ENERGY_BOOST',name:'Energy Boost',effect:'energyOutput',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:3},
+  {id:'gems',placement:'DAILY_GEMS',name:'Small Gem Reward',effect:'gems',value:1,durationMs:0,cooldownMs:21_600_000,dailyCap:1},
 ];
 
 export const GEM_CONVENIENCE = [

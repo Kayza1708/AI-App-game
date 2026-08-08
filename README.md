@@ -34,3 +34,7 @@ The emergency runtime audit and white-screen recovery boundaries are documented 
 ## Milestone 12 — Model equipment foundations
 
 Model equipment now provides a playable build loop: feature-gated mission rewards can grant handcrafted Items, the Inventory equips them to compatible Model slots, and the canonical economy immediately reflects their effects. Daily/weekly/monthly periods, Consumables, gameplay caches, Gem conveniences, and an explicit web-only Rewarded Boost mock establish long-term meta foundations without real IAP, forced ads, or client-trusted trading. See [`docs/ItemEconomy.md`](docs/ItemEconomy.md), [`docs/ModelBuilds.md`](docs/ModelBuilds.md), and [`docs/MonetizationDesign.md`](docs/MonetizationDesign.md).
+
+## Milestone 13 — Offline progression and Balance Lab
+
+Returning players now receive capped, canonical offline simulation and one aggregated Welcome Back presentation. Seeded baseline-relative missions, forgiving completion streaks, three-horizon goals, clearer build effects, contextual rewarded mocks, and a long-duration Balance Lab support the next human playtest without automatically retuning subjective pacing. See [`docs/OfflineProgress.md`](docs/OfflineProgress.md), [`docs/RetentionLoop.md`](docs/RetentionLoop.md), and [`docs/BalanceLab.md`](docs/BalanceLab.md).

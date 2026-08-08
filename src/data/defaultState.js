@@ -1,7 +1,7 @@
 import { BALANCE } from '../config/balance.js';
 
-export const SAVE_VERSION = 11;
-export const GAME_VERSION = '0.12.0';
+export const SAVE_VERSION = 12;
+export const GAME_VERSION = '0.13.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -241,15 +241,18 @@ export function createDefaultState() {
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
     patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3 },
     premium: { purchases: [], adCooldowns: {} },
-    retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null },
+    retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null, dailyCompletionStreak: 0, lastDailyCompletionPeriod: null, completedDailyPeriods: 0 },
     inventory: { instances: [], equipped: {}, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },
     consumables: {}, rewardCaches: {},
-    missions: { dailyPeriodId: null, weeklyPeriodId: null, monthlyPeriodId: null, daily: [], weekly: [], monthly: [], claims: {}, generatedAt: null },
+    missions: { dailyPeriodId: null, weeklyPeriodId: null, monthlyPeriodId: null, daily: [], weekly: [], monthly: [], claims: {}, generatedAt: null, seeds: {} },
     gemEconomy: { earned: 0, spent: 0, consumablesUsed: 0, history: [] },
     rewardedBoosts: { periodId: null, claims: {}, offered: 0, started: 0, completed: 0 },
     artifacts: { owned: [], collection: [] },
     marketplace: { enabled: false, authority: 'server-required', listings: [], pendingTransactions: [] },
     futureMeta: { materials: {}, blueprints: [], seasonalChallenge: null, pass: null },
+    offline: { lastActiveTimestamp: Date.now(), lastReconciledTimestamp: null, durationMs: 0, effectiveDurationMs: 0, capMs: BALANCE.offline.capMs, results: null, periods: 0, totalOfflineMs: 0 },
+    rewards: { queue: [], history: [], nextId: 1 },
+    balanceRun: { id: null, startedAt: null, natural: true },
     tutorial: { step: 0, completed: false },
     settings: { numberNotation: 'compact', sound: true },
     statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },

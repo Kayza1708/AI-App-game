@@ -25,6 +25,8 @@ export const BALANCE = Object.freeze({
   events: Object.freeze({ firstDelayMs: 720_000, minimumDelayMs: 600_000, durationMs: 180_000 }),
   items: Object.freeze({ unlockInt: 15, baseSlots: 2, maxSlots: 6, inventoryCapacity: 50, rarityWeights: Object.freeze({Common:55,Uncommon:25,Rare:13,Epic:5,Legendary:1.8,Mythic:.2}) }),
   missions: Object.freeze({ dailyCredits: 300, dailyGems: 1, weeklyGems: 3, monthlyGems: 10 }),
+  offline: Object.freeze({ capMs: 8 * 60 * 60 * 1000, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
+  progressionTargets: Object.freeze({ firstCalculator:[10,30], firstHardwareUpgrade:[60,180], firstModelLevel:[120,300], firstDevelopmentCycle:[1800,3600], firstItem:[1800,5400], firstPatentResearch:1500, firstBreakthrough:129_600 }),
 });
 
 export const FEATURE_UNLOCKS = Object.freeze([

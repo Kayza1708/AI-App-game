@@ -38,6 +38,7 @@ export function createGameplaySnapshot(state, seconds, context = {}) {
   const meaningfulActions = context.meaningfulActions ?? 0;
   return {
     sessionId: context.sessionId, runId: context.runId, playerId: context.playerId,
+    balanceRunId: state.balanceRun.id ?? context.balanceRunId ?? null,
     saveVersion: context.saveVersion, gameVersion: context.gameVersion,
     timestamp: context.timestamp ?? Date.now(), sessionSeconds: seconds, sessionPlaytime: seconds,
     totalLifetimePlaytime: state.statistics.playTimeMs / 1000, runSeconds: state.session.elapsedMs / 1000,

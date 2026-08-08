@@ -12,6 +12,8 @@ import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHa
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
+import { reconcileOffline } from '../systems/OfflineProgressSystem.js';
+import { dismissReward } from '../systems/RewardQueue.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -47,10 +49,13 @@ export class Application {
     this.#started = true;
     const save = this.#saveSystem.load();
     if (save) this.#store.replace(save, 'load');
+    const requestedBalanceRun=new URLSearchParams(globalThis.location?.search??'').get('balanceRun');if(requestedBalanceRun)this.#store.update((state)=>({...state,balanceRun:{id:requestedBalanceRun,startedAt:Date.now(),natural:true}}),'balance-run-start');
+    if (save) this.#store.update((state) => reconcileOffline(state), 'offline-progress');
     this.#store.update((state) => ensureMissions(state), 'mission-period');
     this.#telemetryCall(() => {
       this.#telemetry?.start(this.#store.getState(), { silent: this.#freshDeveloperReset });
       if (!this.#freshDeveloperReset) this.#telemetry?.record({ category: 'session', type: save ? 'save-loaded' : 'save-created', source: 'save', label: save ? 'Save loaded' : 'New save created' }, this.#store.getState());
+      const offline=this.#store.getState().offline.results;if(offline?.effectiveDurationMs)this.#telemetry?.record({category:'retention',type:'offline-progress-applied',source:'offline',label:'Offline progress applied',meaningful:true,metadata:offline},this.#store.getState());if(offline?.effectiveDurationMs)this.#telemetry?.record({category:'retention',type:'welcome-back-shown',source:'offline',label:'Welcome Back shown',popup:true,metadata:{durationMs:offline.durationMs}},this.#store.getState());
     });
     this.#bindEvents();
     try {
@@ -131,12 +136,14 @@ export class Application {
       this.#eventBus.on('consumable:use', (id) => this.#store.update((state)=>useConsumable(state,id),'consumable-used')),
       this.#eventBus.on('cache:open', (id) => this.#store.update((state)=>openCache(state,id),'cache-opened')),
       this.#eventBus.on('gems:spend', (id) => this.#store.update((state)=>buyGemConvenience(state,id),'gems-spent')),
+      this.#eventBus.on('reward:dismiss', (id) => this.#store.update((state)=>dismissReward(state,id),'reward-dismissed')),
       this.#eventBus.on('patent:dismiss', () => this.#store.update(dismissPatentDiscovery, 'patent')),
       this.#eventBus.on('patent:equip', (patentId) => this.#store.update((state) => togglePatentEquipped(state, patentId), 'patent-equip')),
       this.#eventBus.on('patent:upgrade', (patentId) => this.#store.update((state) => upgradePatent(state, patentId), 'patent-upgrade')),
       this.#eventBus.on('patent:slot', () => this.#store.update(buyPatentSlot, 'patent-slot')),
       this.#eventBus.on('developer:cheat', (payload) => this.#applyDeveloperCheat(payload)),
       this.#eventBus.on('developer:reset', () => this.#performDeveloperReset()),
+      this.#eventBus.on('developer:clean-balance', () => this.#performCleanBalanceRun()),
       this.#eventBus.on('developer:opened', () => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'developer-dashboard-opened', source: 'developer', label: 'Developer Analytics opened' }, this.#store.getState()))),
       this.#eventBus.on('developer:tooltip', (label) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'tooltip-opened', source: 'tooltip', label }, this.#store.getState()))),
     );
@@ -148,7 +155,7 @@ export class Application {
   }
 
   #handleUnload = () => this.stop();
-  #handleVisibility = () => this.#telemetryCall(() => document.hidden ? this.#telemetry?.pause(this.#store.getState()) : this.#telemetry?.resume(this.#store.getState()));
+  #handleVisibility = () => { if(document.hidden){this.#gameLoop.stop();this.#saveSystem.save();this.#telemetryCall(()=>this.#telemetry?.pause(this.#store.getState()));return;}const before=this.#store.getState();this.#store.update((state)=>reconcileOffline(state),'offline-progress');const after=this.#store.getState();if(after!==before&&after.offline.results?.effectiveDurationMs)this.#telemetryCall(()=>this.#telemetry?.record({category:'retention',type:'offline-progress-applied',source:'offline',label:'Background progress applied',meaningful:true,metadata:after.offline.results},after));this.#telemetryCall(()=>this.#telemetry?.resume(after));this.#gameLoop.start(); };
 
   #telemetryCall(callback) {
     if (this.#telemetry?.disabled) return null;
@@ -173,6 +180,8 @@ export class Application {
       },
     });
   }
+
+  async #performCleanBalanceRun(){if(!this.#devMode||!window.confirm('Start a clean natural balance run? This deletes the save and all analytics history.'))return;const id=`balance-${Date.now()}`;await this.#developerReset.reset({telemetry:this.#telemetry,replaceState:()=>{},reload:()=>{const location=new URL(window.location.href);location.searchParams.set('dev','1');location.searchParams.set('balanceRun',id);window.location.replace(location.toString())}})}
 
   #applyDeveloperCheat({ type, eventId, value }) {
     if (!this.#devMode) return;

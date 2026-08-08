@@ -1,4 +1,4 @@
-export const ANALYTICS_SCHEMA_VERSION = 2;
+export const ANALYTICS_SCHEMA_VERSION = 3;
 export const MAX_EVENTS = 10_000;
 export const EVENT_CATEGORIES = ['session','purchase','progression','decision','economy','active-play','world','ui','developer','funnel','feature','balance','patent'];
 
@@ -10,6 +10,7 @@ export function createTelemetryEvent(input, context) {
     sessionId: String(input.sessionId ?? context.sessionId ?? 'unknown-session'),
     runId: String(input.runId ?? context.runId ?? 'unknown-run'),
     playerId: String(input.playerId ?? context.playerId ?? 'anonymous-local-player'),
+    balanceRunId: input.balanceRunId ?? context.balanceRunId ?? null,
     saveVersion: Number(input.saveVersion ?? context.saveVersion ?? 0),
     gameVersion: String(input.gameVersion ?? context.gameVersion ?? 'unknown'),
     prestigeLevel: Number(input.prestigeLevel ?? context.prestigeLevel ?? 0),

@@ -28,6 +28,7 @@ export class SaveSystem {
       const state = this.#store.getState();
       const nextState = {
         ...state,
+        offline: { ...state.offline, lastActiveTimestamp: Date.now() },
         session: { ...state.session, lastSavedAt: Date.now() },
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
@@ -87,6 +88,9 @@ export class SaveSystem {
       artifacts: { ...defaults.artifacts, ...asObject(save.artifacts), owned: asArray(save.artifacts?.owned), collection: asArray(save.artifacts?.collection) },
       marketplace: { ...defaults.marketplace, ...asObject(save.marketplace), enabled: false, authority: 'server-required', listings: [], pendingTransactions: [] },
       futureMeta: { ...defaults.futureMeta, ...asObject(save.futureMeta), materials: numericMap(save.futureMeta?.materials), blueprints: asArray(save.futureMeta?.blueprints) },
+      offline: { ...defaults.offline, ...asObject(save.offline), capMs: Number.isFinite(save.offline?.capMs) ? Math.max(0, save.offline.capMs) : defaults.offline.capMs, results: asObject(save.offline?.results) },
+      rewards: { ...defaults.rewards, ...asObject(save.rewards), queue: asArray(save.rewards?.queue), history: asArray(save.rewards?.history) },
+      balanceRun: { ...defaults.balanceRun, ...asObject(save.balanceRun) },
       settings: { ...defaults.settings, ...asObject(save.settings) }, statistics: numericRecord(defaults.statistics, save.statistics),
       run: numericRecord(defaults.run, save.run),
       session: { ...defaults.session, ...asObject(save.session) }, ui: { ...defaults.ui, ...asObject(save.ui), toast: asObject(save.ui?.toast).message ? save.ui.toast : null },

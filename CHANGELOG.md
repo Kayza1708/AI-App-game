@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.13.0 — Offline progression and Balance Lab
+
+- Added canonical, capped offline simulation with lifecycle-safe reconciliation and an aggregated Welcome Back summary.
+- Added a priority Reward Presentation Queue, readable return milestones, and mobile-friendly goal horizons.
+- Reworked missions around stable seeded rotation, feature-safe category pools, baseline-relative targets, and forgiving Daily completion streaks.
+- Added contextual rewarded-placement metadata and expanded telemetry/reporting for offline, retention, Items, Gems, ads, reward pacing, prestige, builds, and balance-run identity.
+- Added a long-duration Balance Lab with 13 strategy agents, central pacing targets, actual prestige inversion, and hour-to-month diagnostic runs.
+- Bumped saves to version 12 with migrations for offline state, reward queue, mission seeds/streaks, retention metadata, and clean balance-run IDs.
+
 ## 0.12.0 — Item economy and long-term meta foundations
 
 - Added 30 handcrafted Model Items, six slot types, three prototype Sets, immutable Item instances, Inventory equipment, favorites, replacement, and build summaries.
