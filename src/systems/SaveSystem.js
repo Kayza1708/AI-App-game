@@ -79,6 +79,14 @@ export class SaveSystem {
       energy: { ...defaults.energy, ...save.energy, buildings: { ...defaults.energy.buildings, ...save.energy?.buildings } },
       patents: { ...defaults.patents, ...asObject(save.patents), discovered: asArray(save.patents?.discovered), equipped: asArray(save.patents?.equipped), history: asArray(save.patents?.history), levels: asObject(save.patents?.levels), intInvested: asObject(save.patents?.intInvested) }, premium: { ...defaults.premium, ...asObject(save.premium), purchases: asArray(save.premium?.purchases), adCooldowns: { ...defaults.premium.adCooldowns, ...asObject(save.premium?.adCooldowns) } },
       retention: { ...defaults.retention, ...asObject(save.retention), claimedDaily: { ...defaults.retention.claimedDaily, ...asObject(save.retention?.claimedDaily) }, claimedWeekly: { ...defaults.retention.claimedWeekly, ...asObject(save.retention?.claimedWeekly) } },
+      inventory: { ...defaults.inventory, ...asObject(save.inventory), instances: asArray(save.inventory?.instances).filter((item) => item && typeof item.instanceId === 'string' && typeof item.catalogId === 'string'), equipped: asObject(save.inventory?.equipped), collection: { ...defaults.inventory.collection, ...asObject(save.inventory?.collection), items: asArray(save.inventory?.collection?.items), rarities: asArray(save.inventory?.collection?.rarities), sets: asArray(save.inventory?.collection?.sets) }, newItem: null },
+      consumables: numericMap(save.consumables), rewardCaches: numericMap(save.rewardCaches),
+      missions: { ...defaults.missions, ...asObject(save.missions), daily: asArray(save.missions?.daily), weekly: asArray(save.missions?.weekly), monthly: asArray(save.missions?.monthly), claims: asObject(save.missions?.claims) },
+      gemEconomy: { ...defaults.gemEconomy, ...asObject(save.gemEconomy), history: asArray(save.gemEconomy?.history) },
+      rewardedBoosts: { ...defaults.rewardedBoosts, ...asObject(save.rewardedBoosts), claims: asObject(save.rewardedBoosts?.claims) },
+      artifacts: { ...defaults.artifacts, ...asObject(save.artifacts), owned: asArray(save.artifacts?.owned), collection: asArray(save.artifacts?.collection) },
+      marketplace: { ...defaults.marketplace, ...asObject(save.marketplace), enabled: false, authority: 'server-required', listings: [], pendingTransactions: [] },
+      futureMeta: { ...defaults.futureMeta, ...asObject(save.futureMeta), materials: numericMap(save.futureMeta?.materials), blueprints: asArray(save.futureMeta?.blueprints) },
       settings: { ...defaults.settings, ...asObject(save.settings) }, statistics: numericRecord(defaults.statistics, save.statistics),
       run: numericRecord(defaults.run, save.run),
       session: { ...defaults.session, ...asObject(save.session) }, ui: { ...defaults.ui, ...asObject(save.ui), toast: asObject(save.ui?.toast).message ? save.ui.toast : null },
@@ -89,4 +97,5 @@ export class SaveSystem {
 function asObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
 function asArray(value, fallback = []) { return Array.isArray(value) ? value : fallback; }
 function numericRecord(defaults, value) { const source = asObject(value); return Object.fromEntries(Object.entries(defaults).map(([key, initial]) => [key, Number.isFinite(source[key]) && source[key] >= 0 ? source[key] : initial])); }
+function numericMap(value) { return Object.fromEntries(Object.entries(asObject(value)).filter(([, amount]) => Number.isFinite(amount) && amount >= 0)); }
 function normalizedAllocation(defaults, value) { const allocation = numericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }

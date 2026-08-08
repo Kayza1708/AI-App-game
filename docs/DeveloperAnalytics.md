@@ -96,3 +96,7 @@ Automatic reports add Compute, Energy, and Market utilization, idle percentage, 
 ## Milestone 11 progression telemetry
 
 Every one-second sample includes the complete active balance configuration, next lifetime-INT unlock, feature unlock order and timing, average INT per run, intervals between Development Cycles, Technology choices, abandoned unlock paths, and deployed Model usage distribution. These fields come from the same configuration and unlock predicates as the live simulation.
+
+## Milestone 12 collection telemetry
+
+One-second samples now include Inventory size/capacity, rarity distribution, equipped and unused high-rarity Items, Gem earnings/spending/balance, mission completion/claims, rewarded interaction counts, Consumables held/used, and inferred company build. State-diff observation emits Item acquisition/equipment/favorite events, mission claims, and Gem currency events from real state transitions. Developer grants are marked non-natural and never enter standard balance averages.

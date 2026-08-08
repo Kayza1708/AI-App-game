@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.12.0 — Item economy and long-term meta foundations
+
+- Added 30 handcrafted Model Items, six slot types, three prototype Sets, immutable Item instances, Inventory equipment, favorites, replacement, and build summaries.
+- Connected Item and Artifact modifiers to canonical Model, Hardware, Market, Training, Research, and Energy calculations.
+- Added 10 Consumables, four non-paid reward caches, feature-safe daily/weekly/monthly missions, legitimate Gem sources/sinks, and period-safe persistence.
+- Added an explicit web-only Rewarded Boost provider with cooldowns and caps; no ad starts automatically and real-money products remain inactive metadata.
+- Bumped saves to version 11 with backward-compatible defaults for Inventory, missions, Gems, boosts, Artifacts, and disabled marketplace metadata.
+- Extended local telemetry with collection, mission, Gem, boost, rarity, equipment, Consumable, and inferred-build measurements.
+
 ## Emergency white-screen recovery
 
 - Removed a module-parse-time lookbehind expression from number formatting for compatibility with older mobile WebViews.

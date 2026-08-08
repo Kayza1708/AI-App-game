@@ -1,7 +1,7 @@
 import { BALANCE } from '../config/balance.js';
 
-export const SAVE_VERSION = 10;
-export const GAME_VERSION = '0.11.0';
+export const SAVE_VERSION = 11;
+export const GAME_VERSION = '0.12.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -30,7 +30,7 @@ export const HARDWARE_CATALOG = [
 }));
 
 export const MODEL_SKILLS = ['quality','reasoning','knowledge','context','coding','vision','creativity','math','efficiency','energy','latency','popularity','enterprise','research','safety','autonomy'];
-export const MODEL_CATALOG = [
+const MODEL_BASE = [
   {id:'tinyChat',name:'TinyChat',role:'Consumer',specialty:'Fast, efficient access for a large free audience.',intCost:0,trainingScale:.5,identity:{adoption:.3,energyEfficiency:.2},stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0}},
   {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:3,trainingScale:3,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
   {id:'gptClass',name:'GPT-Class',role:'Generalist',specialty:'Broad language capability with flexible consumer and business builds.',intCost:8,trainingScale:7,identity:{quality:.15,marketSize:.12},stats:{quality:5,reasoning:6,knowledge:6,context:6,coding:6,vision:1,creativity:6,math:6,efficiency:6,energy:5,latency:6,popularity:7,enterprise:5,research:5,safety:5,autonomy:3}},
@@ -41,6 +41,19 @@ export const MODEL_CATALOG = [
   {id:'agi',name:'AGI',role:'General Intelligence',specialty:'Recursive improvement and stronger Development Cycle Intelligence.',intCost:135,trainingScale:300,identity:{intelligence:.35,quality:.3},stats:{quality:16,reasoning:16,knowledge:16,context:16,coding:14,vision:12,creativity:14,math:16,efficiency:6,energy:4,latency:5,popularity:11,enterprise:12,research:14,safety:11,autonomy:14}},
   {id:'asiSeed',name:'ASI Seed',role:'Post-human',specialty:'A configurable seed for radically specialized late-game companies.',intCost:225,trainingScale:600,identity:{allOutput:.25,intelligence:.5},stats:{quality:20,reasoning:20,knowledge:20,context:20,coding:18,vision:18,creativity:18,math:20,efficiency:7,energy:4,latency:6,popularity:14,enterprise:15,research:18,safety:14,autonomy:20}},
 ];
+
+const MODEL_ARCHETYPES = {
+  tinyChat:['Consumer',['popularity','efficiency','adoption'],['reasoning','enterprise'],['consumer','inference','adoption']],
+  smartChat:['Coding / Research',['coding','research','latency'],['enterprise'],['research','training','compute']],
+  gptClass:['Generalist',['quality','context'],[],['consumer','enterprise','reasoning']],
+  omni:['Multimodal',['vision','creativity','popularity'],['energy'],['consumer','adoption','inference']],
+  research:['Scientific / Research',['research','reasoning','knowledge'],['consumer'],['research','reasoning','training']],
+  agent:['Autonomous Agent',['autonomy','coding','agents'],['energy','safety'],['agent','automation','compute']],
+  enterprise:['Enterprise',['enterprise','safety','context'],['adoption'],['enterprise','safety','inference']],
+  agi:['General Intelligence',['reasoning','research','autonomy'],['energy'],['reasoning','research','agent']],
+  asiSeed:['Frontier Intelligence',['research','autonomy','intelligence'],['energy'],['experimental','space','quantum']],
+};
+export const MODEL_CATALOG = MODEL_BASE.map((model) => { const [archetype,strengths,weaknesses,tags]=MODEL_ARCHETYPES[model.id]; return { ...model, archetype, strengths, weaknesses, tags, itemSlots: ['architecture','compute'] }; });
 
 const HARDWARE_UPGRADE_TYPES = [
   ['cooling', 'GPU Cooling', 'hardwareOutput', 0.02], ['tensor', 'Tensor Optimizer', 'hardwareOutput', 0.03],
@@ -214,7 +227,7 @@ export const GEM_SHOP_ITEMS = [
 export function createDefaultState() {
   return {
     version: SAVE_VERSION,
-    profile: { companyName: 'Singularity Labs', createdAt: Date.now() },
+    profile: { companyName: 'Singularity Labs', createdAt: Date.now(), localOwnerId: `local-${Date.now()}` },
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
     model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, skills: {} } } },
@@ -229,9 +242,17 @@ export function createDefaultState() {
     patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3 },
     premium: { purchases: [], adCooldowns: {} },
     retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null },
+    inventory: { instances: [], equipped: {}, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },
+    consumables: {}, rewardCaches: {},
+    missions: { dailyPeriodId: null, weeklyPeriodId: null, monthlyPeriodId: null, daily: [], weekly: [], monthly: [], claims: {}, generatedAt: null },
+    gemEconomy: { earned: 0, spent: 0, consumablesUsed: 0, history: [] },
+    rewardedBoosts: { periodId: null, claims: {}, offered: 0, started: 0, completed: 0 },
+    artifacts: { owned: [], collection: [] },
+    marketplace: { enabled: false, authority: 'server-required', listings: [], pendingTransactions: [] },
+    futureMeta: { materials: {}, blueprints: [], seasonalChallenge: null, pass: null },
     tutorial: { step: 0, completed: false },
     settings: { numberNotation: 'compact', sound: true },
-    statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, playTimeMs: 0 },
+    statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
     run: { creditsEarned: 0, computeProduced: 0 },
     session: { elapsedMs: 0, lastSavedAt: null },
     ui: { activeView: 'dashboard', sidebarOpen: false, toast: null },

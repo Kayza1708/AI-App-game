@@ -4,6 +4,7 @@ export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', eyebrow: 'Command' },
   { id: 'hardware', label: 'Hardware', eyebrow: 'Infrastructure' },
   { id: 'model', label: 'AI Model', eyebrow: 'Training' },
+  { id: 'inventory', label: 'Inventory', eyebrow: 'Model Builds' },
   { id: 'company', label: 'Company', eyebrow: 'Growth' },
   { id: 'statistics', label: 'Statistics', eyebrow: 'Telemetry' },
   { id: 'allocation', label: 'Allocation', eyebrow: 'Compute' },

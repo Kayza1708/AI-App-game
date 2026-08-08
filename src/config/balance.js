@@ -23,6 +23,8 @@ export const BALANCE = Object.freeze({
   }),
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),
   events: Object.freeze({ firstDelayMs: 720_000, minimumDelayMs: 600_000, durationMs: 180_000 }),
+  items: Object.freeze({ unlockInt: 15, baseSlots: 2, maxSlots: 6, inventoryCapacity: 50, rarityWeights: Object.freeze({Common:55,Uncommon:25,Rare:13,Epic:5,Legendary:1.8,Mythic:.2}) }),
+  missions: Object.freeze({ dailyCredits: 300, dailyGems: 1, weeklyGems: 3, monthlyGems: 10 }),
 });
 
 export const FEATURE_UNLOCKS = Object.freeze([
@@ -30,6 +32,8 @@ export const FEATURE_UNLOCKS = Object.freeze([
   { id: 'development', name: 'Development Cycles', int: 1, views: ['strategy'], description: 'Spend permanent Intelligence and plan the next run.' },
   { id: 'marketing', name: 'Marketing Division', int: 4, views: ['company', 'market'], description: 'Demand, pricing, Marketing, Reputation, and Adoption.' },
   { id: 'research', name: 'Research Division', int: 10, views: ['allocation'], description: 'Research Compute and strategic allocation.' },
+  { id: 'items', name: 'Model Equipment', int: 15, views: ['inventory'], description: 'Collect equipment and create specialized Model builds.' },
+  { id: 'missions', name: 'Mission Network', int: 4, views: ['missions'], description: 'Daily goals and long-term account challenges.' },
   { id: 'patents', name: 'Patent Office', int: 20, views: ['patents'], description: 'Permanent discoveries and Patent loadouts.' },
   { id: 'modelSkills', name: 'Model Development', int: 35, views: [], description: 'Spend Model Upgrade Points on specialized skills.' },
   { id: 'energy', name: 'Energy Grid', int: 55, views: ['energy'], description: 'Power generation, demand, and efficiency.' },
@@ -41,7 +45,7 @@ export const FEATURE_UNLOCKS = Object.freeze([
   { id: 'advancedArchitecture', name: 'Advanced AI Architecture', int: 500, views: [], description: 'Advanced Model eras and architecture Tech.' },
   { id: 'quantum', name: 'Quantum Computing', int: 800, views: [], description: 'Quantum-scale Research and Compute.' },
   { id: 'planetary', name: 'Planetary Compute', int: 1200, views: [], description: 'Infrastructure beyond Earth.' },
-  { id: 'account', name: 'Account Progression', int: 20, views: ['achievements', 'gemshop', 'missions', 'statistics'], description: 'Long-term account rewards and records.' },
+  { id: 'account', name: 'Account Progression', int: 20, views: ['achievements', 'gemshop', 'statistics'], description: 'Long-term account rewards and records.' },
   { id: 'breakthrough', name: 'Breakthrough', int: 10_000, views: [], description: 'A second prestige layer for mature civilizations.' },
 ]);
 

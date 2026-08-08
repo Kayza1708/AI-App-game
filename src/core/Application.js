@@ -8,7 +8,10 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
-import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, claimRetentionMission, claimRewardedAd, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
+import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
+import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
+import { RewardedBoostService } from '../systems/RewardedBoostService.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -24,6 +27,7 @@ export class Application {
   #developerReset;
   #freshDeveloperReset = false;
   #onRuntimeError;
+  #rewardedBoosts = new RewardedBoostService();
 
   constructor(root, { onRuntimeError = null } = {}) {
     this.#onRuntimeError = onRuntimeError;
@@ -43,6 +47,7 @@ export class Application {
     this.#started = true;
     const save = this.#saveSystem.load();
     if (save) this.#store.replace(save, 'load');
+    this.#store.update((state) => ensureMissions(state), 'mission-period');
     this.#telemetryCall(() => {
       this.#telemetry?.start(this.#store.getState(), { silent: this.#freshDeveloperReset });
       if (!this.#freshDeveloperReset) this.#telemetry?.record({ category: 'session', type: save ? 'save-loaded' : 'save-created', source: 'save', label: save ? 'Save loaded' : 'New save created' }, this.#store.getState());
@@ -114,11 +119,18 @@ export class Application {
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
       this.#eventBus.on('energy:buy', (buildingId) => this.#store.update((state) => buyEnergyBuilding(state, buildingId), 'energy')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
-      this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => claimRewardedAd(state, reward), 'rewarded-ad')),
+      this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => this.#rewardedBoosts.activate(state, reward), 'rewarded-ad')),
       this.#eventBus.on('model:improve', ({ modelId, path }) => this.#store.update((state) => improveModel(state, modelId, path), 'model')),
       this.#eventBus.on('model:deploy', (modelId) => this.#store.update((state) => toggleModelDeployment(state, modelId), 'model')),
       this.#eventBus.on('retention:login', () => this.#store.update(claimLoginReward, 'retention')),
-      this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimRetentionMission(state, missionId), 'retention')),
+      this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimMission(state, missionId), 'mission')),
+      this.#eventBus.on('item:equip', ({instanceId,modelId}) => this.#store.update((state)=>equipItem(state,instanceId,modelId),'item-equipped')),
+      this.#eventBus.on('item:unequip', ({modelId,slotType}) => this.#store.update((state)=>unequipItem(state,modelId,slotType),'item-unequipped')),
+      this.#eventBus.on('item:favorite', (instanceId) => this.#store.update((state)=>toggleItemFavorite(state,instanceId),'item-favorited')),
+      this.#eventBus.on('item:dismiss', () => this.#store.update((state)=>({...state,inventory:{...state.inventory,newItem:null}}),'item-dismissed')),
+      this.#eventBus.on('consumable:use', (id) => this.#store.update((state)=>useConsumable(state,id),'consumable-used')),
+      this.#eventBus.on('cache:open', (id) => this.#store.update((state)=>openCache(state,id),'cache-opened')),
+      this.#eventBus.on('gems:spend', (id) => this.#store.update((state)=>buyGemConvenience(state,id),'gems-spent')),
       this.#eventBus.on('patent:dismiss', () => this.#store.update(dismissPatentDiscovery, 'patent')),
       this.#eventBus.on('patent:equip', (patentId) => this.#store.update((state) => togglePatentEquipped(state, patentId), 'patent-equip')),
       this.#eventBus.on('patent:upgrade', (patentId) => this.#store.update((state) => upgradePatent(state, patentId), 'patent-upgrade')),
@@ -177,6 +189,15 @@ export class Application {
       if (type === 'low-energy') return { ...state, hardware: { ...state.hardware, gpuServer: state.hardware.gpuServer + 100 }, energy: { ...state.energy, buildings: Object.fromEntries(Object.keys(state.energy.buildings).map((id) => [id, 0])) } };
       if (type === 'trigger-event') return { ...state, world: { ...state.world, activeEvent: WORLD_EVENTS.find(({ id }) => id === eventId) ?? WORLD_EVENTS[0] } };
       if (type === 'cycle-eligible') return { ...state, run: { ...state.run, computeProduced: Math.max(BALANCE.intelligence.computeScale, state.run.computeProduced) } };
+      if (type === 'unlock-items') return { ...state, meta: { ...state.meta, totalIntelligence: Math.max(15,state.meta.totalIntelligence) } };
+      if (type === 'grant-common') return acquireItem(state,'efficient-transformer','developer',Date.now(),{bypassUnlock:true});
+      if (type === 'grant-rare') return acquireItem(state,'scientific-corpus','developer',Date.now(),{bypassUnlock:true});
+      if (type === 'grant-epic') return acquireItem(state,'photonic-accelerator','developer',Date.now(),{bypassUnlock:true});
+      if (type === 'grant-legendary') return acquireItem(state,'quantum-tensor','developer',Date.now(),{bypassUnlock:true});
+      if (type === 'grant-consumable') return { ...state, consumables: { ...state.consumables, 'quantum-chip': (state.consumables['quantum-chip']??0)+1 } };
+      if (type === 'grant-cache') return { ...state, rewardCaches: { ...state.rewardCaches, 'weekly-cache': (state.rewardCaches['weekly-cache']??0)+1 } };
+      if (type === 'clear-inventory') return { ...state, inventory: { ...state.inventory, instances: [], equipped: {}, newItem: null } };
+      if (type === 'generate-missions') return ensureMissions({ ...state, missions: { ...state.missions, dailyPeriodId:null, weeklyPeriodId:null, monthlyPeriodId:null } });
       if (type === 'reset-run') { const fresh = createDefaultState(); return { ...fresh, resources: { ...fresh.resources, gems: state.resources.gems }, meta: state.meta, patents: state.patents, premium: state.premium, retention: state.retention, settings: state.settings, tutorial: { step: 10, completed: true } }; }
       return state;
     }, 'developer-cheat');

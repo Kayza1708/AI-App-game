@@ -4,9 +4,12 @@ import {
   canBuyUpgrade, canDevelop, cycleIntelligence, economySnapshot, effectiveHardwareCost,
   effectiveModelStat, energyBuildingCost, energyEfficiency,
   energyProduction, energyUse, modelImprovementCost, objectiveProgress,
-  isHardwareUnlocked, patentResearchPerSecond, patentResearchRequired, rawHardwareContribution, retentionMissions,
+  isHardwareUnlocked, patentResearchPerSecond, patentResearchRequired, rawHardwareContribution,
   trainingRatePerSecond, trainingRequiredForState,
 } from '../systems/GameSystem.js';
+import { ITEM_CATALOG } from '../data/itemCatalog.js';
+import { missionsWithProgress } from '../systems/MissionSystem.js';
+import { inferCompanyBuild } from '../systems/ModifierSystem.js';
 
 export const SAMPLE_INTERVALS = [1, 5, 15, 30];
 export const MAX_SAMPLES = 10_000;
@@ -89,6 +92,16 @@ export function createGameplaySnapshot(state, seconds, context = {}) {
     equippedPatentSlots: state.patents.equipped.length,
     intelligenceInvestedInPatents: Object.values(state.patents.intInvested).reduce((sum, value) => sum + value, 0),
     activeModifiers: state.world.modifiers.length,
+    inventorySize: state.inventory.instances.length,
+    inventoryCapacity: state.inventory.capacity,
+    rarityDistribution: Object.fromEntries(['Common','Uncommon','Rare','Epic','Legendary','Mythic'].map(rarity=>[rarity,state.inventory.instances.filter(instance=>ITEM_CATALOG.find(item=>item.id===instance.catalogId)?.rarity===rarity).length])),
+    equippedItemCount: state.inventory.instances.filter(instance=>instance.equippedModelId).length,
+    unusedHighRarityItems: state.inventory.instances.filter(instance=>!instance.equippedModelId&&['Epic','Legendary','Mythic'].includes(ITEM_CATALOG.find(item=>item.id===instance.catalogId)?.rarity)).length,
+    gemsEarned: state.gemEconomy.earned, gemsSpent: state.gemEconomy.spent, gemBalance: state.resources.gems,
+    missionCompletion: { completed: missionsWithProgress(state).filter(mission=>mission.progress>=mission.target).length, claimed: Object.keys(state.missions.claims).length, total: missionsWithProgress(state).length },
+    rewardedAdInteractions: { offered:state.rewardedBoosts.offered,started:state.rewardedBoosts.started,completed:state.rewardedBoosts.completed },
+    consumablesHeld: Object.values(state.consumables).reduce((sum,value)=>sum+value,0), consumablesUsed: state.gemEconomy.consumablesUsed,
+    inferredBuild: inferCompanyBuild(state),
     activeCooldowns: Object.entries(state.premium.adCooldowns).filter(([, expiresAt]) => expiresAt > (context.timestamp ?? Date.now())).map(([id, expiresAt]) => ({ id, expiresAt })),
     worldEventCooldownSeconds: Math.max(0, state.world.nextEventMs / 1000),
     effectiveMultipliers: effectiveMultipliers(state, economy),
@@ -128,7 +141,7 @@ export function analyzeAffordability(state, economy = economySnapshot(state)) {
 
 function claimableRewards(state) {
   return OBJECTIVES.filter((objective) => !state.objectives[objective.id] && objectiveProgress(state, objective) >= objective.target).length
-    + retentionMissions(state).filter((mission) => !state.retention.claimedDaily[mission.id] && mission.progress >= mission.target).length
+    + missionsWithProgress(state).filter((mission) => !mission.claimed && mission.progress >= mission.target).length
     + TECH_NODES.filter((node) => !state.meta.techNodes.includes(node.id) && state.meta.intelligence >= node.cost && (!node.requires || state.meta.techNodes.includes(node.requires))).length;
 }
 function upgradeRelevant(effect, bottleneck) { const map = { 'DEMAND LIMITED': ['demand','marketing','appeal','reputation','adoption','marketSize'], 'CAPACITY LIMITED': ['inference','hardwareOutput','allOutput'], 'Energy Limited': ['hardwareCost','energyOutput'], 'Training Limited': ['training','hardwareOutput'], 'Credits Limited': ['revenue','demand','enterprise'] }; return (map[bottleneck] ?? []).includes(effect) || ['allOutput','hardwareCost'].includes(effect); }
