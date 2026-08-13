@@ -88,3 +88,10 @@
 - Bumped saves to version 9 and migrated Milestone 9 Model IDs and skill progress to the authored Model order.
 - Closed the repeat-Prestige exploit by requiring 250,000 Credits earned in the current run plus Model Level 5; lifetime Credits and permanent Model Levels can no longer make a fresh run immediately eligible.
 - Rate-limited automatic Hardware purchasing and record each automatic purchase as a real purchase event instead of hiding it behind a generic automation label.
+
+## Runtime state contract recovery
+
+- Traced the startup crash through `computePerSecond` into modifier aggregation, where pre-Item state could omit `inventory` and `artifacts`.
+- Added a canonical runtime state contract at StateStore, migration, UI, telemetry, and economy boundaries.
+- Added a canonical default economy snapshot so every UI/telemetry field exists before production calculations run.
+- Added startup regression coverage for fresh, migrated, reset, Development Cycle, browser reload, offline return, and Developer Mode paths.

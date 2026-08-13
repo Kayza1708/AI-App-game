@@ -1,5 +1,6 @@
 import { createDefaultState, MODEL_CATALOG, SAVE_VERSION } from '../data/defaultState.js';
 import { FEATURE_UNLOCKS } from '../config/balance.js';
+import { ensureGameState } from '../core/GameStateContract.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
 const SAVE_INTERVAL_MS = 15_000;
@@ -68,7 +69,7 @@ export class SaveSystem {
     for (const feature of FEATURE_UNLOCKS) if (feature.int <= (save.meta?.totalIntelligence ?? 0) && featureUnlockTimes[feature.id] === undefined) featureUnlockTimes[feature.id] = save.statistics?.playTimeMs ?? 0;
     const requestedDeployment = [...new Set(asArray(save.model?.deployed, defaults.model.deployed).map((id) => legacyModelIds[id] ?? id).filter((id) => owned.includes(id)))];
     const deployed = requestedDeployment.length ? requestedDeployment.slice(0, 3) : [defaults.model.activeId];
-    return {
+    return ensureGameState({
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...asObject(save.profile) }, resources: numericRecord(defaults.resources, save.resources),
       hardware: numericRecord(defaults.hardware, save.hardware), model: { ...defaults.model, ...asObject(save.model), activeId, trainingTarget: activeId, owned, deployed, improvements: asObject(save.model?.improvements), progress },
@@ -94,7 +95,7 @@ export class SaveSystem {
       settings: { ...defaults.settings, ...asObject(save.settings) }, statistics: numericRecord(defaults.statistics, save.statistics),
       run: numericRecord(defaults.run, save.run),
       session: { ...defaults.session, ...asObject(save.session) }, ui: { ...defaults.ui, ...asObject(save.ui), toast: asObject(save.ui?.toast).message ? save.ui.toast : null },
-    };
+    });
   }
 }
 

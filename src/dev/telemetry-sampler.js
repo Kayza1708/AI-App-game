@@ -10,6 +10,7 @@ import {
 import { ITEM_CATALOG } from '../data/itemCatalog.js';
 import { missionsWithProgress } from '../systems/MissionSystem.js';
 import { inferCompanyBuild } from '../systems/ModifierSystem.js';
+import { ensureGameState } from '../core/GameStateContract.js';
 
 export const SAMPLE_INTERVALS = [1, 5, 15, 30];
 export const MAX_SAMPLES = 10_000;
@@ -27,7 +28,8 @@ export class TelemetrySampler {
   }
 }
 
-export function createGameplaySnapshot(state, seconds, context = {}) {
+export function createGameplaySnapshot(input, seconds, context = {}) {
+  const state = ensureGameState(input);
   const economy = economySnapshot(state);
   const patentRate = patentResearchPerSecond(state);
   const patentRequired = PATENTS[state.patents.discovered.length] ? patentResearchRequired(state.patents.discovered.length) : 0;

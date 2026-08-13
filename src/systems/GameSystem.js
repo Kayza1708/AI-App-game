@@ -2,6 +2,7 @@ import { ACHIEVEMENTS, createDefaultState, ENERGY_BUILDINGS, GEM_SHOP_ITEMS, HAR
 import { BALANCE, curveValue, FEATURE_UNLOCKS, featureUnlocked, powerCurve, skillUnlocked } from '../config/balance.js';
 import { modifierValue } from './ModifierSystem.js';
 import { ensureMissions } from './MissionSystem.js';
+import { ensureGameState } from '../core/GameStateContract.js';
 
 export const BASE_ENERGY_PRODUCTION = BALANCE.hardware.energyBase;
 
@@ -41,7 +42,8 @@ export function hardwareContribution(state, item) {
 }
 export function rawHardwareContribution(state, item) { return item.computePerSecond * state.hardware[item.id] * (1 + milestoneBonus(state, 'hardwareOutput', item) + upgradeBonus(state, 'hardwareOutput', item.id)); }
 
-export function computePerSecond(state) {
+export function computePerSecond(input) {
+  const state = ensureGameState(input);
   const raw = HARDWARE_CATALOG.reduce((total, item) => total + rawHardwareContribution(state, item), 0);
   return raw * hardwareGlobalMultiplier(state) * energyEfficiency(state);
 }
@@ -63,7 +65,8 @@ export function trainingRequiredForState(state) { return trainingRequired(active
 function trainingMultiplier(state) { const skills=(modelImprovementLevel(state,state.model.activeId,'coding')+modelImprovementLevel(state,state.model.activeId,'reasoning')+modelImprovementLevel(state,state.model.activeId,'efficiency'))*.02;return Math.max(.1,1+upgradeBonus(state,'training')+strategicBonus(state,'training')+strategicBonus(state,'quality')*.5+deployedIdentityBonus(state,'coding')+skills) }
 export function trainingRatePerSecond(state) { return computePerSecond(state) * state.allocation.training / 100 * trainingMultiplier(state); }
 
-export function marketMetrics(state) {
+export function marketMetrics(input) {
+  const state = ensureGameState(input);
   const deployed = MODEL_CATALOG.filter((model) => state.model.deployed.includes(model.id));
   const highestTier = HARDWARE_CATALOG.reduce((tier, item) => state.hardware[item.id] > 0 ? Math.max(tier, item.tier) : tier, 0);
   const deployedLevel = Math.max(1, ...deployed.map((model) => state.model.progress?.[model.id]?.level ?? 1));
@@ -87,7 +90,24 @@ export function marketMetrics(state) {
 
 export function userGrowthPerSecond(state) { const target = marketMetrics(state).target; return (target - state.resources.users) * BALANCE.market.userConvergence; }
 
-export function economySnapshot(state) {
+export function createDefaultEconomySnapshot() {
+  return {
+    credits: 0, creditsPerSecond: 0, revenuePerSecond: 0,
+    compute: 0, computePerSecond: 0, computeConsumed: 0, computeWasted: 0, storedComputeRate: 0,
+    trainingCompute: 0, research: 0, researchPerSecond: 0,
+    users: 0, usersPerSecond: 0, targetUsers: 0, unlockedMarketSize: 0, demand: 0, capacity: 0,
+    utilization: 0, revenuePerUser: 0, priceMultiplier: 1, marketing: 0, marketingBonus: 1,
+    reputation: 1, adoption: 0, energyProduction: BASE_ENERGY_PRODUCTION, energyDemand: 0,
+    energySurplus: BASE_ENERGY_PRODUCTION, energyEfficiency: 1, currentHardwareTier: 0,
+    currentModel: MODEL_CATALOG[0].id, trainingTarget: MODEL_CATALOG[0].id,
+    modelLevel: 1, modelXp: 0, modelUpgradePoints: 0, currentPatent: null, currentObjective: null,
+    developmentCycle: 0, runCreditsEarned: 0, runComputeProduced: 0, intelligence: 0, gems: 0,
+    bottleneck: 'CAPACITY LIMITED',
+  };
+}
+
+export function economySnapshot(input) {
+  const state = ensureGameState(input);
   const compute = computePerSecond(state);
   const market = marketMetrics(state);
   const energyOut = energyProduction(state);
@@ -97,7 +117,7 @@ export function economySnapshot(state) {
   const computeConsumed = inferenceRate * market.utilization + compute * (state.allocation.research + state.allocation.data + state.allocation.agents + (state.model.trainingActive ? state.allocation.training : 0)) / 100;
   const storedComputeRate = state.model.trainingActive ? 0 : trainingRate;
   const currentObjective = OBJECTIVES.find((objective) => !state.objectives[objective.id] && objectiveProgress(state, objective) < objective.target) ?? null;
-  return {
+  return { ...createDefaultEconomySnapshot(),
     credits: state.resources.credits, creditsPerSecond: market.revenue, revenuePerSecond: market.revenue,
     compute: state.resources.compute, computePerSecond: compute, computeConsumed, computeWasted: Math.max(0, inferenceRate * (1 - market.utilization)), storedComputeRate,
     trainingCompute: trainingRate, research: state.resources.research, researchPerSecond: compute * state.allocation.research / 100,

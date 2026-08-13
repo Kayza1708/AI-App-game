@@ -51,3 +51,11 @@ The verified startup chain is:
 - The repository has no installed real browser automation dependency, and the execution environment blocks Playwright downloads. Runtime regression tests use a deterministic DOM contract harness in addition to Vite build and dev-server checks.
 - The UI shell remains a large class. Its views are now lazily evaluated, but splitting each established view into a focused renderer would improve maintainability in a future refactor.
 - JavaScript `number` remains the simulation type and therefore retains its finite-range ceiling.
+
+## Canonical runtime state contract
+
+A later startup failure exposed an architectural gap rather than an isolated `computePerSecond` bug. The call chain was UI/telemetry → `economySnapshot` → `computePerSecond` → strategic modifiers → `ModifierSystem.equippedItemInstances`. A pre-Item/partial state could contain the original economy fields but omit `inventory` or `artifacts`; the first dereference of `state.inventory.equipped` then failed during the first render. Save migration normally hydrated these fields, but direct reset, test, imported telemetry, and partially migrated startup paths had no shared runtime invariant.
+
+`GameStateContract.ensureGameState()` is now the single boundary for StateStore writes, loaded saves, UI renders, telemetry observation/sampling, and direct economy entry points. It validates critical numeric records, catalogs, Models, modifier collections, and nested progression records, then immutably hydrates incomplete input from `createDefaultState()`. Complete states retain identity, while repaired object identities are cached.
+
+`createDefaultEconomySnapshot()` defines every field consumed by UI and analytics. `economySnapshot()` always starts from that canonical shape and evaluates against a complete runtime state, so fresh, legacy, reset, Development Cycle, reload, offline-return, and Developer Mode paths cannot produce missing economy fields. Regression tests exercise each transition and verify finite `computePerSecond` and `creditsPerSecond` values before the first render.

@@ -8,6 +8,7 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
+import { ensureGameState } from './GameStateContract.js';
 import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
@@ -37,7 +38,7 @@ export class Application {
     this.#telemetry = this.#devMode ? new TelemetryService() : null;
     this.#developerReset = this.#devMode ? new DeveloperResetService() : null;
     this.#freshDeveloperReset = this.#developerReset?.consumeFreshResetMarker() ?? false;
-    this.#store = new StateStore(createDefaultState(), this.#eventBus);
+    this.#store = new StateStore(createDefaultState(), this.#eventBus, ensureGameState);
     this.#saveSystem = new SaveSystem(this.#store);
     this.#shell = new AppShell(root, this.#eventBus, { devMode: this.#devMode, telemetry: this.#telemetry });
     this.#renderPipeline = new RenderPipeline((state) => this.#shell.render(state), (error) => this.#handleRuntimeError(error));

@@ -8,6 +8,7 @@ import { availableSlots, equipItem } from '../systems/InventorySystem.js';
 import { missionsWithProgress } from '../systems/MissionSystem.js';
 import { modelBuildSummary } from '../systems/ModifierSystem.js';
 import { activeReward } from '../systems/RewardQueue.js';
+import { ensureGameState } from '../core/GameStateContract.js';
 import { isKnownView, navigationItemsForState } from './navigation.js';
 import { formatNumber } from './number-format.js';
 
@@ -48,7 +49,8 @@ export class AppShell {
     this.#root.removeEventListener('pointerover', this.#handlePointerOver);
   }
 
-  render(state) {
+  render(input) {
+    const state = ensureGameState(input);
     this.#currentState = state;
     this.#renderNavigation(state);
     const requested = isKnownView(state.ui.activeView, this.#devMode) ? state.ui.activeView : 'dashboard';
