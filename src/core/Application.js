@@ -8,8 +8,9 @@ import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';
 import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
-import { ensureGameState } from './GameStateContract.js';
-import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
+import { ensureGameState, validateGameState } from './GameStateContract.js';
+import { captureRuntimeException } from './RuntimeDiagnostics.js';
+import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -38,7 +39,13 @@ export class Application {
     this.#telemetry = this.#devMode ? new TelemetryService() : null;
     this.#developerReset = this.#devMode ? new DeveloperResetService() : null;
     this.#freshDeveloperReset = this.#developerReset?.consumeFreshResetMarker() ?? false;
-    this.#store = new StateStore(createDefaultState(), this.#eventBus, ensureGameState);
+    const normalizeState = (candidate) => {
+      if (this.#devMode) validateGameState(candidate);
+      const normalized = ensureGameState(candidate);
+      if (this.#devMode) validateGameState(normalized, economySnapshot(normalized));
+      return normalized;
+    };
+    this.#store = new StateStore(createDefaultState(), this.#eventBus, normalizeState);
     this.#saveSystem = new SaveSystem(this.#store);
     this.#shell = new AppShell(root, this.#eventBus, { devMode: this.#devMode, telemetry: this.#telemetry });
     this.#renderPipeline = new RenderPipeline((state) => this.#shell.render(state), (error) => this.#handleRuntimeError(error));
@@ -53,6 +60,7 @@ export class Application {
     const requestedBalanceRun=new URLSearchParams(globalThis.location?.search??'').get('balanceRun');if(requestedBalanceRun)this.#store.update((state)=>({...state,balanceRun:{id:requestedBalanceRun,startedAt:Date.now(),natural:true}}),'balance-run-start');
     if (save) this.#store.update((state) => reconcileOffline(state), 'offline-progress');
     this.#store.update((state) => ensureMissions(state), 'mission-period');
+    if (this.#devMode) validateGameState(this.#store.getState(), economySnapshot(this.#store.getState()));
     this.#telemetryCall(() => {
       this.#telemetry?.start(this.#store.getState(), { silent: this.#freshDeveloperReset });
       if (!this.#freshDeveloperReset) this.#telemetry?.record({ category: 'session', type: save ? 'save-loaded' : 'save-created', source: 'save', label: save ? 'Save loaded' : 'New save created' }, this.#store.getState());
@@ -165,8 +173,9 @@ export class Application {
 
   #handleRuntimeError(error) {
     this.#gameLoop.stop();
-    globalThis.console?.error('Game rendering failed.', error);
-    this.#onRuntimeError?.(error);
+    const diagnostics = this.#shell.diagnostics();
+    captureRuntimeException(error, diagnostics);
+    this.#onRuntimeError?.(error, diagnostics);
   }
 
   async #performDeveloperReset() {

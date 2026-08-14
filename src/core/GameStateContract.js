@@ -1,4 +1,4 @@
-import { createDefaultState, ENERGY_BUILDINGS, HARDWARE_CATALOG, MODEL_CATALOG } from '../data/defaultState.js';
+import { createDefaultState, ENERGY_BUILDINGS, HARDWARE_CATALOG, MODEL_CATALOG, SAVE_VERSION } from '../data/defaultState.js';
 
 const normalizedStates = new WeakMap();
 
@@ -17,9 +17,35 @@ export function isCompleteGameState(state) {
     && Array.isArray(state.world.modifiers) && finiteRecord(state.energy.buildings, ENERGY_BUILDINGS.map(({ id }) => id))
     && Array.isArray(state.patents.equipped) && Array.isArray(state.patents.discovered)
     && state.artifacts && Array.isArray(state.artifacts.owned)
+    && state.rewards && Array.isArray(state.rewards.queue) && Array.isArray(state.rewards.history)
     && state.statistics && state.run && state.session && state.ui
   );
 }
+
+/** Validate the runtime contract without repairing it. Intended for developer fail-fast checks. */
+export function validateGameState(state, economy = null) {
+  const failures = [];
+  if (!state || typeof state !== 'object') failures.push('state is not an object');
+  if (!finiteRecord(state?.resources, ['credits','compute','users','research','gems'])) failures.push('resources contain missing, NaN, or infinite values');
+  if (!finiteRecord(state?.hardware, HARDWARE_CATALOG.map(({ id }) => id))) failures.push('hardware catalog record is incomplete or invalid');
+  if (!state?.model || !Array.isArray(state.model.owned) || !Array.isArray(state.model.deployed) || !MODEL_CATALOG.some(({ id }) => id === state.model.activeId)) failures.push('model ownership, deployment, or active model is invalid');
+  if (!finiteRecord(state?.allocation, ['training','inference','research','data','agents'])) failures.push('compute allocation is incomplete or non-finite');
+  if (!Array.isArray(state?.patents?.discovered) || !Array.isArray(state?.patents?.equipped) || !isRecord(state?.patents?.levels)) failures.push('patent state is invalid');
+  if (!Array.isArray(state?.world?.modifiers) || state.world.modifiers.some((item) => !item || typeof item.effect !== 'string' || !Number.isFinite(item.value))) failures.push('world modifiers are invalid');
+  if (!Array.isArray(state?.inventory?.instances) || !isRecord(state?.inventory?.equipped)) failures.push('inventory or equipped items are missing');
+  if (!Array.isArray(state?.rewards?.queue) || !Array.isArray(state?.rewards?.history) || !Number.isInteger(state?.rewards?.nextId)) failures.push('reward queue is invalid');
+  if (state?.version !== SAVE_VERSION) failures.push(`state version ${String(state?.version)} does not match save version ${SAVE_VERSION}`);
+  if (economy !== null) {
+    const keys = ECONOMY_KEYS;
+    if (!economy || typeof economy !== 'object' || keys.some((key) => economy[key] === undefined)) failures.push('economy snapshot is incomplete');
+    if (ECONOMY_NUMERIC_KEYS.some((key) => !Number.isFinite(economy?.[key]))) failures.push('economy snapshot contains NaN or infinite values');
+  }
+  if (failures.length) throw new TypeError(`Invalid game state:\n- ${failures.join('\n- ')}`);
+  return true;
+}
+
+const ECONOMY_NUMERIC_KEYS = ['credits','creditsPerSecond','compute','computePerSecond','computeConsumed','computeWasted','users','demand','capacity','energyProduction','energyDemand'];
+const ECONOMY_KEYS = [...ECONOMY_NUMERIC_KEYS, 'currentModel', 'bottleneck'];
 
 /**
  * Establishes the one runtime-state contract used by simulation, telemetry and UI.

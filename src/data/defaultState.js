@@ -250,7 +250,7 @@ export function createDefaultState() {
     artifacts: { owned: [], collection: [] },
     marketplace: { enabled: false, authority: 'server-required', listings: [], pendingTransactions: [] },
     futureMeta: { materials: {}, blueprints: [], seasonalChallenge: null, pass: null },
-    offline: { lastActiveTimestamp: Date.now(), lastReconciledTimestamp: null, durationMs: 0, effectiveDurationMs: 0, capMs: BALANCE.offline.capMs, results: null, periods: 0, totalOfflineMs: 0 },
+    offline: { lastActiveTimestamp: Date.now(), lastReconciledTimestamp: null, durationMs: 0, effectiveDurationMs: 0, capMs: BALANCE.offline.capMs, results: null, rewardPending: false, periods: 0, totalOfflineMs: 0 },
     rewards: { queue: [], history: [], nextId: 1 },
     balanceRun: { id: null, startedAt: null, natural: true },
     tutorial: { step: 0, completed: false },

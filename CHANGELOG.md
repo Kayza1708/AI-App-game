@@ -95,3 +95,9 @@
 - Added a canonical runtime state contract at StateStore, migration, UI, telemetry, and economy boundaries.
 - Added a canonical default economy snapshot so every UI/telemetry field exists before production calculations run.
 - Added startup regression coverage for fresh, migrated, reset, Development Cycle, browser reload, offline return, and Developer Mode paths.
+
+## Production runtime hotfix
+- Closed the remaining derived-economy telemetry boundary that could dereference an omitted economy snapshot despite a normalized game state.
+- Added non-repairing Developer Mode state/economy validation and full-stack runtime diagnostics.
+- Serialized all full-screen reward presentations through one input owner and made offline reward dismissal clear its pending state atomically.
+- Added a Developer Runtime Inspector and regression coverage for startup, offline Continue, queue dismissal, and modal ownership.
