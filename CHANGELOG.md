@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.14.2 — Save migration parse hotfix
+
+- Removed the colliding `migrateSystemTech` declaration from the Save module and gave the single migration helper an unambiguous name.
+- Cache-busted the application entry and disabled development-server caching so localhost cannot keep serving the broken module.
+- Added a regression check that parses the served Save module and enforces a single migration declaration.
+
 ## 0.14.1 — Startup compatibility hotfix
 
 - Replaced the unconditional `structuredClone` startup dependency with a plain-state fallback for older embedded browsers.
