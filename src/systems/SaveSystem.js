@@ -125,6 +125,14 @@ function migrateSystemTech(save) {
   for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
   return [...nodes];
 }
+function migrateSystemTech(save) {
+  const nodes = new Set(asArray(save.meta?.techNodes));
+  if (save.version >= 13) return [...nodes];
+  const total = save.meta?.totalIntelligence ?? 0;
+  const legacy = [[1,'system-model-engineering'],[4,'system-marketing'],[10,'system-allocation'],[10,'system-research'],[15,'system-items'],[20,'system-patents'],[20,'system-account'],[80,'system-automation'],[120,'system-agents'],[170,'system-enterprise'],[350,'system-energy']];
+  for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
+  return [...nodes];
+}
 
 function asObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
 function asArray(value, fallback = []) { return Array.isArray(value) ? value : fallback; }

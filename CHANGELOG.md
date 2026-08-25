@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.14.1 — Startup compatibility hotfix
+
+- Replaced the unconditional `structuredClone` startup dependency with a plain-state fallback for older embedded browsers.
+- Made feedback animation optional when the Web Animations API is unavailable.
+- Added a pre-module loading and error surface so import failures can no longer appear as an empty white page.
+
 ## 0.14.0 — Core loop rebuild
 
 - Rebuilt Training around visible required Compute, effective allocated Compute, and live ETA.

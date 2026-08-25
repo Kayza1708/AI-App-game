@@ -1,7 +1,7 @@
 import { BALANCE } from '../config/balance.js';
 
 export const SAVE_VERSION = 13;
-export const GAME_VERSION = '0.14.0';
+export const GAME_VERSION = '0.14.1';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],

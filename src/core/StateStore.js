@@ -1,3 +1,5 @@
+import { cloneState } from './clone.js';
+
 export class StateStore {
   #eventBus;
   #state;
@@ -5,7 +7,7 @@ export class StateStore {
 
   constructor(initialState, eventBus, normalize = (state) => state) {
     this.#normalize = normalize;
-    this.#state = structuredClone(this.#normalize(initialState));
+    this.#state = cloneState(this.#normalize(initialState));
     this.#eventBus = eventBus;
   }
 
@@ -21,7 +23,7 @@ export class StateStore {
   }
 
   replace(nextState, source = 'restore') {
-    this.#state = structuredClone(this.#normalize(nextState));
+    this.#state = cloneState(this.#normalize(nextState));
     this.#eventBus.emit('state:changed', { source, state: this.#state });
   }
 }
