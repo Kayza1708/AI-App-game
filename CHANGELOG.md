@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.15.0 — Progression architecture
+
+- Removed Energy from active gameplay, navigation, simulation, and telemetry; legacy Energy data is safely discarded during migration.
+- Replaced unstable Training work growth with a model-specific piecewise curve and proportional legacy-job migration.
+- Added the permanent `1 + Lifetime INT × 0.10` Credit-income multiplier and a multi-signal Development Cycle reward.
+- Expanded the permanent roadmap to more than fifty spatial, prerequisite-linked nodes with astronomical endgame INT costs.
+- Research allocation now directly generates Patent progress against steadily increasing discovery requirements.
+- Rebuilt the Technology screen as a pannable map and clarified Lifetime versus available Intelligence.
+
 ## 0.14.4 — Localhost stale-module bypass
 
 - Moved live persistence to a new `PersistentSaveSystem.js` module URL so a stale broken `SaveSystem.js` module can no longer block application startup.

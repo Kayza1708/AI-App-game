@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acquireModel, advanceTutorial, buyEnergyBuilding, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -133,7 +133,6 @@ export class Application {
       this.#eventBus.on('cycle:start', () => this.#store.update(startDevelopmentCycle, 'development-cycle')),
       this.#eventBus.on('breakthrough:start', () => this.#store.update(startBreakthrough, 'breakthrough')),
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
-      this.#eventBus.on('energy:buy', (buildingId) => this.#store.update((state) => buyEnergyBuilding(state, buildingId), 'energy')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
       this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => this.#rewardedBoosts.activate(state, reward), 'rewarded-ad')),
       this.#eventBus.on('model:improve', ({ modelId, path }) => this.#store.update((state) => improveModel(state, modelId, path), 'model')),
@@ -207,7 +206,6 @@ export class Application {
       if (type === 'set-model-level') return { ...state, model: { ...state.model, level: Math.max(1, Math.floor(value || 1)) } };
       if (type === 'complete-training') return { ...state, model: { ...state.model, trainingActive: true, trainingProgress: trainingRequiredForState(state) - 0.001 } };
       if (type === 'advance-patent') return { ...state, patents: { ...state.patents, progress: patentResearchRequired(state.patents.discovered.length) - 0.001 } };
-      if (type === 'low-energy') return { ...state, hardware: { ...state.hardware, gpuServer: state.hardware.gpuServer + 100 }, energy: { ...state.energy, buildings: Object.fromEntries(Object.keys(state.energy.buildings).map((id) => [id, 0])) } };
       if (type === 'trigger-event') return { ...state, world: { ...state.world, activeEvent: WORLD_EVENTS.find(({ id }) => id === eventId) ?? WORLD_EVENTS[0] } };
       if (type === 'cycle-eligible') return { ...state, run: { ...state.run, computeProduced: Math.max(BALANCE.intelligence.computeScale, state.run.computeProduced) } };
       if (type === 'unlock-items') return { ...state, meta: { ...state.meta, totalIntelligence: Math.max(15,state.meta.totalIntelligence) } };

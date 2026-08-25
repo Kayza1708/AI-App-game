@@ -1,9 +1,8 @@
-import { ENERGY_BUILDINGS, HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES } from '../data/defaultState.js';
+import { HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES } from '../data/defaultState.js';
 import { BALANCE, FEATURE_UNLOCKS, nextFeatureUnlock } from '../config/balance.js';
 import {
   canBuyUpgrade, canDevelop, cycleIntelligence, economySnapshot, effectiveHardwareCost,
-  effectiveModelStat, energyBuildingCost, energyEfficiency,
-  energyProduction, energyUse, modelImprovementCost, objectiveProgress,
+  effectiveModelStat, modelImprovementCost, objectiveProgress,
   isHardwareUnlocked, patentResearchPerSecond, patentResearchRequired, rawHardwareContribution,
   trainingRatePerSecond, trainingRequiredForState,
 } from '../systems/GameSystem.js';
@@ -68,7 +67,6 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
     idlePercentage: economy.computePerSecond ? economy.storedComputeRate / economy.computePerSecond : 0,
     marketUtilization: economy.utilization,
     computeUtilization: economy.computePerSecond ? economy.computeConsumed / economy.computePerSecond : 0,
-    energyUtilization: economy.energyProduction ? Math.min(1, economy.energyDemand / economy.energyProduction) : 0,
     researchRate: patentRate,
     patentProgress: state.patents.progress,
     patentEta: patentRate && patentRequired ? Math.max(0, (patentRequired - state.patents.progress) / patentRate) : Infinity,
@@ -117,7 +115,6 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
 export function analyzeAffordability(state, economy = economySnapshot(state)) {
   const candidates = [];
   for (const item of HARDWARE_CATALOG) if (isHardwareUnlocked(state, item)) candidates.push({ id: item.id, category: 'hardware', label: item.name, cost: effectiveHardwareCost(state, item), gain: item.computePerSecond * currentHardwareMultiplier(state, economy), useful: economy.bottleneck !== 'DEMAND LIMITED' });
-  for (const building of ENERGY_BUILDINGS) candidates.push({ id: building.id, category: 'energy', label: building.name, cost: energyBuildingCost(state, building), gain: building.output, useful: energyEfficiency(state) < 1 || energyProduction(state) < energyUse(state) * 1.35 });
   for (const upgrade of UPGRADES) if (!state.upgrades.includes(upgrade.id)) candidates.push({ id: upgrade.id, category: 'upgrade', label: upgrade.name, cost: upgrade.cost, gain: upgrade.value, useful: upgradeRelevant(upgrade.effect, economy.bottleneck), affordable: canBuyUpgrade(state, upgrade) });
   for (const model of MODEL_CATALOG.filter((item) => state.model.owned.includes(item.id))) {
     const points = state.model.progress?.[model.id]?.upgradePoints ?? 0;
@@ -131,7 +128,6 @@ export function analyzeAffordability(state, economy = economySnapshot(state)) {
   return {
     affordableHardware: affordable.filter(({ category }) => category === 'hardware').length,
     affordableUpgrades: affordable.filter(({ category }) => category === 'upgrade').length,
-    affordableEnergy: affordable.filter(({ category }) => category === 'energy').length,
     affordableModelImprovements: affordable.filter(({ category }) => category === 'model').length,
     affordablePurchases: affordable.length, usefulPurchases: affordableUseful.length,
     usefulAlternatives: affordableUseful.map(({ id, category, label, cost, gain }) => ({ id, category, label, cost, gain })),
@@ -147,10 +143,10 @@ function claimableRewards(state) {
     + missionsWithProgress(state).filter((mission) => !mission.claimed && mission.progress >= mission.target).length
     + TECH_NODES.filter((node) => !state.meta.techNodes.includes(node.id) && state.meta.intelligence >= node.cost && (!node.requires || state.meta.techNodes.includes(node.requires))).length;
 }
-function upgradeRelevant(effect, bottleneck) { const map = { 'DEMAND LIMITED': ['demand','marketing','appeal','reputation','adoption','marketSize'], 'CAPACITY LIMITED': ['inference','hardwareOutput','allOutput'], 'Energy Limited': ['hardwareCost','energyOutput'], 'Training Limited': ['training','hardwareOutput'], 'Credits Limited': ['revenue','demand','enterprise'] }; return (map[bottleneck] ?? []).includes(effect) || ['allOutput','hardwareCost'].includes(effect); }
-function currentHardwareMultiplier(state,economy=economySnapshot(state)){const raw=HARDWARE_CATALOG.reduce((sum,item)=>sum+rawHardwareContribution(state,item),0);return raw?economy.computePerSecond/raw:economy.energyEfficiency}
-function hardwareTelemetry(state,economy=economySnapshot(state)){const multiplier=currentHardwareMultiplier(state,economy);return Object.fromEntries(HARDWARE_CATALOG.map(item=>{const raw=rawHardwareContribution(state,item);return[item.id,{tier:item.tier,owned:state.hardware[item.id],computeContribution:raw*multiplier,energyUsage:item.energy*state.hardware[item.id],effectivePerUnit:state.hardware[item.id]?raw*multiplier/state.hardware[item.id]:item.computePerSecond*multiplier}]}))}
-function effectiveMultipliers(state, economy = economySnapshot(state)) { const raw = HARDWARE_CATALOG.reduce((sum, item) => sum + item.computePerSecond * state.hardware[item.id], 0); return { hardware: raw ? economy.computePerSecond / raw : 0, energy: economy.energyEfficiency, price: state.market.priceMultiplier, reputation: state.market.reputation, adoption: 1 + Math.sqrt(state.market.adoption) * .08, marketing: economy.marketingBonus }; }
+function upgradeRelevant(effect, bottleneck) { const map = { 'DEMAND LIMITED': ['demand','marketing','appeal','reputation','adoption','marketSize'], 'CAPACITY LIMITED': ['inference','hardwareOutput','allOutput'], 'Training Limited': ['training','hardwareOutput'], 'Credits Limited': ['revenue','demand','enterprise'] }; return (map[bottleneck] ?? []).includes(effect) || ['allOutput','hardwareCost'].includes(effect); }
+function currentHardwareMultiplier(state,economy=economySnapshot(state)){const raw=HARDWARE_CATALOG.reduce((sum,item)=>sum+rawHardwareContribution(state,item),0);return raw?economy.computePerSecond/raw:1}
+function hardwareTelemetry(state,economy=economySnapshot(state)){const multiplier=currentHardwareMultiplier(state,economy);return Object.fromEntries(HARDWARE_CATALOG.map(item=>{const raw=rawHardwareContribution(state,item);return[item.id,{tier:item.tier,owned:state.hardware[item.id],computeContribution:raw*multiplier,effectivePerUnit:state.hardware[item.id]?raw*multiplier/state.hardware[item.id]:item.computePerSecond*multiplier}]}))}
+function effectiveMultipliers(state, economy = economySnapshot(state)) { const raw = HARDWARE_CATALOG.reduce((sum, item) => sum + item.computePerSecond * state.hardware[item.id], 0); return { hardware: raw ? economy.computePerSecond / raw : 0, price: state.market.priceMultiplier, reputation: state.market.reputation, adoption: 1 + Math.sqrt(state.market.adoption) * .08, marketing: economy.marketingBonus }; }
 function currentTechBranch(state) { const counts = {}; for (const id of state.meta.techNodes) { const branch = id.split('-')[0]; counts[branch] = (counts[branch] ?? 0) + 1; } return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null; }
 function average(values) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
 function intervals(values){return values.slice(1).map((value,index)=>(value-values[index])/1000)}

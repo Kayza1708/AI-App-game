@@ -1,7 +1,7 @@
 import { BALANCE } from '../config/balance.js';
 
-export const SAVE_VERSION = 13;
-export const GAME_VERSION = '0.14.4';
+export const SAVE_VERSION = 14;
+export const GAME_VERSION = '0.15.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -20,7 +20,7 @@ export const HARDWARE_CATALOG = [
   ['lunarFacility','☼','Dyson Compute Array','Stellar collectors turn a meaningful fraction of sunlight into thought.'],
   ['dysonSwarm','◎','Matrioshka Brain','Nested computational shells enclose and coordinate a star.'],
   ['matrioshkaBrain','∞','Singularity Core','Self-improving infrastructure operating beyond human-scale planning.'],
-].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],energy:BALANCE.hardware.tierEnergy[tier],tier,
+].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],tier,
   milestones:[
     {quantity:10,name:'Thermal Rhythm',description:`${name} output +10%`,effect:'hardwareOutput',value:.1},
     {quantity:25,name:'Bulk Procurement',description:`All hardware costs -${3+tier%3}%`,effect:'hardwareDiscount',value:(3+tier%3)/100},
@@ -29,17 +29,17 @@ export const HARDWARE_CATALOG = [
   ],
 }));
 
-export const MODEL_SKILLS = ['quality','reasoning','knowledge','context','coding','vision','creativity','math','efficiency','energy','latency','popularity','enterprise','research','safety','autonomy'];
+export const MODEL_SKILLS = ['quality','reasoning','knowledge','context','coding','vision','creativity','math','efficiency','latency','popularity','enterprise','research','safety','autonomy'];
 const MODEL_BASE = [
-  {id:'tinyChat',name:'TinyChat',role:'Consumer',specialty:'Fast, efficient access for a large free audience.',intCost:0,trainingScale:1,identity:{adoption:.3,energyEfficiency:.2},stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0}},
-  {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:2,trainingScale:4,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
-  {id:'gptClass',name:'GPT-Class',role:'Generalist',specialty:'Broad language capability with flexible consumer and business builds.',intCost:12,trainingScale:10,identity:{quality:.15,marketSize:.12},stats:{quality:5,reasoning:6,knowledge:6,context:6,coding:6,vision:1,creativity:6,math:6,efficiency:6,energy:5,latency:6,popularity:7,enterprise:5,research:5,safety:5,autonomy:3}},
-  {id:'omni',name:'Omni',role:'Multimodal',specialty:'Vision, creativity, advertising, and viral consumer adoption.',intCost:15,trainingScale:15,identity:{demand:.3,adoption:.3},stats:{quality:7,reasoning:5,knowledge:6,context:6,coding:3,vision:11,creativity:10,math:4,efficiency:5,energy:4,latency:5,popularity:11,enterprise:4,research:4,safety:6,autonomy:3}},
-  {id:'research',name:'Research',role:'Scientific',specialty:'Knowledge generation, mathematics, and permanent Patent progress.',intCost:28,trainingScale:35,identity:{research:.55,revenue:-.15},stats:{quality:9,reasoning:11,knowledge:12,context:10,coding:7,vision:5,creativity:6,math:12,efficiency:4,energy:4,latency:3,popularity:4,enterprise:4,research:13,safety:8,autonomy:5}},
-  {id:'agent',name:'Agent',role:'Automation',specialty:'Autonomous operations and Agent Tasks at high Compute demand.',intCost:48,trainingScale:75,identity:{agents:.6,energyEfficiency:-.2},stats:{quality:10,reasoning:10,knowledge:9,context:9,coding:10,vision:6,creativity:7,math:8,efficiency:4,energy:2,latency:4,popularity:7,enterprise:7,research:7,safety:7,autonomy:13}},
-  {id:'enterprise',name:'Enterprise',role:'Enterprise',specialty:'Secure contracts with exceptional revenue per customer.',intCost:80,trainingScale:150,identity:{revenue:.7,demand:-.22},stats:{quality:12,reasoning:10,knowledge:11,context:13,coding:9,vision:6,creativity:4,math:10,efficiency:7,energy:5,latency:5,popularity:4,enterprise:15,research:7,safety:13,autonomy:6}},
-  {id:'agi',name:'AGI',role:'General Intelligence',specialty:'Recursive improvement and stronger Development Cycle Intelligence.',intCost:135,trainingScale:300,identity:{intelligence:.35,quality:.3},stats:{quality:16,reasoning:16,knowledge:16,context:16,coding:14,vision:12,creativity:14,math:16,efficiency:6,energy:4,latency:5,popularity:11,enterprise:12,research:14,safety:11,autonomy:14}},
-  {id:'asiSeed',name:'ASI Seed',role:'Post-human',specialty:'A configurable seed for radically specialized late-game companies.',intCost:225,trainingScale:600,identity:{allOutput:.25,intelligence:.5},stats:{quality:20,reasoning:20,knowledge:20,context:20,coding:18,vision:18,creativity:18,math:20,efficiency:7,energy:4,latency:6,popularity:14,enterprise:15,research:18,safety:14,autonomy:20}},
+  {id:'tinyChat',name:'TinyChat',role:'Consumer',specialty:'Fast, efficient access for a large free audience.',intCost:0,unlockTech:null,trainingScale:1,identity:{adoption:.3,energyEfficiency:.2},stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0}},
+  {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:0,unlockTech:'system-model-engineering',trainingScale:4,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
+  {id:'gptClass',name:'GPT-Class',role:'Generalist',specialty:'Broad language capability with flexible consumer and business builds.',intCost:0,unlockTech:'model-1',trainingScale:10,identity:{quality:.15,marketSize:.12},stats:{quality:5,reasoning:6,knowledge:6,context:6,coding:6,vision:1,creativity:6,math:6,efficiency:6,energy:5,latency:6,popularity:7,enterprise:5,research:5,safety:5,autonomy:3}},
+  {id:'omni',name:'Omni',role:'Multimodal',specialty:'Vision, creativity, advertising, and viral consumer adoption.',intCost:0,unlockTech:'model-2',trainingScale:15,identity:{demand:.3,adoption:.3},stats:{quality:7,reasoning:5,knowledge:6,context:6,coding:3,vision:11,creativity:10,math:4,efficiency:5,energy:4,latency:5,popularity:11,enterprise:4,research:4,safety:6,autonomy:3}},
+  {id:'research',name:'Research',role:'Scientific',specialty:'Knowledge generation, mathematics, and permanent Patent progress.',intCost:0,unlockTech:'research-2',trainingScale:35,identity:{research:.55,revenue:-.15},stats:{quality:9,reasoning:11,knowledge:12,context:10,coding:7,vision:5,creativity:6,math:12,efficiency:4,energy:4,latency:3,popularity:4,enterprise:4,research:13,safety:8,autonomy:5}},
+  {id:'agent',name:'Agent',role:'Automation',specialty:'Autonomous operations and Agent Tasks at high Compute demand.',intCost:0,unlockTech:'agent-3',trainingScale:75,identity:{agents:.6,energyEfficiency:-.2},stats:{quality:10,reasoning:10,knowledge:9,context:9,coding:10,vision:6,creativity:7,math:8,efficiency:4,energy:2,latency:4,popularity:7,enterprise:7,research:7,safety:7,autonomy:13}},
+  {id:'enterprise',name:'Enterprise',role:'Enterprise',specialty:'Secure contracts with exceptional revenue per customer.',intCost:0,unlockTech:'enterprise-3',trainingScale:150,identity:{revenue:.7,demand:-.22},stats:{quality:12,reasoning:10,knowledge:11,context:13,coding:9,vision:6,creativity:4,math:10,efficiency:7,energy:5,latency:5,popularity:4,enterprise:15,research:7,safety:13,autonomy:6}},
+  {id:'agi',name:'AGI',role:'General Intelligence',specialty:'Recursive improvement and stronger Development Cycle Intelligence.',intCost:0,unlockTech:'agi-5',trainingScale:300,identity:{intelligence:.35,quality:.3},stats:{quality:16,reasoning:16,knowledge:16,context:16,coding:14,vision:12,creativity:14,math:16,efficiency:6,energy:4,latency:5,popularity:11,enterprise:12,research:14,safety:11,autonomy:14}},
+  {id:'asiSeed',name:'ASI Seed',role:'Post-human',specialty:'A configurable seed for radically specialized late-game companies.',intCost:0,unlockTech:'singularity-6',trainingScale:600,identity:{allOutput:.25,intelligence:.5},stats:{quality:20,reasoning:20,knowledge:20,context:20,coding:18,vision:18,creativity:18,math:20,efficiency:7,energy:4,latency:6,popularity:14,enterprise:15,research:18,safety:14,autonomy:20}},
 ];
 
 const MODEL_ARCHETYPES = {
@@ -114,7 +114,6 @@ const TECH_BRANCHES = {
   robotics: { label: 'Robotics', strength: 'automation', weakness: 'revenue', nodes: ['Robot APIs', 'Embodied Learning', 'Factory Autonomy', 'General Robotics', 'Self-Replicating Industry', 'Machine Civilization'] },
   medicine: { label: 'Medicine', strength: 'reputationGrowth', weakness: 'training', nodes: ['Clinical Models', 'Protein Design', 'Diagnostic Networks', 'Personalized Medicine', 'Longevity Research', 'Post-Biological Health'] },
   education: { label: 'Education', strength: 'adoption', weakness: 'revenue', nodes: ['AI Tutors', 'Adaptive Curricula', 'Universal Translation', 'Global Academy', 'Accelerated Learning', 'Collective Intelligence'] },
-  energy: { label: 'Energy', strength: 'energyOutput', weakness: 'hardwareCost', nodes: ['Smart Grid', 'Advanced Storage', 'Fusion Control', 'Orbital Solar', 'Stellar Engineering', 'Infinite Power'] },
   physics: { label: 'Physics', strength: 'research', weakness: 'revenue', nodes: ['Simulation Labs', 'Materials Search', 'Quantum Simulation', 'Unified Models', 'Reality Engineering', 'Computational Physics'] },
   space: { label: 'Space Infrastructure', strength: 'marketSize', weakness: 'hardwareCost', nodes: ['Launch Networks', 'Orbital Industry', 'Lunar Fabrication', 'Mars Logistics', 'Dyson Construction', 'Interstellar Infrastructure'] },
   government: { label: 'Government', strength: 'reputationGrowth', weakness: 'click', nodes: ['Public Contracts', 'Regulatory Models', 'Digital Institutions', 'Planetary Coordination', 'AI Governance', 'Civilization Planning'] },
@@ -123,10 +122,13 @@ const TECH_BRANCHES = {
   singularity: { label: 'Singularity', strength: 'allOutput', weakness: 'click', nodes: ['Machine Economy', 'Planetary Mind', 'Stellar Cognition', 'Post-Scarcity', 'Cosmic Intelligence', 'Technological Singularity'] },
 };
 
-export const TECH_NODES = Object.entries(TECH_BRANCHES).flatMap(([branch, config]) => config.nodes.map((name, rank) => ({
-  id: `${branch}-${rank + 1}`, branch, branchLabel: config.label, name, rank: rank + 1, cost: rank + 1,
+export const TECH_ERAS = Object.freeze(['Garage AI','Machine Learning','Deep Learning','Foundation Models','Multimodal AI','AI Agents','Autonomous Science','AGI','Superintelligence','Singularity']);
+const TECH_COST_BY_RANK = [1, 15, 2_500, 1_000_000, 1_000_000_000_000, 1e36];
+export const TECH_NODES = Object.entries(TECH_BRANCHES).flatMap(([branch, config], branchIndex) => config.nodes.map((name, rank) => ({
+  id: `${branch}-${rank + 1}`, branch, branchLabel: config.label, name, rank: rank + 1,
+  era: TECH_ERAS[Math.min(TECH_ERAS.length - 1, rank + Math.floor(branchIndex / 4))], cost: TECH_COST_BY_RANK[rank],
   requires: rank ? `${branch}-${rank}` : null, effect: config.strength, value: rank < 3 ? 0.08 + rank * 0.02 : 0.15 + rank * 0.03,
-  tradeoff: config.weakness, penalty: rank < 3 ? 0.015 : 0.025,
+  tradeoff: config.weakness, penalty: rank < 3 ? 0.015 : 0.025, position: { x: rank * 240, y: branchIndex * 150 }, visibility: 'always',
   unlock: rank === 2 ? `Unlocks ${name} operations` : rank === 5 ? `Defines the ${config.label} endgame identity` : null,
 })));
 
@@ -146,7 +148,6 @@ export const WORLD_EVENTS = [
   { id: 'investor', title: 'Investor Offer', description: 'A global fund offers capital in return for aggressive growth.', choices: [{ label: 'Take investment', credits: 5_000, effect: 'demand', value: 0.1 }, { label: 'Stay independent', effect: 'revenue', value: 0.15 }] },
   { id: 'breach', title: 'Security Breach', description: 'An intrusion threatens user trust and model data.', choices: [{ label: 'Emergency audit', cost: 2_000, effect: 'reputation', value: 0.25 }, { label: 'Contain quietly', effect: 'reputation', value: -0.2 }] },
   { id: 'opensource', title: 'Open Source Breakthrough', description: 'A new training technique spreads across the community.', choices: [{ label: 'Contribute research', effect: 'research', value: 0.3 }, { label: 'Productize it', effect: 'quality', value: 0.2 }] },
-  { id: 'energy', title: 'Energy Crisis', description: 'Power prices spike across your primary compute region.', choices: [{ label: 'Optimize facilities', cost: 4_000, effect: 'hardwareOutput', value: 0.15 }, { label: 'Throttle training', effect: 'training', value: -0.2 }] },
   { id: 'boom', title: 'Global AI Boom', description: 'Every company suddenly needs an intelligence strategy.', choices: [{ label: 'Target enterprises', effect: 'enterprise', value: 0.3 }, { label: 'Capture consumers', effect: 'adoption', value: 0.3 }] },
 ];
 

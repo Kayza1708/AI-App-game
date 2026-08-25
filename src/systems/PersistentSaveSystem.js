@@ -74,13 +74,12 @@ export class SaveSystem {
     return ensureGameState({
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...readSaveObject(save.profile) }, resources: readSaveNumericRecord(defaults.resources, save.resources),
-      hardware: readSaveNumericRecord(defaults.hardware, save.hardware), hardwareUpgradeLevels, model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress },
-      allocation: normalizeSavedAllocation(defaults.allocation, save.allocation), market: readSaveNumericRecord(defaults.market, save.market),
+      hardware: readSaveNumericRecord(defaults.hardware, save.hardware), hardwareUpgradeLevels, model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress, trainingProgress: migrateLegacyTrainingProgress(save, activeId, progress) },
+      allocation: normalizeSavedAllocation(defaults.allocation, save.allocation), energy: defaults.energy, market: readSaveNumericRecord(defaults.market, save.market),
       upgrades: readSaveArray(save.upgrades).filter((id) => !LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id)), tutorial: { ...defaults.tutorial, ...readSaveObject(save.tutorial) }, objectives: { ...defaults.objectives, ...readSaveObject(save.objectives) },
       meta: { ...defaults.meta, ...readSaveObject(save.meta), unlockedModels: [...new Set([...readSaveArray(save.meta?.unlockedModels), ...owned])], techNodes: migratedTechNodes, achievements: { ...defaults.meta.achievements, ...readSaveObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: readSaveArray(save.meta?.cycleHistory) },
       world: { ...defaults.world, ...readSaveObject(save.world), modifiers: readSaveArray(save.world?.modifiers), activeEvent: readSaveObject(save.world?.activeEvent).id ? save.world.activeEvent : null }, company: { ...defaults.company, ...readSaveObject(save.company), employees: readSaveNumericRecord(defaults.company.employees, save.company?.employees) },
       automation: { ...defaults.automation, ...save.automation },
-      energy: { ...defaults.energy, ...save.energy, buildings: { ...defaults.energy.buildings, ...save.energy?.buildings } },
       patents: { ...defaults.patents, ...readSaveObject(save.patents), discovered: readSaveArray(save.patents?.discovered), equipped: readSaveArray(save.patents?.equipped), history: readSaveArray(save.patents?.history), levels: readSaveObject(save.patents?.levels), intInvested: readSaveObject(save.patents?.intInvested) }, premium: { ...defaults.premium, ...readSaveObject(save.premium), purchases: readSaveArray(save.premium?.purchases), adCooldowns: { ...defaults.premium.adCooldowns, ...readSaveObject(save.premium?.adCooldowns) } },
       retention: { ...defaults.retention, ...readSaveObject(save.retention), claimedDaily: { ...defaults.retention.claimedDaily, ...readSaveObject(save.retention?.claimedDaily) }, claimedWeekly: { ...defaults.retention.claimedWeekly, ...readSaveObject(save.retention?.claimedWeekly) } },
       inventory: { ...defaults.inventory, ...readSaveObject(save.inventory), instances: readSaveArray(save.inventory?.instances).filter((item) => item && typeof item.instanceId === 'string' && typeof item.catalogId === 'string'), equipped: readSaveObject(save.inventory?.equipped), collection: { ...defaults.inventory.collection, ...readSaveObject(save.inventory?.collection), items: readSaveArray(save.inventory?.collection?.items), rarities: readSaveArray(save.inventory?.collection?.rarities), sets: readSaveArray(save.inventory?.collection?.sets) }, newItem: null },
@@ -124,4 +123,8 @@ function migrateLegacySystemTechnologyNodes(save) {
   const legacy = [[1,'system-model-engineering'],[4,'system-marketing'],[10,'system-allocation'],[10,'system-research'],[15,'system-items'],[20,'system-patents'],[20,'system-account'],[80,'system-automation'],[120,'system-agents'],[170,'system-enterprise'],[350,'system-energy']];
   for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
   return [...nodes];
+}
+
+function migrateLegacyTrainingProgress(save, activeId, progress) {
+  const value=Number(save.model?.trainingProgress??0); if(!Number.isFinite(value)||value<=0)return 0; if((save.version??0)>=14)return value; const level=progress[activeId]?.level??1, trainings=progress[activeId]?.trainings??0; const oldRequired=5*Math.max(1,level)**1.65*1.9**Math.max(0,level-1)*1.12**trainings; let newRequired=8,previous=1; for(const [ceiling,growth] of [[10,1.32],[25,1.2],[50,1.13],[100,1.09],[Infinity,1.06]]){const steps=Math.max(0,Math.min(level,ceiling)-previous);newRequired*=growth**steps;previous=ceiling;if(level<=ceiling)break;} newRequired*=1.035**trainings; return Math.min(newRequired,value/Math.max(1,oldRequired)*newRequired);
 }
