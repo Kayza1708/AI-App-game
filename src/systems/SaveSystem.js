@@ -125,3 +125,50 @@ function migrateLegacySystemTechnologyNodes(save) {
   for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
   return [...nodes];
 }
+function migrateLegacySystemTechNodes(save) {
+  const nodes = new Set(asArray(save.meta?.techNodes));
+  if (save.version >= 13) return [...nodes];
+  const total = save.meta?.totalIntelligence ?? 0;
+  const legacy = [[1,'system-model-engineering'],[4,'system-marketing'],[10,'system-allocation'],[10,'system-research'],[15,'system-items'],[20,'system-patents'],[20,'system-account'],[80,'system-automation'],[120,'system-agents'],[170,'system-enterprise'],[350,'system-energy']];
+  for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
+  return [...nodes];
+}
+
+function asObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
+function asArray(value, fallback = []) { return Array.isArray(value) ? value : fallback; }
+function numericRecord(defaults, value) { const source = asObject(value); return Object.fromEntries(Object.entries(defaults).map(([key, initial]) => [key, Number.isFinite(source[key]) && source[key] >= 0 ? source[key] : initial])); }
+function numericMap(value) { return Object.fromEntries(Object.entries(asObject(value)).filter(([, amount]) => Number.isFinite(amount) && amount >= 0)); }
+function normalizedAllocation(defaults, value) { const allocation = numericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }
+
+function migrateHardwareUpgrades(defaults, save) {
+  const explicit = asObject(save.hardwareUpgradeLevels);
+  const levels = Object.fromEntries(HARDWARE_CATALOG.map(({id}) => [id, numericRecord(defaults[id], explicit[id])]));
+  if (save.version >= 13) return levels;
+  for (const hardware of HARDWARE_CATALOG) {
+    const count = asArray(save.upgrades).filter((id) => LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id && upgrade.hardwareId === hardware.id)).length;
+    for (let index = 0; index < count; index += 1) { const track = ['processor','memory','optimization'][index % 3]; levels[hardware.id][track] += 1; }
+  }
+  return levels;
+}
+function migrateSystemTech(save) {
+  const nodes = new Set(asArray(save.meta?.techNodes));
+  if (save.version >= 13) return [...nodes];
+  const total = save.meta?.totalIntelligence ?? 0;
+  const legacy = [[1,'system-model-engineering'],[4,'system-marketing'],[10,'system-allocation'],[10,'system-research'],[15,'system-items'],[20,'system-patents'],[20,'system-account'],[80,'system-automation'],[120,'system-agents'],[170,'system-enterprise'],[350,'system-energy']];
+  for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
+  return [...nodes];
+}
+function migrateSystemTech(save) {
+  const nodes = new Set(asArray(save.meta?.techNodes));
+  if (save.version >= 13) return [...nodes];
+  const total = save.meta?.totalIntelligence ?? 0;
+  const legacy = [[1,'system-model-engineering'],[4,'system-marketing'],[10,'system-allocation'],[10,'system-research'],[15,'system-items'],[20,'system-patents'],[20,'system-account'],[80,'system-automation'],[120,'system-agents'],[170,'system-enterprise'],[350,'system-energy']];
+  for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
+  return [...nodes];
+}
+
+function asObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
+function asArray(value, fallback = []) { return Array.isArray(value) ? value : fallback; }
+function numericRecord(defaults, value) { const source = asObject(value); return Object.fromEntries(Object.entries(defaults).map(([key, initial]) => [key, Number.isFinite(source[key]) && source[key] >= 0 ? source[key] : initial])); }
+function numericMap(value) { return Object.fromEntries(Object.entries(asObject(value)).filter(([, amount]) => Number.isFinite(amount) && amount >= 0)); }
+function normalizedAllocation(defaults, value) { const allocation = numericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }
