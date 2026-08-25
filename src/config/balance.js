@@ -4,21 +4,23 @@
  */
 export const BALANCE = Object.freeze({
   hardware: Object.freeze({
-    costGrowth: 1.16, energyBase: 1.5, bulkDiscountCap: 0.5,
-    tierCosts: Object.freeze([20,140,850,5_800,42_000,340_000,3_100_000,32_000_000,390_000_000,5_800_000_000,105_000_000_000,2_300_000_000_000,62_000_000_000_000,2_100_000_000_000_000,92_000_000_000_000_000,5_000_000_000_000_000_000]),
-    tierProduction: Object.freeze([.5,1.7,5.5,19,72,290,1_250,5_800,29_000,160_000,980_000,6_600_000,49_000_000,410_000_000,4_100_000_000,52_000_000_000]),
+    costGrowth: 1.18, energyBase: 1.5, bulkDiscountCap: 0.42,
+    tierCosts: Object.freeze([20,200,1_000,4_500,25_000,250_000,3_800_000,43_000_000,580_000_000,9_500_000_000,190_000_000_000,4_500_000_000_000,130_000_000_000_000,4_600_000_000_000_000,200_000_000_000_000_000,11_000_000_000_000_000_000]),
+    tierProduction: Object.freeze([.5,1.6,5,16,55,210,900,4_200,20_000,105_000,610_000,4_000_000,29_000_000,235_000_000,2_250_000_000,27_000_000_000]),
     tierEnergy: Object.freeze([.003,.018,.09,.42,1.8,8,36,170,850,4_600,27_000,175_000,1_300_000,12_000_000,130_000_000,1_800_000_000]),
   }),
-  training: Object.freeze({ xpBase: 16, xpExponent: 1.4, workBase: 12, workExponent: 1.46, skillGain: 0.4 }),
-  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 2.15, userConvergence: 0.18, capacityScale: 1.45, marketingBase: 0.12 }),
+  training: Object.freeze({ xpBase: 80, xpExponent: 2.25, workBase: 40, workExponent: 2.05, skillGain: 0.5 }),
+  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12 }),
   patents: Object.freeze({
     baseResearchRate: 0.025,
     targetMinutes: Object.freeze([[0, 25], [4, 300], [9, 1440], [19, 10080], [29, 30240], [39, 86400], [49, 259200]]),
   }),
   intelligence: Object.freeze({
-    computeScale: 1_000,
-    exponent: 0.32,
+    computeScale: 300_000,
+    exponent: 0.3,
     cycleRequirement: 1,
+    minimumHardwareTier: 4,
+    minimumModelLevel: 5,
     breakthroughMultiplier: 1.65,
   }),
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),

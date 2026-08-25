@@ -101,3 +101,12 @@
 - Added non-repairing Developer Mode state/economy validation and full-stack runtime diagnostics.
 - Serialized all full-screen reward presentations through one input owner and made offline reward dismissal clear its pending state atomically.
 - Added a Developer Runtime Inspector and regression coverage for startup, offline Continue, queue dismissal, and modal ownership.
+
+## Balance and telemetry baseline patch
+
+- Stretched Hardware tiers after the Calculator while retaining the fast first purchase.
+- Reworked Training work and XP curves so later runs take progressively longer and exact training sessions persist elapsed active time, Compute investment, levels, and modifiers.
+- Delayed Development Cycles behind meaningful Hardware and Model progress and a higher run-Compute scale.
+- Slowed permanent Model-era unlocks, reduced persistent Capacity limitation, and clarified Research allocation in Patent ETA presentation.
+- Fixed clean-run identity propagation, active/background session accounting, empty-sample report safety, and expanded balance reports for Training, Market, Research, Energy, Hardware, Models, and Prestige.
+- Reduced reward classification noise from routine Model levels, early Hardware milestones, and Training runs without earned Improvement Points.

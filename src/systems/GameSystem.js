@@ -80,8 +80,8 @@ export function marketMetrics(input) {
   const adoptionPower = 1 + Math.sqrt(state.market.adoption) * (0.08 + upgradeBonus(state, 'adoption'));
   const modelEfficiency = deployed.reduce((sum, deployedModel) => sum + effectiveModelStat(state,deployedModel,'efficiency') * (1+effectiveModelStat(state,deployedModel,'latency')*.04), 0) / Math.max(1, deployed.length);
   const capacity = computePerSecond(state) * state.allocation.inference / 100 * modelEfficiency * BALANCE.market.capacityScale * Math.max(0.1, 1 + upgradeBonus(state, 'inference') + strategicBonus(state, 'enterprise') * 0.35);
-  const organicDemand = unlockedMarketSize * qualityAppeal * 0.14 * marketingPower * reputationPower * adoptionPower * priceResistance * Math.max(0.1, 1 + upgradeBonus(state, 'demand') + milestoneBonus(state, 'demand') + strategicBonus(state, 'demand') + strategicBonus(state, 'adoption') - strategicBonus(state, 'enterprise') * 0.2);
-  const distributionFloor = capacity * Math.min(0.22, 0.1 + highestTier * 0.006);
+  const organicDemand = unlockedMarketSize * qualityAppeal * BALANCE.market.demandScale * marketingPower * reputationPower * adoptionPower * priceResistance * Math.max(0.1, 1 + upgradeBonus(state, 'demand') + milestoneBonus(state, 'demand') + strategicBonus(state, 'demand') + strategicBonus(state, 'adoption') - strategicBonus(state, 'enterprise') * 0.2);
+  const distributionFloor = capacity * Math.min(0.14, BALANCE.market.demandFloor + highestTier * 0.005);
   const demand = Math.max(organicDemand, distributionFloor);
   const target = Math.floor(Math.min(demand, capacity));
   const utilization = capacity > 0 ? Math.min(1, demand / capacity) : 0;
@@ -167,12 +167,16 @@ export function tickGame(state, deltaMs) {
   const storedTrainingUsed = wasTrainingActive ? Math.min(state.resources.compute, Math.max(rawTrainingGain, seconds * .25)) : 0;
   let trainingProgress = state.model.trainingProgress;
   let trainingActive = state.model.trainingActive;
+  let trainingSession = state.model.trainingSession;
+  let lastTrainingResult = state.model.lastTrainingResult;
   let level = activeProgress(state).level; let xp = activeProgress(state).xp; let upgradePoints = activeProgress(state).upgradePoints;
   let completedTraining = false;
   if (trainingActive) {
+    const computeInvested = rawTrainingGain + storedTrainingUsed;
+    trainingSession = { ...trainingSession, activeElapsedMs: (trainingSession?.activeElapsedMs ?? 0) + deltaMs, computeInvested: (trainingSession?.computeInvested ?? 0) + computeInvested };
     trainingProgress += trainingGain + storedTrainingUsed * effectiveTrainingMultiplier;
     const required = trainingRequiredForState(state);
-    if (trainingProgress >= required) { trainingProgress = 0; trainingActive = false; completedTraining = true; xp += required; while (xp >= xpRequired(level)) { xp -= xpRequired(level); level += 1; upgradePoints += 1; } }
+    if (trainingProgress >= required) { const startingLevel=trainingSession?.startingLevel??level; trainingProgress = 0; trainingActive = false; completedTraining = true; xp += required; while (xp >= xpRequired(level)) { xp -= xpRequired(level); level += 1; upgradePoints += 1; } lastTrainingResult={...trainingSession,modelId:state.model.activeId,completedAt:Date.now(),completionPlaytimeMs:state.statistics.playTimeMs+deltaMs,actualDuration:(trainingSession?.activeElapsedMs??deltaMs)/1000,effectiveDuration:(trainingSession?.activeElapsedMs??deltaMs)/1000,computeInvested:trainingSession?.computeInvested??computeInvested,startingLevel,resultingLevel:level,upgradePointsGained:level-startingLevel};trainingSession=null; }
   }
   const patentRate = patentEnabled ? patentResearchPerSecond(state) : 0;
   let patentProgress = state.patents.progress + patentRate * seconds;
@@ -184,7 +188,7 @@ export function tickGame(state, deltaMs) {
   let next = {
     ...state,
     resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: Math.max(0, state.resources.compute - storedTrainingUsed + (wasTrainingActive ? 0 : rawTrainingGain)), users, research: state.resources.research + researchGain, gems: state.resources.gems + (patentDiscovery && discoveredPatents.length % 10 === 0 ? 1 : 0) },
-    model: { ...state.model, level, xp, quality: effectiveModelStat(state,activeModel(state),'quality'), upgradePoints, trainingProgress, trainingActive, progress: { ...state.model.progress, [state.model.activeId]: { ...activeProgress(state), level, xp, upgradePoints } } },
+    model: { ...state.model, level, xp, quality: effectiveModelStat(state,activeModel(state),'quality'), upgradePoints, trainingProgress, trainingActive, trainingSession, lastTrainingResult, progress: { ...state.model.progress, [state.model.activeId]: { ...activeProgress(state), level, xp, upgradePoints } } },
     market: { ...state.market, reputation, adoption, demand: metrics.demand },
     statistics: { ...state.statistics, totalCreditsEarned: state.statistics.totalCreditsEarned + creditGain, totalComputeProduced: state.statistics.totalComputeProduced + produced, totalComputeConsumed: state.statistics.totalComputeConsumed + produced * (state.allocation.research + state.allocation.data + state.allocation.agents) / 100 + produced * state.allocation.inference / 100 * metrics.utilization + (wasTrainingActive ? rawTrainingGain : 0) + storedTrainingUsed, totalComputeWasted: state.statistics.totalComputeWasted + produced * state.allocation.inference / 100 * (1 - metrics.utilization), playTimeMs: state.statistics.playTimeMs + deltaMs },
     run: { ...state.run, creditsEarned: state.run.creditsEarned + creditGain, computeProduced: state.run.computeProduced + produced },
@@ -193,6 +197,7 @@ export function tickGame(state, deltaMs) {
     patents: { ...state.patents, discovered: discoveredPatents, progress: patentProgress, history: patentHistory, equipped: equippedPatents },
     ui: { ...state.ui, patentDiscovery: patentDiscovery ?? state.ui.patentDiscovery },
   };
+  if (completedTraining) next = { ...next, ui: { ...next.ui, toast: { message: `Training complete · Level ${level} · ${upgradePoints} Improvement Point${upgradePoints===1?'':'s'} available`, id: Date.now() } } };
   if (completedTraining && state.tutorial.step === 4) next = { ...next, tutorial: { ...state.tutorial, step: 5 } };
   next = applyAutomation(awardAchievements(next));
   if (Math.floor(state.statistics.playTimeMs / 60_000) !== Math.floor(next.statistics.playTimeMs / 60_000)) next = ensureMissions(next);
@@ -227,7 +232,9 @@ export function optimizeGain(state) {
 
 export function trainModel(state) {
   if (state.model.trainingActive || computePerSecond(state) <= 0) return state;
-  return feedback({ ...state, model: { ...state.model, trainingActive: true } }, `${activeModel(state).name} training run started`);
+  const required=trainingRequiredForState(state),rate=trainingRatePerSecond(state),multiplier=trainingMultiplier(state);
+  const trainingSession={modelId:state.model.activeId,startedAt:Date.now(),startPlaytimeMs:state.statistics.playTimeMs,startingLevel:activeProgress(state).level,baseRequired:required,expectedDuration:required/Math.max(.0001,rate),activeElapsedMs:0,computeInvested:0,modifiers:{trainingMultiplier:multiplier,allocationEfficiency:1+strategicBonus(state,'allocationEfficiency'),allocation:state.allocation.training,energyEfficiency:energyEfficiency(state)}};
+  return feedback({ ...state, model: { ...state.model, trainingActive: true, trainingSession, lastTrainingResult:null } }, `${activeModel(state).name} training run started`);
 }
 
 export function patentResearchRequired(index) {
@@ -319,7 +326,7 @@ function applyAutomation(state) {
   return next;
 }
 
-export function cycleIntelligence(state) { const computeReward=Math.floor((state.run.computeProduced / BALANCE.intelligence.computeScale) ** BALANCE.intelligence.exponent);return Math.max(0,Math.floor(computeReward * BALANCE.intelligence.breakthroughMultiplier ** (state.meta.breakthroughs ?? 0))); }
+export function cycleIntelligence(state) { const tier=HARDWARE_CATALOG.reduce((highest,item)=>state.hardware[item.id]>0?Math.max(highest,item.tier):highest,0);if(tier<BALANCE.intelligence.minimumHardwareTier||state.model.level<BALANCE.intelligence.minimumModelLevel)return 0;const computeReward=Math.floor((state.run.computeProduced / BALANCE.intelligence.computeScale) ** BALANCE.intelligence.exponent);return Math.max(0,Math.floor(computeReward * BALANCE.intelligence.breakthroughMultiplier ** (state.meta.breakthroughs ?? 0))); }
 export function canDevelop(state) { return cycleIntelligence(state) >= BALANCE.intelligence.cycleRequirement; }
 export function startDevelopmentCycle(state) {
   if (!canDevelop(state)) return state;
