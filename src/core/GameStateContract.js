@@ -7,6 +7,7 @@ export function isCompleteGameState(state) {
     state && typeof state === 'object'
     && finiteRecord(state.resources, ['credits','compute','users','research','gems'])
     && finiteRecord(state.hardware, HARDWARE_CATALOG.map(({ id }) => id))
+    && HARDWARE_CATALOG.every(({id}) => finiteRecord(state.hardwareUpgradeLevels?.[id], ['processor','memory','optimization']))
     && state.model && finiteRecord(state.allocation, ['training','inference','research','data','agents'])
     && state.market && state.meta && state.world && state.energy && state.patents
     && state.inventory?.equipped && Array.isArray(state.inventory?.instances)
@@ -28,6 +29,7 @@ export function validateGameState(state, economy = null) {
   if (!state || typeof state !== 'object') failures.push('state is not an object');
   if (!finiteRecord(state?.resources, ['credits','compute','users','research','gems'])) failures.push('resources contain missing, NaN, or infinite values');
   if (!finiteRecord(state?.hardware, HARDWARE_CATALOG.map(({ id }) => id))) failures.push('hardware catalog record is incomplete or invalid');
+  if (!HARDWARE_CATALOG.every(({id}) => finiteRecord(state?.hardwareUpgradeLevels?.[id], ['processor','memory','optimization']))) failures.push('hardware upgrade tracks are incomplete or invalid');
   if (!state?.model || !Array.isArray(state.model.owned) || !Array.isArray(state.model.deployed) || !MODEL_CATALOG.some(({ id }) => id === state.model.activeId)) failures.push('model ownership, deployment, or active model is invalid');
   if (!finiteRecord(state?.allocation, ['training','inference','research','data','agents'])) failures.push('compute allocation is incomplete or non-finite');
   if (!Array.isArray(state?.patents?.discovered) || !Array.isArray(state?.patents?.equipped) || !isRecord(state?.patents?.levels)) failures.push('patent state is invalid');

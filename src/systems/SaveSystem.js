@@ -1,4 +1,4 @@
-import { createDefaultState, MODEL_CATALOG, SAVE_VERSION } from '../data/defaultState.js';
+import { createDefaultState, HARDWARE_CATALOG, LEGACY_HARDWARE_UPGRADES, MODEL_CATALOG, SAVE_VERSION } from '../data/defaultState.js';
 import { FEATURE_UNLOCKS } from '../config/balance.js';
 import { ensureGameState } from '../core/GameStateContract.js';
 
@@ -69,13 +69,15 @@ export class SaveSystem {
     for (const feature of FEATURE_UNLOCKS) if (feature.int <= (save.meta?.totalIntelligence ?? 0) && featureUnlockTimes[feature.id] === undefined) featureUnlockTimes[feature.id] = save.statistics?.playTimeMs ?? 0;
     const requestedDeployment = [...new Set(asArray(save.model?.deployed, defaults.model.deployed).map((id) => legacyModelIds[id] ?? id).filter((id) => owned.includes(id)))];
     const deployed = requestedDeployment.length ? requestedDeployment.slice(0, 3) : [defaults.model.activeId];
+    const hardwareUpgradeLevels = migrateHardwareUpgrades(defaults.hardwareUpgradeLevels, save);
+    const migratedTechNodes = migrateSystemTech(save);
     return ensureGameState({
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...asObject(save.profile) }, resources: numericRecord(defaults.resources, save.resources),
-      hardware: numericRecord(defaults.hardware, save.hardware), model: { ...defaults.model, ...asObject(save.model), activeId, trainingTarget: activeId, owned, deployed, improvements: asObject(save.model?.improvements), progress },
+      hardware: numericRecord(defaults.hardware, save.hardware), hardwareUpgradeLevels, model: { ...defaults.model, ...asObject(save.model), activeId, trainingTarget: activeId, owned, deployed, improvements: asObject(save.model?.improvements), progress },
       allocation: normalizedAllocation(defaults.allocation, save.allocation), market: numericRecord(defaults.market, save.market),
-      upgrades: asArray(save.upgrades), tutorial: { ...defaults.tutorial, ...asObject(save.tutorial) }, objectives: { ...defaults.objectives, ...asObject(save.objectives) },
-      meta: { ...defaults.meta, ...asObject(save.meta), unlockedModels: [...new Set([...asArray(save.meta?.unlockedModels), ...owned])], techNodes: asArray(save.meta?.techNodes), achievements: { ...defaults.meta.achievements, ...asObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: asArray(save.meta?.cycleHistory) },
+      upgrades: asArray(save.upgrades).filter((id) => !LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id)), tutorial: { ...defaults.tutorial, ...asObject(save.tutorial) }, objectives: { ...defaults.objectives, ...asObject(save.objectives) },
+      meta: { ...defaults.meta, ...asObject(save.meta), unlockedModels: [...new Set([...asArray(save.meta?.unlockedModels), ...owned])], techNodes: migratedTechNodes, achievements: { ...defaults.meta.achievements, ...asObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: asArray(save.meta?.cycleHistory) },
       world: { ...defaults.world, ...asObject(save.world), modifiers: asArray(save.world?.modifiers), activeEvent: asObject(save.world?.activeEvent).id ? save.world.activeEvent : null }, company: { ...defaults.company, ...asObject(save.company), employees: numericRecord(defaults.company.employees, save.company?.employees) },
       automation: { ...defaults.automation, ...save.automation },
       energy: { ...defaults.energy, ...save.energy, buildings: { ...defaults.energy.buildings, ...save.energy?.buildings } },
@@ -97,6 +99,31 @@ export class SaveSystem {
       session: { ...defaults.session, ...asObject(save.session) }, ui: { ...defaults.ui, ...asObject(save.ui), toast: asObject(save.ui?.toast).message ? save.ui.toast : null },
     });
   }
+}
+
+function asObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
+function asArray(value, fallback = []) { return Array.isArray(value) ? value : fallback; }
+function numericRecord(defaults, value) { const source = asObject(value); return Object.fromEntries(Object.entries(defaults).map(([key, initial]) => [key, Number.isFinite(source[key]) && source[key] >= 0 ? source[key] : initial])); }
+function numericMap(value) { return Object.fromEntries(Object.entries(asObject(value)).filter(([, amount]) => Number.isFinite(amount) && amount >= 0)); }
+function normalizedAllocation(defaults, value) { const allocation = numericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }
+
+function migrateHardwareUpgrades(defaults, save) {
+  const explicit = asObject(save.hardwareUpgradeLevels);
+  const levels = Object.fromEntries(HARDWARE_CATALOG.map(({id}) => [id, numericRecord(defaults[id], explicit[id])]));
+  if (save.version >= 13) return levels;
+  for (const hardware of HARDWARE_CATALOG) {
+    const count = asArray(save.upgrades).filter((id) => LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id && upgrade.hardwareId === hardware.id)).length;
+    for (let index = 0; index < count; index += 1) { const track = ['processor','memory','optimization'][index % 3]; levels[hardware.id][track] += 1; }
+  }
+  return levels;
+}
+function migrateSystemTech(save) {
+  const nodes = new Set(asArray(save.meta?.techNodes));
+  if (save.version >= 13) return [...nodes];
+  const total = save.meta?.totalIntelligence ?? 0;
+  const legacy = [[1,'system-model-engineering'],[4,'system-marketing'],[10,'system-allocation'],[10,'system-research'],[15,'system-items'],[20,'system-patents'],[20,'system-account'],[80,'system-automation'],[120,'system-agents'],[170,'system-enterprise'],[350,'system-energy']];
+  for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
+  return [...nodes];
 }
 
 function asObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }

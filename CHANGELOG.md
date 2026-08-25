@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.14.0 — Core loop rebuild
+
+- Rebuilt Training around visible required Compute, effective allocated Compute, and live ETA.
+- Replaced fragmented Hardware upgrades with three repeatable, exponentially priced tracks per generation.
+- Added explicit INT-purchased system technologies and delayed Energy until its infrastructure technology.
+- Added canonical Model skill impact previews, persistent Model Point visibility, and actionable Market bottleneck guidance.
+- Migrated legacy Hardware investments and previously earned system access without deleting player value.
+- Expanded core-loop telemetry and regression coverage.
+
 ## 0.13.0 — Offline progression and Balance Lab
 
 - Added canonical, capped offline simulation with lifecycle-safe reconciliation and an aggregated Welcome Back summary.

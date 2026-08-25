@@ -1,7 +1,7 @@
 import { BALANCE } from '../config/balance.js';
 
-export const SAVE_VERSION = 12;
-export const GAME_VERSION = '0.13.0';
+export const SAVE_VERSION = 13;
+export const GAME_VERSION = '0.14.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -80,7 +80,7 @@ const RESEARCH_UPGRADES = [
   ['economics', 'Market Simulation', 'revenue', 0.1], ['automation', 'Lab Automation', 'allOutput', 0.08],
 ];
 
-const hardwareUpgrades = HARDWARE_CATALOG.flatMap((hardware) => HARDWARE_UPGRADE_TYPES.map(([key, name, effect, value], index) => ({
+export const LEGACY_HARDWARE_UPGRADES = HARDWARE_CATALOG.flatMap((hardware) => HARDWARE_UPGRADE_TYPES.map(([key, name, effect, value], index) => ({
   id: `${hardware.id}-${key}`, name: `${hardware.name}: ${name}`, description: `Improve this ${hardware.name} fleet`, category: 'hardware', hardwareId: hardware.id,
   effect, value, cost: Math.ceil(hardware.baseCost * (1.8 + index * 1.35)), unlock: Math.max(1, index * 3),
 })));
@@ -89,7 +89,6 @@ const progressionUpgrades = (items, category, baseCost, multiplier) => items.map
   category, effect, value, cost: Math.ceil(baseCost * multiplier ** index), unlock: 1 + index * 2,
 }));
 export const UPGRADES = [
-  ...hardwareUpgrades,
   ...progressionUpgrades(COMPANY_UPGRADES, 'company', 80, 2.4),
   ...progressionUpgrades(MODEL_UPGRADES, 'model', 140, 3),
   ...progressionUpgrades(RESEARCH_UPGRADES, 'research', 12, 2.1),
@@ -230,7 +229,8 @@ export function createDefaultState() {
     profile: { companyName: 'Singularity Labs', createdAt: Date.now(), localOwnerId: `local-${Date.now()}` },
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
-    model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, trainingSession: null, lastTrainingResult: null, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, skills: {} } } },
+    hardwareUpgradeLevels: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, { processor: 0, memory: 0, optimization: 0 }])),
+    model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, trainingSession: null, lastTrainingResult: null, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, trainings: 0, skills: {} } } },
     allocation: { training: 50, inference: 50, research: 0, data: 0, agents: 0 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], objectives: {},
