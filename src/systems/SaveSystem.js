@@ -125,3 +125,9 @@ function migrateSystemTech(save) {
   for (const [threshold,id] of legacy) if (total >= threshold) nodes.add(id);
   return [...nodes];
 }
+
+function asObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
+function asArray(value, fallback = []) { return Array.isArray(value) ? value : fallback; }
+function numericRecord(defaults, value) { const source = asObject(value); return Object.fromEntries(Object.entries(defaults).map(([key, initial]) => [key, Number.isFinite(source[key]) && source[key] >= 0 ? source[key] : initial])); }
+function numericMap(value) { return Object.fromEntries(Object.entries(asObject(value)).filter(([, amount]) => Number.isFinite(amount) && amount >= 0)); }
+function normalizedAllocation(defaults, value) { const allocation = numericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }
