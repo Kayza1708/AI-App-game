@@ -63,4 +63,4 @@ test('startup remains compatible when structuredClone and Web Animations are una
 
 test('HTML provides a visible pre-module startup fallback instead of a white page',()=>{const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');assert.match(html,/INITIALIZING COMPANY SYSTEMS/);assert.match(html,/boot-error/);assert.match(html,/window\.addEventListener\('error'/)});
 
-test('Save migration module has one unambiguous system-Tech migration declaration',()=>{const source=readFileSync(new URL('../src/systems/SaveSystem.js',import.meta.url),'utf8');assert.equal((source.match(/function migrateLegacySystemTechNodes\s*\(/g)??[]).length,1);assert.equal((source.match(/function migrateSystemTech\s*\(/g)??[]).length,0)});
+test('Save migration module has one unambiguous system-Tech migration declaration',()=>{const source=readFileSync(new URL('../src/systems/SaveSystem.js',import.meta.url),'utf8');assert.equal((source.match(/function migrateLegacySystemTechnologyNodes\s*\(/g)??[]).length,1);assert.equal((source.match(/function migrateSystemTech\s*\(/g)??[]).length,0);assert.equal((source.match(/function asObject\s*\(/g)??[]).length,0)});

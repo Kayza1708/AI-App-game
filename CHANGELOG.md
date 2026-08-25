@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.14.3 — Save module declaration hotfix
+
+- Removed every generic top-level Save helper name, including `asObject`, and replaced it with Save-specific declarations.
+- Added repository-wide JavaScript parse regression coverage so duplicate declarations fail before a release can build.
+- Cache-busted the localhost module entry again for the corrected Save module.
+
 ## 0.14.2 — Save migration parse hotfix
 
 - Removed the colliding `migrateSystemTech` declaration from the Save module and gave the single migration helper an unambiguous name.

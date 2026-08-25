@@ -36,7 +36,7 @@ export class AppShell {
       </header>
       <aside class="sidebar" data-sidebar><p class="sidebar-heading">Company interface</p><nav data-navigation></nav><div class="sidebar-footer"><small>PLAY TIME</small><strong data-session></strong><span>● AUTOSAVE ONLINE</span></div></aside>
       <main class="workspace" data-workspace></main>
-      <footer class="statusbar"><span>BUILD 0.14.2</span><span data-save-status>Awaiting first save</span></footer>
+      <footer class="statusbar"><span>BUILD 0.14.3</span><span data-save-status>Awaiting first save</span></footer>
       <div data-feedback></div><div data-tutorial></div><div data-world-event></div><div data-patent-popup></div><div data-item-popup></div><div data-reward-queue></div>
     </div>`;
     this.#root.addEventListener('click', this.#handleClick);
