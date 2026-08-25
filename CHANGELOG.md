@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.14.4 — Localhost stale-module bypass
+
+- Moved live persistence to a new `PersistentSaveSystem.js` module URL so a stale broken `SaveSystem.js` module can no longer block application startup.
+- The old path is now a declaration-free compatibility re-export.
+- Development startup now uses Vite `--force` to invalidate its transform cache on every server start.
+
 ## 0.14.3 — Save module declaration hotfix
 
 - Removed every generic top-level Save helper name, including `asObject`, and replaced it with Save-specific declarations.

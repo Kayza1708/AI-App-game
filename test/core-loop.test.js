@@ -5,7 +5,7 @@ import { featureUnlocked, SYSTEM_TECH_NODES, viewUnlocked } from '../src/config/
 import { buyHardware, buyTechNode, computePerSecond, economySnapshot, improveModel, marketMetrics, startDevelopmentCycle, tickGame, trainModel, trainingEtaSeconds, trainingRatePerSecond, trainingRequiredForState } from '../src/systems/GameSystem.js';
 import { buyHardwareUpgrade, hardwareUpgradeCost } from '../src/systems/HardwareUpgradeSystem.js';
 import { techNodeState } from '../src/systems/TechSystem.js';
-import { SaveSystem } from '../src/systems/SaveSystem.js';
+import { SaveSystem } from '../src/systems/PersistentSaveSystem.js';
 
 function funded(){const state=createDefaultState();return{...state,resources:{...state.resources,credits:1e12},hardware:{...state.hardware,calculator:1}}}
 

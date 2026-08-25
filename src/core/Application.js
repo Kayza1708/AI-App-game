@@ -2,7 +2,7 @@ import { createDefaultState, WORLD_EVENTS } from '../data/defaultState.js';
 import { BALANCE } from '../config/balance.js';
 import { isDeveloperMode, TelemetryService } from '../dev/telemetry-service.js';
 import { DeveloperResetService } from '../dev/developer-reset-service.js';
-import { SaveSystem } from '../systems/SaveSystem.js';
+import { SaveSystem } from '../systems/PersistentSaveSystem.js';
 import { AppShell } from '../ui/AppShell.js';
 import { EventBus } from './EventBus.js';
 import { GameLoop } from './GameLoop.js';

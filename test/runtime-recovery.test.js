@@ -4,7 +4,7 @@ import { AppShell } from '../src/ui/AppShell.js';
 import { EventBus } from '../src/core/EventBus.js';
 import { Application } from '../src/core/Application.js';
 import { RenderPipeline } from '../src/core/RenderPipeline.js';
-import { SaveSystem } from '../src/systems/SaveSystem.js';
+import { SaveSystem } from '../src/systems/PersistentSaveSystem.js';
 import { createDefaultState } from '../src/data/defaultState.js';
 import { computePerSecond, createDefaultEconomySnapshot, economySnapshot, startDevelopmentCycle } from '../src/systems/GameSystem.js';
 import { reconcileOffline } from '../src/systems/OfflineProgressSystem.js';
@@ -63,4 +63,4 @@ test('startup remains compatible when structuredClone and Web Animations are una
 
 test('HTML provides a visible pre-module startup fallback instead of a white page',()=>{const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');assert.match(html,/INITIALIZING COMPANY SYSTEMS/);assert.match(html,/boot-error/);assert.match(html,/window\.addEventListener\('error'/)});
 
-test('Save migration module has one unambiguous system-Tech migration declaration',()=>{const source=readFileSync(new URL('../src/systems/SaveSystem.js',import.meta.url),'utf8');assert.equal((source.match(/function migrateLegacySystemTechnologyNodes\s*\(/g)??[]).length,1);assert.equal((source.match(/function migrateSystemTech\s*\(/g)??[]).length,0);assert.equal((source.match(/function asObject\s*\(/g)??[]).length,0)});
+test('Save migration module has one unambiguous system-Tech migration declaration',()=>{const source=readFileSync(new URL('../src/systems/PersistentSaveSystem.js',import.meta.url),'utf8');assert.equal((source.match(/function migrateLegacySystemTechnologyNodes\s*\(/g)??[]).length,1);assert.equal((source.match(/function migrateSystemTech\s*\(/g)??[]).length,0);assert.equal((source.match(/function asObject\s*\(/g)??[]).length,0)});
