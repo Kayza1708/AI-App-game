@@ -16,7 +16,6 @@ import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
 import { reconcileOffline } from '../systems/OfflineProgressSystem.js';
 import { dismissReward } from '../systems/RewardQueue.js';
-import { buyHardwareUpgrade } from '../systems/HardwareUpgradeSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -119,7 +118,6 @@ export class Application {
         }), 'navigation');
       }),
       this.#eventBus.on('hardware:buy', (itemId) => this.#store.update((state) => buyHardware(state, itemId), 'hardware')),
-      this.#eventBus.on('hardware-upgrade:buy', ({hardwareId,trackId}) => this.#store.update((state) => buyHardwareUpgrade(state, hardwareId, trackId), 'hardware-upgrade')),
       this.#eventBus.on('model:train', () => this.#store.update(trainModel, 'training')),
       this.#eventBus.on('compute:optimize', () => this.#store.update(optimizeCode, 'manual')),
       this.#eventBus.on('allocation:set', ({ category, value }) => this.#store.update((state) => setAllocation(state, category, value), 'allocation')),

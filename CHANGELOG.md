@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.15.1 — Core-loop simplification and runtime stability
+
+- Fixed Runtime Inspector navigation crashing through the Missions renderer when its view host was absent, and isolated developer-tool rendering failures from gameplay.
+- Replaced active Model XP with one Training project equaling exactly one Model Level and one model-specific Model Point.
+- Made Quality, Efficiency, and Popularity available immediately with canonical economy previews and escalating centralized Point costs.
+- Removed per-Hardware upgrade controls; legacy investment is refunded deterministically during migration.
+- Rebuilt the 102-node Technology roadmap as a compact, zoomable, pannable icon graph with a selected-node detail panel.
+- Preserved Human Sessions across Development Cycles and introduced explicit run-ended/run-started telemetry plus Model-build economy impacts.
+
 ## 0.15.0 — Progression architecture
 
 - Removed Energy from active gameplay, navigation, simulation, and telemetry; legacy Energy data is safely discarded during migration.

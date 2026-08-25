@@ -8,7 +8,7 @@ export const BALANCE = Object.freeze({
     tierCosts: Object.freeze([20,250,1_200,4_000,30_000,1_000_000,75_000_000,35_000_000_000,2_400_000_000_000,190_000_000_000_000,18_000_000_000_000_000,2_100_000_000_000_000_000,300_000_000_000_000_000_000,52_000_000_000_000_000_000_000,11_000_000_000_000_000_000_000_000,2_800_000_000_000_000_000_000_000_000]),
     tierProduction: Object.freeze([.5,2,12,100,1_200,20_000,450_000,12_000_000,400_000_000,16_000_000_000,750_000_000_000,42_000_000_000_000,2_800_000_000_000_000,220_000_000_000_000_000,20_000_000_000_000_000_000,2_200_000_000_000_000_000_000]),
   }),
-  training: Object.freeze({ xpBase: 80, xpExponent: 2.05, workBase: 8, levelSegments: Object.freeze([[10,1.32],[25,1.2],[50,1.13],[100,1.09],[Infinity,1.06]]), repeatGrowth: 1.035, skillGain: 0.9 }),
+  training: Object.freeze({ requirementAnchors: Object.freeze([[1,15],[2,360],[3,2_100],[4,20_000],[5,80_000],[10,2_000_000],[20,1e9],[50,1e15],[100,1e22],[250,1e35],[500,1e55]]), skillGain: 0.9, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]) }),
   market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12 }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
@@ -16,7 +16,7 @@ export const BALANCE = Object.freeze({
     exponent: 0.34,
     cycleRequirement: 1,
     minimumHardwareTier: 4,
-    minimumModelLevel: 5,
+    minimumModelLevel: 9,
     breakthroughMultiplier: 1.65,
   }),
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),
@@ -28,7 +28,7 @@ export const BALANCE = Object.freeze({
 });
 
 export const FEATURE_UNLOCKS = Object.freeze([
-  { id: 'core', name: 'Core Company', int: 0, views: ['dashboard', 'hardware', 'model', 'objectives'], description: 'Credits, Compute, TinyChat, Optimize, and Objectives.' },
+  { id: 'core', name: 'Core Company', int: 0, views: ['dashboard', 'hardware', 'model', 'objectives'], description: 'Credits, Compute, TinyChat, Training, Model Development, and Objectives.' },
   { id: 'development', name: 'Development Cycles', int: 1, views: ['strategy'], description: 'Spend permanent Intelligence and plan the next run.' },
   { id: 'marketing', name: 'Marketing Division', int: 4, views: ['company', 'market'], description: 'Demand, pricing, Marketing, Reputation, and Adoption.' },
   { id: 'allocation', name: 'Compute Allocation', int: 2, views: ['allocation'], description: 'Research Compute and strategic allocation.' },
@@ -71,7 +71,7 @@ export const MODEL_SKILL_UNLOCKS = Object.freeze({
 
 export function curveValue(base, growth, level) { return base * growth ** Math.max(0, level); }
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
-export function featureUnlocked(state, id) { if(id==='core')return true;if(id==='development')return(state.meta.cycles??0)>0||(state.meta.totalIntelligence??0)>0;const node=SYSTEM_TECH_NODES.find((item)=>item.feature===id);return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity); }
+export function featureUnlocked(state, id) { if(['core','modelSkills'].includes(id))return true;if(id==='development')return(state.meta.cycles??0)>0||(state.meta.totalIntelligence??0)>0;const node=SYSTEM_TECH_NODES.find((item)=>item.feature===id);return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity); }
 export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) => item.int > (state.meta.totalIntelligence ?? 0)).sort((a, b) => a.int - b.int)[0] ?? null; }
 export function viewUnlocked(state, view) { return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id)); }
 export function skillUnlocked(state, skill) { if(['quality','efficiency','popularity'].includes(skill))return true;if(['reasoning','knowledge','coding','vision','math','creativity','context','latency'].includes(skill))return state.meta.techNodes.includes('system-model-engineering');if(skill==='research')return featureUnlocked(state,'research');if(['enterprise','safety'].includes(skill))return featureUnlocked(state,'enterprise');if(['autonomy','agents'].includes(skill))return featureUnlocked(state,'agents');return (state.meta.totalIntelligence ?? 0) >= (MODEL_SKILL_UNLOCKS[skill] ?? Infinity); }

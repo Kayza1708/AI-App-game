@@ -63,18 +63,21 @@ export class SaveSystem {
     const requestedActiveId = legacyModelIds[save.model?.activeId] ?? save.model?.activeId;
     const activeId = owned.includes(requestedActiveId) && MODEL_CATALOG.some(({ id }) => id === requestedActiveId) ? requestedActiveId : defaults.model.activeId;
     const migratedProgress = Object.fromEntries(Object.entries(readSaveObject(save.model?.progress)).map(([id, value]) => [legacyModelIds[id] ?? id, readSaveObject(value)]));
-    const progress = { ...defaults.model.progress, ...migratedProgress };
-    progress[activeId] ??= { level: save.model?.level ?? 1, xp: save.model?.xp ?? 0, upgradePoints: save.model?.upgradePoints ?? 0, skills: save.model?.improvements?.[activeId] ?? {} };
+    const progress = Object.fromEntries(Object.entries({ ...defaults.model.progress, ...migratedProgress }).map(([id,value])=>[id,{...value,xp:0}]));
+    progress[activeId] ??= { level: save.model?.level ?? 1, xp: 0, upgradePoints: save.model?.upgradePoints ?? 0, skills: save.model?.improvements?.[activeId] ?? {} };
     const featureUnlockTimes = { ...defaults.meta.featureUnlockTimes, ...save.meta?.featureUnlockTimes };
     for (const feature of FEATURE_UNLOCKS) if (feature.int <= (save.meta?.totalIntelligence ?? 0) && featureUnlockTimes[feature.id] === undefined) featureUnlockTimes[feature.id] = save.statistics?.playTimeMs ?? 0;
     const requestedDeployment = [...new Set(readSaveArray(save.model?.deployed, defaults.model.deployed).map((id) => legacyModelIds[id] ?? id).filter((id) => owned.includes(id)))];
     const deployed = requestedDeployment.length ? requestedDeployment.slice(0, 3) : [defaults.model.activeId];
-    const hardwareUpgradeLevels = migrateLegacyHardwareUpgradeTracks(defaults.hardwareUpgradeLevels, save);
+    const legacyHardwareUpgradeLevels = migrateLegacyHardwareUpgradeTracks(defaults.hardwareUpgradeLevels, save);
+    const hardwareUpgradeRefund = legacyHardwareUpgradeRefund(save, legacyHardwareUpgradeLevels);
     const migratedTechNodes = migrateLegacySystemTechnologyNodes(save);
+    const migratedTrainingProgress = migrateLegacyTrainingProgress(save, activeId, progress);
+    const migratedTrainingSession = migrateLegacyTrainingSession(save, activeId, progress, migratedTrainingProgress);
     return ensureGameState({
       ...defaults, ...save, version: SAVE_VERSION,
-      profile: { ...defaults.profile, ...readSaveObject(save.profile) }, resources: readSaveNumericRecord(defaults.resources, save.resources),
-      hardware: readSaveNumericRecord(defaults.hardware, save.hardware), hardwareUpgradeLevels, model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress, trainingProgress: migrateLegacyTrainingProgress(save, activeId, progress) },
+      profile: { ...defaults.profile, ...readSaveObject(save.profile) }, resources: { ...readSaveNumericRecord(defaults.resources, save.resources), credits: (Number.isFinite(save.resources?.credits) ? save.resources.credits : defaults.resources.credits) + hardwareUpgradeRefund },
+      hardware: readSaveNumericRecord(defaults.hardware, save.hardware), hardwareUpgradeLevels: defaults.hardwareUpgradeLevels, model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, xp: 0, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress, trainingProgress: migratedTrainingProgress, trainingSession: migratedTrainingSession },
       allocation: normalizeSavedAllocation(defaults.allocation, save.allocation), energy: defaults.energy, market: readSaveNumericRecord(defaults.market, save.market),
       upgrades: readSaveArray(save.upgrades).filter((id) => !LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id)), tutorial: { ...defaults.tutorial, ...readSaveObject(save.tutorial) }, objectives: { ...defaults.objectives, ...readSaveObject(save.objectives) },
       meta: { ...defaults.meta, ...readSaveObject(save.meta), unlockedModels: [...new Set([...readSaveArray(save.meta?.unlockedModels), ...owned])], techNodes: migratedTechNodes, achievements: { ...defaults.meta.achievements, ...readSaveObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: readSaveArray(save.meta?.cycleHistory) },
@@ -126,5 +129,14 @@ function migrateLegacySystemTechnologyNodes(save) {
 }
 
 function migrateLegacyTrainingProgress(save, activeId, progress) {
-  const value=Number(save.model?.trainingProgress??0); if(!Number.isFinite(value)||value<=0)return 0; if((save.version??0)>=14)return value; const level=progress[activeId]?.level??1, trainings=progress[activeId]?.trainings??0; const oldRequired=5*Math.max(1,level)**1.65*1.9**Math.max(0,level-1)*1.12**trainings; let newRequired=8,previous=1; for(const [ceiling,growth] of [[10,1.32],[25,1.2],[50,1.13],[100,1.09],[Infinity,1.06]]){const steps=Math.max(0,Math.min(level,ceiling)-previous);newRequired*=growth**steps;previous=ceiling;if(level<=ceiling)break;} newRequired*=1.035**trainings; return Math.min(newRequired,value/Math.max(1,oldRequired)*newRequired);
+  const value=Number(save.model?.trainingProgress??0); if(!Number.isFinite(value)||value<=0)return 0; if((save.version??0)>=15)return value;
+  const level=progress[activeId]?.level??1, modelScale=MODEL_CATALOG.find(model=>model.id===activeId)?.trainingScale??1;
+  const oldRequired=(save.version??0)>=14 ? legacyV14TrainingRequired(level)*modelScale : 5*Math.max(1,level)**1.65*1.9**Math.max(0,level-1)*1.12**(progress[activeId]?.trainings??0)*modelScale;
+  const newRequired=currentTrainingRequired(level)*modelScale;
+  return Math.min(newRequired,value/Math.max(1,oldRequired)*newRequired);
 }
+function legacyV14TrainingRequired(level){let work=8,previous=1;for(const[ceiling,growth]of[[10,1.32],[25,1.2],[50,1.13],[100,1.09],[Infinity,1.06]]){const steps=Math.max(0,Math.min(level,ceiling)-previous);work*=growth**steps;previous=ceiling;if(level<=ceiling)break}return Math.floor(work)}
+function currentTrainingRequired(level){const anchors=[[1,15],[2,360],[3,2_100],[4,20_000],[5,80_000],[10,2_000_000],[20,1e9],[50,1e15],[100,1e22],[250,1e35],[500,1e55]],target=Math.max(1,level);const upper=anchors.find(([anchor])=>anchor>=target)??anchors.at(-1),lower=[...anchors].reverse().find(([anchor])=>anchor<=target)??anchors[0];if(upper[0]===lower[0])return lower[1];const ratio=(target-lower[0])/(upper[0]-lower[0]);return Math.round(Math.exp(Math.log(lower[1])+(Math.log(upper[1])-Math.log(lower[1]))*ratio))}
+function legacyHardwareUpgradeRefund(save,levels){if((save.version??0)>=15)return 0;return HARDWARE_CATALOG.reduce((total,hardware)=>total+Object.values(levels[hardware.id]??{}).reduce((sum,level)=>sum+Array.from({length:level},(_,index)=>Math.ceil(hardware.baseCost*3*1.78**index)).reduce((a,b)=>a+b,0),0),0)}
+
+function migrateLegacyTrainingSession(save,activeId,progress,trainingProgress){if(!save.model?.trainingActive)return null;const modelScale=MODEL_CATALOG.find(model=>model.id===activeId)?.trainingScale??1,required=currentTrainingRequired(progress[activeId]?.level??1)*modelScale,legacy=readSaveObject(save.model?.trainingSession);return{...legacy,modelId:activeId,startingLevel:progress[activeId]?.level??1,baseRequired:required,computeInvested:Math.min(required,Math.max(0,trainingProgress)),expectedDuration:Number.isFinite(legacy.expectedDuration)?legacy.expectedDuration:null}}

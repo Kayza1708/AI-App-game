@@ -1,6 +1,5 @@
-export const BOTTLENECKS = ['Demand Limited','Capacity Limited','Energy Limited','Training Limited','Research Limited','Credits Limited','Patent Limited','Model Quality Limited','Marketing Limited','Reputation Limited','Adoption Limited','No Clear Bottleneck'];
+export const BOTTLENECKS = ['Demand Limited','Capacity Limited','Training Limited','Research Limited','Credits Limited','Patent Limited','Model Quality Limited','Marketing Limited','Reputation Limited','Adoption Limited','No Clear Bottleneck'];
 export function classifyBottleneck(snapshot) {
-  if (snapshot.energyEfficiency < .8) return 'Energy Limited';
   if (snapshot.trainingActive && snapshot.trainingRate <= 0.01) return 'Training Limited';
   if (snapshot.patentEta > 14_400 && snapshot.researchRate <= .05) return 'Research Limited';
   if (snapshot.usefulPurchases === 0 && snapshot.cheapestUsefulEta > 30) return 'Credits Limited';
@@ -13,8 +12,8 @@ export function classifyBottleneck(snapshot) {
 }
 export class BottleneckAnalyzer {
   periods=[]; current=null;
-  update(snapshot, seconds) { const name=classifyBottleneck(snapshot); if(this.current?.name===name)return null; const previous=this.current;if(previous){previous.end=seconds;previous.duration=seconds-previous.start;this.periods.push(previous)} this.current={name,start:seconds,end:null,duration:0,values:{demand:snapshot.demand,capacity:snapshot.capacity,energyEfficiency:snapshot.energyEfficiency},suggestion:suggestion(name)};return previous?{previous:previous.name,next:name,duration:previous.duration}:null }
+  update(snapshot, seconds) { const name=classifyBottleneck(snapshot); if(this.current?.name===name)return null; const previous=this.current;if(previous){previous.end=seconds;previous.duration=seconds-previous.start;this.periods.push(previous)} this.current={name,start:seconds,end:null,duration:0,values:{demand:snapshot.demand,capacity:snapshot.capacity},suggestion:suggestion(name)};return previous?{previous:previous.name,next:name,duration:previous.duration}:null }
   finalize(seconds){if(this.current){this.current.end=seconds;this.current.duration=seconds-this.current.start;this.periods.push(this.current);this.current=null}}
   summary(total){const durations={};for(const p of this.periods)(durations[p.name]??=0,durations[p.name]+=p.duration);return{percentages:Object.fromEntries(Object.entries(durations).map(([k,v])=>[k,total?v/total*100:0])),longest:[...this.periods].sort((a,b)=>b.duration-a.duration)[0]??null,transitions:Math.max(0,this.periods.length-1)}}
 }
-function suggestion(name){return { 'Energy Limited':'Build Energy infrastructure or improve efficiency.','Capacity Limited':'Increase Inference allocation or serving efficiency.','Demand Limited':'Invest in Marketing, Quality, or Reputation.','Credits Limited':'Improve revenue per user or claim available rewards.','Research Limited':'Increase Research allocation or deploy Research models.','Training Limited':'Increase Training allocation and effective Compute.'}[name]??'Review allocation and the next useful purchase.'}
+function suggestion(name){return {'Capacity Limited':'Increase Inference allocation or serving efficiency.','Demand Limited':'Invest in Marketing, Quality, or Reputation.','Credits Limited':'Improve revenue per user or claim available rewards.','Research Limited':'Increase Research allocation or deploy Research models.','Training Limited':'Increase Training allocation and effective Compute.'}[name]??'Review allocation and the next useful purchase.'}

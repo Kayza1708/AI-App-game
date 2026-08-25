@@ -5,7 +5,8 @@ import { EventBus } from '../src/core/EventBus.js';
 import { Application } from '../src/core/Application.js';
 import { RenderPipeline } from '../src/core/RenderPipeline.js';
 import { SaveSystem } from '../src/systems/PersistentSaveSystem.js';
-import { createDefaultState } from '../src/data/defaultState.js';
+import { createDefaultState, TECH_NODES } from '../src/data/defaultState.js';
+const TECH_NODE_COUNT=TECH_NODES.length;
 import { computePerSecond, createDefaultEconomySnapshot, economySnapshot, startDevelopmentCycle } from '../src/systems/GameSystem.js';
 import { reconcileOffline } from '../src/systems/OfflineProgressSystem.js';
 import { ensureGameState, isCompleteGameState, validateGameState } from '../src/core/GameStateContract.js';
@@ -64,3 +65,14 @@ test('startup remains compatible when structuredClone and Web Animations are una
 test('HTML provides a visible pre-module startup fallback instead of a white page',()=>{const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');assert.match(html,/INITIALIZING COMPANY SYSTEMS/);assert.match(html,/boot-error/);assert.match(html,/window\.addEventListener\('error'/)});
 
 test('Save migration module has one unambiguous system-Tech migration declaration',()=>{const source=readFileSync(new URL('../src/systems/PersistentSaveSystem.js',import.meta.url),'utf8');assert.equal((source.match(/function migrateLegacySystemTechnologyNodes\s*\(/g)??[]).length,1);assert.equal((source.match(/function migrateSystemTech\s*\(/g)??[]).length,0);assert.equal((source.match(/function asObject\s*\(/g)??[]).length,0)});
+
+class LifecycleRoot extends MockRoot {
+  querySelector(selector) {
+    if (selector === '[data-missions-list]' && !this.querySelector('[data-workspace]').innerHTML.includes('data-missions-list')) return null;
+    return super.querySelector(selector);
+  }
+}
+function renderView(shell,state,view){const next={...state,ui:{...state.ui,activeView:view}};assert.doesNotThrow(()=>shell.render(next),view);return next}
+test('AppShell lifecycle keeps a valid view host across Runtime Inspector navigation',()=>{const root=new LifecycleRoot(),shell=new AppShell(root,new EventBus(),{devMode:true,telemetry:{}});let state=createDefaultState();shell.mount(state);for(const view of ['runtime','dashboard','developer','runtime','dashboard','runtime'])state=renderView(shell,state,view);assert.match(root.querySelector('[data-workspace]').innerHTML,/RUNTIME INSPECTOR/)});
+test('Development Cycle and offline return can navigate without a missing view host',()=>{const root=new LifecycleRoot(),shell=new AppShell(root,new EventBus(),{devMode:true,telemetry:{}});let state=createDefaultState();shell.mount(state);state={...state,meta:{...state.meta,cycles:1},ui:{...state.ui,activeView:'strategy'}};shell.render(state);state=startDevelopmentCycle({...state,run:{...state.run,computeProduced:1e12,creditsEarned:1e9},hardware:{...state.hardware,gpuServer:1},model:{...state.model,level:9}});state=renderView(shell,state,'runtime');state=reconcileOffline({...state,offline:{...state.offline,lastActiveTimestamp:1_000}},61_000);state=renderView(shell,state,'dashboard');assert.match(root.querySelector('[data-workspace]').innerHTML,/COMMAND CENTER/)});
+test('Technology roadmap renders compact selectable nodes rather than giant cards',()=>{const root=new MockRoot(),shell=new AppShell(root,new EventBus());const state={...createDefaultState(),meta:{...createDefaultState().meta,cycles:1},ui:{...createDefaultState().ui,activeView:'strategy'}};shell.mount(state);const html=root.querySelector('[data-workspace]').innerHTML;assert.equal((html.match(/tech-icon-node/g)??[]).length,TECH_NODE_COUNT);assert.match(html,/tech-connections/);assert.match(html,/data-tech-detail/)});

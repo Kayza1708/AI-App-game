@@ -1,7 +1,7 @@
 import { BALANCE } from '../config/balance.js';
 
-export const SAVE_VERSION = 14;
-export const GAME_VERSION = '0.15.0';
+export const SAVE_VERSION = 15;
+export const GAME_VERSION = '0.15.1';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -257,7 +257,7 @@ export function createDefaultState() {
     tutorial: { step: 0, completed: false },
     settings: { numberNotation: 'compact', sound: true },
     statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
-    run: { creditsEarned: 0, computeProduced: 0 },
+    run: { number: 1, startedAtSessionMs: 0, creditsEarned: 0, computeProduced: 0 },
     session: { elapsedMs: 0, lastSavedAt: null },
     ui: { activeView: 'dashboard', sidebarOpen: false, toast: null },
   };
