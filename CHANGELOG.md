@@ -110,3 +110,8 @@
 - Slowed permanent Model-era unlocks, reduced persistent Capacity limitation, and clarified Research allocation in Patent ETA presentation.
 - Fixed clean-run identity propagation, active/background session accounting, empty-sample report safety, and expanded balance reports for Training, Market, Research, Energy, Hardware, Models, and Prestige.
 - Reduced reward classification noise from routine Model levels, early Hardware milestones, and Training runs without earned Improvement Points.
+
+## Offline Continue input hotfix
+
+- Stopped the live render loop from replacing the active reward modal DOM on every frame. Keeping the same button node alive from pointer-down through click restores reliable mouse and touch dismissal.
+- Added an explicit non-submit Continue button, touch input safeguards, and regression coverage proving repeated renders do not recreate the active reward presentation before dismissal.
