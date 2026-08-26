@@ -2,6 +2,7 @@
  * Milestone 11 progression controls. Gameplay formulas consume this object so
  * pacing can be tuned without hunting through simulation or UI code.
  */
+import { TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
 export const BALANCE = Object.freeze({
   hardware: Object.freeze({
     costGrowth: 1.18, bulkDiscountCap: 0.42, upgradeCostFactor: 3, upgradeCostGrowth: 1.78,
@@ -76,6 +77,7 @@ export function featureUnlocked(state, id) {
   if (['core', 'modelSkills', 'marketing'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
   if (id === 'allocation') return (state.meta.cycles ?? 0) > 0;
+  if (TECHNOLOGY_NODES.some((node) => node.unlockFeature === id && state.meta.techNodes.includes(node.id))) return true;
   const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
   return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity);
 }
@@ -83,4 +85,4 @@ export function viewUnlocked(state, view) {
   if (['company', 'market', 'allocation'].includes(view)) return (state.meta.cycles ?? 0) > 0;
   return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id));
 }
-export function skillUnlocked(state, skill) { if(['quality','efficiency','popularity'].includes(skill))return true;if(['reasoning','knowledge','coding','vision','math','creativity','context','latency'].includes(skill))return state.meta.techNodes.includes('system-model-engineering');if(skill==='research')return featureUnlocked(state,'research');if(['enterprise','safety'].includes(skill))return featureUnlocked(state,'enterprise');if(['autonomy','agents'].includes(skill))return featureUnlocked(state,'agents');return (state.meta.totalIntelligence ?? 0) >= (MODEL_SKILL_UNLOCKS[skill] ?? Infinity); }
+export function skillUnlocked(state, skill) { if(['quality','efficiency','popularity'].includes(skill))return true;const modelEngineering=state.meta.techNodes.includes('model-1')||state.meta.techNodes.includes('system-model-engineering');if(['reasoning','knowledge','coding','vision','math','creativity','context','latency'].includes(skill))return modelEngineering;if(skill==='research')return featureUnlocked(state,'research');if(['enterprise','safety'].includes(skill))return featureUnlocked(state,'enterprise');if(['autonomy','agents'].includes(skill))return featureUnlocked(state,'agents');return (state.meta.totalIntelligence ?? 0) >= (MODEL_SKILL_UNLOCKS[skill] ?? Infinity); }

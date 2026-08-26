@@ -1,7 +1,9 @@
 import { BALANCE } from '../config/balance.js';
+import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
+export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 17;
-export const GAME_VERSION = '0.16.0';
+export const SAVE_VERSION = 18;
+export const GAME_VERSION = '0.17.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -32,9 +34,9 @@ export const HARDWARE_CATALOG = [
 export const MODEL_SKILLS = ['quality','reasoning','knowledge','context','coding','vision','creativity','math','efficiency','latency','popularity','enterprise','research','safety','autonomy'];
 const MODEL_BASE = [
   {id:'tinyChat',name:'TinyChat',role:'Consumer',specialty:'Fast, efficient access for a large free audience.',intCost:0,unlockTech:null,trainingScale:1,identity:{adoption:.3,energyEfficiency:.2},stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0}},
-  {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:0,unlockTech:'system-model-engineering',trainingScale:4,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
-  {id:'gptClass',name:'GPT-Class',role:'Generalist',specialty:'Broad language capability with flexible consumer and business builds.',intCost:0,unlockTech:'model-1',trainingScale:10,identity:{quality:.15,marketSize:.12},stats:{quality:5,reasoning:6,knowledge:6,context:6,coding:6,vision:1,creativity:6,math:6,efficiency:6,energy:5,latency:6,popularity:7,enterprise:5,research:5,safety:5,autonomy:3}},
-  {id:'omni',name:'Omni',role:'Multimodal',specialty:'Vision, creativity, advertising, and viral consumer adoption.',intCost:0,unlockTech:'model-2',trainingScale:15,identity:{demand:.3,adoption:.3},stats:{quality:7,reasoning:5,knowledge:6,context:6,coding:3,vision:11,creativity:10,math:4,efficiency:5,energy:4,latency:5,popularity:11,enterprise:4,research:4,safety:6,autonomy:3}},
+  {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:0,unlockTech:'model-1',trainingScale:4,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
+  {id:'gptClass',name:'GPT-Class',role:'Generalist',specialty:'Broad language capability with flexible consumer and business builds.',intCost:0,unlockTech:'model-2',trainingScale:10,identity:{quality:.15,marketSize:.12},stats:{quality:5,reasoning:6,knowledge:6,context:6,coding:6,vision:1,creativity:6,math:6,efficiency:6,energy:5,latency:6,popularity:7,enterprise:5,research:5,safety:5,autonomy:3}},
+  {id:'omni',name:'Omni',role:'Multimodal',specialty:'Vision, creativity, advertising, and viral consumer adoption.',intCost:0,unlockTech:'model-3',trainingScale:15,identity:{demand:.3,adoption:.3},stats:{quality:7,reasoning:5,knowledge:6,context:6,coding:3,vision:11,creativity:10,math:4,efficiency:5,energy:4,latency:5,popularity:11,enterprise:4,research:4,safety:6,autonomy:3}},
   {id:'research',name:'Research',role:'Scientific',specialty:'Knowledge generation, mathematics, and permanent Patent progress.',intCost:0,unlockTech:'research-2',trainingScale:35,identity:{research:.55,revenue:-.15},stats:{quality:9,reasoning:11,knowledge:12,context:10,coding:7,vision:5,creativity:6,math:12,efficiency:4,energy:4,latency:3,popularity:4,enterprise:4,research:13,safety:8,autonomy:5}},
   {id:'agent',name:'Agent',role:'Automation',specialty:'Autonomous operations and Agent Tasks at high Compute demand.',intCost:0,unlockTech:'agent-3',trainingScale:75,identity:{agents:.6,energyEfficiency:-.2},stats:{quality:10,reasoning:10,knowledge:9,context:9,coding:10,vision:6,creativity:7,math:8,efficiency:4,energy:2,latency:4,popularity:7,enterprise:7,research:7,safety:7,autonomy:13}},
   {id:'enterprise',name:'Enterprise',role:'Enterprise',specialty:'Secure contracts with exceptional revenue per customer.',intCost:0,unlockTech:'enterprise-3',trainingScale:150,identity:{revenue:.7,demand:-.22},stats:{quality:12,reasoning:10,knowledge:11,context:13,coding:9,vision:6,creativity:4,math:10,efficiency:7,energy:5,latency:5,popularity:4,enterprise:15,research:7,safety:13,autonomy:6}},
@@ -114,39 +116,15 @@ export const OBJECTIVES = [
   objective('first-compute','STARTUP','Generate your first Compute','totalCompute',1,75,1),
   objective('first-training','STARTUP','Complete your first Training','trainings',1,150,2),
   objective('first-point','STARTUP','Spend your first Improvement Point','pointsSpent',1,200,3),
+  objective('first-keystone','TECHNOLOGY','Purchase your first build-defining Keystone','keystones',1,2_500,4),
+  objective('first-tech-model','MODEL','Unlock a Model through Technology','models',2,1_500,5),
+  objective('branch-investment-10','TECHNOLOGY','Invest 10 INT in one Technology branch','maxBranchInvestment',10,3_000,6),
   ...HARDWARE_CATALOG.map((item,index)=>objective(`hardware-${item.id}`,'INFRASTRUCTURE',`Own a ${item.name}`,`hardware:${item.id}`,1,Math.ceil(item.baseCost*.5),10+index)),
   ...objectiveTracks.flatMap(([id,category,label,metric,targets],track)=>targets.map((target,index)=>objective(`${id}-${index+1}`,category,label.replace('{n}',target.toLocaleString('en-US')),metric,target,Math.ceil(100*3**Math.min(10,index)),40+track*10+index))),
 ].sort((a,b)=>a.order-b.order);
 
-const TECH_BRANCHES = {
-  compute: { label: 'Compute Empire', strength: 'hardwareOutput', weakness: 'demand', nodes: ['Parallel Kernels', 'Thermal Architecture', 'Photonic Interconnects', 'Cloud Fabric', 'Exascale Scheduling', 'Universal Compute'] },
-  market: { label: 'Market Dominance', strength: 'demand', weakness: 'hardwareOutput', nodes: ['Growth Analytics', 'Brand Network', 'Elastic Pricing', 'Global Distribution', 'Category Ownership', 'Ubiquitous AI'] },
-  research: { label: 'Research Lab', strength: 'research', weakness: 'revenue', nodes: ['Peer Review', 'Research Teams', 'Autonomous Research', 'Quantum Simulation', 'Scientific Commons', 'Theory Engine'] },
-  model: { label: 'Frontier Models', strength: 'quality', weakness: 'hardwareCost', nodes: ['Tokenizer Theory', 'Reasoning Traces', 'Architecture Search', 'Synthetic Data', 'Recursive Training', 'General Intelligence'] },
-  automation: { label: 'Autonomous Company', strength: 'automation', weakness: 'click', nodes: ['Smart Allocation', 'Purchase Rules', 'Auto Training', 'Operations Agent', 'Executive Agent', 'Self-Improving Company'] },
-  enterprise: { label: 'Enterprise Monopoly', strength: 'enterprise', weakness: 'adoption', nodes: ['Sales Pipeline', 'Developer API', 'Enterprise Contracts', 'Compliance Suite', 'Mission Critical AI', 'Industry Standard'] },
-  consumer: { label: 'Consumer Platform', strength: 'adoption', weakness: 'revenue', nodes: ['Viral Loops', 'Creator Program', 'Free Tier', 'Social Intelligence', 'Global Consumer Brand', 'Universal Assistant'] },
-  agent: { label: 'Agent Economy', strength: 'agents', weakness: 'hardwareCost', nodes: ['Tool Use', 'Agent Memory', 'Multi-Agent Teams', 'AI Agents', 'Agent Marketplace', 'Machine Economy'] },
-  robotics: { label: 'Robotics', strength: 'automation', weakness: 'revenue', nodes: ['Robot APIs', 'Embodied Learning', 'Factory Autonomy', 'General Robotics', 'Self-Replicating Industry', 'Machine Civilization'] },
-  medicine: { label: 'Medicine', strength: 'reputationGrowth', weakness: 'training', nodes: ['Clinical Models', 'Protein Design', 'Diagnostic Networks', 'Personalized Medicine', 'Longevity Research', 'Post-Biological Health'] },
-  education: { label: 'Education', strength: 'adoption', weakness: 'revenue', nodes: ['AI Tutors', 'Adaptive Curricula', 'Universal Translation', 'Global Academy', 'Accelerated Learning', 'Collective Intelligence'] },
-  physics: { label: 'Physics', strength: 'research', weakness: 'revenue', nodes: ['Simulation Labs', 'Materials Search', 'Quantum Simulation', 'Unified Models', 'Reality Engineering', 'Computational Physics'] },
-  space: { label: 'Space Infrastructure', strength: 'marketSize', weakness: 'hardwareCost', nodes: ['Launch Networks', 'Orbital Industry', 'Lunar Fabrication', 'Mars Logistics', 'Dyson Construction', 'Interstellar Infrastructure'] },
-  government: { label: 'Government', strength: 'reputationGrowth', weakness: 'click', nodes: ['Public Contracts', 'Regulatory Models', 'Digital Institutions', 'Planetary Coordination', 'AI Governance', 'Civilization Planning'] },
-  agi: { label: 'Artificial General Intelligence', strength: 'quality', weakness: 'energyEfficiency', nodes: ['General Transfer', 'World Models', 'Recursive Learning', 'Aligned Agency', 'General Intelligence', 'Civilization Partner'] },
-  asi: { label: 'Artificial Super Intelligence', strength: 'intelligenceGain', weakness: 'revenue', nodes: ['Superhuman Science', 'Recursive Architecture', 'Strategic Foresight', 'Intelligence Explosion', 'Superintelligent Alignment', 'ASI Civilization'] },
-  singularity: { label: 'Singularity', strength: 'allOutput', weakness: 'click', nodes: ['Machine Economy', 'Planetary Mind', 'Stellar Cognition', 'Post-Scarcity', 'Cosmic Intelligence', 'Technological Singularity'] },
-};
-
-export const TECH_ERAS = Object.freeze(['Garage AI','Machine Learning','Deep Learning','Foundation Models','Multimodal AI','AI Agents','Autonomous Science','AGI','Superintelligence','Singularity']);
-const TECH_COST_BY_RANK = [1, 15, 2_500, 1_000_000, 1_000_000_000_000, 1e36];
-export const TECH_NODES = Object.entries(TECH_BRANCHES).flatMap(([branch, config], branchIndex) => config.nodes.map((name, rank) => ({
-  id: `${branch}-${rank + 1}`, branch, branchLabel: config.label, name, rank: rank + 1,
-  era: TECH_ERAS[Math.min(TECH_ERAS.length - 1, rank + Math.floor(branchIndex / 4))], cost: TECH_COST_BY_RANK[rank],
-  requires: rank ? `${branch}-${rank}` : null, effect: config.strength, value: rank < 3 ? 0.08 + rank * 0.02 : 0.15 + rank * 0.03,
-  tradeoff: config.weakness, penalty: rank < 3 ? 0.015 : 0.025, position: { x: rank * 240, y: branchIndex * 150 }, visibility: 'always',
-  unlock: rank === 2 ? `Unlocks ${name} operations` : rank === 5 ? `Defines the ${config.label} endgame identity` : null,
-})));
+export const TECH_ERAS = TECHNOLOGY_ERAS;
+export const TECH_NODES = TECHNOLOGY_NODES;
 
 const ACHIEVEMENT_TRACKS = [
   ['credits', 'Capital', 'totalCreditsEarned', 100], ['compute', 'Computation', 'totalComputeProduced', 100],
@@ -219,7 +197,8 @@ const PATENT_DEFINITIONS = [
   ['recursive-science','Recursive Science Engine','flatResearch',5,'Continuously proposes, tests, and criticizes new hypotheses.'],
   ['singularity-proof','Singularity Safety Proof','intelligenceGain',.10,'Preserves critical knowledge through transformations of intelligence.'],
 ];
-export const PATENTS = PATENT_DEFINITIONS.map(([id,name,effect,value,description], index) => ({ id,name,effect,value,description,index }));
+const patentTags=(effect)=>Object.freeze(({hardwareOutput:['COMPUTE','HARDWARE'],training:['TRAINING','MODEL'],demand:['CONSUMER','MARKET'],reputationGrowth:['MARKET','ENTERPRISE'],flatResearch:['RESEARCH'],energyEfficiency:['EFFICIENCY','COMPUTE'],intelligenceGain:['PRESTIGE'],priceElasticity:['MARKET','ENTERPRISE'],allocationEfficiency:['COMPUTE','EFFICIENCY'],agents:['AGENT','AUTOMATION'],inference:['EFFICIENCY','CONSUMER'],quality:['MODEL','DATA'],marketSize:['CONSUMER','MARKET'],enterprise:['ENTERPRISE'],research:['RESEARCH','PATENT'],revenue:['ENTERPRISE','MARKET'],adoption:['CONSUMER','AGENT']}[effect]??['MODEL']));
+export const PATENTS = PATENT_DEFINITIONS.map(([id,name,effect,value,description], index) => ({ id,name,effect,value,description,index,tags:patentTags(effect) }));
 
 export const ENERGY_BUILDINGS = [
   ['coal','Coal Plant','▰',25,1],['gas','Gas Plant','◒',180,7],['solar','Solar Farm','☀',1_200,45],

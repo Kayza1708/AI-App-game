@@ -7,6 +7,7 @@ import {
   trainingRatePerSecond, trainingRequiredForState,
 } from '../systems/GameSystem.js';
 import { ITEM_CATALOG } from '../data/itemCatalog.js';
+import { branchInvestment } from '../data/technologyCatalog.js';
 import { missionsWithProgress } from '../systems/MissionSystem.js';
 import { artifactModifiers, inferCompanyBuild, itemModifiers } from '../systems/ModifierSystem.js';
 import { ensureGameState } from '../core/GameStateContract.js';
@@ -141,7 +142,7 @@ export function analyzeAffordability(state, economy = economySnapshot(state)) {
 }
 
 function claimableRewards(state) {
-  const modelProgress=Object.values(state.model.progress??{});const metrics={users:state.resources.users,totalCompute:state.statistics.totalComputeProduced,computeRate:computePerSecond(state),creditsEarned:state.statistics.totalCreditsEarned,level:Math.max(state.model.level,...modelProgress.map(item=>item.level??1)),trainings:modelProgress.reduce((sum,item)=>sum+(item.trainings??0),0),pointsSpent:modelProgress.reduce((sum,item)=>sum+(item.totalPointsSpent??0),0),marketing:state.market.marketing,research:state.resources.research,patents:state.patents.discovered.length,cycles:state.meta.cycles,tech:state.meta.techNodes.length};
+  const modelProgress=Object.values(state.model.progress??{}),investment=branchInvestment(state);const metrics={users:state.resources.users,totalCompute:state.statistics.totalComputeProduced,computeRate:computePerSecond(state),creditsEarned:state.statistics.totalCreditsEarned,level:Math.max(state.model.level,...modelProgress.map(item=>item.level??1)),trainings:modelProgress.reduce((sum,item)=>sum+(item.trainings??0),0),pointsSpent:modelProgress.reduce((sum,item)=>sum+(item.totalPointsSpent??0),0),marketing:state.market.marketing,research:state.resources.research,patents:state.patents.discovered.length,cycles:state.meta.cycles,tech:state.meta.techNodes.length,models:state.model.owned.length,keystones:TECH_NODES.filter(node=>node.type==='keystone'&&state.meta.techNodes.includes(node.id)).length,maxBranchInvestment:Math.max(0,...Object.values(investment))};
   return OBJECTIVES.filter((objective) => {const metric=objective.metric??objective.type;const value=metric.startsWith('hardware:')?state.hardware[metric.slice(9)]??0:metrics[metric]??0;return !state.objectives[objective.id]&&value>=objective.target}).length
     + missionsWithProgress(state).filter((mission) => !mission.claimed && mission.progress >= mission.target).length
     + TECH_NODES.filter((node) => !state.meta.techNodes.includes(node.id) && state.meta.intelligence >= node.cost && (!node.requires || state.meta.techNodes.includes(node.requires))).length;

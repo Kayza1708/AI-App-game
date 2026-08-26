@@ -72,7 +72,7 @@ export class SaveSystem {
     const emptyLegacyTracks = Object.fromEntries(HARDWARE_CATALOG.map(({id})=>[id,{processor:0,memory:0,optimization:0}]));
     const legacyHardwareUpgradeLevels = migrateLegacyHardwareUpgradeTracks(emptyLegacyTracks, save);
     const hardwareUpgradeRefund = legacyHardwareUpgradeRefund(save, legacyHardwareUpgradeLevels);
-    const migratedTechNodes = migrateLegacySystemTechnologyNodes(save);
+    const migratedTechNodes = migrateTechnologyCatalog(migrateLegacySystemTechnologyNodes(save),save.version);
     const migratedTrainingProgress = migrateLegacyTrainingProgress(save, activeId, progress);
     const migratedTrainingSession = migrateLegacyTrainingSession(save, activeId, progress, migratedTrainingProgress);
     return ensureGameState({
@@ -121,6 +121,7 @@ function migrateLegacyHardwareUpgradeTracks(defaults, save) {
   }
   return levels;
 }
+function migrateTechnologyCatalog(nodes,version){if(version>=18)return nodes;const branchMap={robotics:'hardware',medicine:'data',education:'consumer',physics:'research',space:'singularity',government:'enterprise',asi:'agi'};return[...new Set(nodes.map(id=>{const [branch,rank]=id.split('-');return branchMap[branch]&&/^\d+$/.test(rank)?`${branchMap[branch]}-${rank}`:id}))]}
 function migrateLegacySystemTechnologyNodes(save) {
   const nodes = new Set(readSaveArray(save.meta?.techNodes));
   if (save.version >= 13) return [...nodes];

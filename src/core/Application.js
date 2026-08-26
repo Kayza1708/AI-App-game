@@ -154,6 +154,7 @@ export class Application {
       this.#eventBus.on('developer:clean-balance', () => this.#performCleanBalanceRun()),
       this.#eventBus.on('developer:opened', () => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'developer-dashboard-opened', source: 'developer', label: 'Developer Analytics opened' }, this.#store.getState()))),
       this.#eventBus.on('developer:tooltip', (label) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'tooltip-opened', source: 'tooltip', label }, this.#store.getState()))),
+      this.#eventBus.on('developer:tech-viewed', ({nodeId,interaction}) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'technology', type: 'technology-node-viewed', source: 'tech-tree', label: nodeId, metadata: { nodeId, interaction } }, this.#store.getState()))),
     );
   }
 
