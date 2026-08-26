@@ -1,8 +1,8 @@
 import { HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES } from '../data/defaultState.js';
 import { BALANCE, FEATURE_UNLOCKS, nextFeatureUnlock } from '../config/balance.js';
 import {
-  canBuyUpgrade, canDevelop, cycleIntelligence, economySnapshot, effectiveHardwareCost,
-  effectiveModelStat, modelImprovementCost, objectiveProgress,
+  canBuyUpgrade, canDevelop, computePerSecond, cycleIntelligence, economySnapshot, effectiveHardwareCost,
+  effectiveModelStat, modelImprovementCost,
   isHardwareUnlocked, patentResearchPerSecond, patentResearchRequired, rawHardwareContribution,
   trainingRatePerSecond, trainingRequiredForState,
 } from '../systems/GameSystem.js';
@@ -141,7 +141,8 @@ export function analyzeAffordability(state, economy = economySnapshot(state)) {
 }
 
 function claimableRewards(state) {
-  return OBJECTIVES.filter((objective) => !state.objectives[objective.id] && objectiveProgress(state, objective) >= objective.target).length
+  const modelProgress=Object.values(state.model.progress??{});const metrics={users:state.resources.users,totalCompute:state.statistics.totalComputeProduced,computeRate:computePerSecond(state),creditsEarned:state.statistics.totalCreditsEarned,level:Math.max(state.model.level,...modelProgress.map(item=>item.level??1)),trainings:modelProgress.reduce((sum,item)=>sum+(item.trainings??0),0),pointsSpent:modelProgress.reduce((sum,item)=>sum+(item.totalPointsSpent??0),0),marketing:state.market.marketing,research:state.resources.research,patents:state.patents.discovered.length,cycles:state.meta.cycles,tech:state.meta.techNodes.length};
+  return OBJECTIVES.filter((objective) => {const metric=objective.metric??objective.type;const value=metric.startsWith('hardware:')?state.hardware[metric.slice(9)]??0:metrics[metric]??0;return !state.objectives[objective.id]&&value>=objective.target}).length
     + missionsWithProgress(state).filter((mission) => !mission.claimed && mission.progress >= mission.target).length
     + TECH_NODES.filter((node) => !state.meta.techNodes.includes(node.id) && state.meta.intelligence >= node.cost && (!node.requires || state.meta.techNodes.includes(node.requires))).length;
 }

@@ -70,3 +70,11 @@
   .complete-session-export header > strong { text-align: left; }
   .complete-session-actions { grid-template-columns: 1fr; }
 }
+
+/* Milestone 16 progression density */
+.objective-archive { margin-top: 1rem; }
+.objective-archive > summary { cursor: pointer; font-weight: 800; letter-spacing: .08em; color: var(--accent); }
+.completed-objective-list { display: grid; gap: .45rem; margin-top: 1rem; color: var(--muted); }
+.research-chain { display: grid; gap: .35rem; margin-top: 1.5rem; padding: 1rem; border: 1px solid color-mix(in srgb,var(--accent) 30%,transparent); text-align: center; }
+.research-chain i { color: var(--accent); font-style: normal; }
+.model-development [data-model-points] { transition: color .2s, transform .2s; }

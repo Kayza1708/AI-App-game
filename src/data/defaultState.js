@@ -1,7 +1,7 @@
 import { BALANCE } from '../config/balance.js';
 
-export const SAVE_VERSION = 16;
-export const GAME_VERSION = '0.15.2';
+export const SAVE_VERSION = 17;
+export const GAME_VERSION = '0.16.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -94,13 +94,29 @@ export const UPGRADES = [
   ...progressionUpgrades(RESEARCH_UPGRADES, 'research', 12, 2.1),
 ];
 
-export const OBJECTIVES = [
-  { id: 'calculators', text: 'Own 10 Calculators', reward: 250, type: 'hardware', target: 10 },
-  { id: 'level5', text: 'Reach Model Level 5', reward: 1_000, type: 'level', target: 5 },
-  { id: 'users100', text: 'Gain 100 Users', reward: 2_500, type: 'users', target: 100 },
-  { id: 'gamingPc', text: 'Purchase a Gaming PC', reward: 5_000, type: 'workstation', target: 1 },
-  { id: 'compute100', text: 'Reach 100 Compute/s', reward: 12_000, type: 'computeRate', target: 100 },
+const objective = (id, category, text, metric, target, reward, order) => ({ id, category, text, metric, type: metric, target, reward, order });
+const objectiveTracks = [
+  ['users','MARKET','Reach {n} Active Users','users',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e12]],
+  ['compute','INFRASTRUCTURE','Produce {n} total Compute','totalCompute',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e13]],
+  ['compute-rate','INFRASTRUCTURE','Reach {n} Compute/sec','computeRate',[1,10,100,1e3,1e4,1e6,1e8,1e10]],
+  ['credits','STARTUP','Earn {n} lifetime Credits','creditsEarned',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e12]],
+  ['model-level','MODEL','Train a Model to Level {n}','level',[2,3,5,8,12,20,35,50]],
+  ['training','MODEL','Complete {n} Training runs','trainings',[1,3,5,10,20,40,75,120]],
+  ['skills','MODEL','Spend {n} Improvement Points','pointsSpent',[1,3,5,10,20,40,75,120]],
+  ['marketing','MARKET','Reach Marketing Level {n}','marketing',[1,3,5,10,20,35,60,100]],
+  ['research','RESEARCH','Generate {n} Research','research',[1,10,100,1e3,1e4,1e5,1e7,1e9]],
+  ['patents','RESEARCH','Discover {n} Patents','patents',[1,2,3,5,10,20,35,50]],
+  ['cycles','PRESTIGE','Complete {n} Development Cycles','cycles',[1,2,3,5,10,20,50,100]],
+  ['technology','TECHNOLOGY','Purchase {n} permanent Technologies','tech',[1,3,5,10,20,35,60,100]],
 ];
+export const OBJECTIVES = [
+  objective('first-calculator','STARTUP','Buy your first Calculator','hardware:calculator',1,50,0),
+  objective('first-compute','STARTUP','Generate your first Compute','totalCompute',1,75,1),
+  objective('first-training','STARTUP','Complete your first Training','trainings',1,150,2),
+  objective('first-point','STARTUP','Spend your first Improvement Point','pointsSpent',1,200,3),
+  ...HARDWARE_CATALOG.map((item,index)=>objective(`hardware-${item.id}`,'INFRASTRUCTURE',`Own a ${item.name}`,`hardware:${item.id}`,1,Math.ceil(item.baseCost*.5),10+index)),
+  ...objectiveTracks.flatMap(([id,category,label,metric,targets],track)=>targets.map((target,index)=>objective(`${id}-${index+1}`,category,label.replace('{n}',target.toLocaleString('en-US')),metric,target,Math.ceil(100*3**Math.min(10,index)),40+track*10+index))),
+].sort((a,b)=>a.order-b.order);
 
 const TECH_BRANCHES = {
   compute: { label: 'Compute Empire', strength: 'hardwareOutput', weakness: 'demand', nodes: ['Parallel Kernels', 'Thermal Architecture', 'Photonic Interconnects', 'Cloud Fabric', 'Exascale Scheduling', 'Universal Compute'] },
@@ -230,7 +246,6 @@ export function createDefaultState() {
     profile: { companyName: 'Singularity Labs', createdAt: Date.now(), localOwnerId: `local-${Date.now()}` },
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
-    hardwareUpgradeLevels: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, { processor: 0, memory: 0, optimization: 0 }])),
     model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, trainingSession: null, lastTrainingResult: null, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, trainings: 0, totalPointsEarned: 0, totalPointsSpent: 0, skills: {} } } },
     allocation: { training: 50, inference: 50, research: 0, data: 0, agents: 0 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },

@@ -12,11 +12,11 @@ export const BALANCE = Object.freeze({
   market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12 }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
-    computeScale: 2_000_000,
+    computeScale: 5_000_000,
     exponent: 0.34,
     cycleRequirement: 1,
     minimumHardwareTier: 4,
-    minimumModelLevel: 9,
+    minimumModelLevel: 6,
     breakthroughMultiplier: 1.65,
   }),
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),
@@ -71,7 +71,16 @@ export const MODEL_SKILL_UNLOCKS = Object.freeze({
 
 export function curveValue(base, growth, level) { return base * growth ** Math.max(0, level); }
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
-export function featureUnlocked(state, id) { if(['core','modelSkills'].includes(id))return true;if(id==='development')return(state.meta.cycles??0)>0||(state.meta.totalIntelligence??0)>0;const node=SYSTEM_TECH_NODES.find((item)=>item.feature===id);return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity); }
 export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) => item.int > (state.meta.totalIntelligence ?? 0)).sort((a, b) => a.int - b.int)[0] ?? null; }
-export function viewUnlocked(state, view) { return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id)); }
+export function featureUnlocked(state, id) {
+  if (['core', 'modelSkills', 'marketing'].includes(id)) return true;
+  if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
+  if (id === 'allocation') return (state.meta.cycles ?? 0) > 0;
+  const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
+  return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity);
+}
+export function viewUnlocked(state, view) {
+  if (['company', 'market', 'allocation'].includes(view)) return (state.meta.cycles ?? 0) > 0;
+  return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id));
+}
 export function skillUnlocked(state, skill) { if(['quality','efficiency','popularity'].includes(skill))return true;if(['reasoning','knowledge','coding','vision','math','creativity','context','latency'].includes(skill))return state.meta.techNodes.includes('system-model-engineering');if(skill==='research')return featureUnlocked(state,'research');if(['enterprise','safety'].includes(skill))return featureUnlocked(state,'enterprise');if(['autonomy','agents'].includes(skill))return featureUnlocked(state,'agents');return (state.meta.totalIntelligence ?? 0) >= (MODEL_SKILL_UNLOCKS[skill] ?? Infinity); }

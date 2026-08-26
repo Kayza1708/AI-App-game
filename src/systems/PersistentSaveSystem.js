@@ -69,7 +69,8 @@ export class SaveSystem {
     for (const feature of FEATURE_UNLOCKS) if (feature.int <= (save.meta?.totalIntelligence ?? 0) && featureUnlockTimes[feature.id] === undefined) featureUnlockTimes[feature.id] = save.statistics?.playTimeMs ?? 0;
     const requestedDeployment = [...new Set(readSaveArray(save.model?.deployed, defaults.model.deployed).map((id) => legacyModelIds[id] ?? id).filter((id) => owned.includes(id)))];
     const deployed = requestedDeployment.length ? requestedDeployment.slice(0, 3) : [defaults.model.activeId];
-    const legacyHardwareUpgradeLevels = migrateLegacyHardwareUpgradeTracks(defaults.hardwareUpgradeLevels, save);
+    const emptyLegacyTracks = Object.fromEntries(HARDWARE_CATALOG.map(({id})=>[id,{processor:0,memory:0,optimization:0}]));
+    const legacyHardwareUpgradeLevels = migrateLegacyHardwareUpgradeTracks(emptyLegacyTracks, save);
     const hardwareUpgradeRefund = legacyHardwareUpgradeRefund(save, legacyHardwareUpgradeLevels);
     const migratedTechNodes = migrateLegacySystemTechnologyNodes(save);
     const migratedTrainingProgress = migrateLegacyTrainingProgress(save, activeId, progress);
@@ -77,7 +78,7 @@ export class SaveSystem {
     return ensureGameState({
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...readSaveObject(save.profile) }, resources: { ...readSaveNumericRecord(defaults.resources, save.resources), credits: (Number.isFinite(save.resources?.credits) ? save.resources.credits : defaults.resources.credits) + hardwareUpgradeRefund },
-      hardware: readSaveNumericRecord(defaults.hardware, save.hardware), hardwareUpgradeLevels: defaults.hardwareUpgradeLevels, model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, xp: 0, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress, trainingProgress: migratedTrainingProgress, trainingSession: migratedTrainingSession },
+      hardware: readSaveNumericRecord(defaults.hardware, save.hardware), model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, xp: 0, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress, trainingProgress: migratedTrainingProgress, trainingSession: migratedTrainingSession },
       allocation: normalizeSavedAllocation(defaults.allocation, save.allocation), energy: defaults.energy, market: readSaveNumericRecord(defaults.market, save.market),
       upgrades: readSaveArray(save.upgrades).filter((id) => !LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id)), tutorial: { ...defaults.tutorial, ...readSaveObject(save.tutorial) }, objectives: { ...defaults.objectives, ...readSaveObject(save.objectives) },
       meta: { ...defaults.meta, ...readSaveObject(save.meta), unlockedModels: [...new Set([...readSaveArray(save.meta?.unlockedModels), ...owned])], techNodes: migratedTechNodes, achievements: { ...defaults.meta.achievements, ...readSaveObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: readSaveArray(save.meta?.cycleHistory) },
