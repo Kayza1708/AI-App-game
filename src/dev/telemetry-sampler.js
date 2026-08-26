@@ -26,6 +26,7 @@ export class TelemetrySampler {
     boundedPush(this.samples, Object.freeze(snapshot), MAX_SAMPLES);
     return snapshot;
   }
+  forceSample(state,seconds,context={}){this.lastSampleSeconds=seconds-this.interval;return this.sample(state,seconds,context)}
 }
 
 export function createGameplaySnapshot(input, seconds, context = {}) {

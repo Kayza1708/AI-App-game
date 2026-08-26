@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, improveModel, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradePatent } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradeModelSkill, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -133,7 +133,7 @@ export class Application {
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
       this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => this.#rewardedBoosts.activate(state, reward), 'rewarded-ad')),
-      this.#eventBus.on('model:improve', ({ modelId, path }) => this.#store.update((state) => improveModel(state, modelId, path), 'model')),
+      this.#eventBus.on('model:improve', ({ modelId, skillId }) => this.#store.update((state) => upgradeModelSkill(state, modelId, skillId), 'model-skill')),
       this.#eventBus.on('model:deploy', (modelId) => this.#store.update((state) => toggleModelDeployment(state, modelId), 'model')),
       this.#eventBus.on('retention:login', () => this.#store.update(claimLoginReward, 'retention')),
       this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimMission(state, missionId), 'mission')),
@@ -168,7 +168,7 @@ export class Application {
 
   #telemetryCall(callback) {
     if (this.#telemetry?.disabled) return null;
-    try { return callback(); } catch (error) { if (this.#telemetry) this.#telemetry.disabled = true; globalThis.console?.error('Developer telemetry failed and was disabled; gameplay will continue.', error); return null; }
+    try { return callback(); } catch (error) { if (this.#telemetry) this.#telemetry.runtimeFailures.push({timestamp:Date.now(),message:error?.message??String(error)}); globalThis.console?.error('Developer telemetry operation failed; the live recorder remains active for recovery.', error); return null; }
   }
 
   #handleRuntimeError(error) {
