@@ -18,12 +18,14 @@ export const NAV_ITEMS = [
 ];
 export const DEVELOPER_NAV_ITEM = { id: 'developer', label: 'Developer Analytics', eyebrow: 'Internal' };
 export const RUNTIME_NAV_ITEM = { id: 'runtime', label: 'Runtime Inspector', eyebrow: 'Stability' };
+export const DEVELOPER_NAV_ITEMS = Object.freeze([DEVELOPER_NAV_ITEM, RUNTIME_NAV_ITEM]);
 
 export function isKnownView(viewId, includeDeveloper = false) {
-  return NAV_ITEMS.some(({ id }) => id === viewId) || (includeDeveloper && [DEVELOPER_NAV_ITEM.id, RUNTIME_NAV_ITEM.id].includes(viewId));
+  return NAV_ITEMS.some(({ id }) => id === viewId) || (includeDeveloper && DEVELOPER_NAV_ITEMS.some(({ id }) => id === viewId));
 }
 
 export function navigationItemsForState(state, { includeDeveloper = false, developmentAvailable = false } = {}) {
   const items = NAV_ITEMS.filter((item) => viewUnlocked(state, item.id) || (item.id === 'strategy' && developmentAvailable));
-  return includeDeveloper ? [...items, DEVELOPER_NAV_ITEM, RUNTIME_NAV_ITEM] : items;
+  // Developer tools deliberately bypass every gameplay feature and Technology gate.
+  return includeDeveloper ? [...items, ...DEVELOPER_NAV_ITEMS] : items;
 }

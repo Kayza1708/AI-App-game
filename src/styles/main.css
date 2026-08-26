@@ -54,3 +54,19 @@
 @media(max-width:900px){.model-focus,.tech-game-layout{grid-template-columns:1fr}.tech-detail{position:static}.model-portfolio{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.skill-list,.model-portfolio{grid-template-columns:1fr}.model-focus{grid-template-columns:1fr}.training-economy{grid-template-columns:repeat(2,1fr)}.tech-map-viewport{min-height:65vh}.intelligence-header{grid-template-columns:1fr 1fr}.intelligence-header button{grid-column:1/-1}}
 .training-complete-toast{display:flex;align-items:center;gap:12px}.training-complete-toast button{border:1px solid var(--cyan);padding:7px 10px;background:#12322d;color:var(--cyan);font:8px DM Mono}
+
+.complete-session-export {
+  border-color: rgba(51, 220, 200, .55);
+  background: linear-gradient(135deg, rgba(11, 42, 48, .96), rgba(7, 18, 27, .96));
+}
+.complete-session-export header { align-items: center; gap: 1rem; }
+.complete-session-export header small { color: var(--accent); letter-spacing: .12em; }
+.complete-session-export header h2 { margin: .25rem 0 0; }
+.complete-session-export header > strong { color: #dff; font-size: .82rem; text-align: right; }
+.complete-session-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .65rem; margin-top: 1rem; }
+.complete-session-actions button { min-height: 46px; white-space: normal; }
+@media (max-width: 760px) {
+  .complete-session-export header { align-items: flex-start; flex-direction: column; }
+  .complete-session-export header > strong { text-align: left; }
+  .complete-session-actions { grid-template-columns: 1fr; }
+}

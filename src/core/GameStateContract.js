@@ -31,6 +31,7 @@ export function validateGameState(state, economy = null) {
   if (!finiteRecord(state?.hardware, HARDWARE_CATALOG.map(({ id }) => id))) failures.push('hardware catalog record is incomplete or invalid');
   if (!HARDWARE_CATALOG.every(({id}) => finiteRecord(state?.hardwareUpgradeLevels?.[id], ['processor','memory','optimization']))) failures.push('hardware upgrade tracks are incomplete or invalid');
   if (!state?.model || !Array.isArray(state.model.owned) || !Array.isArray(state.model.deployed) || !MODEL_CATALOG.some(({ id }) => id === state.model.activeId)) failures.push('model ownership, deployment, or active model is invalid');
+  for (const [modelId, progress] of Object.entries(state?.model?.progress ?? {})) if (!Number.isFinite(progress.totalPointsEarned) || !Number.isFinite(progress.totalPointsSpent) || progress.totalPointsEarned !== progress.upgradePoints + progress.totalPointsSpent) failures.push(`${modelId} Model Point accounting is invalid`);
   if (!finiteRecord(state?.allocation, ['training','inference','research','data','agents'])) failures.push('compute allocation is incomplete or non-finite');
   if (!Array.isArray(state?.patents?.discovered) || !Array.isArray(state?.patents?.equipped) || !isRecord(state?.patents?.levels)) failures.push('patent state is invalid');
   if (!Array.isArray(state?.world?.modifiers) || state.world.modifiers.some((item) => !item || typeof item.effect !== 'string' || !Number.isFinite(item.value))) failures.push('world modifiers are invalid');

@@ -8,7 +8,7 @@ import {
 } from '../systems/GameSystem.js';
 import { ITEM_CATALOG } from '../data/itemCatalog.js';
 import { missionsWithProgress } from '../systems/MissionSystem.js';
-import { inferCompanyBuild } from '../systems/ModifierSystem.js';
+import { artifactModifiers, inferCompanyBuild, itemModifiers } from '../systems/ModifierSystem.js';
 import { ensureGameState } from '../core/GameStateContract.js';
 
 export const SAMPLE_INTERVALS = [1, 5, 15, 30];
@@ -103,6 +103,8 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
     rewardedAdInteractions: { offered:state.rewardedBoosts.offered,started:state.rewardedBoosts.started,completed:state.rewardedBoosts.completed },
     consumablesHeld: Object.values(state.consumables).reduce((sum,value)=>sum+value,0), consumablesUsed: state.gemEconomy.consumablesUsed,
     inferredBuild: inferCompanyBuild(state),
+    modelBuilds: Object.fromEntries(Object.entries(state.model.progress).map(([id,progress])=>[id,{level:progress.level,trainingCount:progress.trainings??0,availablePoints:progress.upgradePoints??0,totalPointsEarned:progress.totalPointsEarned??0,totalPointsSpent:progress.totalPointsSpent??0,skills:{...progress.skills},itemModifiers:itemModifiers(state,id)}])),
+    buildContributors: { technologyBranches: technologyBranchCounts(state), patentLoadout: [...state.patents.equipped], itemModifiers: itemModifiers(state), artifactModifiers: artifactModifiers(state), allocation: { ...state.allocation }, priceMultiplier: state.market.priceMultiplier },
     activeCooldowns: Object.entries(state.premium.adCooldowns).filter(([, expiresAt]) => expiresAt > (context.timestamp ?? Date.now())).map(([id, expiresAt]) => ({ id, expiresAt })),
     worldEventCooldownSeconds: Math.max(0, state.world.nextEventMs / 1000),
     effectiveMultipliers: effectiveMultipliers(state, economy),
@@ -148,6 +150,7 @@ function currentHardwareMultiplier(state,economy=economySnapshot(state)){const r
 function hardwareTelemetry(state,economy=economySnapshot(state)){const multiplier=currentHardwareMultiplier(state,economy);return Object.fromEntries(HARDWARE_CATALOG.map(item=>{const raw=rawHardwareContribution(state,item);return[item.id,{tier:item.tier,owned:state.hardware[item.id],computeContribution:raw*multiplier,effectivePerUnit:state.hardware[item.id]?raw*multiplier/state.hardware[item.id]:item.computePerSecond*multiplier}]}))}
 function effectiveMultipliers(state, economy = economySnapshot(state)) { const raw = HARDWARE_CATALOG.reduce((sum, item) => sum + item.computePerSecond * state.hardware[item.id], 0); return { hardware: raw ? economy.computePerSecond / raw : 0, price: state.market.priceMultiplier, reputation: state.market.reputation, adoption: 1 + Math.sqrt(state.market.adoption) * .08, marketing: economy.marketingBonus }; }
 function currentTechBranch(state) { const counts = {}; for (const id of state.meta.techNodes) { const branch = id.split('-')[0]; counts[branch] = (counts[branch] ?? 0) + 1; } return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null; }
+function technologyBranchCounts(state) { const counts={};for(const id of state.meta.techNodes){const node=TECH_NODES.find(entry=>entry.id===id);const branch=node?.branch??id.split('-')[0];counts[branch]=(counts[branch]??0)+1}return counts }
 function average(values) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
 function intervals(values){return values.slice(1).map((value,index)=>(value-values[index])/1000)}
 function boundedPush(array, item, max) { if (array.length >= max) { const preserve = 1000, old = array.slice(preserve, preserve + 20); if (old.length) array.splice(preserve, 20, Object.freeze({ ...old[0], aggregated: true, bucketCount: old.length, sessionSeconds: old.at(-1).sessionSeconds })); else array.splice(preserve, 1); } array.push(item); }

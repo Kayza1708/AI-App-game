@@ -1,3 +1,12 @@
+## 0.15.2 — Developer isolation and complete session telemetry
+
+- Isolated Developer Analytics and Runtime Inspector from every gameplay Technology and progression gate.
+- Made every Training completion atomically grant and account for one model-specific Model Point.
+- Added one-click self-contained complete-session JSON export with every Run, event, sample, UX record, reward, offline period, analysis, and Model build history.
+- Added per-Run start/end snapshots and preserved Session continuity across Development Cycles.
+- Extended analytical build inference and Balance Lab metrics for Compute, Consumer, Enterprise, Research, Efficiency, Agent, and Balanced strategies.
+- Migrated Model Point accounting safely in save version 16.
+
 # Changelog
 
 ## 0.15.1 — Core-loop simplification and runtime stability

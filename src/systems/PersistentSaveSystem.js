@@ -1,5 +1,5 @@
 import { createDefaultState, HARDWARE_CATALOG, LEGACY_HARDWARE_UPGRADES, MODEL_CATALOG, SAVE_VERSION } from '../data/defaultState.js';
-import { FEATURE_UNLOCKS } from '../config/balance.js';
+import { BALANCE, FEATURE_UNLOCKS } from '../config/balance.js';
 import { ensureGameState } from '../core/GameStateContract.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
@@ -63,8 +63,8 @@ export class SaveSystem {
     const requestedActiveId = legacyModelIds[save.model?.activeId] ?? save.model?.activeId;
     const activeId = owned.includes(requestedActiveId) && MODEL_CATALOG.some(({ id }) => id === requestedActiveId) ? requestedActiveId : defaults.model.activeId;
     const migratedProgress = Object.fromEntries(Object.entries(readSaveObject(save.model?.progress)).map(([id, value]) => [legacyModelIds[id] ?? id, readSaveObject(value)]));
-    const progress = Object.fromEntries(Object.entries({ ...defaults.model.progress, ...migratedProgress }).map(([id,value])=>[id,{...value,xp:0}]));
-    progress[activeId] ??= { level: save.model?.level ?? 1, xp: 0, upgradePoints: save.model?.upgradePoints ?? 0, skills: save.model?.improvements?.[activeId] ?? {} };
+    const progress = Object.fromEntries(Object.entries({ ...defaults.model.progress, ...migratedProgress }).map(([id,value])=>[id,normalizeModelPointAccounting({...value,xp:0})]));
+    progress[activeId] ??= normalizeModelPointAccounting({ level: save.model?.level ?? 1, xp: 0, upgradePoints: save.model?.upgradePoints ?? 0, trainings: 0, skills: save.model?.improvements?.[activeId] ?? {} });
     const featureUnlockTimes = { ...defaults.meta.featureUnlockTimes, ...save.meta?.featureUnlockTimes };
     for (const feature of FEATURE_UNLOCKS) if (feature.int <= (save.meta?.totalIntelligence ?? 0) && featureUnlockTimes[feature.id] === undefined) featureUnlockTimes[feature.id] = save.statistics?.playTimeMs ?? 0;
     const requestedDeployment = [...new Set(readSaveArray(save.model?.deployed, defaults.model.deployed).map((id) => legacyModelIds[id] ?? id).filter((id) => owned.includes(id)))];
@@ -107,6 +107,7 @@ function readSaveObject(value) { return value && typeof value === 'object' && !A
 function readSaveArray(value, fallback = []) { return Array.isArray(value) ? value : fallback; }
 function readSaveNumericRecord(defaults, value) { const source = readSaveObject(value); return Object.fromEntries(Object.entries(defaults).map(([key, initial]) => [key, Number.isFinite(source[key]) && source[key] >= 0 ? source[key] : initial])); }
 function readSaveNumericMap(value) { return Object.fromEntries(Object.entries(readSaveObject(value)).filter(([, amount]) => Number.isFinite(amount) && amount >= 0)); }
+function normalizeModelPointAccounting(value) { const skills=readSaveObject(value.skills);const spent=Number.isFinite(value.totalPointsSpent)?value.totalPointsSpent:Object.values(skills).reduce((sum,rank)=>sum+Array.from({length:Math.max(0,Math.floor(rank))},(_,index)=>BALANCE.training.pointCosts[index]??Math.ceil((index+1)/2)).reduce((a,b)=>a+b,0),0);const available=Math.max(0,Math.floor(value.upgradePoints??0));return{...value,trainings:Math.max(0,Math.floor(value.trainings??0)),upgradePoints:available,totalPointsSpent:spent,totalPointsEarned:Number.isFinite(value.totalPointsEarned)?Math.max(value.totalPointsEarned,available+spent):available+spent,skills}; }
 function normalizeSavedAllocation(defaults, value) { const allocation = readSaveNumericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }
 
 function migrateLegacyHardwareUpgradeTracks(defaults, save) {

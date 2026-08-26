@@ -100,3 +100,8 @@ Every one-second sample includes the complete active balance configuration, next
 ## Milestone 12 collection telemetry
 
 One-second samples now include Inventory size/capacity, rarity distribution, equipped and unused high-rarity Items, Gem earnings/spending/balance, mission completion/claims, rewarded interaction counts, Consumables held/used, and inferred company build. State-diff observation emits Item acquisition/equipment/favorite events, mission claims, and Gem currency events from real state transitions. Developer grants are marked non-natural and never enter standard balance averages.
+
+
+## Complete Session Export and Run boundaries
+
+Milestone 15.1 adds a prominent self-contained export. See `docs/Milestone15.1.md` for the JSON contract. A Development Cycle emits `run-ended`, the Development Cycle event, and `run-started` while retaining the same Session ID and all prior raw records. Gameplay saves and developer telemetry remain separate stores.
