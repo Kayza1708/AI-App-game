@@ -48,7 +48,7 @@ export class Application {
     this.#store = new StateStore(createDefaultState(), this.#eventBus, normalizeState);
     this.#saveSystem = new SaveSystem(this.#store);
     this.#shell = new AppShell(root, this.#eventBus, { devMode: this.#devMode, telemetry: this.#telemetry });
-    this.#renderPipeline = new RenderPipeline((state) => this.#shell.render(state), (error) => this.#handleRuntimeError(error));
+    this.#renderPipeline = new RenderPipeline((state, context) => this.#shell.render(state, context), (error) => this.#handleRuntimeError(error));
     this.#gameLoop = new GameLoop((deltaMs) => this.#tick(deltaMs), (error) => this.#handleRuntimeError(error));
   }
 
@@ -103,7 +103,7 @@ export class Application {
     this.#unsubscribers.push(
       this.#eventBus.on('state:changed', ({ source, state }) => {
         this.#telemetryCall(() => this.#telemetry?.observe(this.#telemetry.lastState ?? state, state, source));
-        this.#renderPipeline.request(state);
+        this.#renderPipeline.request(state, source);
       }),
       this.#eventBus.on('navigation:selected', (viewId) => {
         this.#store.update((state) => ({

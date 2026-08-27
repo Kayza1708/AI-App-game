@@ -1,6 +1,7 @@
 export class RenderPipeline {
   #animationFrame = null;
   #pendingState = null;
+  #pendingReason = null;
   #render;
   #onError;
 
@@ -9,13 +10,14 @@ export class RenderPipeline {
     this.#onError = onError;
   }
 
-  request(state) {
+  request(state, reason = 'state-update') {
     this.#pendingState = state;
+    this.#pendingReason = reason;
     if (this.#animationFrame !== null) return;
     this.#animationFrame = requestAnimationFrame(() => {
       this.#animationFrame = null;
       try {
-        this.#render(this.#pendingState);
+        this.#render(this.#pendingState, { reason: this.#pendingReason });
       } catch (error) {
         this.#onError?.(error);
       }
