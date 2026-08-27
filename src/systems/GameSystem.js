@@ -1,7 +1,6 @@
 import { ACHIEVEMENTS, createDefaultState, GEM_SHOP_ITEMS, HARDWARE_CATALOG, MODEL_CATALOG, MODEL_SKILLS, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES, WORLD_EVENTS } from '../data/defaultState.js';
 import { BALANCE, curveValue, FEATURE_UNLOCKS, featureUnlocked, skillUnlocked, SYSTEM_TECH_NODES } from '../config/balance.js';
 import { modifierValue } from './ModifierSystem.js';
-import { purchaseSystemTech } from './TechSystem.js';
 import { ensureMissions } from './MissionSystem.js';
 import { ensureGameState } from '../core/GameStateContract.js';
 import { branchInvestment, hasTechnologyMechanic, purchasedTechnologyNodes, technologyEffect } from '../data/technologyCatalog.js';
@@ -286,7 +285,9 @@ export function setAllocation(state, category, value) {
 }
 
 export function setPrice(state, value) { if (!featureUnlocked(state,'marketing')) return state; return { ...state, market: { ...state.market, priceMultiplier: Math.max(0.5, Math.min(3, Number(value))) } }; }
-export function buyMarketing(state) { if (!featureUnlocked(state,'marketing')) return state; const cost = 100 * (state.market.marketing + 1) ** 1.6; if(state.resources.credits<cost)return state;const paid=spendCredits(state,cost);return feedback({ ...paid, market: { ...paid.market, marketing: paid.market.marketing + 1 } }, 'Marketing reach increased'); }
+export function marketingCost(stateOrLevel){const level=typeof stateOrLevel==='number'?stateOrLevel:stateOrLevel?.market?.marketing??0;const costModifier=typeof stateOrLevel==='number'?0:strategicBonus(stateOrLevel,'marketingCost');return Math.ceil(BALANCE.market.marketingCostBase*BALANCE.market.marketingCostGrowth**Math.max(0,level)*Math.max(.1,1-costModifier))}
+export function marketingPurchasePreview(state){const cost=marketingCost(state),before=marketMetrics(state),afterState={...state,market:{...state.market,marketing:state.market.marketing+1}},after=marketMetrics(afterState),revenueDelta=after.revenue-before.revenue;return{levelBefore:state.market.marketing,levelAfter:state.market.marketing+1,cost,demandBefore:before.demand,demandAfter:after.demand,usersBefore:before.target,usersAfter:after.target,revenueBefore:before.revenue,revenueAfter:after.revenue,estimatedPaybackSeconds:revenueDelta>0?cost/revenueDelta:Infinity}}
+export function buyMarketing(state) { if (!featureUnlocked(state,'marketing')) return state; const cost=marketingCost(state);if(state.resources.credits<cost)return state;const paid=spendCredits(state,cost),preview=marketingPurchasePreview(state);return feedback({ ...paid, market: { ...paid.market, marketing: paid.market.marketing + 1 } }, `Marketing Level ${preview.levelAfter} · +${Math.round(preview.demandAfter-preview.demandBefore)} Demand`); }
 
 export function canBuyUpgrade(state, upgrade) { const balance = upgrade.category === 'research' ? state.resources.research : state.resources.credits; const unlocked = upgrade.category === 'hardware' ? state.hardware[upgrade.hardwareId] >= upgrade.unlock : state.model.level >= upgrade.unlock; return !state.upgrades.includes(upgrade.id) && unlocked && balance >= upgrade.cost; }
 export function buyUpgrade(state, upgradeId) { const upgrade = UPGRADES.find(({ id }) => id === upgradeId); if (!upgrade || !canBuyUpgrade(state, upgrade)) return state; const paid=upgrade.category==='research'?{...state,resources:{...state.resources,research:state.resources.research-upgrade.cost}}:spendCredits(state,upgrade.cost);return feedback({ ...paid, upgrades: [...paid.upgrades, upgradeId] }, `${upgrade.name} installed`); }
@@ -335,7 +336,7 @@ function applyAutomation(state) {
     if (item) { next = buyHardware(next, item.id); next = { ...next, automation: { ...next.automation, lastHardwarePurchaseMs: state.session.elapsedMs } }; }
   }
   if (hasTechnologyMechanic(state,'auto-training') && !next.model.trainingActive && computePerSecond(next) > 0) next = trainModel(next);
-  if(hasTechnologyMechanic(state,'auto-marketing')&&marketMetrics(next).bottleneck==='DEMAND LIMITED'&&next.resources.credits>=100*(next.market.marketing+1)**1.6)next=buyMarketing(next);
+  if(hasTechnologyMechanic(state,'auto-marketing')&&marketMetrics(next).bottleneck==='DEMAND LIMITED'&&next.resources.credits>=marketingCost(next))next=buyMarketing(next);
   return next;
 }
 
@@ -351,13 +352,14 @@ export function startDevelopmentCycle(state) {
 export function breakthroughReward(state){if(!canBreakthrough(state))return 0;return Math.max(1,Math.floor((state.statistics.totalComputeProduced/BALANCE.breakthrough.requiredCompute)**BALANCE.breakthrough.exponent));}
 export function canBreakthrough(state){return state.meta.totalIntelligence>=BALANCE.breakthrough.requiredLifetimeIntelligence&&state.statistics.totalComputeProduced>=BALANCE.breakthrough.requiredCompute;}
 export function startBreakthrough(state){if(!canBreakthrough(state))return state;const reward=breakthroughReward(state),fresh=createDefaultState();return feedback({...fresh,profile:state.profile,resources:{...fresh.resources,gems:state.resources.gems},settings:state.settings,statistics:state.statistics,retention:state.retention,premium:state.premium,inventory:state.inventory,consumables:state.consumables,rewardCaches:state.rewardCaches,missions:state.missions,gemEconomy:state.gemEconomy,rewardedBoosts:state.rewardedBoosts,artifacts:state.artifacts,marketplace:state.marketplace,futureMeta:state.futureMeta,balanceRun:state.balanceRun,meta:{...fresh.meta,achievements:state.meta.achievements,breakthroughs:(state.meta.breakthroughs??0)+reward,breakthroughCurrency:(state.meta.breakthroughCurrency??0)+reward},tutorial:{step:10,completed:true}},`Breakthrough complete · +${reward} Insight`)}
-export function buyTechNode(state, nodeId) {
-  if(SYSTEM_TECH_NODES.some((node)=>node.id===nodeId))return purchaseSystemTech(state,nodeId);
-  const node = TECH_NODES.find(({ id }) => id === nodeId); if (!node || state.meta.techNodes.includes(nodeId) || state.meta.intelligence < node.cost || (node.requires && !state.meta.techNodes.includes(node.requires))) return state;
+export function technologyPurchaseEligibility(state,nodeId){const node=TECH_NODES.find(({id})=>id===nodeId)??SYSTEM_TECH_NODES.find(({id})=>id===nodeId);if(!node)return{node:null,canPurchase:false,prerequisitesMet:false,affordable:false,failureReason:'UNKNOWN_NODE'};const purchased=state.meta.techNodes.includes(nodeId),prerequisitesMet=!node.requires||state.meta.techNodes.includes(node.requires),affordable=state.meta.intelligence>=node.cost;return{node,purchased,prerequisitesMet,affordable,canPurchase:!purchased&&prerequisitesMet&&affordable,failureReason:purchased?'ALREADY_PURCHASED':!prerequisitesMet?'PREREQUISITE_MISSING':!affordable?'INSUFFICIENT_INT':null}}
+export function purchaseTechnology(state, nodeId) {
+  const eligibility=technologyPurchaseEligibility(state,nodeId),node=eligibility.node;if(!eligibility.canPurchase)return state;
   let next={ ...state, meta: { ...state.meta, intelligence: state.meta.intelligence - node.cost, techNodes: [...state.meta.techNodes, nodeId] } };
   if(node.unlockModel&&!next.model.owned.includes(node.unlockModel)){const model=MODEL_CATALOG.find(item=>item.id===node.unlockModel);if(model){const progress={level:1,xp:0,upgradePoints:0,availablePoints:0,trainings:0,trainingCount:0,totalPointsEarned:0,totalPointsSpent:0,skills:{}};next={...next,meta:{...next.meta,unlockedModels:[...new Set([...(next.meta.unlockedModels??next.model.owned),model.id])]},model:{...next.model,owned:[...next.model.owned,model.id],progress:{...next.model.progress,[model.id]:progress}}}}}
-  return feedback(next, `${node.name} permanently unlocked${node.unlockModel?` · ${MODEL_CATALOG.find(model=>model.id===node.unlockModel)?.name} activated`:''}`);
+  const unlocks=node.unlocks?.join(', ')??node.unlock??(node.unlockModel?`${MODEL_CATALOG.find(model=>model.id===node.unlockModel)?.name} activated`:'Permanent effect active');return feedback(next, `${node.name} unlocked · -${node.cost} INT · ${unlocks}`);
 }
+export const buyTechNode=purchaseTechnology;
 export function resolveWorldEvent(state, choiceIndex) {
   const event = state.world.activeEvent; const choice = event?.choices[choiceIndex]; if (!choice || (choice.cost && state.resources.credits < choice.cost)) return state;
   const modifier = { effect: choice.effect, value: choice.value, expiresAt: state.statistics.playTimeMs + BALANCE.events.durationMs };

@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyTechNode, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, trainingRequiredForState, upgradeModelSkill, upgradePatent } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -127,7 +127,8 @@ export class Application {
       this.#eventBus.on('upgrade:buy', (upgradeId) => this.#store.update((state) => buyUpgrade(state, upgradeId), 'upgrade')),
       this.#eventBus.on('objective:claim', (objectiveId) => this.#store.update((state) => claimObjective(state, objectiveId), 'objective')),
       this.#eventBus.on('tutorial:advance', () => this.#store.update(advanceTutorial, 'tutorial')),
-      this.#eventBus.on('tech:buy', (nodeId) => this.#store.update((state) => buyTechNode(state, nodeId), 'tech')),
+      this.#eventBus.on('tech:select',(nodeId)=>this.#store.update((state)=>({...state,ui:{...state.ui,selectedTechnologyId:nodeId,lastTechInteraction:{selectedNodeId:nodeId,availableINT:state.meta.intelligence,cost:technologyPurchaseEligibility(state,nodeId).node?.cost??null,prerequisitesMet:technologyPurchaseEligibility(state,nodeId).prerequisitesMet,affordable:technologyPurchaseEligibility(state,nodeId).affordable,purchaseHandlerReached:false,purchaseSucceeded:false,failureReason:technologyPurchaseEligibility(state,nodeId).failureReason}}}),'tech-selection')),
+      this.#eventBus.on('tech:buy', (nodeId) => this.#store.update((state) => {const eligibility=technologyPurchaseEligibility(state,nodeId),next=purchaseTechnology(state,nodeId),succeeded=next!==state;return{...next,ui:{...next.ui,selectedTechnologyId:nodeId,lastTechInteraction:{selectedNodeId:nodeId,availableINT:state.meta.intelligence,cost:eligibility.node?.cost??null,prerequisitesMet:eligibility.prerequisitesMet,affordable:eligibility.affordable,purchaseHandlerReached:true,purchaseSucceeded:succeeded,failureReason:succeeded?null:eligibility.failureReason}}}}, 'tech')),
       this.#eventBus.on('cycle:start', () => this.#store.update(startDevelopmentCycle, 'development-cycle')),
       this.#eventBus.on('breakthrough:start', () => this.#store.update(startBreakthrough, 'breakthrough')),
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
@@ -154,7 +155,7 @@ export class Application {
       this.#eventBus.on('developer:clean-balance', () => this.#performCleanBalanceRun()),
       this.#eventBus.on('developer:opened', () => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'developer-dashboard-opened', source: 'developer', label: 'Developer Analytics opened' }, this.#store.getState()))),
       this.#eventBus.on('developer:tooltip', (label) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'ui', type: 'tooltip-opened', source: 'tooltip', label }, this.#store.getState()))),
-      this.#eventBus.on('developer:tech-viewed', ({nodeId,interaction}) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'technology', type: 'technology-node-viewed', source: 'tech-tree', label: nodeId, metadata: { nodeId, interaction } }, this.#store.getState()))),
+      this.#eventBus.on('developer:tech-viewed', ({nodeId,interaction}) => this.#telemetryCall(() => this.#telemetry?.record({ category: 'technology', type: interaction==='tap'?'technology-node-selected':'technology-node-viewed', source: 'tech-tree', label: nodeId, metadata: { nodeId, interaction } }, this.#store.getState()))),
     );
   }
 

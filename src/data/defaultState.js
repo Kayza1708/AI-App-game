@@ -253,6 +253,6 @@ export function createDefaultState() {
     statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
     run: { number: 1, startedAtSessionMs: 0, creditsEarned: 0, computeProduced: 0 },
     session: { elapsedMs: 0, lastSavedAt: null },
-    ui: { activeView: 'dashboard', sidebarOpen: false, toast: null },
+    ui: { activeView: 'dashboard', sidebarOpen: false, toast: null, selectedTechnologyId: TECH_NODES[0]?.id ?? null, lastTechInteraction: null },
   };
 }

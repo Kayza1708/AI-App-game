@@ -98,3 +98,8 @@
 .tech-detail{border-top:3px solid var(--branch-color,var(--cyan))}.tech-detail.type-keystone,.tech-detail.type-era{box-shadow:inset 0 0 35px #4de8d10d}.tech-detail-icon{border-color:var(--branch-color);color:var(--branch-color)}
 .active-synergies{padding:12px;margin:12px 0;border:1px solid var(--line);background:#071118}.active-synergies strong{display:block;margin:6px 0;color:var(--cyan)}.active-synergies p{margin:0;color:var(--muted);font-size:9px}
 @media(max-width:800px){.tech-toolbar{position:static;display:grid;grid-template-columns:1fr 1fr}.tech-toolbar input{grid-column:1/-1}.tech-game-layout{grid-template-columns:1fr}.tech-detail{position:sticky;bottom:0;top:auto;z-index:5;max-height:46vh;overflow:auto}.tech-map-viewport{min-height:62vh}}
+
+/* Milestone 17.1 interaction states */
+.skill-upgrade-button{width:100%;padding:10px;border:1px solid var(--cyan);background:#0b2627;color:var(--cyan);font:9px DM Mono;letter-spacing:.08em}.skill-upgrade-button:disabled{border-color:var(--line);background:#071016;color:var(--muted)}
+.tech-icon-node.selected{outline:3px solid #fff;outline-offset:5px;filter:brightness(1.25);z-index:4}.tech-icon-node.selected:not(.purchased){box-shadow:0 0 28px color-mix(in srgb,var(--branch-color) 70%,transparent)}
+.tech-debug{margin-top:12px;padding:10px;border:1px dashed #ffcb6677;background:#080d11;color:#ffcb66;font:8px/1.5 DM Mono;white-space:pre-wrap}
