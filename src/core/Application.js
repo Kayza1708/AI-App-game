@@ -1,5 +1,5 @@
 import { createDefaultState, WORLD_EVENTS } from '../data/defaultState.js';
-import { BALANCE } from '../config/balance.js';
+import { BALANCE, skillUnlocked } from '../config/balance.js';
 import { isDeveloperMode, TelemetryService } from '../dev/telemetry-service.js';
 import { DeveloperResetService } from '../dev/developer-reset-service.js';
 import { SaveSystem } from '../systems/PersistentSaveSystem.js';
@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -134,7 +134,7 @@ export class Application {
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
       this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => this.#rewardedBoosts.activate(state, reward), 'rewarded-ad')),
-      this.#eventBus.on('model:improve', ({ modelId, skillId }) => this.#store.update((state) => upgradeModelSkill(state, modelId, skillId), 'model-skill')),
+      this.#eventBus.on('model:improve', ({ modelId, skillId, interaction = {} }) => this.#store.update((state) => {const progress=state.model.progress?.[modelId],pointCost=modelImprovementCost(state,modelId,skillId),availablePoints=modelAvailablePoints(progress),validationPassed=Boolean(progress&&state.model.owned.includes(modelId)&&skillUnlocked(state,skillId)&&availablePoints>=pointCost),next=upgradeModelSkill(state,modelId,skillId),stateUpdated=next!==state,log={...interaction,modelId,skillId,availablePoints,pointCost,handlerReached:true,validationPassed,purchaseFunctionReached:true,stateUpdated,failureReason:stateUpdated?null:interaction.failureReason??(!progress?'MODEL_NOT_FOUND':!state.model.owned.includes(modelId)?'MODEL_NOT_OWNED':!skillUnlocked(state,skillId)?'SKILL_LOCKED':availablePoints<pointCost?'INSUFFICIENT_POINTS':'TRANSACTION_REJECTED')};if(this.#devMode)globalThis.console?.debug('MODEL SKILL CLICK',log);return stateUpdated?{...next,ui:{...next.ui,lastModelSkillInteraction:log}}:state}, 'model-skill')),
       this.#eventBus.on('model:deploy', (modelId) => this.#store.update((state) => toggleModelDeployment(state, modelId), 'model')),
       this.#eventBus.on('retention:login', () => this.#store.update(claimLoginReward, 'retention')),
       this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimMission(state, missionId), 'mission')),
