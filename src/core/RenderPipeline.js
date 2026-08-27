@@ -2,9 +2,11 @@ export class RenderPipeline {
   #animationFrame = null;
   #pendingState = null;
   #render;
+  #onError;
 
-  constructor(render) {
+  constructor(render, onError = null) {
     this.#render = render;
+    this.#onError = onError;
   }
 
   request(state) {
@@ -12,7 +14,11 @@ export class RenderPipeline {
     if (this.#animationFrame !== null) return;
     this.#animationFrame = requestAnimationFrame(() => {
       this.#animationFrame = null;
-      this.#render(this.#pendingState);
+      try {
+        this.#render(this.#pendingState);
+      } catch (error) {
+        this.#onError?.(error);
+      }
     });
   }
 
