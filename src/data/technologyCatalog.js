@@ -4,6 +4,7 @@
  * telemetry, migration tests, documentation exports, and Balance Lab policies.
  */
 export const TECHNOLOGY_SCHEMA_VERSION = 1;
+export const RESEARCH_UNLOCK_TECH_ID = 'research-1';
 export const TECHNOLOGY_ERAS = Object.freeze(['Garage AI','Machine Learning','Deep Learning','Foundation Models','Agentic AI','Autonomous Science','AGI','Superintelligence','Singularity']);
 
 const B = (label, icon, color, baseCost, nodes) => ({ label, icon, color, baseCost, nodes });

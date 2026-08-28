@@ -2,7 +2,7 @@
  * Milestone 11 progression controls. Gameplay formulas consume this object so
  * pacing can be tuned without hunting through simulation or UI code.
  */
-import { TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
+import { RESEARCH_UNLOCK_TECH_ID, TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
 export const BALANCE = Object.freeze({
   hardware: Object.freeze({
     costGrowth: 1.18, bulkDiscountCap: 0.42, upgradeCostFactor: 3, upgradeCostGrowth: 1.78,
@@ -73,9 +73,16 @@ export function featureUnlocked(state, id) {
   if (['core', 'modelSkills', 'marketing'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
   if (id === 'allocation') return (state.meta.cycles ?? 0) > 0;
+  if (id === 'research') return isResearchUnlocked(state);
   if (TECHNOLOGY_NODES.some((node) => node.unlockFeature === id && state.meta.techNodes.includes(node.id))) return true;
   const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
   return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity);
+}
+export function isResearchUnlocked(state) {
+  const purchased = state?.meta?.techNodes ?? [];
+  // Current games purchase research-1. system-research is retained solely so
+  // pre-v19 permanent unlocks remain valid after loading.
+  return purchased.includes(RESEARCH_UNLOCK_TECH_ID) || purchased.includes('system-research');
 }
 export function viewUnlocked(state, view) {
   if (view === 'market') return featureUnlocked(state,'marketing');

@@ -1,5 +1,5 @@
 import { createDefaultState, HARDWARE_CATALOG, LEGACY_HARDWARE_UPGRADES, MODEL_CATALOG, SAVE_VERSION } from '../data/defaultState.js';
-import { BALANCE, FEATURE_UNLOCKS } from '../config/balance.js';
+import { BALANCE, FEATURE_UNLOCKS, isResearchUnlocked } from '../config/balance.js';
 import { ensureGameState } from '../core/GameStateContract.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
@@ -79,7 +79,7 @@ export class SaveSystem {
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...readSaveObject(save.profile) }, resources: { ...readSaveNumericRecord(defaults.resources, save.resources), credits: (Number.isFinite(save.resources?.credits) ? save.resources.credits : defaults.resources.credits) + hardwareUpgradeRefund },
       hardware: readSaveNumericRecord(defaults.hardware, save.hardware), model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, xp: 0, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress, trainingProgress: migratedTrainingProgress, trainingSession: migratedTrainingSession },
-      allocation: normalizeSavedAllocation(defaults.allocation, save.allocation), energy: defaults.energy, market: readSaveNumericRecord(defaults.market, save.market),
+      allocation: normalizeSavedAllocationForFeatures(defaults.allocation, save.allocation, migratedTechNodes), energy: defaults.energy, market: readSaveNumericRecord(defaults.market, save.market),
       upgrades: readSaveArray(save.upgrades).filter((id) => !LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id)), tutorial: { ...defaults.tutorial, ...readSaveObject(save.tutorial), acknowledged: readSaveArray(save.tutorial?.acknowledged) }, objectives: { ...defaults.objectives, ...readSaveObject(save.objectives) },
       meta: { ...defaults.meta, ...readSaveObject(save.meta), unlockedModels: [...new Set([...readSaveArray(save.meta?.unlockedModels), ...owned])], techNodes: migratedTechNodes, achievements: { ...defaults.meta.achievements, ...readSaveObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: readSaveArray(save.meta?.cycleHistory) },
       world: { ...defaults.world, ...readSaveObject(save.world), modifiers: readSaveArray(save.world?.modifiers), activeEvent: readSaveObject(save.world?.activeEvent).id ? save.world.activeEvent : null }, company: { ...defaults.company, ...readSaveObject(save.company), employees: readSaveNumericRecord(defaults.company.employees, save.company?.employees) },
@@ -110,6 +110,7 @@ function readSaveNumericRecord(defaults, value) { const source = readSaveObject(
 function readSaveNumericMap(value) { return Object.fromEntries(Object.entries(readSaveObject(value)).filter(([, amount]) => Number.isFinite(amount) && amount >= 0)); }
 function normalizeModelPointAccounting(value) { const skills=Object.fromEntries(Object.entries(readSaveObject(value.skills)).filter(([skill])=>['quality','efficiency','popularity'].includes(skill)));const spent=Number.isFinite(value.totalPointsSpent)?value.totalPointsSpent:Object.values(skills).reduce((sum,rank)=>sum+Array.from({length:Math.max(0,Math.floor(rank))},(_,index)=>BALANCE.training.pointCosts[index]??Math.ceil((index+1)/2)).reduce((a,b)=>a+b,0),0);const available=Math.max(0,Math.floor(value.availablePoints??value.upgradePoints??0)),trainingCount=Math.max(0,Math.floor(value.trainingCount??value.trainings??0));return{...value,trainings:trainingCount,trainingCount,upgradePoints:available,availablePoints:available,totalPointsSpent:spent,totalPointsEarned:Number.isFinite(value.totalPointsEarned)?Math.max(value.totalPointsEarned,available+spent):available+spent,skills}; }
 function normalizeSavedAllocation(defaults, value) { const allocation = readSaveNumericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }
+function normalizeSavedAllocationForFeatures(defaults,value,techNodes){const allocation=normalizeSavedAllocation(defaults,value);if(isResearchUnlocked({meta:{techNodes}}))return allocation;return{...allocation,inference:allocation.inference+allocation.research,research:0}}
 
 function migrateLegacyHardwareUpgradeTracks(defaults, save) {
   const explicit = readSaveObject(save.hardwareUpgradeLevels);
