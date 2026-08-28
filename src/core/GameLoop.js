@@ -4,10 +4,12 @@ export class GameLoop {
   #animationFrame = null;
   #lastTimestamp = 0;
   #onTick;
+  #onError;
   #running = false;
 
-  constructor(onTick) {
+  constructor(onTick, onError = null) {
     this.#onTick = onTick;
+    this.#onError = onError;
   }
 
   start() {
@@ -27,7 +29,13 @@ export class GameLoop {
     if (!this.#running) return;
     const deltaMs = Math.min(timestamp - this.#lastTimestamp, MAX_FRAME_DELTA_MS);
     this.#lastTimestamp = timestamp;
-    this.#onTick(deltaMs);
+    try {
+      this.#onTick(deltaMs);
+    } catch (error) {
+      this.stop();
+      this.#onError?.(error);
+      return;
+    }
     this.#animationFrame = requestAnimationFrame(this.#frame);
   };
 }
