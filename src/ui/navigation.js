@@ -8,6 +8,7 @@ export const NAV_ITEMS = [
   { id: 'company', label: 'Company', eyebrow: 'Growth' },
   { id: 'statistics', label: 'Statistics', eyebrow: 'Telemetry' },
   { id: 'allocation', label: 'Allocation', eyebrow: 'Compute' },
+  { id: 'research', label: 'Research', eyebrow: 'Science' },
   { id: 'market', label: 'Market', eyebrow: 'Economy' },
   { id: 'objectives', label: 'Objectives', eyebrow: 'Missions' },
   { id: 'strategy', label: 'Tech Tree', eyebrow: 'Intelligence' },

@@ -25,8 +25,12 @@ export const ARTIFACT_CATALOG = [
 ];
 
 export const STORE_PRODUCTS = [
-  ...[1,2,3,4,5].map(tier=>({id:`gem_pack_${tier}`,type:'iap',name:`Gem Pack ${tier}`,status:'Store integration not active in web development build'})),
-  ...['starter_pack','research_pack','founder_pack','monthly_singularity_pass'].map(id=>({id,type:'iap',name:id.replaceAll('_',' '),status:'Store integration not active in web development build'})),
+  {id:'gem_pack_1',type:'iap',name:'Small Gem Pack',gems:50,status:'Requires verified native billing'},
+  {id:'gem_pack_2',type:'iap',name:'Medium Gem Pack',gems:140,status:'Requires verified native billing'},
+  {id:'gem_pack_3',type:'iap',name:'Large Gem Pack',gems:320,status:'Requires verified native billing'},
+  {id:'gem_pack_4',type:'iap',name:'Researcher Gem Pack',gems:700,status:'Requires verified native billing'},
+  {id:'gem_pack_5',type:'iap',name:'Singularity Gem Pack',gems:1_500,status:'Requires verified native billing'},
+  ...['starter_pack','research_pack','founder_pack','monthly_singularity_pass'].map(id=>({id,type:'iap',name:id.replaceAll('_',' '),status:'Requires verified native billing'})),
 ];
 
 export const REWARDED_BOOSTS = [

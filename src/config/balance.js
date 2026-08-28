@@ -9,23 +9,23 @@ export const BALANCE = Object.freeze({
     tierCosts: Object.freeze([20,400,1_800,6_000,40_000,1_500_000,75_000_000,35_000_000_000,2_400_000_000_000,190_000_000_000_000,18_000_000_000_000_000,2_100_000_000_000_000_000,300_000_000_000_000_000_000,52_000_000_000_000_000_000_000,11_000_000_000_000_000_000_000_000,2_800_000_000_000_000_000_000_000_000]),
     tierProduction: Object.freeze([.5,2,12,100,1_200,20_000,450_000,12_000_000,400_000_000,16_000_000_000,750_000_000_000,42_000_000_000_000,2_800_000_000_000_000,220_000_000_000_000_000,20_000_000_000_000_000_000,2_200_000_000_000_000_000_000]),
   }),
-  training: Object.freeze({ requirementAnchors: Object.freeze([[1,15],[2,420],[3,3_000],[4,25_000],[5,120_000],[10,6_000_000],[20,1e9],[50,1e15],[100,1e22],[250,1e35],[500,1e55]]), skillGain: 0.9, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]) }),
-  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 250, marketingCostGrowth: 1.55 }),
+  training: Object.freeze({ requirementAnchors: Object.freeze([[1,18],[2,480],[3,4_500],[4,45_000],[5,300_000],[10,40_000_000],[20,4e11],[50,2e18],[100,1e27],[250,1e43],[500,1e65]]), skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4 }),
+  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
-    computeScale: 5_000_000,
-    exponent: 0.34,
+    computeScale: 3_500_000,
+    creditScale: 1_000_000,
     cycleRequirement: 1,
     minimumHardwareTier: 4,
     minimumModelLevel: 6,
     breakthroughMultiplier: 1.65,
   }),
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),
-  events: Object.freeze({ firstDelayMs: 720_000, minimumDelayMs: 600_000, durationMs: 180_000 }),
+  events: Object.freeze({ firstDelayMs: 720_000, minimumDelayMs: 600_000, durationMs: 180_000, incomeSeconds: Object.freeze({minor:30,moderate:90,major:240}), creditShare:Object.freeze({minor:.01,moderate:.03,major:.06}) }),
   items: Object.freeze({ unlockInt: 15, baseSlots: 2, maxSlots: 6, inventoryCapacity: 50, rarityWeights: Object.freeze({Common:55,Uncommon:25,Rare:13,Epic:5,Legendary:1.8,Mythic:.2}) }),
-  missions: Object.freeze({ dailyCredits: 300, dailyGems: 1, weeklyGems: 3, monthlyGems: 10 }),
+  missions: Object.freeze({ creditRewardSeconds:Object.freeze({daily:300,weekly:1_800,monthly:7_200}), creditRewardFloor:Object.freeze({daily:300,weekly:5_000,monthly:25_000}), dailyGems: 1, weeklyGems: 4, monthlyGems: 12 }),
   offline: Object.freeze({ capMs: 8 * 60 * 60 * 1000, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
-  progressionTargets: Object.freeze({ firstCalculator:[10,30], firstHardwareUpgrade:[60,180], firstModelLevel:[120,300], firstDevelopmentCycle:[1800,3600], firstItem:[1800,5400], firstPatentResearch:1500, firstBreakthrough:129_600 }),
+  progressionTargets: Object.freeze({ firstCalculator:[10,30], firstHardwareUpgrade:[60,180], firstModelLevel:[60,240], firstDevelopmentCycle:[2700,3600], firstItem:[1800,5400], firstPatentResearch:1500, firstBreakthrough:129_600 }),
 });
 
 export const FEATURE_UNLOCKS = Object.freeze([
@@ -33,6 +33,7 @@ export const FEATURE_UNLOCKS = Object.freeze([
   { id: 'development', name: 'Development Cycles', int: 1, views: ['strategy'], description: 'Spend permanent Intelligence and plan the next run.' },
   { id: 'marketing', name: 'Marketing Division', int: 4, views: ['company', 'market'], description: 'Demand, pricing, Marketing, Reputation, and Adoption.' },
   { id: 'allocation', name: 'Compute Allocation', int: 2, views: ['allocation'], description: 'Research Compute and strategic allocation.' },
+  { id: 'research', name: 'Research Division', int: Infinity, views: ['research'], description: 'Convert allocated Compute into permanent scientific upgrades.' },
   { id: 'items', name: 'Model Equipment', int: 15, views: ['inventory'], description: 'Collect equipment and create specialized Model builds.' },
   { id: 'missions', name: 'Mission Network', int: 4, views: ['missions'], description: 'Daily goals and long-term account challenges.' },
   { id: 'patents', name: 'Patent Office', int: 20, views: ['patents'], description: 'Permanent discoveries and Patent loadouts.' },
@@ -63,12 +64,7 @@ export const SYSTEM_TECH_NODES = Object.freeze([
   { id:'system-agents', feature:'agents', branch:'Automation', name:'Agent Systems', cost:20, visibleAt:30, requires:'system-automation', description:'Unlock autonomous workloads and Agent specialization.', unlocks:['Agent Tasks','Autonomy'] },
 ]);
 
-export const MODEL_SKILL_UNLOCKS = Object.freeze({
-  quality: 0, efficiency: 0, context: 0,
-  reasoning: 35, knowledge: 35, coding: 35, vision: 35, math: 35, creativity: 35,
-  safety: 55, latency: 55, research: 55, popularity: 55,
-  autonomy: 120, agents: 120, enterprise: 170,
-});
+export const MODEL_SKILL_UNLOCKS = Object.freeze({ quality: 0, efficiency: 0, popularity: 0 });
 
 export function curveValue(base, growth, level) { return base * growth ** Math.max(0, level); }
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
@@ -82,7 +78,8 @@ export function featureUnlocked(state, id) {
   return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity);
 }
 export function viewUnlocked(state, view) {
-  if (['company', 'market', 'allocation'].includes(view)) return (state.meta.cycles ?? 0) > 0;
+  if (view === 'market') return featureUnlocked(state,'marketing');
+  if (['company','allocation'].includes(view)) return (state.meta.cycles ?? 0) > 0;
   return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id));
 }
-export function skillUnlocked(state, skill) { if(['quality','efficiency','popularity'].includes(skill))return true;const modelEngineering=state.meta.techNodes.includes('model-1')||state.meta.techNodes.includes('system-model-engineering');if(['reasoning','knowledge','coding','vision','math','creativity','context','latency'].includes(skill))return modelEngineering;if(skill==='research')return featureUnlocked(state,'research');if(['enterprise','safety'].includes(skill))return featureUnlocked(state,'enterprise');if(['autonomy','agents'].includes(skill))return featureUnlocked(state,'agents');return (state.meta.totalIntelligence ?? 0) >= (MODEL_SKILL_UNLOCKS[skill] ?? Infinity); }
+export function skillUnlocked(_state, skill) { return ['quality','efficiency','popularity'].includes(skill); }

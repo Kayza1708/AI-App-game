@@ -64,11 +64,11 @@ export const TECHNOLOGY_BRANCHES = Object.freeze({
     N('Enterprise First','keystone','revenue',1.5,'Multiply Revenue/User by 2.5 while halving Consumer Demand.',{tradeoff:'demand',penalty:.50,mechanic:'enterprise-first'}),
     N('Mission Critical AI','major','enterprise',.75,'Quality and Efficiency strongly amplify contracts; Training becomes more expensive.',{tradeoff:'training',penalty:.25,mechanic:'mission-critical'}),
   ]),
-  research:B('Research Lab','research','#74d490',20,[
+  research:B('Research Lab','research','#74d490',3,[
     N('Research Division','system','research',.15,'Unlocks Research production from allocated Compute.',{unlockFeature:'research',unlock:'Research allocation'}),
     N('Scientific Model','model','research',.20,'Unlocks the Research Model and scientific specialization.',{unlockModel:'research',unlock:'Research Model'}),
     N('Scientific Compute','minor','research',.25,'Improves Research generated per allocated Compute.'),
-    N('Model-Assisted Science','major','research',.22,'Reasoning and Knowledge Model Points contribute to Research.',{mechanic:'reasoning-research'}),
+    N('Model-Assisted Science','major','research',.22,'The intrinsic reasoning and knowledge of deployed Models contributes to Research.',{mechanic:'reasoning-research'}),
     N('Recursive Discovery','major','research',.20,'Each equipped Research Patent improves Research output.',{mechanic:'recursive-discovery'}),
     N('Open Science','keystone','research',1,'Double Research output while reducing immediate Credits/sec.',{tradeoff:'revenue',penalty:.25,mechanic:'open-science'}),
     N('Deep Research','keystone','patentPower',.75,'Patents take longer to discover but their specialized effects are much stronger.',{tradeoff:'patentSpeed',penalty:.50,mechanic:'deep-research'}),

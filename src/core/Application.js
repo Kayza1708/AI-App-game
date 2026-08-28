@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acquireModel, advanceTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
+import { acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -41,7 +41,7 @@ export class Application {
     this.#freshDeveloperReset = this.#developerReset?.consumeFreshResetMarker() ?? false;
     const normalizeState = (candidate) => {
       if (this.#devMode) validateGameState(candidate);
-      const normalized = ensureGameState(candidate);
+      const normalized = reconcileTutorial(ensureGameState(candidate));
       if (this.#devMode) validateGameState(normalized, economySnapshot(normalized));
       return normalized;
     };
@@ -119,6 +119,8 @@ export class Application {
       }),
       this.#eventBus.on('hardware:buy', (itemId) => this.#store.update((state) => buyHardware(state, itemId), 'hardware')),
       this.#eventBus.on('model:train', () => this.#store.update(trainModel, 'training')),
+      this.#eventBus.on('model:finish-training', () => this.#store.update(finishTrainingWithGems, 'training-gem-finish')),
+      this.#eventBus.on('model:double-points', () => this.#store.update(buyTrainingDoublePoints, 'training-gem-double')),
       this.#eventBus.on('compute:optimize', () => this.#store.update(optimizeCode, 'manual')),
       this.#eventBus.on('allocation:set', ({ category, value }) => this.#store.update((state) => setAllocation(state, category, value), 'allocation')),
       this.#eventBus.on('market:price', (value) => this.#store.update((state) => setPrice(state, value), 'market')),

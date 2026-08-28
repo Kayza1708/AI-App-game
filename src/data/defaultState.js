@@ -2,7 +2,7 @@ import { BALANCE } from '../config/balance.js';
 import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
 export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 18;
+export const SAVE_VERSION = 19;
 export const GAME_VERSION = '0.17.0';
 
 export const HARDWARE_CATALOG = [
@@ -31,7 +31,7 @@ export const HARDWARE_CATALOG = [
   ],
 }));
 
-export const MODEL_SKILLS = ['quality','reasoning','knowledge','context','coding','vision','creativity','math','efficiency','latency','popularity','enterprise','research','safety','autonomy'];
+export const MODEL_SKILLS = ['quality','efficiency','popularity'];
 const MODEL_BASE = [
   {id:'tinyChat',name:'TinyChat',role:'Consumer',specialty:'Fast, efficient access for a large free audience.',intCost:0,unlockTech:null,trainingScale:1,identity:{adoption:.3,energyEfficiency:.2},stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0}},
   {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:0,unlockTech:'model-1',trainingScale:4,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
@@ -248,7 +248,7 @@ export function createDefaultState() {
     offline: { lastActiveTimestamp: Date.now(), lastReconciledTimestamp: null, durationMs: 0, effectiveDurationMs: 0, capMs: BALANCE.offline.capMs, results: null, rewardPending: false, periods: 0, totalOfflineMs: 0 },
     rewards: { queue: [], history: [], nextId: 1 },
     balanceRun: { id: null, startedAt: null, natural: true },
-    tutorial: { step: 0, completed: false },
+    tutorial: { step: 0, completed: false, acknowledged: [] },
     settings: { numberNotation: 'compact', sound: true },
     statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
     run: { number: 1, startedAtSessionMs: 0, creditsEarned: 0, computeProduced: 0 },
