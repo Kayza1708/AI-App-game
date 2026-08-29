@@ -1,18 +1,26 @@
 export class RenderPipeline {
   #animationFrame = null;
   #pendingState = null;
+  #pendingReason = null;
   #render;
+  #onError;
 
-  constructor(render) {
+  constructor(render, onError = null) {
     this.#render = render;
+    this.#onError = onError;
   }
 
-  request(state) {
+  request(state, reason = 'state-update') {
     this.#pendingState = state;
+    this.#pendingReason = reason;
     if (this.#animationFrame !== null) return;
     this.#animationFrame = requestAnimationFrame(() => {
       this.#animationFrame = null;
-      this.#render(this.#pendingState);
+      try {
+        this.#render(this.#pendingState, { reason: this.#pendingReason });
+      } catch (error) {
+        this.#onError?.(error);
+      }
     });
   }
 

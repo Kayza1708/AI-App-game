@@ -1,10 +1,8 @@
 import './styles/main.css';
-import { Application } from './core/Application.js';
+import { bootstrap } from './core/bootstrap.js';
 
-const root = document.querySelector('#app');
-if (!root) throw new Error('Application root was not found.');
+const root = globalThis.document?.querySelector('#app') ?? null;
 
-const application = new Application(root);
-application.start();
+const application = root ? bootstrap(root) : null;
 
-if (import.meta.hot) import.meta.hot.dispose(() => application.stop());
+if (import.meta.hot) import.meta.hot.dispose(() => application?.stop());
