@@ -40,7 +40,7 @@ export const REWARDED_BOOSTS = [
   {id:'research',placement:'RESEARCH_BOOST',name:'Research Boost',effect:'research',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:3},
   {id:'patent',placement:'PATENT_BOOST',name:'Patent Boost',effect:'research',value:.5,durationMs:1_800_000,cooldownMs:7_200_000,dailyCap:2},
   {id:'energy',placement:'ENERGY_BOOST',name:'Energy Boost',effect:'energyOutput',value:1,durationMs:1_800_000,cooldownMs:3_600_000,dailyCap:3},
-  {id:'gems',placement:'DAILY_GEMS',name:'Small Gem Reward',effect:'gems',value:1,durationMs:0,cooldownMs:21_600_000,dailyCap:1},
+  {id:'gems',placement:'DAILY_GEMS',name:'Gem Transmission',effect:'gems',value:BALANCE.rewardedAds.gemReward,durationMs:0,cooldownMs:10_800_000,dailyCap:BALANCE.rewardedAds.dailyGemClaims},
 ];
 
 export const GEM_CONVENIENCE = [
@@ -51,3 +51,4 @@ export const GEM_CONVENIENCE = [
 ];
 
 export const MARKETPLACE_SCHEMA = Object.freeze({version:1,enabled:false,requiresServerAuthority:true,listings:[],taxRate:.08});
+import { BALANCE } from '../config/balance.js';

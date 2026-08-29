@@ -2,8 +2,8 @@ import { BALANCE } from '../config/balance.js';
 import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
 export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 19;
-export const GAME_VERSION = '0.17.0';
+export const SAVE_VERSION = 20;
+export const GAME_VERSION = '0.19.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],

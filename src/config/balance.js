@@ -13,19 +13,21 @@ export const BALANCE = Object.freeze({
   market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
-    computeScale: 3_500_000,
-    creditScale: 1_000_000,
+    computeScale: 24_000_000,
+    creditScale: 5_000_000,
     cycleRequirement: 1,
     minimumHardwareTier: 4,
-    minimumModelLevel: 6,
+    minimumModelLevel: 9,
+    minimumObjectives: 6,
     breakthroughMultiplier: 1.65,
   }),
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),
   events: Object.freeze({ firstDelayMs: 720_000, minimumDelayMs: 600_000, durationMs: 180_000, incomeSeconds: Object.freeze({minor:30,moderate:90,major:240}), creditShare:Object.freeze({minor:.01,moderate:.03,major:.06}) }),
   items: Object.freeze({ unlockInt: 15, baseSlots: 2, maxSlots: 6, inventoryCapacity: 50, rarityWeights: Object.freeze({Common:55,Uncommon:25,Rare:13,Epic:5,Legendary:1.8,Mythic:.2}) }),
-  missions: Object.freeze({ creditRewardSeconds:Object.freeze({daily:300,weekly:1_800,monthly:7_200}), creditRewardFloor:Object.freeze({daily:300,weekly:5_000,monthly:25_000}), dailyGems: 1, weeklyGems: 4, monthlyGems: 12 }),
+  missions: Object.freeze({ creditRewardSeconds:Object.freeze({daily:300,weekly:1_800,monthly:7_200}), creditRewardFloor:Object.freeze({daily:300,weekly:5_000,monthly:25_000}), gems:Object.freeze({daily:2,weekly:7,monthly:24}) }),
+  rewardedAds:Object.freeze({dailyGemClaims:2,gemReward:2}),
   offline: Object.freeze({ capMs: 8 * 60 * 60 * 1000, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
-  progressionTargets: Object.freeze({ firstCalculator:[10,30], firstHardwareUpgrade:[60,180], firstModelLevel:[60,240], firstDevelopmentCycle:[2700,3600], firstItem:[1800,5400], firstPatentResearch:1500, firstBreakthrough:129_600 }),
+  progressionTargets: Object.freeze({ firstCalculator:[10,30], firstHardwareUpgrade:[60,180], firstModelLevel:[60,240], firstDevelopmentCycle:[3600,5400], firstItem:[1800,5400], firstPatentResearch:1500, firstBreakthrough:129_600 }),
 });
 
 export const FEATURE_UNLOCKS = Object.freeze([
@@ -70,9 +72,9 @@ export function curveValue(base, growth, level) { return base * growth ** Math.m
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
 export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) => item.int > (state.meta.totalIntelligence ?? 0)).sort((a, b) => a.int - b.int)[0] ?? null; }
 export function featureUnlocked(state, id) {
-  if (['core', 'modelSkills', 'marketing'].includes(id)) return true;
+  if (['core', 'modelSkills', 'marketing', 'missions'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
-  if (id === 'allocation') return (state.meta.cycles ?? 0) > 0;
+  if (id === 'allocation') return (state.meta.cycles ?? 0) > 0 || state.meta.techNodes.includes('system-allocation');
   if (id === 'research') return isResearchUnlocked(state);
   if (TECHNOLOGY_NODES.some((node) => node.unlockFeature === id && state.meta.techNodes.includes(node.id))) return true;
   const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
@@ -86,6 +88,7 @@ export function isResearchUnlocked(state) {
 }
 export function viewUnlocked(state, view) {
   if (view === 'market') return featureUnlocked(state,'marketing');
+  if (view === 'gemshop') return true;
   if (['company','allocation'].includes(view)) return (state.meta.cycles ?? 0) > 0;
   return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id));
 }

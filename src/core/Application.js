@@ -16,6 +16,7 @@ import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { RewardedBoostService } from '../systems/RewardedBoostService.js';
 import { reconcileOffline } from '../systems/OfflineProgressSystem.js';
 import { dismissReward } from '../systems/RewardQueue.js';
+import { earnGems } from '../systems/GemSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -203,7 +204,7 @@ export class Application {
       if (type === 'credits') return { ...state, resources: { ...state.resources, credits: state.resources.credits + 1_000_000 } };
       if (type === 'compute') return { ...state, resources: { ...state.resources, compute: state.resources.compute + 100_000 } };
       if (type === 'research') return { ...state, resources: { ...state.resources, research: state.resources.research + 100_000 } };
-      if (type === 'gems') return { ...state, resources: { ...state.resources, gems: state.resources.gems + 100 } };
+      if (type === 'gems') return earnGems(state,100,'developer');
       if (type === 'intelligence') return { ...state, meta: { ...state.meta, intelligence: state.meta.intelligence + 100, totalIntelligence: state.meta.totalIntelligence + 100 } };
       if (type === 'set-model-level') return { ...state, model: { ...state.model, level: Math.max(1, Math.floor(value || 1)) } };
       if (type === 'complete-training') return { ...state, model: { ...state.model, trainingActive: true, trainingProgress: trainingRequiredForState(state) - 0.001 } };
