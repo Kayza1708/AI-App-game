@@ -43,6 +43,13 @@ export const REWARDED_BOOSTS = [
   {id:'gems',placement:'DAILY_GEMS',name:'Gem Transmission',effect:'gems',value:BALANCE.rewardedAds.gemReward,durationMs:0,cooldownMs:10_800_000,dailyCap:BALANCE.rewardedAds.dailyGemClaims},
 ];
 
+export const GEM_BOOSTS = Object.freeze([
+  {id:'revenue-boost',name:'Revenue Boost',effect:'revenue',value:1,durationMs:900_000,cost:4,description:'2× Revenue for 15 minutes'},
+  {id:'compute-boost',name:'Compute Boost',effect:'hardwareOutput',value:1,durationMs:900_000,cost:4,description:'2× Compute production for 15 minutes'},
+  {id:'training-boost',name:'Training Boost',effect:'training',value:1,durationMs:900_000,cost:4,description:'2× Training speed for 15 minutes'},
+  {id:'revenue-cache',name:'Revenue Cache',effect:'instantCreditsSeconds',value:600,durationMs:0,cost:3,description:'Collect about 10 minutes of current Revenue'},
+]);
+
 export const GEM_CONVENIENCE = [
   {id:'item-slot-3',name:'Third Model Item Slot',cost:40,effect:'itemSlot',value:1},
   {id:'training-surge',name:'Training Surge',cost:5,effect:'training',value:.5,durationMs:1_800_000},

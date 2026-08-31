@@ -16,14 +16,16 @@ export class StateStore {
   }
 
   update(updater, source = 'unknown') {
-    const nextState = updater(this.#state);
+    const previousState = this.#state;
+    const nextState = updater(previousState);
     if (!nextState || nextState === this.#state) return;
     this.#state = this.#normalize(nextState);
-    this.#eventBus.emit('state:changed', { source, state: this.#state });
+    this.#eventBus.emit('state:changed', { source, previousState, state: this.#state });
   }
 
   replace(nextState, source = 'restore') {
+    const previousState = this.#state;
     this.#state = cloneState(this.#normalize(nextState));
-    this.#eventBus.emit('state:changed', { source, state: this.#state });
+    this.#eventBus.emit('state:changed', { source, previousState, state: this.#state });
   }
 }

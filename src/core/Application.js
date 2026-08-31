@@ -13,7 +13,7 @@ import { captureRuntimeException } from './RuntimeDiagnostics.js';
 import { acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
-import { RewardedBoostService } from '../systems/RewardedBoostService.js';
+import { activateGemBoost, RewardedBoostService } from '../systems/RewardedBoostService.js';
 import { reconcileOffline } from '../systems/OfflineProgressSystem.js';
 import { dismissReward } from '../systems/RewardQueue.js';
 import { earnGems } from '../systems/GemSystem.js';
@@ -37,7 +37,9 @@ export class Application {
   constructor(root, { onRuntimeError = null } = {}) {
     this.#onRuntimeError = onRuntimeError;
     this.#devMode = isDeveloperMode();
-    this.#telemetry = this.#devMode ? new TelemetryService() : null;
+    // Recording is a runtime responsibility. Gating it behind Developer Mode
+    // produced empty exports for real human sessions; only its dashboard is gated.
+    this.#telemetry = new TelemetryService();
     this.#developerReset = this.#devMode ? new DeveloperResetService() : null;
     this.#freshDeveloperReset = this.#developerReset?.consumeFreshResetMarker() ?? false;
     const normalizeState = (candidate) => {
@@ -102,8 +104,8 @@ export class Application {
 
   #bindEvents() {
     this.#unsubscribers.push(
-      this.#eventBus.on('state:changed', ({ source, state }) => {
-        this.#telemetryCall(() => this.#telemetry?.observe(this.#telemetry.lastState ?? state, state, source));
+      this.#eventBus.on('state:changed', ({ source, previousState, state }) => {
+        this.#telemetryCall(() => this.#telemetry?.observe(previousState, state, source));
         this.#renderPipeline.request(state, source);
       }),
       this.#eventBus.on('navigation:selected', (viewId) => {
@@ -137,6 +139,7 @@ export class Application {
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
       this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => this.#rewardedBoosts.activate(state, reward), 'rewarded-ad')),
+      this.#eventBus.on('boost:activate', (boostId) => this.#store.update((state) => activateGemBoost(state, boostId), 'gem-boost')),
       this.#eventBus.on('model:improve', ({ modelId, skillId, interaction = {} }) => this.#store.update((state) => {const progress=state.model.progress?.[modelId],pointCost=modelImprovementCost(state,modelId,skillId),availablePoints=modelAvailablePoints(progress),validationPassed=Boolean(progress&&state.model.owned.includes(modelId)&&skillUnlocked(state,skillId)&&availablePoints>=pointCost),next=upgradeModelSkill(state,modelId,skillId),stateUpdated=next!==state,log={...interaction,modelId,skillId,availablePoints,pointCost,handlerReached:true,validationPassed,purchaseFunctionReached:true,stateUpdated,failureReason:stateUpdated?null:interaction.failureReason??(!progress?'MODEL_NOT_FOUND':!state.model.owned.includes(modelId)?'MODEL_NOT_OWNED':!skillUnlocked(state,skillId)?'SKILL_LOCKED':availablePoints<pointCost?'INSUFFICIENT_POINTS':'TRANSACTION_REJECTED')};if(this.#devMode)globalThis.console?.debug('MODEL SKILL CLICK',log);return stateUpdated?{...next,ui:{...next.ui,lastModelSkillInteraction:log}}:state}, 'model-skill')),
       this.#eventBus.on('model:deploy', (modelId) => this.#store.update((state) => toggleModelDeployment(state, modelId), 'model')),
       this.#eventBus.on('retention:login', () => this.#store.update(claimLoginReward, 'retention')),

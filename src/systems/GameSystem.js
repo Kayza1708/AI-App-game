@@ -332,7 +332,7 @@ export function objectiveProgress(state, objective) {
     totalCompute: state.statistics.totalComputeProduced, creditsEarned: state.statistics.totalCreditsEarned,
     trainings: progress.reduce((sum, item) => sum + (item.trainings ?? 0), 0),
     pointsSpent: progress.reduce((sum, item) => sum + (item.totalPointsSpent ?? 0), 0),
-    marketing: state.market.marketing, research: state.resources.research, patents: state.patents.discovered.length,
+    marketing: state.market.marketing, research: state.resources.research, researchUnlocked:isResearchUnlocked(state)?1:0, patents: state.patents.discovered.length,
     cycles: state.meta.cycles, tech: state.meta.techNodes.length,models:state.model.owned.length,
     keystones:TECH_NODES.filter(node=>node.type==='keystone'&&state.meta.techNodes.includes(node.id)).length,
     maxBranchInvestment:Math.max(0,...Object.values(branchInvestment(state))),

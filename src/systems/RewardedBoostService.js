@@ -1,7 +1,21 @@
-import { REWARDED_BOOSTS } from '../data/metaCatalog.js';
-import { earnGems } from './InventorySystem.js';
+import { GEM_BOOSTS, REWARDED_BOOSTS } from '../data/metaCatalog.js';
+import { earnGems, spendGems } from './GemSystem.js';
+import { economySnapshot, grantCredits } from './GameSystem.js';
+
+export function activateGemBoost(state,id){
+  const config=GEM_BOOSTS.find(boost=>boost.id===id);if(!config)return state;
+  const paid=spendGems(state,config.cost,'boost',{boostId:id,durationMs:config.durationMs});if(paid===state)return state;
+  if(config.effect==='instantCreditsSeconds')return grantCredits(paid,economySnapshot(state).creditsPerSecond*config.value,'boost');
+  const existing=paid.world.modifiers.find(modifier=>modifier.source===`gem:${id}`&&modifier.expiresAt>paid.statistics.playTimeMs);
+  const startsAt=existing?existing.expiresAt:paid.statistics.playTimeMs;
+  return{...paid,world:{...paid.world,modifiers:[...paid.world.modifiers.filter(modifier=>modifier!==existing),{effect:config.effect,value:config.value,expiresAt:startsAt+config.durationMs,source:`gem:${id}`,activatedAt:paid.statistics.playTimeMs}]}};
+}
+
+export function activeBoosts(state){return state.world.modifiers.filter(modifier=>(modifier.source?.startsWith('gem:')||modifier.source?.startsWith('rewarded:'))&&modifier.expiresAt>state.statistics.playTimeMs).map(modifier=>({...modifier,remainingMs:modifier.expiresAt-state.statistics.playTimeMs}));}
 
 export class RewardedBoostService {
+  // This adapter is invoked only by the explicitly labeled Developer control.
+  // Production browser UI never exposes it as a real ad provider.
   provider='web-mock';
   activate(state,id,now=Date.now()){
     const config=REWARDED_BOOSTS.find(boost=>boost.id===id);if(!config)return state;

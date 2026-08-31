@@ -13,8 +13,8 @@ export const BALANCE = Object.freeze({
   market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
-    computeScale: 24_000_000,
-    creditScale: 5_000_000,
+    computeScale: 400_000_000,
+    creditScale: 60_000_000,
     cycleRequirement: 1,
     minimumHardwareTier: 4,
     minimumModelLevel: 9,
@@ -22,7 +22,7 @@ export const BALANCE = Object.freeze({
     breakthroughMultiplier: 1.65,
   }),
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),
-  events: Object.freeze({ firstDelayMs: 720_000, minimumDelayMs: 600_000, durationMs: 180_000, incomeSeconds: Object.freeze({minor:30,moderate:90,major:240}), creditShare:Object.freeze({minor:.01,moderate:.03,major:.06}) }),
+  events: Object.freeze({ firstDelayMs: 480_000, minimumDelayMs: 720_000, durationMs: 180_000, incomeSeconds: Object.freeze({minor:30,moderate:90,major:240}), creditShare:Object.freeze({minor:.01,moderate:.03,major:.06}) }),
   items: Object.freeze({ unlockInt: 15, baseSlots: 2, maxSlots: 6, inventoryCapacity: 50, rarityWeights: Object.freeze({Common:55,Uncommon:25,Rare:13,Epic:5,Legendary:1.8,Mythic:.2}) }),
   missions: Object.freeze({
     creditRewardSeconds:Object.freeze({daily:35,weekly:240,monthly:600}),
@@ -81,7 +81,7 @@ export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) 
 export function featureUnlocked(state, id) {
   if (['core', 'modelSkills', 'marketing', 'missions'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
-  if (id === 'allocation') return (state.meta.cycles ?? 0) > 0 || state.meta.techNodes.includes('system-allocation');
+  if (id === 'allocation') return (state.meta.cycles ?? 0) > 0 || isResearchUnlocked(state) || state.meta.techNodes.includes('system-allocation');
   if (id === 'research') return isResearchUnlocked(state);
   if (TECHNOLOGY_NODES.some((node) => node.unlockFeature === id && state.meta.techNodes.includes(node.id))) return true;
   const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
@@ -91,12 +91,15 @@ export function isResearchUnlocked(state) {
   const purchased = state?.meta?.techNodes ?? [];
   // Current games purchase research-1. system-research is retained solely so
   // pre-v19 permanent unlocks remain valid after loading.
-  return purchased.includes(RESEARCH_UNLOCK_TECH_ID) || purchased.includes('system-research');
+  // GPU-scale infrastructure exposes Research as a first-run mechanic;
+  // permanent Technology preserves it on later runs.
+  return (state?.hardware?.gpuServer ?? 0) > 0 || purchased.includes(RESEARCH_UNLOCK_TECH_ID) || purchased.includes('system-research');
 }
 export function viewUnlocked(state, view) {
   if (view === 'market') return featureUnlocked(state,'marketing');
   if (view === 'gemshop') return true;
-  if (['company','allocation'].includes(view)) return (state.meta.cycles ?? 0) > 0;
+  if (view === 'company') return (state.meta.cycles ?? 0) > 0;
+  if (view === 'allocation') return featureUnlocked(state,'allocation');
   return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id));
 }
 export function skillUnlocked(_state, skill) { return ['quality','efficiency','popularity'].includes(skill); }
