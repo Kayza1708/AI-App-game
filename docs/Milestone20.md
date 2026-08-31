@@ -2,9 +2,9 @@
 
 ## Root causes
 
-The 75-minute run exposed two separate issues. First, normal-mode `Application` instances did not create a `TelemetryService`; the recorder was incorrectly coupled to the Developer Dashboard gate. State transitions also supplied only the new state, forcing telemetry to infer the previous state from mutable recorder state. Recording is now always local and active, while the dashboard remains developer-only, and `StateStore` emits the exact previous and next states.
+The 75-minute run exposed two separate issues. First, normal-mode `Application` instances did not create a `TelemetryService`; the recorder was incorrectly coupled to the Developer Dashboard gate. State transitions also supplied only the new state, forcing telemetry to infer the previous state from mutable recorder state. Recording is now always local and active, while the dashboard remains developer-only. The active event journal survives hash-route reloads, and `StateStore` emits the exact previous and next states.
 
-The progression dead zone was caused by the permanent roadmap ordering: after four onboarding goals, its next three goals required INT or permanent Technology that could only be earned after a Development Cycle. Players could progress numerically but could not satisfy the six claimed-goal requirement or see the locked Cycle requirements because Strategy navigation was unavailable. The roadmap now places Users, Marketing, Compute, Training, Model Level, and first-run Research goals before permanent-Technology goals. A live Cycle panel is visible on the Command Center.
+The progression dead zone was caused by the permanent roadmap ordering: after four onboarding goals, its next three goals required INT or permanent Technology that could only be earned after a Development Cycle. Players could progress numerically but could not satisfy the six claimed-goal requirement or see the locked Cycle requirements because Strategy navigation was unavailable. The roadmap now places Users, Marketing, Compute, Training, Model Level, and core-run User and Marketing goals before permanent-Technology goals. A live Cycle panel is visible on the Command Center.
 
 ## First-run progression and Cycle
 
@@ -13,13 +13,13 @@ The first Cycle remains progression-derived: Model Level 9, Hardware Tier 4, six
 | Window | Before | After authored beats |
 | --- | --- | --- |
 | 0–15m | Hardware and Training numbers | onboarding, Users, Marketing, Compute, Training and Model Point goals |
-| 15–40m | sparse tier changes | Server/GPU progression, Model goals, first event at ~8m, Research at GPU Server |
-| 40–55m | mostly saving | Research allocation, larger User/Training goals, visible company infrastructure art |
+| 15–40m | sparse tier changes | Server/GPU progression, Model goals, first event at ~8m, basic Allocation in Run 1 |
+| 40–55m | mostly saving | larger User/Training goals, visible company infrastructure art |
 | 55–75m | invisible eligibility blockers | always-visible five-part Cycle checklist, ETA, and prominent ready CTA |
 
 ## Progression Goals and retention Missions
 
-The first-run catalogue now includes first Calculator, first Compute, first Training, first Model Point, 1K/10K Users, three Marketing campaigns, 1K Compute/sec, six Trainings, Model Level 10, Research unlocked, and first Research. The existing long-term hardware, user, revenue, compute, training, Marketing, Research, Patent, Cycle, and Technology tracks follow them.
+The first-run catalogue now includes first Calculator, first Compute, first Training, first Model Point, 1K/10K Users, three Marketing campaigns, 1K Compute/sec, six Trainings, Model Level 10, 100K Users, and ten Marketing campaigns. The existing long-term hardware, user, revenue, compute, training, Marketing, Research, Patent, Cycle, and Technology tracks follow them.
 
 Daily Missions draw from Credits, Compute, Hardware, Training, Model improvements, Users, Research, Items, and exploration. Weekly Missions cover revenue, Model levels, Items, Development Cycles, and Patents. Monthly Missions cover sustained revenue, Training programs, INT, Model eras, Hardware eras, and rare Items. Locked mechanics are filtered and mission Credits remain capped supplemental income; Gems remain the headline reward. Login rewards continue to use one UTC calendar date and cannot be advanced by reloads.
 
@@ -55,8 +55,8 @@ Aggressive Human-like simulation currently remains materially more conservative 
 | 30 | 3 | 5 | 1,095 | 266 | 491 | 7 | No | No | 0 | 225s |
 | 45 | 3 | 6 | 1,652 | 401 | 1,074 | 8 | No | No | 0 | 300s |
 | 60 | 3 | 7 | 2,007 | 487 | 1,657 | 9 | No | No | 0 | 360s |
-| 75 | 4 | 8 | 6,404 | 1,555 | 6,961 | 10 | Yes | No | 0 | 375s |
-| 120 | 4 | 10 | 18,297 | 4,444 | 21,901 | 12 | Yes | No | 0 | 514s |
+| 75 | 4 | 8 | 6,404 | 1,555 | 6,961 | 10 | No | No | 0 | 375s |
+| 120 | 4 | 10 | 18,297 | 4,444 | 21,901 | 12 | No | No | 0 | 514s |
 
 The supplied human state, not this lagging agent, is the primary pacing anchor: it now reaches eligibility at the intended 60–75 minute boundary. Remaining work is to make the simulator reproduce human bulk-buy, allocation, and saving behavior before using it for further economy tuning.
 

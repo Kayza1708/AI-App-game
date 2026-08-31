@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
+import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { activateGemBoost, RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -60,6 +60,7 @@ export class Application {
     this.#started = true;
     const save = this.#saveSystem.load();
     if (save) this.#store.replace(save, 'load');
+    this.#syncHashNavigation();
     const requestedBalanceRun=new URLSearchParams(globalThis.location?.search??'').get('balanceRun');if(requestedBalanceRun)this.#store.update((state)=>({...state,balanceRun:{id:requestedBalanceRun,startedAt:Date.now(),natural:true}}),'balance-run-start');
     if (save) this.#store.update((state) => reconcileOffline(state), 'offline-progress');
     this.#store.update((state) => ensureMissions(state), 'mission-period');
@@ -83,6 +84,7 @@ export class Application {
     this.#gameLoop.start();
     this.#saveSystem.startAutosave();
     window.addEventListener('beforeunload', this.#handleUnload);
+    window.addEventListener('hashchange', this.#handleHashChange);
     document.addEventListener('visibilitychange', this.#handleVisibility);
   }
 
@@ -99,6 +101,7 @@ export class Application {
     this.#unsubscribers = [];
     this.#eventBus.clear();
     window.removeEventListener('beforeunload', this.#handleUnload);
+    window.removeEventListener('hashchange', this.#handleHashChange);
     document.removeEventListener('visibilitychange', this.#handleVisibility);
   }
 
@@ -136,6 +139,7 @@ export class Application {
       this.#eventBus.on('tech:buy', (nodeId) => this.#store.update((state) => {const eligibility=technologyPurchaseEligibility(state,nodeId),next=purchaseTechnology(state,nodeId),succeeded=next!==state;return{...next,ui:{...next.ui,selectedTechnologyId:nodeId,lastTechInteraction:{selectedNodeId:nodeId,availableINT:state.meta.intelligence,cost:eligibility.node?.cost??null,prerequisitesMet:eligibility.prerequisitesMet,affordable:eligibility.affordable,purchaseHandlerReached:true,purchaseSucceeded:succeeded,failureReason:succeeded?null:eligibility.failureReason}}}}, 'tech')),
       this.#eventBus.on('cycle:start', () => this.#store.update(startDevelopmentCycle, 'development-cycle')),
       this.#eventBus.on('breakthrough:start', () => this.#store.update(startBreakthrough, 'breakthrough')),
+      this.#eventBus.on('world:fallback', () => this.#store.update(acceptWorldEventConsequences, 'world-event')),
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
       this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => this.#rewardedBoosts.activate(state, reward), 'rewarded-ad')),
@@ -171,6 +175,8 @@ export class Application {
   }
 
   #handleUnload = () => this.stop();
+  #handleHashChange = () => this.#syncHashNavigation();
+  #syncHashNavigation() { const viewId=globalThis.location?.hash?.slice(1);if(!viewId||this.#store.getState().ui.activeView===viewId)return;this.#store.update((state)=>({...state,ui:{...state.ui,activeView:viewId,sidebarOpen:false}}),'navigation'); }
   #handleVisibility = () => { if(document.hidden){this.#gameLoop.stop();this.#saveSystem.save();this.#telemetryCall(()=>this.#telemetry?.pause(this.#store.getState()));return;}const before=this.#store.getState();this.#store.update((state)=>reconcileOffline(state),'offline-progress');const after=this.#store.getState();if(after!==before&&after.offline.results?.effectiveDurationMs)this.#telemetryCall(()=>this.#telemetry?.record({category:'retention',type:'offline-progress-applied',source:'offline',label:'Background progress applied',meaningful:true,metadata:after.offline.results},after));this.#telemetryCall(()=>this.#telemetry?.resume(after));this.#gameLoop.start(); };
 
   #telemetryCall(callback) {

@@ -32,6 +32,7 @@ export const BALANCE = Object.freeze({
     gems:Object.freeze({daily:2,weekly:7,monthly:24}),
     repeatableCreditWarningShare:.25,
   }),
+  research: Object.freeze({ upgradeBaseCost:25_000, upgradeLevelGrowth:2.6, upgradeFamilyGrowth:2.4 }),
   rewardedAds:Object.freeze({dailyGemClaims:2,gemReward:2}),
   offline: Object.freeze({ capMs: 8 * 60 * 60 * 1000, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
   progressionTargets: Object.freeze({ firstCalculator:[10,30], firstHardwareUpgrade:[60,180], firstModelLevel:[60,240], firstDevelopmentCycle:[3600,5400], firstItem:[1800,5400], firstPatentResearch:1500, firstBreakthrough:129_600 }),
@@ -81,7 +82,7 @@ export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) 
 export function featureUnlocked(state, id) {
   if (['core', 'modelSkills', 'marketing', 'missions'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
-  if (id === 'allocation') return (state.meta.cycles ?? 0) > 0 || isResearchUnlocked(state) || state.meta.techNodes.includes('system-allocation');
+  if (id === 'allocation') return (state.meta.cycles ?? 0) > 0 || (state.model?.level ?? 1) >= 4 || (state.hardware?.workstation ?? 0) > 0 || state.meta.techNodes.includes('system-allocation');
   if (id === 'research') return isResearchUnlocked(state);
   if (TECHNOLOGY_NODES.some((node) => node.unlockFeature === id && state.meta.techNodes.includes(node.id))) return true;
   const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
@@ -91,9 +92,7 @@ export function isResearchUnlocked(state) {
   const purchased = state?.meta?.techNodes ?? [];
   // Current games purchase research-1. system-research is retained solely so
   // pre-v19 permanent unlocks remain valid after loading.
-  // GPU-scale infrastructure exposes Research as a first-run mechanic;
-  // permanent Technology preserves it on later runs.
-  return (state?.hardware?.gpuServer ?? 0) > 0 || purchased.includes(RESEARCH_UNLOCK_TECH_ID) || purchased.includes('system-research');
+  return (state?.meta?.cycles ?? 0) >= 1 || state?.meta?.featureUnlockTimes?.research !== undefined || (state?.resources?.research ?? 0) > 0 || (state?.upgrades??[]).some(id=>id.startsWith('research-')) || purchased.includes(RESEARCH_UNLOCK_TECH_ID) || purchased.includes('system-research');
 }
 export function viewUnlocked(state, view) {
   if (view === 'market') return featureUnlocked(state,'marketing');

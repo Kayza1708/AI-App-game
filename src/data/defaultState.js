@@ -2,7 +2,7 @@ import { BALANCE } from '../config/balance.js';
 import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
 export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 21;
+export const SAVE_VERSION = 22;
 export const GAME_VERSION = '0.19.1';
 
 export const HARDWARE_CATALOG = [
@@ -93,7 +93,7 @@ const progressionUpgrades = (items, category, baseCost, multiplier) => items.map
 export const UPGRADES = [
   ...progressionUpgrades(COMPANY_UPGRADES, 'company', 80, 2.4),
   ...progressionUpgrades(MODEL_UPGRADES, 'model', 140, 3),
-  ...progressionUpgrades(RESEARCH_UPGRADES, 'research', 12, 2.1),
+  ...progressionUpgrades(RESEARCH_UPGRADES, 'research', BALANCE.research.upgradeBaseCost, BALANCE.research.upgradeFamilyGrowth),
 ];
 
 const objective = (id, category, text, metric, target, reward, order) => ({ id, category, text, metric, type: metric, target, reward, order });
@@ -122,8 +122,8 @@ export const OBJECTIVES = [
   objective('users-10000','MARKET','Reach 10,000 active Users','users',10_000,2_000,7),
   objective('training-6','MODEL','Complete 6 Trainings','trainings',6,3_000,8),
   objective('model-level-10','MODEL','Reach Model Level 10','level',10,5_000,9),
-  objective('research-unlocked','RESEARCH','Unlock Research','researchUnlocked',1,8_000,10),
-  objective('first-research','RESEARCH','Generate your first Research','research',1,10_000,11),
+  objective('users-100000','MARKET','Reach 100,000 active Users','users',100_000,8_000,10),
+  objective('marketing-10','MARKET','Launch 10 Marketing campaigns','marketing',10,10_000,11),
   objective('first-keystone','TECHNOLOGY','Purchase your first build-defining Keystone','keystones',1,2_500,20),
   objective('first-tech-model','MODEL','Unlock a Model through Technology','models',2,1_500,21),
   objective('branch-investment-10','TECHNOLOGY','Invest 10 INT in one Technology branch','maxBranchInvestment',10,3_000,22),
@@ -236,7 +236,7 @@ export function createDefaultState() {
     model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, trainingSession: null, lastTrainingResult: null, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, availablePoints: 0, trainings: 0, trainingCount: 0, totalPointsEarned: 0, totalPointsSpent: 0, skills: {} } } },
     allocation: { training: 50, inference: 50, research: 0, data: 0, agents: 0 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
-    upgrades: [], objectives: {},
+    upgrades: [], researchUpgradeLevels: {}, objectives: {},
     meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, breakthroughs: 0, breakthroughCurrency: 0, cycleHistory: [], featureUnlockTimes: { core: 0 }, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
     world: { activeEvent: null, nextEventMs: BALANCE.events.firstDelayMs, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
