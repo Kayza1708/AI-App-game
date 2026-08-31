@@ -49,6 +49,7 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
     ...economy,
     currentIntelligence: economy.intelligence, gems: economy.gems,
     lifetimeCredits: state.statistics.totalCreditsEarned,
+    creditSources: { ...state.statistics.creditSources },
     lifetimeCreditsSpent: state.statistics.totalCreditsSpent,
     lifetimeComputeProduced: state.statistics.totalComputeProduced,
     lifetimeComputeConsumed: state.statistics.totalComputeConsumed,

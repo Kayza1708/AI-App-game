@@ -10,12 +10,11 @@ export const NAV_ITEMS = [
   { id: 'allocation', label: 'Allocation', eyebrow: 'Compute' },
   { id: 'research', label: 'Research', eyebrow: 'Science' },
   { id: 'market', label: 'Market', eyebrow: 'Economy' },
-  { id: 'objectives', label: 'Objectives', eyebrow: 'Missions' },
+  { id: 'objectives', label: 'Progression', eyebrow: 'Goals & Missions' },
   { id: 'strategy', label: 'Tech Tree', eyebrow: 'Intelligence' },
   { id: 'achievements', label: 'Achievements', eyebrow: 'Legacy' },
   { id: 'patents', label: 'Patents', eyebrow: 'Permanent' },
   { id: 'gemshop', label: 'Gem Shop', eyebrow: 'Convenience' },
-  { id: 'missions', label: 'Missions', eyebrow: 'Daily' },
 ];
 export const DEVELOPER_NAV_ITEM = { id: 'developer', label: 'Developer Analytics', eyebrow: 'Internal' };
 export const RUNTIME_NAV_ITEM = { id: 'runtime', label: 'Runtime Inspector', eyebrow: 'Stability' };

@@ -2,8 +2,8 @@ import { BALANCE } from '../config/balance.js';
 import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
 export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 20;
-export const GAME_VERSION = '0.19.0';
+export const SAVE_VERSION = 21;
+export const GAME_VERSION = '0.19.1';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -250,7 +250,7 @@ export function createDefaultState() {
     balanceRun: { id: null, startedAt: null, natural: true },
     tutorial: { step: 0, completed: false, acknowledged: [] },
     settings: { numberNotation: 'compact', sound: true },
-    statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
+    statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, creditSources: { 'user-revenue':0, objective:0, 'daily-mission':0, 'weekly-mission':0, 'monthly-mission':0, event:0, offline:0, other:0 }, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
     run: { number: 1, startedAtSessionMs: 0, creditsEarned: 0, computeProduced: 0 },
     session: { elapsedMs: 0, lastSavedAt: null },
     ui: { activeView: 'dashboard', sidebarOpen: false, toast: null, selectedTechnologyId: TECH_NODES[0]?.id ?? null, lastTechInteraction: null },

@@ -97,7 +97,7 @@ export class SaveSystem {
       offline: { ...defaults.offline, ...readSaveObject(save.offline), capMs: Number.isFinite(save.offline?.capMs) ? Math.max(0, save.offline.capMs) : defaults.offline.capMs, results: readSaveObject(save.offline?.results) },
       rewards: { ...defaults.rewards, ...readSaveObject(save.rewards), queue: readSaveArray(save.rewards?.queue), history: readSaveArray(save.rewards?.history) },
       balanceRun: { ...defaults.balanceRun, ...readSaveObject(save.balanceRun) },
-      settings: { ...defaults.settings, ...readSaveObject(save.settings) }, statistics: readSaveNumericRecord(defaults.statistics, save.statistics),
+      settings: { ...defaults.settings, ...readSaveObject(save.settings) }, statistics: { ...readSaveNumericRecord(defaults.statistics, save.statistics), creditSources:normalizeCreditSources(defaults.statistics.creditSources,save.statistics?.creditSources,save.statistics?.totalCreditsEarned) },
       run: readSaveNumericRecord(defaults.run, save.run),
       session: { ...defaults.session, ...readSaveObject(save.session) }, ui: { ...defaults.ui, ...readSaveObject(save.ui), toast: readSaveObject(save.ui?.toast).message ? save.ui.toast : null },
     });
@@ -112,6 +112,7 @@ function normalizeModelPointAccounting(value) { const skills=Object.fromEntries(
 function normalizeSavedAllocation(defaults, value) { const allocation = readSaveNumericRecord(defaults, value); const total = Object.values(allocation).reduce((sum, amount) => sum + amount, 0); if (!total) return defaults; const entries = Object.entries(allocation); const normalized = Object.fromEntries(entries.map(([key, amount]) => [key, Math.round(amount / total * 100)])); normalized[entries.at(-1)[0]] += 100 - Object.values(normalized).reduce((sum, amount) => sum + amount, 0); return normalized; }
 function normalizeSavedAllocationForFeatures(defaults,value,techNodes){const allocation=normalizeSavedAllocation(defaults,value);if(isResearchUnlocked({meta:{techNodes}}))return allocation;return{...allocation,inference:allocation.inference+allocation.research,research:0}}
 function normalizeGemEconomy(defaults,value,balance){const source=readSaveObject(value),spent=Math.max(0,source.spent??0),recorded=Math.max(0,source.earned??0),earned=Math.max(recorded,spent+Math.max(0,balance));const history=readSaveArray(source.history);return{...defaults,...source,earned,spent,history:earned>recorded?[...history,{type:'earned',amount:earned-recorded,source:'migration',metadata:{version:SAVE_VERSION},at:Date.now()}].slice(-250):history.slice(-250)}}
+function normalizeCreditSources(defaults,value,total){const sources=readSaveNumericRecord(defaults,value),known=Object.values(sources).reduce((sum,amount)=>sum+amount,0),missing=Math.max(0,(Number(total)||0)-known);return{...sources,other:sources.other+missing}}
 
 function migrateLegacyHardwareUpgradeTracks(defaults, save) {
   const explicit = readSaveObject(save.hardwareUpgradeLevels);
