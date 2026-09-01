@@ -244,14 +244,34 @@ export function grantCredits(state, amount, source='other') { return { ...state,
 export function buyHardware(state, itemId) {
   return buyHardwareBulk(state,itemId,1,'x1');
 }
+export function hardwarePurchaseEligibility(state,itemId,mode=1){
+  const item=HARDWARE_CATALOG.find(({id})=>id===itemId),isMax=mode==='max';
+  if(!item)return{isUnlocked:false,prerequisiteMet:false,quantity:0,totalCost:0,canAfford:false,canPurchase:false,disabledReason:'INVALID_HARDWARE'};
+  const prerequisite=item.tier>0?HARDWARE_CATALOG[item.tier-1]:null;
+  const prerequisiteMet=!prerequisite||(state.hardware[prerequisite.id]??0)>0;
+  const isUnlocked=prerequisiteMet;
+  const requestedQuantity=isMax?Infinity:Math.max(1,Math.floor(Number(mode)||1));
+  let quantity=0,totalCost=0,probe=state;
+  if(isUnlocked){
+    while(quantity<requestedQuantity&&quantity<100_000){
+      const cost=effectiveHardwareCost(probe,item);
+      if(isMax&&totalCost+cost>state.resources.credits)break;
+      totalCost+=cost;quantity+=1;
+      probe={...probe,hardware:{...probe.hardware,[itemId]:(probe.hardware[itemId]??0)+1}};
+    }
+    // A zero-quantity MAX quote still exposes the canonical next-unit price.
+    if(isMax&&quantity===0)totalCost=effectiveHardwareCost(state,item);
+  }
+  const canAfford=isUnlocked&&(isMax?quantity>0:state.resources.credits>=totalCost);
+  const canPurchase=isUnlocked&&quantity>0&&canAfford;
+  return{isUnlocked,prerequisiteMet,prerequisiteId:prerequisite?.id??null,prerequisiteName:prerequisite?.name??null,quantity,totalCost,canAfford,canPurchase,disabledReason:!prerequisiteMet?'PREREQUISITE':canPurchase?null:'INSUFFICIENT_CREDITS'};
+}
 export function hardwareBulkCost(state,itemId,mode=1){
-  const item=HARDWARE_CATALOG.find(({id})=>id===itemId);if(!item||!isHardwareUnlocked(state,item))return{quantity:0,totalCost:0};
-  const requested=mode==='max'?Infinity:Math.max(1,Math.floor(Number(mode)||1));let quantity=0,totalCost=0,probe=state;
-  while(quantity<requested&&quantity<100_000){const cost=effectiveHardwareCost(probe,item);if(totalCost+cost>state.resources.credits)break;totalCost+=cost;quantity+=1;probe={...probe,hardware:{...probe.hardware,[itemId]:probe.hardware[itemId]+1}}}
+  const {quantity,totalCost}=hardwarePurchaseEligibility(state,itemId,mode);
   return{quantity,totalCost};
 }
 export function buyHardwareBulk(state,itemId,mode=1,purchaseMode=String(mode)){
-  const item=HARDWARE_CATALOG.find(({id})=>id===itemId),quote=hardwareBulkCost(state,itemId,mode);if(!item||quote.quantity<=0)return state;
+  const item=HARDWARE_CATALOG.find(({id})=>id===itemId),quote=hardwarePurchaseEligibility(state,itemId,mode);if(!item||!quote.canPurchase)return state;
   const ownedBefore=state.hardware[itemId],creditsBefore=state.resources.credits,paid=spendCredits(state,quote.totalCost),ownedAfter=ownedBefore+quote.quantity;
   return feedback({...paid,hardware:{...paid.hardware,[itemId]:ownedAfter},ui:{...paid.ui,lastHardwarePurchase:{hardwareId:itemId,quantity:quote.quantity,totalCost:quote.totalCost,creditsBefore,creditsAfter:creditsBefore-quote.totalCost,ownedBefore,ownedAfter,purchaseMode}}},`${item.name} x${quote.quantity} online · +${item.computePerSecond*quote.quantity} Compute/s`);
 }
