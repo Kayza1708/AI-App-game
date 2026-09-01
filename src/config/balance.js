@@ -42,7 +42,7 @@ export const FEATURE_UNLOCKS = Object.freeze([
   { id: 'core', name: 'Core Company', int: 0, views: ['dashboard', 'hardware', 'model', 'objectives'], description: 'Credits, Compute, TinyChat, Training, Model Development, and Objectives.' },
   { id: 'development', name: 'Development Cycles', int: 1, views: ['strategy'], description: 'Spend permanent Intelligence and plan the next run.' },
   { id: 'marketing', name: 'Marketing Division', int: 4, views: ['company', 'market'], description: 'Demand, pricing, Marketing, Reputation, and Adoption.' },
-  { id: 'allocation', name: 'Compute Allocation', int: 2, views: ['allocation'], description: 'Research Compute and strategic allocation.' },
+  { id: 'allocation', name: 'Compute Allocation', int: Infinity, views: ['allocation'], description: 'Split Compute between Training and Inference; Research joins after the first Development Cycle.' },
   { id: 'research', name: 'Research Division', int: Infinity, views: ['research'], description: 'Convert allocated Compute into permanent scientific upgrades.' },
   { id: 'items', name: 'Model Equipment', int: 15, views: ['inventory'], description: 'Collect equipment and create specialized Model builds.' },
   { id: 'missions', name: 'Mission Network', int: 4, views: ['objectives'], description: 'Daily goals and long-term account challenges.' },
@@ -78,7 +78,7 @@ export const MODEL_SKILL_UNLOCKS = Object.freeze({ quality: 0, efficiency: 0, po
 
 export function curveValue(base, growth, level) { return base * growth ** Math.max(0, level); }
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
-export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) => item.int > (state.meta.totalIntelligence ?? 0)).sort((a, b) => a.int - b.int)[0] ?? null; }
+export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) => Number.isFinite(item.int) && !featureUnlocked(state,item.id)).sort((a, b) => a.int - b.int)[0] ?? null; }
 export function featureUnlocked(state, id) {
   if (['core', 'modelSkills', 'marketing', 'missions'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;

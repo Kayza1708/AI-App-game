@@ -168,9 +168,12 @@ export const TECHNOLOGY_BRANCHES = Object.freeze({
 
 const RANK_COST_MULTIPLIERS=[1,3,12,50,250,2_500,1_000_000];
 const TYPE_COST_MULTIPLIER={minor:1,major:1.35,system:1.5,model:2,keystone:4,era:8};
+// A first Development Cycle awards one INT. Each early specialization must
+// therefore offer a real, mutually exclusive first purchase.
+const FIRST_INT_BRANCHES=new Set(['compute','training','hardware','model','consumer','efficiency','market']);
 export const TECHNOLOGY_NODES = Object.freeze(Object.entries(TECHNOLOGY_BRANCHES).flatMap(([branch,config],branchIndex)=>config.nodes.map((node,index)=>{
   const id=`${branch}-${index+1}`,type=node.type==='major'&&index===1?'minor':node.type;
-  const cost=node.cost??Math.ceil(config.baseCost*RANK_COST_MULTIPLIERS[index]*(TYPE_COST_MULTIPLIER[type]??1));
+  const cost=node.cost??(index===0&&FIRST_INT_BRANCHES.has(branch)?1:Math.ceil(config.baseCost*RANK_COST_MULTIPLIERS[index]*(TYPE_COST_MULTIPLIER[type]??1)));
   return Object.freeze({id,branch,branchLabel:config.label,icon:config.icon,color:config.color,name:node.name,type,rank:index+1,era:TECHNOLOGY_ERAS[Math.min(TECHNOLOGY_ERAS.length-1,Math.floor((branchIndex+index)/3))],cost,requires:index?`${branch}-${index}`:null,effect:node.effect,value:node.value,effects:Object.freeze({[node.effect]:node.value,...(node.effects??{})}),tradeoff:node.tradeoff??null,penalty:node.penalty??0,tradeoffs:Object.freeze(node.tradeoff?{[node.tradeoff]:node.penalty}:{}),description:node.description,mechanic:node.mechanic??null,synergy:node.synergy??null,unlock:node.unlock??null,unlockModel:node.unlockModel??null,unlockFeature:node.unlockFeature??null,tags:Object.freeze([branch,node.type,node.effect]),position:Object.freeze({x:80+index*230,y:80+branchIndex*145}),visibility:'always'});
 })));
 
