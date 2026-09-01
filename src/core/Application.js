@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, skipTutorial, buyGemShopItem, buyHardware, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
+import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, skipTutorial, buyGemShopItem, buyHardware, buyHardwareBulk, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { activateGemBoost, RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -123,7 +123,7 @@ export class Application {
           ui: { ...state.ui, sidebarOpen: !state.ui.sidebarOpen },
         }), 'navigation');
       }),
-      this.#eventBus.on('hardware:buy', (itemId) => this.#store.update((state) => buyHardware(state, itemId), 'hardware')),
+      this.#eventBus.on('hardware:buy', (payload) => this.#store.update((state) => typeof payload==='string'?buyHardware(state,payload):buyHardwareBulk(state,payload.itemId,payload.mode,payload.mode==='max'?'MAX':`x${payload.mode}`), 'hardware')),
       this.#eventBus.on('model:train', () => this.#store.update(trainModel, 'training')),
       this.#eventBus.on('model:finish-training', () => this.#store.update(finishTrainingWithGems, 'training-gem-finish')),
       this.#eventBus.on('model:double-points', () => this.#store.update(buyTrainingDoublePoints, 'training-gem-double')),

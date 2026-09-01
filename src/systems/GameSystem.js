@@ -5,6 +5,7 @@ import { ensureMissions } from './MissionSystem.js';
 import { ensureGameState } from '../core/GameStateContract.js';
 import { branchInvestment, hasTechnologyMechanic, purchasedTechnologyNodes, technologyEffect } from '../data/technologyCatalog.js';
 import { earnGems, spendGems } from './GemSystem.js';
+import { enqueueReward } from './RewardQueue.js';
 
 
 
@@ -229,7 +230,7 @@ export function tickGame(state, deltaMs) {
     ui: { ...state.ui, patentDiscovery: patentDiscovery ?? state.ui.patentDiscovery },
   };
   if(patentDiscovery&&discoveredPatents.length%10===0)next=earnGems(next,1,'milestone',{kind:'patent',count:discoveredPatents.length});
-  if (completedTraining) {const points=lastTrainingResult?.upgradePointsGained??1;next = { ...next, ui: { ...next.ui, toast: { message: `Training complete · Level ${level} · +${points} Model Point${points===1?'':'s'} · ${upgradePoints} available`, id: Date.now() } } };}
+  if(completedTraining&&level%5===0){next=earnGems(next,1,'milestone',{kind:'model-level',level});next=enqueueReward(next,{priority:'normal',category:'milestone',title:`MODEL LEVEL ${level}`,lines:[{key:'Gem',value:1}],metadata:{modelId:state.model.activeId,level}})}if (completedTraining) {const points=lastTrainingResult?.upgradePointsGained??1;next = { ...next, ui: { ...next.ui, toast: { message: `Training complete · Level ${level} · +${points} Model Point${points===1?'':'s'} · ${upgradePoints} available`, id: Date.now() } } };}
   next = applyAutomation(awardAchievements(next));
   if (Math.floor(state.statistics.playTimeMs / 60_000) !== Math.floor(next.statistics.playTimeMs / 60_000)) next = ensureMissions(next);
   return reconcileTutorial(next);
@@ -241,12 +242,18 @@ function addCreditSource(sources,source,amount){return{...sources,[source]:(sour
 export function grantCredits(state, amount, source='other') { return { ...state, resources: { ...state.resources, credits: state.resources.credits + amount }, statistics: { ...state.statistics, totalCreditsEarned: state.statistics.totalCreditsEarned + amount, creditSources:addCreditSource(state.statistics.creditSources,source,amount) }, run: { ...state.run, creditsEarned: state.run.creditsEarned + amount } }; }
 
 export function buyHardware(state, itemId) {
-  const item = HARDWARE_CATALOG.find(({ id }) => id === itemId);
-  if (!item || !isHardwareUnlocked(state, item)) return state;
-  const cost = effectiveHardwareCost(state, item);
-  if (state.resources.credits < cost) return state;
-  let next = spendCredits(state, cost); next = { ...next, hardware: { ...next.hardware, [itemId]: next.hardware[itemId] + 1 } };
-  return feedback(next, `${item.name} online · +${item.computePerSecond} Compute/s`);
+  return buyHardwareBulk(state,itemId,1,'x1');
+}
+export function hardwareBulkCost(state,itemId,mode=1){
+  const item=HARDWARE_CATALOG.find(({id})=>id===itemId);if(!item||!isHardwareUnlocked(state,item))return{quantity:0,totalCost:0};
+  const requested=mode==='max'?Infinity:Math.max(1,Math.floor(Number(mode)||1));let quantity=0,totalCost=0,probe=state;
+  while(quantity<requested&&quantity<100_000){const cost=effectiveHardwareCost(probe,item);if(totalCost+cost>state.resources.credits)break;totalCost+=cost;quantity+=1;probe={...probe,hardware:{...probe.hardware,[itemId]:probe.hardware[itemId]+1}}}
+  return{quantity,totalCost};
+}
+export function buyHardwareBulk(state,itemId,mode=1,purchaseMode=String(mode)){
+  const item=HARDWARE_CATALOG.find(({id})=>id===itemId),quote=hardwareBulkCost(state,itemId,mode);if(!item||quote.quantity<=0)return state;
+  const ownedBefore=state.hardware[itemId],creditsBefore=state.resources.credits,paid=spendCredits(state,quote.totalCost),ownedAfter=ownedBefore+quote.quantity;
+  return feedback({...paid,hardware:{...paid.hardware,[itemId]:ownedAfter},ui:{...paid.ui,lastHardwarePurchase:{hardwareId:itemId,quantity:quote.quantity,totalCost:quote.totalCost,creditsBefore,creditsAfter:creditsBefore-quote.totalCost,ownedBefore,ownedAfter,purchaseMode}}},`${item.name} x${quote.quantity} online · +${item.computePerSecond*quote.quantity} Compute/s`);
 }
 
 export function optimizeCode(state) {
@@ -330,7 +337,7 @@ export function objectiveProgress(state, objective) {
   const value = metric.startsWith('hardware:') ? state.hardware[metric.slice(9)] ?? 0 : {
     hardware: state.hardware.calculator, level: Math.max(state.model.level, ...progress.map((item) => item.level ?? 1)), users: state.resources.users,
     gamingPc: state.hardware.gamingPc, workstation: state.hardware.workstation, computeRate: computePerSecond(state),
-    totalCompute: state.statistics.totalComputeProduced, creditsEarned: state.statistics.totalCreditsEarned,
+    totalCompute: state.statistics.totalComputeProduced, creditsEarned: state.statistics.totalCreditsEarned,totalHardware:Object.values(state.hardware).reduce((sum,value)=>sum+value,0),creditsRate:marketMetrics(state).revenue,
     trainings: progress.reduce((sum, item) => sum + (item.trainings ?? 0), 0),
     pointsSpent: progress.reduce((sum, item) => sum + (item.totalPointsSpent ?? 0), 0),
     marketing: state.market.marketing, research: state.resources.research, researchUnlocked:isResearchUnlocked(state)?1:0, patents: state.patents.discovered.length,
@@ -375,13 +382,13 @@ function applyAutomation(state) {
 
 export function developmentCycleRequirements(state){const hardwareTier=HARDWARE_CATALOG.reduce((highest,item)=>state.hardware[item.id]>0?Math.max(highest,item.tier):highest,0),modelLevel=Math.max(state.model.level??1,...Object.values(state.model.progress??{}).map(progress=>progress.level??1)),objectives=Object.values(state.objectives??{}).filter(Boolean).length;const values={modelLevel,hardwareTier,runCompute:state.run.computeProduced,runCredits:state.run.creditsEarned,objectives},targets={modelLevel:BALANCE.intelligence.minimumModelLevel,hardwareTier:BALANCE.intelligence.minimumHardwareTier,runCompute:BALANCE.intelligence.computeScale,runCredits:BALANCE.intelligence.creditScale,objectives:BALANCE.intelligence.minimumObjectives},met=Object.fromEntries(Object.keys(targets).map(key=>[key,values[key]>=targets[key]]));return{values,targets,met,ready:Object.values(met).every(Boolean)}}
 export function cycleIntelligence(state) { const requirements=developmentCycleRequirements(state);if(!requirements.ready)return 0;const{hardwareTier:tier,modelLevel:highestModel}=requirements.values,computeOrders=Math.log10(Math.max(1,state.run.computeProduced/BALANCE.intelligence.computeScale)),creditOrders=Math.log10(Math.max(1,state.run.creditsEarned/BALANCE.intelligence.creditScale)),milestones=Math.max(0,tier-BALANCE.intelligence.minimumHardwareTier)*.3+Math.max(0,highestModel-BALANCE.intelligence.minimumModelLevel)*.08,technology=Math.max(.25,1+strategicBonus(state,'intelligenceGain')*.25);return Math.max(1,Math.floor((1+computeOrders*.55+creditOrders*.3+milestones)*technology*BALANCE.intelligence.breakthroughMultiplier**(state.meta.breakthroughs??0))); }
-export function developmentCyclePreview(state){const gain=cycleIntelligence(state),before=state.meta.totalIntelligence??0,after=before+gain;return{gain,lifetimeBefore:before,lifetimeAfter:after,incomeBonusBefore:before*.1,incomeBonusAfter:after*.1,newSystems:(state.meta.cycles??0)===0?['Permanent Technology','Research Division']:[]};}
+export function developmentCyclePreview(state){const gain=cycleIntelligence(state),before=state.meta.totalIntelligence??0,after=before+gain;return{gain,lifetimeBefore:before,lifetimeAfter:after,incomeBonusBefore:before*.1,incomeBonusAfter:after*.1,newSystems:(state.meta.cycles??0)===0?['Permanent Technology','Research Technology Path']:[]};}
 export function canDevelop(state) { return cycleIntelligence(state) >= BALANCE.intelligence.cycleRequirement; }
 export function startDevelopmentCycle(state) {
   if (!canDevelop(state)) return state;
   const intelligence = cycleIntelligence(state); const fresh = createDefaultState();
   const intelligenceMultiplier = 1 + strategicBonus(state, 'intelligenceGain') + deployedIdentityBonus(state,'intelligence');
-  const unlocked=state.meta.unlockedModels??state.model.owned;const progress=Object.fromEntries(unlocked.map(id=>[id,{level:1,xp:0,upgradePoints:0,availablePoints:0,trainings:0,trainingCount:0,totalPointsEarned:0,totalPointsSpent:0,skills:{}}]));const tinyProgress=progress.tinyChat??fresh.model.progress.tinyChat;const gained=Math.floor(intelligence*intelligenceMultiplier),total=state.meta.totalIntelligence+gained;const featureUnlockTimes={...(state.meta.featureUnlockTimes??{})};for(const feature of FEATURE_UNLOCKS)if(feature.int<=total&&featureUnlockTimes[feature.id]===undefined)featureUnlockTimes[feature.id]=state.statistics.playTimeMs;if((state.meta.cycles??0)===0){featureUnlockTimes.research??=state.statistics.playTimeMs;featureUnlockTimes.allocation??=state.statistics.playTimeMs;}return feedback({ ...fresh, resources: { ...fresh.resources, gems: state.resources.gems }, objectives: state.objectives, researchUpgradeLevels:state.researchUpgradeLevels, upgrades:[...new Set([...fresh.upgrades,...state.upgrades.filter(id=>id.startsWith('research-'))])], settings: state.settings, session: { ...fresh.session, elapsedMs: state.session.elapsedMs }, run: { ...fresh.run, number: (state.run.number??state.meta.cycles+1)+1, startedAtSessionMs: state.session.elapsedMs }, statistics: state.statistics, meta: { ...state.meta, unlockedModels:unlocked, intelligence: state.meta.intelligence + gained, totalIntelligence: total, cycles: state.meta.cycles + 1, featureUnlockTimes, cycleHistory:[...(state.meta.cycleHistory??[]),{at:state.statistics.playTimeMs,duration:state.session.elapsedMs,compute:state.run.computeProduced,intelligence:gained}] }, model:{...fresh.model,level:tinyProgress.level,xp:tinyProgress.xp,upgradePoints:tinyProgress.upgradePoints,owned:unlocked,deployed:['tinyChat'],progress}, patents: state.patents, premium: state.premium, retention: state.retention, inventory:state.inventory, consumables:state.consumables, rewardCaches:state.rewardCaches, missions:state.missions, gemEconomy:state.gemEconomy, rewardedBoosts:state.rewardedBoosts, artifacts:state.artifacts, marketplace:state.marketplace, futureMeta:state.futureMeta, balanceRun:state.balanceRun, tutorial: state.tutorial }, `Development Cycle ${state.meta.cycles+1} complete · +${gained} INT · PERMANENT TECHNOLOGY + RESEARCH DIVISION UNLOCKED · Company restarted; permanent progress remains`);
+  const unlocked=state.meta.unlockedModels??state.model.owned;const progress=Object.fromEntries(unlocked.map(id=>[id,{level:1,xp:0,upgradePoints:0,availablePoints:0,trainings:0,trainingCount:0,totalPointsEarned:0,totalPointsSpent:0,skills:{}}]));const tinyProgress=progress.tinyChat??fresh.model.progress.tinyChat;const gained=Math.floor(intelligence*intelligenceMultiplier),total=state.meta.totalIntelligence+gained;const featureUnlockTimes={...(state.meta.featureUnlockTimes??{})};for(const feature of FEATURE_UNLOCKS)if(feature.int<=total&&featureUnlockTimes[feature.id]===undefined)featureUnlockTimes[feature.id]=state.statistics.playTimeMs;if((state.meta.cycles??0)===0)featureUnlockTimes.allocation??=state.statistics.playTimeMs;return feedback({ ...fresh, resources: { ...fresh.resources, gems: state.resources.gems }, objectives: state.objectives, researchUpgradeLevels:state.researchUpgradeLevels, upgrades:[...new Set([...fresh.upgrades,...state.upgrades.filter(id=>id.startsWith('research-'))])], settings: state.settings, session: { ...fresh.session, elapsedMs: state.session.elapsedMs }, run: { ...fresh.run, number: (state.run.number??state.meta.cycles+1)+1, startedAtSessionMs: state.session.elapsedMs }, statistics: state.statistics, meta: { ...state.meta, unlockedModels:unlocked, intelligence: state.meta.intelligence + gained, totalIntelligence: total, cycles: state.meta.cycles + 1, featureUnlockTimes, cycleHistory:[...(state.meta.cycleHistory??[]),{at:state.statistics.playTimeMs,duration:state.session.elapsedMs,compute:state.run.computeProduced,intelligence:gained}] }, model:{...fresh.model,level:tinyProgress.level,xp:tinyProgress.xp,upgradePoints:tinyProgress.upgradePoints,owned:unlocked,deployed:['tinyChat'],progress}, patents: state.patents, premium: state.premium, retention: state.retention, inventory:state.inventory, consumables:state.consumables, rewardCaches:state.rewardCaches, missions:state.missions, gemEconomy:state.gemEconomy, rewardedBoosts:state.rewardedBoosts, artifacts:state.artifacts, marketplace:state.marketplace, futureMeta:state.futureMeta, balanceRun:state.balanceRun, tutorial: state.tutorial }, `Development Cycle ${state.meta.cycles+1} complete · +${gained} INT · PERMANENT TECHNOLOGY UNLOCKED · RESEARCH PATH AVAILABLE · Company restarted; permanent progress remains`);
 }
 export function breakthroughReward(state){if(!canBreakthrough(state))return 0;return Math.max(1,Math.floor((state.statistics.totalComputeProduced/BALANCE.breakthrough.requiredCompute)**BALANCE.breakthrough.exponent));}
 export function canBreakthrough(state){return state.meta.totalIntelligence>=BALANCE.breakthrough.requiredLifetimeIntelligence&&state.statistics.totalComputeProduced>=BALANCE.breakthrough.requiredCompute;}

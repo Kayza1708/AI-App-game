@@ -1,5 +1,5 @@
 import { HARDWARE_CATALOG, MODEL_CATALOG, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES } from '../data/defaultState.js';
-import { BALANCE, FEATURE_UNLOCKS, nextFeatureUnlock } from '../config/balance.js';
+import { BALANCE, FEATURE_UNLOCKS, isResearchUnlocked, nextFeatureUnlock } from '../config/balance.js';
 import {
   canBuyUpgrade, canDevelop, computePerSecond, cycleIntelligence, economySnapshot, effectiveHardwareCost,
   effectiveModelStat, modelImprovementCost,
@@ -48,7 +48,7 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
     runSeconds: Math.max(0,(state.session.elapsedMs-(state.run.startedAtSessionMs??0))/1000),
     prestigeLevel: state.meta.cycles, breakthroughLevel: state.meta.breakthroughs ?? 0,
     ...economy,
-    currentIntelligence: economy.intelligence, gems: economy.gems,
+    currentIntelligence: economy.intelligence, gems: economy.gems, researchUnlocked: isResearchUnlocked(state),
     lifetimeCredits: state.statistics.totalCreditsEarned,
     creditSources: { ...state.statistics.creditSources },
     lifetimeCreditsSpent: state.statistics.totalCreditsSpent,

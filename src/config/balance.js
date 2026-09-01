@@ -90,9 +90,8 @@ export function featureUnlocked(state, id) {
 }
 export function isResearchUnlocked(state) {
   const purchased = state?.meta?.techNodes ?? [];
-  // Current games purchase research-1. system-research is retained solely so
-  // pre-v19 permanent unlocks remain valid after loading.
-  return (state?.meta?.cycles ?? 0) >= 1 || state?.meta?.featureUnlockTimes?.research !== undefined || (state?.resources?.research ?? 0) > 0 || (state?.upgrades??[]).some(id=>id.startsWith('research-')) || purchased.includes(RESEARCH_UNLOCK_TECH_ID) || purchased.includes('system-research');
+  const legacyEvidence=state?.meta?.featureUnlockTimes?.research!==undefined||(state?.resources?.research??0)>0||(state?.upgrades??[]).some(id=>id.startsWith('research-'))||purchased.includes('system-research');
+  return legacyEvidence||((state?.meta?.cycles??0)>=1&&purchased.includes(RESEARCH_UNLOCK_TECH_ID));
 }
 export function viewUnlocked(state, view) {
   if (view === 'market') return featureUnlocked(state,'marketing');
