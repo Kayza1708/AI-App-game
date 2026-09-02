@@ -256,7 +256,7 @@ export const GEM_SHOP_ITEMS = [
 export function createDefaultState() {
   return {
     version: SAVE_VERSION,
-    profile: { companyName: 'Singularity Labs', createdAt: Date.now(), localOwnerId: `local-${Date.now()}` },
+    profile: { companyName: 'Singularity Labs', createdAt: Date.now(), localOwnerId: `local-${Date.now()}`, playthroughId: `playthrough-${Date.now()}-${Math.floor(Math.random()*1e9)}` },
     resources: { credits: 45, compute: 0, users: 0, research: 0, gems: 0 },
     hardware: Object.fromEntries(HARDWARE_CATALOG.map(({ id }) => [id, 0])),
     model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, trainingSession: null, lastTrainingResult: null, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, availablePoints: 0, trainings: 0, trainingCount: 0, totalPointsEarned: 0, totalPointsSpent: 0, skills: {} } } },

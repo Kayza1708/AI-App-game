@@ -51,10 +51,10 @@ export const GEM_BOOSTS = Object.freeze([
 ]);
 
 export const GEM_CONVENIENCE = [
-  {id:'item-slot-3',name:'Third Model Item Slot',cost:40,effect:'itemSlot',value:1},
-  {id:'training-surge',name:'Training Surge',cost:5,effect:'training',value:.5,durationMs:1_800_000},
-  {id:'research-surge',name:'Research Surge',cost:5,effect:'research',value:.5,durationMs:1_800_000},
-  {id:'inventory-25',name:'Inventory Expansion',cost:15,effect:'inventoryCapacity',value:25},
+  {id:'item-slot-3',name:'Third Model Item Slot',cost:40,effect:'itemSlot',value:1,description:'Permanently unlock a third equipped item slot for every Model.'},
+  {id:'training-surge',name:'Training Surge',cost:5,effect:'training',value:.5,durationMs:1_800_000,description:'Increase Training speed by 50% for 30 minutes.'},
+  {id:'research-surge',name:'Research Surge',cost:5,effect:'research',value:.5,durationMs:1_800_000,description:'Increase Research speed by 50% for 30 minutes.'},
+  {id:'inventory-25',name:'Inventory Expansion',cost:15,effect:'inventoryCapacity',value:25,description:'Permanently add 25 spaces to Model Inventory.'},
 ];
 
 export const MARKETPLACE_SCHEMA = Object.freeze({version:1,enabled:false,requiresServerAuthority:true,listings:[],taxRate:.08});

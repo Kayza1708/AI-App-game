@@ -8,6 +8,8 @@ export function createTelemetryEvent(input, context) {
     schemaVersion: ANALYTICS_SCHEMA_VERSION,
     id: input.id ?? `event-${context.sequence}`,
     sessionId: String(input.sessionId ?? context.sessionId ?? 'unknown-session'),
+    runtimeSessionId: String(input.runtimeSessionId ?? context.runtimeSessionId ?? input.sessionId ?? context.sessionId ?? 'unknown-session'),
+    playthroughId: String(input.playthroughId ?? context.playthroughId ?? 'unknown-playthrough'),
     runId: String(input.runId ?? context.runId ?? 'unknown-run'),
     playerId: String(input.playerId ?? context.playerId ?? 'anonymous-local-player'),
     balanceRunId: input.balanceRunId ?? context.balanceRunId ?? null,

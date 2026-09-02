@@ -2,16 +2,17 @@ import { GEM_BOOSTS, REWARDED_BOOSTS } from '../data/metaCatalog.js';
 import { earnGems, spendGems } from './GemSystem.js';
 import { economySnapshot, grantCredits } from './GameSystem.js';
 
-export function activateGemBoost(state,id){
+export function activateGemBoost(state,id,now=Date.now()){
   const config=GEM_BOOSTS.find(boost=>boost.id===id);if(!config)return state;
   const paid=spendGems(state,config.cost,'boost',{boostId:id,durationMs:config.durationMs});if(paid===state)return state;
   if(config.effect==='instantCreditsSeconds')return grantCredits(paid,economySnapshot(state).creditsPerSecond*config.value,'boost');
-  const existing=paid.world.modifiers.find(modifier=>modifier.source===`gem:${id}`&&modifier.expiresAt>paid.statistics.playTimeMs);
+  const existing=paid.world.modifiers.find(modifier=>modifier.source===`gem:${id}`&&modifier.expiresAt>paid.statistics.playTimeMs&&(!modifier.expiresAtEpoch||modifier.expiresAtEpoch>now));
   const startsAt=existing?existing.expiresAt:paid.statistics.playTimeMs;
-  return{...paid,world:{...paid.world,modifiers:[...paid.world.modifiers.filter(modifier=>modifier!==existing),{effect:config.effect,value:config.value,expiresAt:startsAt+config.durationMs,source:`gem:${id}`,activatedAt:paid.statistics.playTimeMs}]}};
+  const startsAtEpoch=existing?.expiresAtEpoch??now;
+  return{...paid,world:{...paid.world,modifiers:[...paid.world.modifiers.filter(modifier=>modifier!==existing),{effect:config.effect,value:config.value,expiresAt:startsAt+config.durationMs,expiresAtEpoch:startsAtEpoch+config.durationMs,source:`gem:${id}`,activatedAt:paid.statistics.playTimeMs,activatedAtEpoch:now}]}};
 }
 
-export function activeBoosts(state){return state.world.modifiers.filter(modifier=>(modifier.source?.startsWith('gem:')||modifier.source?.startsWith('rewarded:'))&&modifier.expiresAt>state.statistics.playTimeMs).map(modifier=>({...modifier,remainingMs:modifier.expiresAt-state.statistics.playTimeMs}));}
+export function activeBoosts(state,now=Date.now()){return state.world.modifiers.filter(modifier=>(modifier.source?.startsWith('gem:')||modifier.source?.startsWith('rewarded:'))&&modifier.expiresAt>state.statistics.playTimeMs&&(!modifier.expiresAtEpoch||modifier.expiresAtEpoch>now)).map(modifier=>({...modifier,remainingMs:modifier.expiresAtEpoch?modifier.expiresAtEpoch-now:modifier.expiresAt-state.statistics.playTimeMs}));}
 
 export class RewardedBoostService {
   // This adapter is invoked only by the explicitly labeled Developer control.

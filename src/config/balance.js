@@ -10,7 +10,7 @@ export const BALANCE = Object.freeze({
     tierProduction: Object.freeze([.5,2,12,100,1_200,20_000,450_000,12_000_000,400_000_000,16_000_000_000,750_000_000_000,42_000_000_000_000,2_800_000_000_000_000,220_000_000_000_000_000,20_000_000_000_000_000_000,2_200_000_000_000_000_000_000]),
   }),
   training: Object.freeze({ requirementAnchors: Object.freeze([[1,18],[2,480],[3,4_500],[4,45_000],[5,300_000],[10,40_000_000],[20,4e11],[50,2e18],[100,1e27],[250,1e43],[500,1e65]]), skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4 }),
-  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.12, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
+  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.025, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
     computeScale: 400_000_000,

@@ -41,7 +41,7 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
   const purchaseIntervals = purchaseTimes.slice(1).map((time, index) => time - purchaseTimes[index]);
   const meaningfulActions = context.meaningfulActions ?? 0;
   return {
-    sessionId: context.sessionId, runId: context.runId, playerId: context.playerId,
+    sessionId: context.sessionId, runtimeSessionId:context.runtimeSessionId??context.sessionId, playthroughId:context.playthroughId, runId: context.runId, playerId: context.playerId,
     balanceRunId: state.balanceRun.id ?? context.balanceRunId ?? null,
     saveVersion: context.saveVersion, gameVersion: context.gameVersion,
     timestamp: context.timestamp ?? Date.now(), sessionSeconds: seconds, sessionPlaytime: seconds,
