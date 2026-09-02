@@ -11,6 +11,7 @@ import { branchInvestment } from '../data/technologyCatalog.js';
 import { missionsWithProgress } from '../systems/MissionSystem.js';
 import { artifactModifiers, inferCompanyBuild, itemModifiers } from '../systems/ModifierSystem.js';
 import { ensureGameState } from '../core/GameStateContract.js';
+import { researchSpeed, unlockedResearchLabs } from '../systems/ResearchSystem.js';
 
 export const SAMPLE_INTERVALS = [1, 5, 15, 30];
 export const MAX_SAMPLES = 10_000;
@@ -63,7 +64,7 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
     averagePurchaseInterval: purchaseIntervals.length ? average(purchaseIntervals) : 0,
     averageDecisionInterval: context.averageDecisionInterval ?? 0,
     meaningfulActionsPerHour: seconds > 0 ? meaningfulActions / seconds * 3600 : 0,
-    manualComputeContribution: state.statistics.totalManualComputeProduced,
+    manualComputeContribution: state.statistics.totalManualComputeProduced,sessionTaps:state.session.taps??0,runTaps:state.run.taps??0,lifetimeTaps:state.statistics.totalClicks,sessionManualComputeGenerated:state.session.manualComputeGenerated??0,runManualComputeGenerated:state.run.manualComputeGenerated??0,
     computeUsage: economy.computeConsumed,
     effectiveComputePerSecond: economy.computePerSecond,
     unusedCompute: economy.computeWasted,
@@ -71,7 +72,7 @@ export function createGameplaySnapshot(input, seconds, context = {}) {
     idlePercentage: economy.computePerSecond ? economy.storedComputeRate / economy.computePerSecond : 0,
     marketUtilization: economy.utilization,
     computeUtilization: economy.computePerSecond ? economy.computeConsumed / economy.computePerSecond : 0,
-    researchRate: patentRate,
+    researchRate: patentRate,researchSpeed:researchSpeed(state),researchLabsUnlocked:unlockedResearchLabs(state),researchLabsActive:state.researchLabs.labs.filter(lab=>lab.projectId).length,researchPointsSpent:state.researchLabs.pointsSpent??0,
     patentProgress: state.patents.progress,
     patentEta: patentRate && patentRequired ? Math.max(0, (patentRequired - state.patents.progress) / patentRate) : Infinity,
     trainingAllocation: state.allocation.training, inferenceAllocation: state.allocation.inference,

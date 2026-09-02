@@ -158,7 +158,7 @@ const ACHIEVEMENT_TRACKS = [
 ];
 export const ACHIEVEMENTS = ACHIEVEMENT_TRACKS.flatMap(([id, label, metric, base]) => Array.from({ length: 12 }, (_, tier) => ({
   id: `${id}-${tier + 1}`, name: `${label} ${tier + 1}`, metric, target: base * 3 ** tier, reward: 0.002 + tier * 0.0005,
-})));
+}))).concat([100,1_000,10_000,100_000,1_000_000].map((target,index)=>({id:`taps-${index+1}`,name:`Active Operator ${index+1}`,metric:'totalClicks',target,reward:.002+index*.0005})));
 
 export const WORLD_EVENTS = [
   { id: 'shortage', title: 'Global GPU Shortage', description: 'Supply chains seize up as competitors buy every accelerator.', choices: [{ label: 'Secure inventory', cost: 500, effect: 'hardwareOutput', value: 0.2 }, { label: 'Wait it out', effect: 'hardwareDiscount', value: 0.15 }] },
@@ -222,7 +222,15 @@ const PATENT_DEFINITIONS = [
   ['singularity-proof','Singularity Safety Proof','intelligenceGain',.10,'Preserves critical knowledge through transformations of intelligence.'],
 ];
 const patentTags=(effect)=>Object.freeze(({hardwareOutput:['COMPUTE','HARDWARE'],training:['TRAINING','MODEL'],demand:['CONSUMER','MARKET'],reputationGrowth:['MARKET','ENTERPRISE'],flatResearch:['RESEARCH'],energyEfficiency:['EFFICIENCY','COMPUTE'],intelligenceGain:['PRESTIGE'],priceElasticity:['MARKET','ENTERPRISE'],allocationEfficiency:['COMPUTE','EFFICIENCY'],agents:['AGENT','AUTOMATION'],inference:['EFFICIENCY','CONSUMER'],quality:['MODEL','DATA'],marketSize:['CONSUMER','MARKET'],enterprise:['ENTERPRISE'],research:['RESEARCH','PATENT'],revenue:['ENTERPRISE','MARKET'],adoption:['CONSUMER','AGENT']}[effect]??['MODEL']));
-export const PATENTS = PATENT_DEFINITIONS.map(([id,name,effect,value,description], index) => ({ id,name,effect,value,description,index,tags:patentTags(effect) }));
+const PATENT_SYNERGIES={
+  'cold-kernels':{name:'SILICON LEGACY',formula:'+1% GPU-class output per 25 Calculators',cap:.4,build:'Compute'},
+  'gradient-cache':{name:'TRAINING FLYWHEEL',formula:'Training completions reinforce Research and Training',cap:.5,build:'Training'},
+  'viral-embedding':{name:'MARKET TELEMETRY',formula:'Market science scales with active Users',cap:.5,build:'Market'},
+  'lab-notebook':{name:'RESEARCH CAMPUS',formula:'+1% Research Speed per Datacenter',cap:.5,build:'Research'},
+  'voltage-curve':{name:'MANUAL OVERCLOCKING',formula:'Tap Compute scales with highest Hardware tier',cap:.5,build:'Manual'},
+  'compute-router':{name:'HYPERSCALE NETWORK',formula:'Datacenters reinforce other infrastructure',cap:.5,build:'Compute'},
+};
+export const PATENTS = PATENT_DEFINITIONS.map(([id,name,effect,value,description], index) => ({ id,name:PATENT_SYNERGIES[id]?.name??name,effect,value,description:PATENT_SYNERGIES[id]?.formula??description,index,tags:patentTags(effect),synergy:PATENT_SYNERGIES[id]??null }));
 
 export const ENERGY_BUILDINGS = [
   ['coal','Coal Plant','▰',25,1],['gas','Gas Plant','◒',180,7],['solar','Solar Farm','☀',1_200,45],
@@ -231,8 +239,9 @@ export const ENERGY_BUILDINGS = [
 ].map(([id,name,icon,cost,output]) => ({id,name,icon,cost,output}));
 
 export const GEM_SHOP_ITEMS = [
-  { id:'researchLab2',name:'Second Research Lab',category:'Research',cost:25,description:'+20% Patent research speed' },
-  { id:'researchLab3',name:'Third Research Lab',category:'Research',cost:60,description:'+25% Patent research speed' },
+  { id:'researchLab3',name:'Third Research Lab',category:'Research',cost:120,description:'Run a third Research project in parallel' },
+  { id:'researchLab4',name:'Fourth Research Lab',category:'Research',cost:360,description:'Run a fourth Research project in parallel' },
+  { id:'researchLab5',name:'Fifth Research Lab',category:'Research',cost:900,description:'Maximum parallel Research capacity' },
   { id:'trainingQueue',name:'Training Queue',category:'Utilities',cost:20,description:'Automatically starts the next model run' },
   { id:'objectiveSlot',name:'Objective Slot',category:'Utilities',cost:15,description:'Track one additional objective at once' },
   { id:'allocationPresets',name:'Allocation Presets',category:'Automation',cost:30,description:'Save strategic Compute configurations' },
@@ -252,14 +261,14 @@ export function createDefaultState() {
     model: { level: 1, xp: 0, quality: 1, upgradePoints: 0, trainingProgress: 0, trainingActive: false, trainingSession: null, lastTrainingResult: null, activeId: 'tinyChat', trainingTarget: 'tinyChat', owned: ['tinyChat'], deployed: ['tinyChat'], improvements: {}, progress: { tinyChat: { level: 1, xp: 0, upgradePoints: 0, availablePoints: 0, trainings: 0, trainingCount: 0, totalPointsEarned: 0, totalPointsSpent: 0, skills: {} } } },
     allocation: { training: 50, inference: 50, research: 0, data: 0, agents: 0 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
-    upgrades: [], researchUpgradeLevels: {}, objectives: {},
+    upgrades: [], researchUpgradeLevels: {}, objectives: {}, researchLabs:{unlocked:0,labs:Array.from({length:5},(_,index)=>({id:index+1,projectId:null,level:null,remainingSeconds:0,totalSeconds:0,queue:[]})),completedProjects:[],projectHistory:[],pointsSpent:0},
     meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, breakthroughs: 0, breakthroughCurrency: 0, cycleHistory: [], featureUnlockTimes: { core: 0 }, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
     world: { activeEvent: null, nextEventMs: BALANCE.events.firstDelayMs, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     automation: { lastHardwarePurchaseMs: -1_000 },
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
     patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3 },
-    premium: { purchases: [], adCooldowns: {} },
+    premium: { purchases: [], adCooldowns: {}, freeGemClaimedAt:0 },
     retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null, dailyCompletionStreak: 0, lastDailyCompletionPeriod: null, completedDailyPeriods: 0 },
     inventory: { instances: [], equipped: {}, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },
     consumables: {}, rewardCaches: {},
@@ -269,14 +278,14 @@ export function createDefaultState() {
     artifacts: { owned: [], collection: [] },
     marketplace: { enabled: false, authority: 'server-required', listings: [], pendingTransactions: [] },
     futureMeta: { materials: {}, blueprints: [], seasonalChallenge: null, pass: null },
-    offline: { lastActiveTimestamp: Date.now(), lastReconciledTimestamp: null, durationMs: 0, effectiveDurationMs: 0, capMs: BALANCE.offline.capMs, results: null, rewardPending: false, periods: 0, totalOfflineMs: 0 },
+    offline: { lastActiveTimestamp: Date.now(), lastReconciledTimestamp: null, durationMs: 0, effectiveDurationMs: 0, rewardedDurationMs:0, capMs: BALANCE.offline.capMs, efficiency:BALANCE.offline.efficiency, results: null, rewardPending: false, doubled:false, periods: 0, totalOfflineMs: 0 },
     rewards: { queue: [], history: [], nextId: 1 },
     balanceRun: { id: null, startedAt: null, natural: true },
-    tutorial: { step: 0, completed: false, acknowledged: [] },
+    tutorial: { step: 0, completed: false, acknowledged: [] }, intro:{step:0,completed:false},
     settings: { numberNotation: 'compact', sound: true },
     statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, creditSources: { 'user-revenue':0, objective:0, 'daily-mission':0, 'weekly-mission':0, 'monthly-mission':0, event:0, offline:0, other:0 }, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
-    run: { number: 1, startedAtSessionMs: 0, creditsEarned: 0, computeProduced: 0 },
-    session: { elapsedMs: 0, lastSavedAt: null },
+    run: { number: 1, startedAtSessionMs: 0, creditsEarned: 0, computeProduced: 0, taps:0, manualComputeGenerated:0 },
+    session: { elapsedMs: 0, lastSavedAt: null, taps:0, manualComputeGenerated:0 },
     ui: { activeView: 'dashboard', sidebarOpen: false, toast: null, selectedTechnologyId: TECH_NODES[0]?.id ?? null, lastTechInteraction: null },
   };
 }

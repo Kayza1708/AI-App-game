@@ -67,11 +67,11 @@ export const TECHNOLOGY_BRANCHES = Object.freeze({
   ]),
   research:B('Research Lab','research','#74d490',3,[
     N('Research Division','system','research',.15,'Unlocks Research production from allocated Compute.',{unlockFeature:'research',unlock:'Research allocation'}),
-    N('Scientific Model','model','research',.20,'Unlocks the Research Model and scientific specialization.',{unlockModel:'research',unlock:'Research Model'}),
-    N('Scientific Compute','minor','research',.25,'Improves Research generated per allocated Compute.'),
-    N('Model-Assisted Science','major','research',.22,'The intrinsic reasoning and knowledge of deployed Models contributes to Research.',{mechanic:'reasoning-research'}),
-    N('Recursive Discovery','major','research',.20,'Each equipped Research Patent improves Research output.',{mechanic:'recursive-discovery'}),
-    N('Open Science','keystone','research',1,'Double Research output while reducing immediate Credits/sec.',{tradeoff:'revenue',penalty:.25,mechanic:'open-science'}),
+    N('Laboratory Methods','model','researchSpeed',.15,'Improves the speed of every timed Research project.',{unlockModel:'research',unlock:'Research Model'}),
+    N('Parallel Scientific Work','minor','researchSpeed',.10,'Builds the operating discipline required for parallel laboratories.'),
+    N('Research Lab 2','system','researchSpeed',.10,'Unlocks a second permanent Research Lab.',{unlockFeature:'researchLab2',mechanic:'parallel-research',unlock:'Research Lab 2'}),
+    N('Offline Science','major','research',.20,'Extends offline capacity and improves scientific efficiency while away.',{mechanic:'recursive-discovery',effects:{offlineCapacity:1,offlineEfficiency:.10}}),
+    N('Research Queue I','keystone','research',.30,'Allows one pending project behind an active project.',{tradeoff:'revenue',penalty:.10,mechanic:'research-queue-1'}),
     N('Deep Research','keystone','patentPower',.75,'Patents take longer to discover but their specialized effects are much stronger.',{tradeoff:'patentSpeed',penalty:.50,mechanic:'deep-research'}),
   ]),
   patent:B('Patent Engineering','patent','#65dfbe',35,[
@@ -174,7 +174,8 @@ const FIRST_INT_BRANCHES=new Set(['compute','training','hardware','model','consu
 export const TECHNOLOGY_NODES = Object.freeze(Object.entries(TECHNOLOGY_BRANCHES).flatMap(([branch,config],branchIndex)=>config.nodes.map((node,index)=>{
   const id=`${branch}-${index+1}`,type=node.type==='major'&&index===1?'minor':node.type;
   const cost=node.cost??(index===0&&FIRST_INT_BRANCHES.has(branch)?1:Math.ceil(config.baseCost*RANK_COST_MULTIPLIERS[index]*(TYPE_COST_MULTIPLIER[type]??1)));
-  return Object.freeze({id,branch,branchLabel:config.label,icon:config.icon,color:config.color,name:node.name,type,rank:index+1,era:TECHNOLOGY_ERAS[Math.min(TECHNOLOGY_ERAS.length-1,Math.floor((branchIndex+index)/3))],cost,requires:index?`${branch}-${index}`:null,effect:node.effect,value:node.value,effects:Object.freeze({[node.effect]:node.value,...(node.effects??{})}),tradeoff:node.tradeoff??null,penalty:node.penalty??0,tradeoffs:Object.freeze(node.tradeoff?{[node.tradeoff]:node.penalty}:{}),description:node.description,mechanic:node.mechanic??null,synergy:node.synergy??null,unlock:node.unlock??null,unlockModel:node.unlockModel??null,unlockFeature:node.unlockFeature??null,tags:Object.freeze([branch,node.type,node.effect]),position:Object.freeze({x:80+index*230,y:80+branchIndex*145}),visibility:'always'});
+  const parentIndex=index===0?null:index===3?1:index===4?2:index===6?4:index-1,parents=parentIndex===null?[]:[`${branch}-${parentIndex+1}`],side=branchIndex%2?-1:1,lane=Math.floor(branchIndex/2),depth=index+1;
+  return Object.freeze({id,branch,branchLabel:config.label,subBranch:index<2?'trunk':index%2?'systems':'scaling',depth,weight:['system','keystone','era'].includes(type)?2:1,positionHint:Object.freeze({side,lane}),icon:config.icon,color:config.color,name:node.name,type,rank:index+1,era:TECHNOLOGY_ERAS[Math.min(TECHNOLOGY_ERAS.length-1,Math.floor((branchIndex+index)/3))],cost,parents:Object.freeze(parents),requires:parents[0]??null,effect:node.effect,value:node.value,effects:Object.freeze({[node.effect]:node.value,...(node.effects??{})}),tradeoff:node.tradeoff??null,penalty:node.penalty??0,tradeoffs:Object.freeze(node.tradeoff?{[node.tradeoff]:node.penalty}:{}),description:node.description,mechanic:node.mechanic??null,synergy:node.synergy??null,unlock:node.unlock??null,unlockModel:node.unlockModel??null,unlockFeature:node.unlockFeature??null,tags:Object.freeze([branch,node.type,node.effect]),position:Object.freeze({x:790+side*(100+depth*85),y:180+branchIndex*135+(index%2?35:-35)}),visibility:'always'});
 })));
 
 export function technologyNode(id){return TECHNOLOGY_NODES.find(node=>node.id===id)??null}

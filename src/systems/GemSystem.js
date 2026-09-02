@@ -1,5 +1,5 @@
-const VALID_SOURCES=new Set(['daily-mission','weekly-mission','monthly-mission','achievement','milestone','rewarded-ad','event','cache','developer','migration','daily-login','daily-streak']);
-const VALID_SINKS=new Set(['training-finish','training-double-points','shop-item','shop-cosmetic','inventory-slot','loadout-slot','shop-refresh','boost','future-reroll','patent-slot']);
+const VALID_SOURCES=new Set(['daily-mission','weekly-mission','monthly-mission','achievement','milestone','rewarded-ad','event','cache','developer','migration','daily-login','daily-streak','daily-shop']);
+const VALID_SINKS=new Set(['training-finish','training-double-points','shop-item','shop-cosmetic','inventory-slot','loadout-slot','shop-refresh','boost','future-reroll','patent-slot','research-lab','offline-double']);
 
 export function earnGems(state,amount,source,metadata={}){const value=Math.max(0,Math.floor(Number(amount)||0));if(!value||!VALID_SOURCES.has(source))return state;return record(state,value,'earned',source,metadata)}
 export function spendGems(state,amount,sink,metadata={}){const value=Math.max(0,Math.floor(Number(amount)||0));if(!value||!VALID_SINKS.has(sink)||state.resources.gems<value)return state;return record(state,value,'spent',sink,metadata)}

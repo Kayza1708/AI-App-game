@@ -14,9 +14,10 @@ import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainin
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
 import { activateGemBoost, RewardedBoostService } from '../systems/RewardedBoostService.js';
-import { reconcileOffline } from '../systems/OfflineProgressSystem.js';
+import { doubleOfflineRewardWithGems, reconcileOffline } from '../systems/OfflineProgressSystem.js';
 import { dismissReward } from '../systems/RewardQueue.js';
 import { earnGems } from '../systems/GemSystem.js';
+import { claimDailyFreeGems, purchaseResearchLab } from '../systems/ResearchSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -143,6 +144,10 @@ export class Application {
       this.#eventBus.on('world:fallback', () => this.#store.update(acceptWorldEventConsequences, 'world-event')),
       this.#eventBus.on('world:resolve', (choiceIndex) => this.#store.update((state) => resolveWorldEvent(state, choiceIndex), 'world-event')),
       this.#eventBus.on('premium:buy', (itemId) => this.#store.update((state) => buyGemShopItem(state, itemId), 'premium')),
+      this.#eventBus.on('premium:daily-free', () => this.#store.update(claimDailyFreeGems, 'daily-free-gems')),
+      this.#eventBus.on('research:lab-buy', (lab) => this.#store.update((state)=>purchaseResearchLab(state,lab), 'research-lab')),
+      this.#eventBus.on('offline:double-gems', () => this.#store.update(doubleOfflineRewardWithGems, 'offline-double')),
+      this.#eventBus.on('intro:advance', () => this.#store.update((state)=>({...state,intro:{step:Math.min(3,(state.intro?.step??0)+1),completed:(state.intro?.step??0)>=2}}),'intro')),
       this.#eventBus.on('premium:ad', (reward) => this.#store.update((state) => this.#rewardedBoosts.activate(state, reward), 'rewarded-ad')),
       this.#eventBus.on('boost:activate', (boostId) => this.#store.update((state) => activateGemBoost(state, boostId), 'gem-boost')),
       this.#eventBus.on('model:improve', ({ modelId, skillId, interaction = {} }) => this.#store.update((state) => {const progress=state.model.progress?.[modelId],pointCost=modelImprovementCost(state,modelId,skillId),availablePoints=modelAvailablePoints(progress),validationPassed=Boolean(progress&&state.model.owned.includes(modelId)&&skillUnlocked(state,skillId)&&availablePoints>=pointCost),next=upgradeModelSkill(state,modelId,skillId),stateUpdated=next!==state,log={...interaction,modelId,skillId,availablePoints,pointCost,handlerReached:true,validationPassed,purchaseFunctionReached:true,stateUpdated,failureReason:stateUpdated?null:interaction.failureReason??(!progress?'MODEL_NOT_FOUND':!state.model.owned.includes(modelId)?'MODEL_NOT_OWNED':!skillUnlocked(state,skillId)?'SKILL_LOCKED':availablePoints<pointCost?'INSUFFICIENT_POINTS':'TRANSACTION_REJECTED')};if(this.#devMode)globalThis.console?.debug('MODEL SKILL CLICK',log);return stateUpdated?{...next,ui:{...next.ui,lastModelSkillInteraction:log}}:state}, 'model-skill')),

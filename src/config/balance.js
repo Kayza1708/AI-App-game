@@ -32,9 +32,11 @@ export const BALANCE = Object.freeze({
     gems:Object.freeze({daily:2,weekly:7,monthly:24}),
     repeatableCreditWarningShare:.25,
   }),
-  research: Object.freeze({ upgradeBaseCost:25_000, upgradeLevelGrowth:2.6, upgradeFamilyGrowth:2.4 }),
+  research: Object.freeze({ upgradeBaseCost:25_000, upgradeLevelGrowth:2.6, upgradeFamilyGrowth:2.4, maxLabs:5, labGemCosts:Object.freeze({3:120,4:360,5:900}), baseSpeed:1 }),
   rewardedAds:Object.freeze({dailyGemClaims:2,gemReward:2}),
-  offline: Object.freeze({ capMs: 8 * 60 * 60 * 1000, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
+  offline: Object.freeze({ capMs: 2 * 60 * 60 * 1000, maxCapMs:8 * 60 * 60 * 1000, efficiency:.6, doubleGemCost:8, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
+  tapping:Object.freeze({base:1.5,modelLevelsPerStep:5,modelLevelBonus:.04,pocketComputersPerStep:10,pocketComputerBonus:.03,calculatorUnitsPerStep:25,calculatorFlatBonus:1,techBonus:.025,datacenterShare:.002}),
+  freeGems:Object.freeze({amount:5,cooldownMs:24*60*60*1000}),
   progressionTargets: Object.freeze({ firstCalculator:[10,30], firstHardwareUpgrade:[60,180], firstModelLevel:[60,240], firstDevelopmentCycle:[3600,5400], firstItem:[1800,5400], firstPatentResearch:1500, firstBreakthrough:129_600 }),
 });
 
