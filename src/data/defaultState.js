@@ -2,8 +2,8 @@ import { BALANCE } from '../config/balance.js';
 import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
 export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 22;
-export const GAME_VERSION = '0.19.1';
+export const SAVE_VERSION = 23;
+export const GAME_VERSION = '0.20.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -263,7 +263,7 @@ export function createDefaultState() {
     allocation: { training: 50, inference: 50, research: 0, data: 0, agents: 0 },
     market: { priceMultiplier: 1, marketing: 0, reputation: 1, adoption: 0, demand: 0 },
     upgrades: [], researchUpgradeLevels: {}, objectives: {}, researchLabs:{unlocked:0,labs:Array.from({length:5},(_,index)=>({id:index+1,projectId:null,level:null,remainingSeconds:0,totalSeconds:0,queue:[]})),completedProjects:[],projectHistory:[],pointsSpent:0},
-    meta: { intelligence: 0, totalIntelligence: 0, cycles: 0, breakthroughs: 0, breakthroughCurrency: 0, cycleHistory: [], featureUnlockTimes: { core: 0 }, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
+    meta: { intelligence: 0, totalIntelligence: 0, lifetimeIntSpent:0, lifetimeIntClaimed:0, totalIntEntitlement:0, cycles: 0, breakthroughs: 0, breakthroughCurrency: 0, cycleHistory: [], featureUnlockTimes: { core: 0 }, techNodes: [], achievements: {}, unlockedModels: ['tinyChat'] },
     world: { activeEvent: null, nextEventMs: BALANCE.events.firstDelayMs, modifiers: [] },
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     automation: { lastHardwarePurchaseMs: -1_000 },

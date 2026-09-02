@@ -1,6 +1,7 @@
-import { createDefaultState, HARDWARE_CATALOG, LEGACY_HARDWARE_UPGRADES, MODEL_CATALOG, SAVE_VERSION } from '../data/defaultState.js';
+import { createDefaultState, HARDWARE_CATALOG, LEGACY_HARDWARE_UPGRADES, MODEL_CATALOG, SAVE_VERSION, TECH_NODES } from '../data/defaultState.js';
 import { BALANCE, FEATURE_UNLOCKS, isResearchUnlocked } from '../config/balance.js';
 import { ensureGameState } from '../core/GameStateContract.js';
+import { baseIntEntitlement } from './PrestigeSystem.js';
 
 const STORAGE_KEY = 'ai-singularity-save';
 const SAVE_INTERVAL_MS = 15_000;
@@ -75,13 +76,15 @@ export class SaveSystem {
     const migratedTechNodes = migrateTechnologyCatalog(migrateLegacySystemTechnologyNodes(save),save.version);
     const migratedTrainingProgress = migrateLegacyTrainingProgress(save, activeId, progress);
     const migratedTrainingSession = migrateLegacyTrainingSession(save, activeId, progress, migratedTrainingProgress);
+    const migratedEntitlement=baseIntEntitlement(save.statistics?.totalComputeProduced??0);
+    const inferredTechSpend=migratedTechNodes.reduce((sum,id)=>sum+(TECH_NODES.find(node=>node.id===id)?.cost??0),0)+Object.values(readSaveObject(save.patents?.intInvested)).reduce((sum,value)=>sum+(Number(value)||0),0);
     return ensureGameState({
       ...defaults, ...save, version: SAVE_VERSION,
       profile: { ...defaults.profile, ...readSaveObject(save.profile) }, resources: { ...readSaveNumericRecord(defaults.resources, save.resources), credits: (Number.isFinite(save.resources?.credits) ? save.resources.credits : defaults.resources.credits) + hardwareUpgradeRefund },
       hardware: readSaveNumericRecord(defaults.hardware, save.hardware), model: { ...defaults.model, ...readSaveObject(save.model), activeId, trainingTarget: activeId, xp: 0, owned, deployed, improvements: readSaveObject(save.model?.improvements), progress, trainingProgress: migratedTrainingProgress, trainingSession: migratedTrainingSession },
       allocation: normalizeSavedAllocationForFeatures(defaults.allocation, save.allocation, migratedTechNodes,save), energy: defaults.energy, market: readSaveNumericRecord(defaults.market, save.market),
       upgrades: readSaveArray(save.upgrades).filter((id) => !LEGACY_HARDWARE_UPGRADES.some((upgrade) => upgrade.id === id)), researchUpgradeLevels:normalizeResearchUpgradeLevels(save), tutorial: { ...defaults.tutorial, ...readSaveObject(save.tutorial), acknowledged: readSaveArray(save.tutorial?.acknowledged) }, objectives: { ...defaults.objectives, ...readSaveObject(save.objectives) },
-      meta: { ...defaults.meta, ...readSaveObject(save.meta), unlockedModels: [...new Set([...readSaveArray(save.meta?.unlockedModels), ...owned])], techNodes: migratedTechNodes, achievements: { ...defaults.meta.achievements, ...readSaveObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: readSaveArray(save.meta?.cycleHistory) },
+      meta: { ...defaults.meta, ...readSaveObject(save.meta), lifetimeIntClaimed:Number.isFinite(save.meta?.lifetimeIntClaimed)?Math.max(0,save.meta.lifetimeIntClaimed):migratedEntitlement,totalIntEntitlement:Number.isFinite(save.meta?.totalIntEntitlement)?Math.max(0,save.meta.totalIntEntitlement):migratedEntitlement,lifetimeIntSpent:Number.isFinite(save.meta?.lifetimeIntSpent)?Math.max(0,save.meta.lifetimeIntSpent):inferredTechSpend, unlockedModels: [...new Set([...readSaveArray(save.meta?.unlockedModels), ...owned])], techNodes: migratedTechNodes, achievements: { ...defaults.meta.achievements, ...readSaveObject(save.meta?.achievements) }, featureUnlockTimes, cycleHistory: readSaveArray(save.meta?.cycleHistory) },
       world: { ...defaults.world, ...readSaveObject(save.world), modifiers: readSaveArray(save.world?.modifiers), activeEvent: readSaveObject(save.world?.activeEvent).id ? save.world.activeEvent : null }, company: { ...defaults.company, ...readSaveObject(save.company), employees: readSaveNumericRecord(defaults.company.employees, save.company?.employees) },
       automation: { ...defaults.automation, ...save.automation },
       patents: { ...defaults.patents, ...readSaveObject(save.patents), discovered: readSaveArray(save.patents?.discovered), equipped: readSaveArray(save.patents?.equipped), history: readSaveArray(save.patents?.history), levels: readSaveObject(save.patents?.levels), intInvested: readSaveObject(save.patents?.intInvested) }, premium: { ...defaults.premium, ...readSaveObject(save.premium), purchases: readSaveArray(save.premium?.purchases), adCooldowns: { ...defaults.premium.adCooldowns, ...readSaveObject(save.premium?.adCooldowns) } },

@@ -3,6 +3,7 @@
  * pacing can be tuned without hunting through simulation or UI code.
  */
 import { RESEARCH_UNLOCK_TECH_ID, TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
+import { PRESTIGE_PARAMETERS, TECHNOLOGY_COST_PARAMETERS } from '../systems/PrestigeSystem.js';
 export const BALANCE = Object.freeze({
   hardware: Object.freeze({
     bulkDiscountCap: 0.42, upgradeCostFactor: 3, upgradeCostGrowth: 1.78,
@@ -36,14 +37,27 @@ export const BALANCE = Object.freeze({
   }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
+    // Piecewise curve derived from Phase-2B's 6.5e8 => 3 INT early anchor,
+    // a 1e14 transition anchor, and 1e300 => 1e30 INT Number-safety anchor.
+    entitlementScale:PRESTIGE_PARAMETERS.earlyScale,
+    entitlementExponent:PRESTIGE_PARAMETERS.earlyExponent,
+    entitlementPivotCompute:PRESTIGE_PARAMETERS.pivotCompute,
+    entitlementPivotInt:PRESTIGE_PARAMETERS.pivotEntitlement,
+    entitlementLateExponent:PRESTIGE_PARAMETERS.lateExponent,
+    firstPrestigeComputeAnchor:650_000_000,
+    firstPrestigeIntAnchor:3,
+    endgameComputeAnchor:1e300,
+    endgameIntAnchor:1e30,
+    prestigeModifierCap:PRESTIGE_PARAMETERS.prestigeModifierCap,
     computeScale: 400_000_000,
-    creditScale: 60_000_000,
+    creditScale:60_000_000, // Legacy diagnostic only; not an eligibility or reward input.
     cycleRequirement: 1,
     minimumHardwareTier: 4,
     minimumModelLevel: 9,
     minimumObjectives: 6,
     breakthroughMultiplier: 1.65,
   }),
+  technologyEconomy:TECHNOLOGY_COST_PARAMETERS,
   breakthrough: Object.freeze({ requiredLifetimeIntelligence: 10_000, requiredCompute: 1e24, exponent: 0.2 }),
   events: Object.freeze({ firstDelayMs: 480_000, minimumDelayMs: 720_000, durationMs: 180_000, incomeSeconds: Object.freeze({minor:30,moderate:90,major:240}), creditShare:Object.freeze({minor:.01,moderate:.03,major:.06}) }),
   items: Object.freeze({ unlockInt: 15, baseSlots: 2, maxSlots: 6, inventoryCapacity: 50, rarityWeights: Object.freeze({Common:55,Uncommon:25,Rare:13,Epic:5,Legendary:1.8,Mythic:.2}) }),

@@ -20,4 +20,4 @@ test('one navigation entry owns permanent roadmap and repeatable Missions',()=>{
 
 test('credit-source analytics reports inflation share and warning',()=>{const summary=analyzeSession({samples:[{sessionSeconds:0,creditSources:{}},{sessionSeconds:60,creditSources:{'user-revenue':600,'daily-mission':400},gemBalance:0}],events:[],durationSeconds:60,economy:{creditsEarned:1000}});assert.equal(summary.economy.creditSources.missionShare,.4);assert.match(summary.economy.creditSources.warning,/40.0%/);assert(summary.balanceFlags.includes('repeatable-reward-inflation'))});
 
-test('save schema advances for Objective Mission and credit-ledger migration',()=>assert.equal(SAVE_VERSION,22));
+test('save schema advances for cumulative INT entitlement migration',()=>assert.equal(SAVE_VERSION,23));

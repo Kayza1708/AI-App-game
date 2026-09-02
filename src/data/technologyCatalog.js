@@ -3,6 +3,8 @@
  * This file is deliberately data-only so the same graph drives simulation, UI,
  * telemetry, migration tests, documentation exports, and Balance Lab policies.
  */
+import { technologyCost } from '../systems/PrestigeSystem.js';
+
 export const TECHNOLOGY_SCHEMA_VERSION = 1;
 export const RESEARCH_UNLOCK_TECH_ID = 'research-1';
 export const TECHNOLOGY_ERAS = Object.freeze(['Garage AI','Machine Learning','Deep Learning','Foundation Models','Agentic AI','Autonomous Science','AGI','Superintelligence','Singularity']);
@@ -12,7 +14,7 @@ const N = (name, type, effect, value, description, options={}) => ({ name, type,
 
 export const TECHNOLOGY_BRANCHES = Object.freeze({
   compute:B('Compute Empire','compute','#55e8da',1,[
-    N('Compute Theory','system','hardwareOutput',.10,'Establishes Compute as the company’s primary engineering discipline.'),
+    N('Compute Theory','system','hardwareOutput',.85,'Establishes Compute as the company’s primary engineering discipline.'),
     N('Parallel Kernels','minor','hardwareOutput',.15,'Runs independent tensor kernels across every owned processor.'),
     N('Heterogeneous Clusters','major','hardwareOutput',.12,'Each distinct owned Hardware tier amplifies global Compute.',{mechanic:'hardware-diversity',synergy:'Gain +3% Hardware output per distinct owned Hardware tier.'}),
     N('Load Balancing','major','allocationEfficiency',.12,'Routes unused workload budget toward productive systems.',{mechanic:'load-balancing',synergy:'Unused Inference allocation can support active Training.'}),
@@ -21,7 +23,7 @@ export const TECHNOLOGY_BRANCHES = Object.freeze({
     N('Universal Compute','era','allOutput',.65,'Unifies planetary workloads into one programmable Compute fabric.',{cost:1e18,unlock:'Universal Compute era'}),
   ]),
   training:B('Training Science','training','#9d8cff',2,[
-    N('Gradient Optimization','minor','training',.15,'Improves useful Model progress per unit of Training Compute.'),
+    N('Gradient Optimization','minor','training',.90,'Improves useful Model progress per unit of Training Compute.'),
     N('Checkpoint Compression','major','training',.10,'Every new Training begins with a preserved checkpoint.',{mechanic:'checkpointing',synergy:'Training starts with 5% required work completed.'}),
     N('Parallel Backpropagation','major','training',.24,'Server-class Hardware contributes additional Training throughput.',{mechanic:'gpu-training'}),
     N('Active Optimization','major','click',.65,'Manual Compute becomes more effective while a Model is Training.',{mechanic:'training-injection'}),
@@ -120,7 +122,7 @@ export const TECHNOLOGY_BRANCHES = Object.freeze({
     N('Planetary Dataset','era','quality',.60,'Builds a civilization-scale representation of knowledge.',{cost:1e24,unlock:'Planetary data era'}),
   ]),
   market:B('Market & Marketing','market','#ffcb66',1,[
-    N('Targeted Advertising','minor','marketing',.25,'Improves Credits-to-Demand conversion.'),
+    N('Targeted Advertising','minor','marketing',.85,'Improves Credits-to-Demand conversion.'),
     N('Brand Recognition','major','demand',.20,'Adds durable baseline Demand.'),
     N('Growth Loops','major','demand',.24,'Marketing and Popularity reinforce each other.',{mechanic:'marketing-popularity'}),
     N('Pricing Science','major','priceElasticity',.25,'Reduces Demand lost to higher prices.'),
@@ -166,14 +168,12 @@ export const TECHNOLOGY_BRANCHES = Object.freeze({
   ]),
 });
 
-const RANK_COST_MULTIPLIERS=[1,3,12,50,250,2_500,1_000_000];
-const TYPE_COST_MULTIPLIER={minor:1,major:1.35,system:1.5,model:2,keystone:4,era:8};
 // A first Development Cycle awards one INT. Each early specialization must
 // therefore offer a real, mutually exclusive first purchase.
 const FIRST_INT_BRANCHES=new Set(['compute','training','hardware','model','consumer','efficiency','market']);
 export const TECHNOLOGY_NODES = Object.freeze(Object.entries(TECHNOLOGY_BRANCHES).flatMap(([branch,config],branchIndex)=>config.nodes.map((node,index)=>{
   const id=`${branch}-${index+1}`,type=node.type==='major'&&index===1?'minor':node.type;
-  const cost=node.cost??(index===0&&FIRST_INT_BRANCHES.has(branch)?1:Math.ceil(config.baseCost*RANK_COST_MULTIPLIERS[index]*(TYPE_COST_MULTIPLIER[type]??1)));
+  const cost=index===0&&FIRST_INT_BRANCHES.has(branch)?1:technologyCost(config.baseCost,index+1,type);
   const parentIndex=index===0?null:index===3?1:index===4?2:index===6?4:index-1,parents=parentIndex===null?[]:[`${branch}-${parentIndex+1}`],side=branchIndex%2?-1:1,lane=Math.floor(branchIndex/2),depth=index+1;
   return Object.freeze({id,branch,branchLabel:config.label,subBranch:index<2?'trunk':index%2?'systems':'scaling',depth,weight:['system','keystone','era'].includes(type)?2:1,positionHint:Object.freeze({side,lane}),icon:config.icon,color:config.color,name:node.name,type,rank:index+1,era:TECHNOLOGY_ERAS[Math.min(TECHNOLOGY_ERAS.length-1,Math.floor((branchIndex+index)/3))],cost,parents:Object.freeze(parents),requires:parents[0]??null,effect:node.effect,value:node.value,effects:Object.freeze({[node.effect]:node.value,...(node.effects??{})}),tradeoff:node.tradeoff??null,penalty:node.penalty??0,tradeoffs:Object.freeze(node.tradeoff?{[node.tradeoff]:node.penalty}:{}),description:node.description,mechanic:node.mechanic??null,synergy:node.synergy??null,unlock:node.unlock??null,unlockModel:node.unlockModel??null,unlockFeature:node.unlockFeature??null,tags:Object.freeze([branch,node.type,node.effect]),position:Object.freeze({x:790+side*(100+depth*85),y:180+branchIndex*135+(index%2?35:-35)}),visibility:'always'});
 })));

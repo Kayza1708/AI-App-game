@@ -10,6 +10,8 @@
           "credits": 1101.0668954386786,
           "creditsPerSecond": 2.6488210907164254,
           "computePerSecond": 7.6000000000000005,
+          "runComputeProduced": 1062,
+          "lifetimeComputeProduced": 1062,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3
@@ -46,6 +48,8 @@
           "credits": 7193.337775715714,
           "creditsPerSecond": 7.627440864304275,
           "computePerSecond": 20.6,
+          "runComputeProduced": 5682,
+          "lifetimeComputeProduced": 5682,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -83,6 +87,8 @@
           "credits": 17421.799603610136,
           "creditsPerSecond": 89.08554718211693,
           "computePerSecond": 240.6,
+          "runComputeProduced": 31662,
+          "lifetimeComputeProduced": 31662,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -121,6 +127,8 @@
           "credits": 98525.29889923199,
           "creditsPerSecond": 800.534805951959,
           "computePerSecond": 2035.836,
+          "runComputeProduced": 273010.3199999999,
+          "lifetimeComputeProduced": 273010.3199999999,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -160,6 +168,8 @@
           "credits": 2129207.3529256494,
           "creditsPerSecond": 8003.706123020867,
           "computePerSecond": 17887.896,
+          "runComputeProduced": 6692389.92,
+          "lifetimeComputeProduced": 6692389.92,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -199,6 +209,8 @@
           "credits": 5371169.549324263,
           "creditsPerSecond": 22806.444947783755,
           "computePerSecond": 172730.49599999998,
+          "runComputeProduced": 102122968.3199999,
+          "lifetimeComputeProduced": 102122968.3199999,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -239,6 +251,8 @@
           "credits": 9809783.881873813,
           "creditsPerSecond": 29624.700718278826,
           "computePerSecond": 307220.896,
+          "runComputeProduced": 322633446.7199999,
+          "lifetimeComputeProduced": 322633446.7199999,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -279,6 +293,8 @@
           "credits": 13266649.303254306,
           "creditsPerSecond": 36068.79676868197,
           "computePerSecond": 398327.296,
+          "runComputeProduced": 647296149.1199996,
+          "lifetimeComputeProduced": 647296149.1199996,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -319,6 +335,8 @@
           "credits": 13967497.342550606,
           "creditsPerSecond": 43574.052376052794,
           "computePerSecond": 468252.096,
+          "runComputeProduced": 1041482987.5200031,
+          "lifetimeComputeProduced": 1041482987.5200031,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -359,6 +377,8 @@
           "credits": 15209861.58310162,
           "creditsPerSecond": 54247.05252186003,
           "computePerSecond": 486243.69600000005,
+          "runComputeProduced": 1909417816.32001,
+          "lifetimeComputeProduced": 1909417816.32001,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -1010,6 +1030,8 @@
         "credits": 15209861.58310162,
         "creditsPerSecond": 54247.05252186003,
         "computePerSecond": 486243.69600000005,
+        "runComputeProduced": 1909417816.32001,
+        "lifetimeComputeProduced": 1909417816.32001,
         "hardware": {
           "calculator": 2,
           "homeComputer": 3,
@@ -1054,6 +1076,8 @@
           "credits": 1620.4239031039247,
           "creditsPerSecond": 1.4937627493264607,
           "computePerSecond": 3.2,
+          "runComputeProduced": 666,
+          "lifetimeComputeProduced": 666,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1
@@ -1090,6 +1114,8 @@
           "credits": 7655.477956834592,
           "creditsPerSecond": 21.484575541323093,
           "computePerSecond": 42.2,
+          "runComputeProduced": 8646,
+          "lifetimeComputeProduced": 8646,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1127,6 +1153,8 @@
           "credits": 41319.32080157193,
           "creditsPerSecond": 308.3845976453678,
           "computePerSecond": 592.2,
+          "runComputeProduced": 120306,
+          "lifetimeComputeProduced": 120306,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1165,6 +1193,8 @@
           "credits": 418889.88661725423,
           "creditsPerSecond": 3295.4207216731206,
           "computePerSecond": 6351.732,
+          "runComputeProduced": 1167225.5999999996,
+          "lifetimeComputeProduced": 1167225.5999999996,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1204,6 +1234,8 @@
           "credits": 1359069.02085667,
           "creditsPerSecond": 11941.0752764298,
           "computePerSecond": 68952.952,
+          "runComputeProduced": 15935783.999999985,
+          "lifetimeComputeProduced": 15935783.999999985,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1244,6 +1276,8 @@
           "credits": 2114173.5039578257,
           "creditsPerSecond": 21305.039901524975,
           "computePerSecond": 206888.552,
+          "runComputeProduced": 136443172.79999992,
+          "lifetimeComputeProduced": 136443172.79999992,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1284,6 +1318,8 @@
           "credits": 4389514.719040431,
           "creditsPerSecond": 28001.67021232035,
           "computePerSecond": 276877.152,
+          "runComputeProduced": 357355173.5999999,
+          "lifetimeComputeProduced": 357355173.5999999,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1324,6 +1360,8 @@
           "credits": 3162542.061374453,
           "creditsPerSecond": 33514.28844436084,
           "computePerSecond": 340485.752,
+          "runComputeProduced": 628923098.3999982,
+          "lifetimeComputeProduced": 628923098.3999982,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1364,6 +1402,8 @@
           "credits": 7808834.348544112,
           "creditsPerSecond": 40514.80379220086,
           "computePerSecond": 427521.712,
+          "runComputeProduced": 970714151.9999976,
+          "lifetimeComputeProduced": 970714151.9999976,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -1404,6 +1444,8 @@
           "credits": 17933717.196905337,
           "creditsPerSecond": 50816.542801926094,
           "computePerSecond": 494805.19200000004,
+          "runComputeProduced": 1810818585.5999978,
+          "lifetimeComputeProduced": 1810818585.5999978,
           "hardware": {
             "calculator": 2,
             "homeComputer": 1,
@@ -2060,6 +2102,8 @@
         "credits": 17933717.196905337,
         "creditsPerSecond": 50816.542801926094,
         "computePerSecond": 494805.19200000004,
+        "runComputeProduced": 1810818585.5999978,
+        "lifetimeComputeProduced": 1810818585.5999978,
         "hardware": {
           "calculator": 2,
           "homeComputer": 1,
@@ -2104,6 +2148,8 @@
           "credits": 912.9301029474052,
           "creditsPerSecond": 1.1919694908223915,
           "computePerSecond": 7.6000000000000005,
+          "runComputeProduced": 1062,
+          "lifetimeComputeProduced": 1062,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3
@@ -2140,6 +2186,8 @@
           "credits": 7775.845412438906,
           "creditsPerSecond": 5.598393488751487,
           "computePerSecond": 33.6,
+          "runComputeProduced": 8802,
+          "lifetimeComputeProduced": 8802,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2177,6 +2225,8 @@
           "credits": 16945.1036361503,
           "creditsPerSecond": 82.34322582446188,
           "computePerSecond": 473.6,
+          "runComputeProduced": 111282,
+          "lifetimeComputeProduced": 111282,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2215,6 +2265,8 @@
           "credits": 106605.69121262446,
           "creditsPerSecond": 1141.0802533714818,
           "computePerSecond": 6342.616000000001,
+          "runComputeProduced": 1146404.8800000004,
+          "lifetimeComputeProduced": 1146404.8800000004,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2254,6 +2306,8 @@
           "credits": 402561.3993477246,
           "creditsPerSecond": 3926.070267565212,
           "computePerSecond": 21081.916,
+          "runComputeProduced": 9811650.480000006,
+          "lifetimeComputeProduced": 9811650.480000006,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2293,6 +2347,8 @@
           "credits": 3239575.4633529857,
           "creditsPerSecond": 13480.073113070559,
           "computePerSecond": 60648.976,
+          "runComputeProduced": 40960049.28000006,
+          "lifetimeComputeProduced": 40960049.28000006,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2333,6 +2389,8 @@
           "credits": 5027506.684874494,
           "creditsPerSecond": 28546.047267964255,
           "computePerSecond": 241011.576,
+          "runComputeProduced": 189050683.67999998,
+          "lifetimeComputeProduced": 189050683.67999998,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2373,6 +2431,8 @@
           "credits": 7759026.510464605,
           "creditsPerSecond": 34633.64182143981,
           "computePerSecond": 355979.1759999999,
+          "runComputeProduced": 463576330.07999915,
+          "lifetimeComputeProduced": 463576330.07999915,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2413,6 +2473,8 @@
           "credits": 11083434.853340423,
           "creditsPerSecond": 41034.22987876922,
           "computePerSecond": 396109.37599999993,
+          "runComputeProduced": 811745040.4799984,
+          "lifetimeComputeProduced": 811745040.4799984,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -2453,6 +2515,8 @@
           "credits": 8957124.410776448,
           "creditsPerSecond": 51437.36368421425,
           "computePerSecond": 517265.57600000006,
+          "runComputeProduced": 1649477297.2799966,
+          "lifetimeComputeProduced": 1649477297.2799966,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -3119,6 +3183,8 @@
         "credits": 8957124.410776448,
         "creditsPerSecond": 51437.36368421425,
         "computePerSecond": 517265.57600000006,
+        "runComputeProduced": 1649477297.2799966,
+        "lifetimeComputeProduced": 1649477297.2799966,
         "hardware": {
           "calculator": 2,
           "homeComputer": 3,
@@ -3163,6 +3229,8 @@
           "credits": 902.4758230478103,
           "creditsPerSecond": 3.3110263633955315,
           "computePerSecond": 7.6000000000000005,
+          "runComputeProduced": 1062,
+          "lifetimeComputeProduced": 1062,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3
@@ -3199,6 +3267,8 @@
           "credits": 6779.192715010257,
           "creditsPerSecond": 11.607780150288304,
           "computePerSecond": 22.8,
+          "runComputeProduced": 5562,
+          "lifetimeComputeProduced": 5562,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3236,6 +3306,8 @@
           "credits": 3166.526760096741,
           "creditsPerSecond": 11.607780150288304,
           "computePerSecond": 22.8,
+          "runComputeProduced": 12402,
+          "lifetimeComputeProduced": 12402,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3273,6 +3345,8 @@
           "credits": 3004.9690734825663,
           "creditsPerSecond": 18.22625128861058,
           "computePerSecond": 35.8,
+          "runComputeProduced": 20022,
+          "lifetimeComputeProduced": 20022,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3310,6 +3384,8 @@
           "credits": 177846.09022173058,
           "creditsPerSecond": 1858.1086372873258,
           "computePerSecond": 3380.128,
+          "runComputeProduced": 448201.68000000017,
+          "lifetimeComputeProduced": 448201.68000000017,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3349,6 +3425,8 @@
           "credits": 2248569.2138494886,
           "creditsPerSecond": 11740.629667453786,
           "computePerSecond": 26406.007999999998,
+          "runComputeProduced": 15097734.480000002,
+          "lifetimeComputeProduced": 15097734.480000002,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3388,6 +3466,8 @@
           "credits": 6507147.480813266,
           "creditsPerSecond": 29240.895296310253,
           "computePerSecond": 133653.808,
+          "runComputeProduced": 89431021.67999986,
+          "lifetimeComputeProduced": 89431021.67999986,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3428,6 +3508,8 @@
           "credits": 10513120.488779655,
           "creditsPerSecond": 35645.7371807831,
           "computePerSecond": 262976.408,
+          "runComputeProduced": 289961984.8800004,
+          "lifetimeComputeProduced": 289961984.8800004,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3468,6 +3550,8 @@
           "credits": 11109544.652148487,
           "creditsPerSecond": 41452.40887495373,
           "computePerSecond": 375328.208,
+          "runComputeProduced": 594649000.0799999,
+          "lifetimeComputeProduced": 594649000.0799999,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -3508,6 +3592,8 @@
           "credits": 20463102.177344244,
           "creditsPerSecond": 51065.83927090263,
           "computePerSecond": 453866.008,
+          "runComputeProduced": 1370889378.4799998,
+          "lifetimeComputeProduced": 1370889378.4799998,
           "hardware": {
             "calculator": 2,
             "homeComputer": 4,
@@ -4119,6 +4205,8 @@
         "credits": 20463102.177344244,
         "creditsPerSecond": 51065.83927090263,
         "computePerSecond": 453866.008,
+        "runComputeProduced": 1370889378.4799998,
+        "lifetimeComputeProduced": 1370889378.4799998,
         "hardware": {
           "calculator": 2,
           "homeComputer": 4,
@@ -4163,6 +4251,8 @@
           "credits": 1347.3584114613213,
           "creditsPerSecond": 0.9548199392001525,
           "computePerSecond": 2.5,
+          "runComputeProduced": 450,
+          "lifetimeComputeProduced": 450,
           "hardware": {
             "calculator": 5
           },
@@ -4198,6 +4288,8 @@
           "credits": 2479.791588625175,
           "creditsPerSecond": 2.20378752,
           "computePerSecond": 5.5,
+          "runComputeProduced": 1680,
+          "lifetimeComputeProduced": 1680,
           "hardware": {
             "calculator": 10
           },
@@ -4233,6 +4325,8 @@
           "credits": 10924.675213410852,
           "creditsPerSecond": 100.49199621735836,
           "computePerSecond": 241.25,
+          "runComputeProduced": 26163,
+          "lifetimeComputeProduced": 26163,
           "hardware": {
             "calculator": 11,
             "homeComputer": 1,
@@ -4271,6 +4365,8 @@
           "credits": 45633.19131053604,
           "creditsPerSecond": 337.12256546960106,
           "computePerSecond": 791.25,
+          "runComputeProduced": 197538,
+          "lifetimeComputeProduced": 197538,
           "hardware": {
             "calculator": 11,
             "homeComputer": 1,
@@ -4309,6 +4405,8 @@
           "credits": 1496130.3271039992,
           "creditsPerSecond": 6680.393834083835,
           "computePerSecond": 15011.849999999999,
+          "runComputeProduced": 4711668,
+          "lifetimeComputeProduced": 4711668,
           "hardware": {
             "calculator": 11,
             "homeComputer": 1,
@@ -4348,6 +4446,8 @@
           "credits": 2959567.0235153935,
           "creditsPerSecond": 20993.8919641129,
           "computePerSecond": 174852.368,
+          "runComputeProduced": 96611737.67999993,
+          "lifetimeComputeProduced": 96611737.67999993,
           "hardware": {
             "calculator": 12,
             "homeComputer": 1,
@@ -4388,6 +4488,8 @@
           "credits": 11994766.44306543,
           "creditsPerSecond": 27726.061838554422,
           "computePerSecond": 255294.53999999998,
+          "runComputeProduced": 294234290.87999964,
+          "lifetimeComputeProduced": 294234290.87999964,
           "hardware": {
             "calculator": 14,
             "homeComputer": 4,
@@ -4428,6 +4530,8 @@
           "credits": 26023117.69029083,
           "creditsPerSecond": 34095.08715934745,
           "computePerSecond": 340032.59799999994,
+          "runComputeProduced": 568499434.9199998,
+          "lifetimeComputeProduced": 568499434.9199998,
           "hardware": {
             "calculator": 17,
             "homeComputer": 6,
@@ -4468,6 +4572,8 @@
           "credits": 41167348.082072675,
           "creditsPerSecond": 40771.187907619584,
           "computePerSecond": 399972.40799999994,
+          "runComputeProduced": 907926040.8,
+          "lifetimeComputeProduced": 907926040.8,
           "hardware": {
             "calculator": 20,
             "homeComputer": 9,
@@ -4508,6 +4614,8 @@
           "credits": 35731669.234757826,
           "creditsPerSecond": 51747.21837673997,
           "computePerSecond": 549749.6708000001,
+          "runComputeProduced": 1765895374.5599976,
+          "lifetimeComputeProduced": 1765895374.5599976,
           "hardware": {
             "calculator": 25,
             "homeComputer": 14,
@@ -5144,6 +5252,8 @@
         "credits": 35731669.234757826,
         "creditsPerSecond": 51747.21837673997,
         "computePerSecond": 549749.6708000001,
+        "runComputeProduced": 1765895374.5599976,
+        "lifetimeComputeProduced": 1765895374.5599976,
         "hardware": {
           "calculator": 25,
           "homeComputer": 14,
@@ -5188,6 +5298,8 @@
           "credits": 1101.0668954386786,
           "creditsPerSecond": 2.6488210907164254,
           "computePerSecond": 7.6000000000000005,
+          "runComputeProduced": 1062,
+          "lifetimeComputeProduced": 1062,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3
@@ -5224,6 +5336,8 @@
           "credits": 10518.476265452384,
           "creditsPerSecond": 93.89898073726039,
           "computePerSecond": 253.6,
+          "runComputeProduced": 30162,
+          "lifetimeComputeProduced": 30162,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5262,6 +5376,8 @@
           "credits": 34973.105125744885,
           "creditsPerSecond": 310.4871259034233,
           "computePerSecond": 803.6,
+          "runComputeProduced": 205242,
+          "lifetimeComputeProduced": 205242,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5300,6 +5416,8 @@
           "credits": 342242.06482041226,
           "creditsPerSecond": 2628.965639345814,
           "computePerSecond": 6575.816000000001,
+          "runComputeProduced": 1319386.7999999998,
+          "lifetimeComputeProduced": 1319386.7999999998,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5339,6 +5457,8 @@
           "credits": 2899335.3660349837,
           "creditsPerSecond": 12177.013220625226,
           "computePerSecond": 43678.17600000001,
+          "runComputeProduced": 13089884.399999995,
+          "lifetimeComputeProduced": 13089884.399999995,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5379,6 +5499,8 @@
           "credits": 4007536.2452019574,
           "creditsPerSecond": 23573.771681075563,
           "computePerSecond": 203688.576,
+          "runComputeProduced": 136034386.80000016,
+          "lifetimeComputeProduced": 136034386.80000016,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5419,6 +5541,8 @@
           "credits": 11066645.916967565,
           "creditsPerSecond": 30038.95557132589,
           "computePerSecond": 314381.576,
+          "runComputeProduced": 372693457.19999933,
+          "lifetimeComputeProduced": 372693457.19999933,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5459,6 +5583,8 @@
           "credits": 7649889.968551603,
           "creditsPerSecond": 36461.94857784149,
           "computePerSecond": 412378.37599999993,
+          "runComputeProduced": 708999195.5999985,
+          "lifetimeComputeProduced": 708999195.5999985,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5499,6 +5625,8 @@
           "credits": 14404253.703446073,
           "creditsPerSecond": 43052.25695665382,
           "computePerSecond": 426286.77599999995,
+          "runComputeProduced": 1088970929.9999976,
+          "lifetimeComputeProduced": 1088970929.9999976,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -5539,6 +5667,8 @@
           "credits": 22875918.547368526,
           "creditsPerSecond": 54064.191613916286,
           "computePerSecond": 518197.0560000001,
+          "runComputeProduced": 1965082714.7999945,
+          "lifetimeComputeProduced": 1965082714.7999945,
           "hardware": {
             "calculator": 2,
             "homeComputer": 3,
@@ -6205,6 +6335,8 @@
         "credits": 22875918.547368526,
         "creditsPerSecond": 54064.191613916286,
         "computePerSecond": 518197.0560000001,
+        "runComputeProduced": 1965082714.7999945,
+        "lifetimeComputeProduced": 1965082714.7999945,
         "hardware": {
           "calculator": 2,
           "homeComputer": 3,
