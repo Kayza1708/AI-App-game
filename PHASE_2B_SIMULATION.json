@@ -1,0 +1,6245 @@
+{
+  "schema": "phase-2b-canonical-simulation-v1",
+  "disclaimer": "Engineering instrument, not a human-play prediction",
+  "policies": [
+    {
+      "name": "BALANCED",
+      "checkpoints": [
+        {
+          "minutes": 5,
+          "credits": 1101.0668954386786,
+          "creditsPerSecond": 2.6488210907164254,
+          "computePerSecond": 7.6000000000000005,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3
+          },
+          "totalHardware": 5,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 756.4144452187053,
+          "trainingRate": 7.139525537768527,
+          "trainingEta": 105.9474388343072,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 336.02812492729544,
+          "currentUsers": 189.87500417080128,
+          "capacity": 8.091462276137664,
+          "servedUsers": 8.091462276137664,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 2.6488210907164254,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 1.379788455756372,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 226.1130835376006
+        },
+        {
+          "minutes": 10,
+          "credits": 7193.337775715714,
+          "creditsPerSecond": 7.627440864304275,
+          "computePerSecond": 20.6,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1
+          },
+          "totalHardware": 6,
+          "highestHardware": "Laptop",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 8,
+          "trainingProgress": 0,
+          "trainingRequirement": 2258.6643558619276,
+          "trainingRate": 23.64250095402233,
+          "trainingEta": 95.53407062367731,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 5,
+          "potentialDemand": 1337.8889925789024,
+          "currentUsers": 814.6783105966742,
+          "capacity": 23.29985601265969,
+          "servedUsers": 23.29985601265969,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 7.627440864304275,
+          "marketing": 1,
+          "reputation": 1,
+          "adoption": 8.448073168603681,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 95.53407062367731
+        },
+        {
+          "minutes": 15,
+          "credits": 17421.799603610136,
+          "creditsPerSecond": 89.08554718211693,
+          "computePerSecond": 240.6,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 2
+          },
+          "totalHardware": 8,
+          "highestHardware": "Gaming PC",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 12,
+          "trainingProgress": 0,
+          "trainingRequirement": 5860.060376928611,
+          "trainingRate": 276.1352295892123,
+          "trainingEta": 21.221704980006447,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 8,
+          "potentialDemand": 5225.142011578052,
+          "currentUsers": 3014.5227497298415,
+          "capacity": 272.1332697400933,
+          "servedUsers": 272.1332697400933,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 89.08554718211693,
+          "marketing": 2,
+          "reputation": 1,
+          "adoption": 34.47532584330447,
+          "developmentCycleEligible": false,
+          "nextAction": "Workstation",
+          "nextActionEta": 309.56986030530805
+        },
+        {
+          "minutes": 20,
+          "credits": 98525.29889923199,
+          "creditsPerSecond": 800.534805951959,
+          "computePerSecond": 2035.836,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 5,
+            "gpuServer": 1
+          },
+          "totalHardware": 12,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 17,
+          "trainingProgress": 0,
+          "trainingRequirement": 13379.658969329783,
+          "trainingRate": 2377.9501430542705,
+          "trainingEta": 5.626551510514334,
+          "quality": 6,
+          "efficiency": 4,
+          "popularity": 8,
+          "potentialDemand": 14867.62855901399,
+          "currentUsers": 8005.500544424532,
+          "capacity": 2343.4870975027598,
+          "servedUsers": 2343.4870975027598,
+          "utilization": 1,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 800.534805951959,
+          "marketing": 3,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 1625.756546029394
+        },
+        {
+          "minutes": 30,
+          "credits": 2129207.3529256494,
+          "creditsPerSecond": 8003.706123020867,
+          "computePerSecond": 17887.896,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 5,
+            "gpuServer": 10
+          },
+          "totalHardware": 21,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 27,
+          "trainingProgress": 0,
+          "trainingRequirement": 40399.20848730164,
+          "trainingRate": 21243.058460867072,
+          "trainingEta": 1.9017604532663268,
+          "quality": 7,
+          "efficiency": 5,
+          "popularity": 10,
+          "potentialDemand": 25358.301317311,
+          "currentUsers": 23011.229707626848,
+          "capacity": 23866.114375165445,
+          "servedUsers": 23011.229707626848,
+          "utilization": 0.9641799811188296,
+          "revenuePerUser": 0.3478174015345263,
+          "revenuePerSecond": 8003.706123020867,
+          "marketing": 5,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 1.9017604532663268
+        },
+        {
+          "minutes": 45,
+          "credits": 5371169.549324263,
+          "creditsPerSecond": 22806.444947783755,
+          "computePerSecond": 172730.49599999998,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 5,
+            "gpuServer": 11,
+            "miniDatacenter": 6
+          },
+          "totalHardware": 28,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 42,
+          "trainingProgress": 0,
+          "trainingRequirement": 117017.22603192745,
+          "trainingRate": 211503.60438584024,
+          "trainingEta": 0.5532635075970437,
+          "quality": 8,
+          "efficiency": 7,
+          "popularity": 12,
+          "potentialDemand": 68217.20188230908,
+          "currentUsers": 64497.030858979764,
+          "capacity": 237619.70162304837,
+          "servedUsers": 64497.030858979764,
+          "utilization": 0.2714296433268636,
+          "revenuePerUser": 0.3536045713119594,
+          "revenuePerSecond": 22806.444947783755,
+          "marketing": 8,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 2833.796788523857
+        },
+        {
+          "minutes": 60,
+          "credits": 9809783.881873813,
+          "creditsPerSecond": 29624.700718278826,
+          "computePerSecond": 307220.896,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 5,
+            "gpuServer": 15,
+            "miniDatacenter": 10
+          },
+          "totalHardware": 36,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 57,
+          "trainingProgress": 0,
+          "trainingRequirement": 245051.25268165467,
+          "trainingRate": 381568.352832,
+          "trainingEta": 0.6422211141539503,
+          "quality": 9,
+          "efficiency": 8,
+          "popularity": 13,
+          "potentialDemand": 84976.70495880127,
+          "currentUsers": 82510.86430001902,
+          "capacity": 428683.7494425601,
+          "servedUsers": 82510.86430001902,
+          "utilization": 0.19247490581882848,
+          "revenuePerUser": 0.35903999999999997,
+          "revenuePerSecond": 29624.700718278826,
+          "marketing": 11,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 2031.7577784334555
+        },
+        {
+          "minutes": 75,
+          "credits": 13266649.303254306,
+          "creditsPerSecond": 36068.79676868197,
+          "computePerSecond": 398327.296,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 5,
+            "gpuServer": 19,
+            "miniDatacenter": 13
+          },
+          "totalHardware": 43,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 72,
+          "trainingProgress": 0,
+          "trainingRequirement": 432215.43847444834,
+          "trainingRate": 501489.5153065045,
+          "trainingEta": 0.8618633596163687,
+          "quality": 10,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 101420.69484234008,
+          "currentUsers": 99040.86456824908,
+          "capacity": 563412.5685008729,
+          "servedUsers": 99040.86456824908,
+          "utilization": 0.17578746038942086,
+          "revenuePerUser": 0.36418095627413427,
+          "revenuePerSecond": 36068.79676868197,
+          "marketing": 14,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1572.920523537022
+        },
+        {
+          "minutes": 90,
+          "credits": 13967497.342550606,
+          "creditsPerSecond": 43574.052376052794,
+          "computePerSecond": 468252.096,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 5,
+            "gpuServer": 27,
+            "miniDatacenter": 15
+          },
+          "totalHardware": 53,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 87,
+          "trainingProgress": 0,
+          "trainingRequirement": 685242.1724490485,
+          "trainingRate": 589524.0397090308,
+          "trainingEta": 1.1623651052249897,
+          "quality": 13,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 117773.67210871309,
+          "currentUsers": 115207.04132301442,
+          "capacity": 662317.4428731025,
+          "servedUsers": 115207.04132301442,
+          "utilization": 0.1739453528858482,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 43574.052376052794,
+          "marketing": 17,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "Server Rack",
+          "nextActionEta": 7.1036004358296925
+        },
+        {
+          "minutes": 120,
+          "credits": 15209861.58310162,
+          "creditsPerSecond": 54247.05252186003,
+          "computePerSecond": 486243.69600000005,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 1,
+            "workstation": 10,
+            "gpuServer": 37,
+            "miniDatacenter": 15
+          },
+          "totalHardware": 68,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 117,
+          "trainingProgress": 0,
+          "trainingRequirement": 1412589.230950577,
+          "trainingRate": 635595.762616741,
+          "trainingEta": 2.2224648338355215,
+          "quality": 13,
+          "efficiency": 12,
+          "popularity": 16,
+          "potentialDemand": 146776.90520206591,
+          "currentUsers": 143425.77935148185,
+          "capacity": 714078.0220007213,
+          "servedUsers": 143425.77935148185,
+          "utilization": 0.20085449339223183,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 54247.05252186003,
+          "marketing": 22,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 958.3956362596441
+        }
+      ],
+      "events": [
+        {
+          "minute": 2,
+          "type": "model-level",
+          "value": 2
+        },
+        {
+          "minute": 3,
+          "type": "model-level",
+          "value": 3
+        },
+        {
+          "minute": 3,
+          "type": "hardware-tier",
+          "value": "Pocket Computer"
+        },
+        {
+          "minute": 4,
+          "type": "model-level",
+          "value": 4
+        },
+        {
+          "minute": 5,
+          "type": "model-level",
+          "value": 5
+        },
+        {
+          "minute": 7,
+          "type": "model-level",
+          "value": 6
+        },
+        {
+          "minute": 8,
+          "type": "model-level",
+          "value": 7
+        },
+        {
+          "minute": 8,
+          "type": "hardware-tier",
+          "value": "Laptop"
+        },
+        {
+          "minute": 10,
+          "type": "model-level",
+          "value": 8
+        },
+        {
+          "minute": 11,
+          "type": "model-level",
+          "value": 9
+        },
+        {
+          "minute": 13,
+          "type": "model-level",
+          "value": 10
+        },
+        {
+          "minute": 14,
+          "type": "model-level",
+          "value": 11
+        },
+        {
+          "minute": 14,
+          "type": "hardware-tier",
+          "value": "Gaming PC"
+        },
+        {
+          "minute": 15,
+          "type": "model-level",
+          "value": 12
+        },
+        {
+          "minute": 16,
+          "type": "model-level",
+          "value": 13
+        },
+        {
+          "minute": 17,
+          "type": "model-level",
+          "value": 14
+        },
+        {
+          "minute": 18,
+          "type": "model-level",
+          "value": 15
+        },
+        {
+          "minute": 19,
+          "type": "model-level",
+          "value": 16
+        },
+        {
+          "minute": 20,
+          "type": "model-level",
+          "value": 17
+        },
+        {
+          "minute": 20,
+          "type": "hardware-tier",
+          "value": "Workstation"
+        },
+        {
+          "minute": 21,
+          "type": "model-level",
+          "value": 18
+        },
+        {
+          "minute": 22,
+          "type": "model-level",
+          "value": 19
+        },
+        {
+          "minute": 23,
+          "type": "model-level",
+          "value": 20
+        },
+        {
+          "minute": 24,
+          "type": "model-level",
+          "value": 21
+        },
+        {
+          "minute": 25,
+          "type": "model-level",
+          "value": 22
+        },
+        {
+          "minute": 26,
+          "type": "model-level",
+          "value": 23
+        },
+        {
+          "minute": 27,
+          "type": "model-level",
+          "value": 24
+        },
+        {
+          "minute": 28,
+          "type": "model-level",
+          "value": 25
+        },
+        {
+          "minute": 29,
+          "type": "model-level",
+          "value": 26
+        },
+        {
+          "minute": 30,
+          "type": "model-level",
+          "value": 27
+        },
+        {
+          "minute": 31,
+          "type": "model-level",
+          "value": 28
+        },
+        {
+          "minute": 32,
+          "type": "model-level",
+          "value": 29
+        },
+        {
+          "minute": 32,
+          "type": "hardware-tier",
+          "value": "Server Rack"
+        },
+        {
+          "minute": 33,
+          "type": "model-level",
+          "value": 30
+        },
+        {
+          "minute": 34,
+          "type": "model-level",
+          "value": 31
+        },
+        {
+          "minute": 35,
+          "type": "model-level",
+          "value": 32
+        },
+        {
+          "minute": 36,
+          "type": "model-level",
+          "value": 33
+        },
+        {
+          "minute": 37,
+          "type": "model-level",
+          "value": 34
+        },
+        {
+          "minute": 38,
+          "type": "model-level",
+          "value": 35
+        },
+        {
+          "minute": 39,
+          "type": "model-level",
+          "value": 36
+        },
+        {
+          "minute": 40,
+          "type": "model-level",
+          "value": 37
+        },
+        {
+          "minute": 41,
+          "type": "model-level",
+          "value": 38
+        },
+        {
+          "minute": 42,
+          "type": "model-level",
+          "value": 39
+        },
+        {
+          "minute": 43,
+          "type": "model-level",
+          "value": 40
+        },
+        {
+          "minute": 44,
+          "type": "model-level",
+          "value": 41
+        },
+        {
+          "minute": 45,
+          "type": "model-level",
+          "value": 42
+        },
+        {
+          "minute": 46,
+          "type": "model-level",
+          "value": 43
+        },
+        {
+          "minute": 47,
+          "type": "model-level",
+          "value": 44
+        },
+        {
+          "minute": 48,
+          "type": "model-level",
+          "value": 45
+        },
+        {
+          "minute": 49,
+          "type": "model-level",
+          "value": 46
+        },
+        {
+          "minute": 50,
+          "type": "model-level",
+          "value": 47
+        },
+        {
+          "minute": 51,
+          "type": "model-level",
+          "value": 48
+        },
+        {
+          "minute": 52,
+          "type": "model-level",
+          "value": 49
+        },
+        {
+          "minute": 53,
+          "type": "model-level",
+          "value": 50
+        },
+        {
+          "minute": 54,
+          "type": "model-level",
+          "value": 51
+        },
+        {
+          "minute": 55,
+          "type": "model-level",
+          "value": 52
+        },
+        {
+          "minute": 56,
+          "type": "model-level",
+          "value": 53
+        },
+        {
+          "minute": 57,
+          "type": "model-level",
+          "value": 54
+        },
+        {
+          "minute": 58,
+          "type": "model-level",
+          "value": 55
+        },
+        {
+          "minute": 59,
+          "type": "model-level",
+          "value": 56
+        },
+        {
+          "minute": 60,
+          "type": "model-level",
+          "value": 57
+        },
+        {
+          "minute": 61,
+          "type": "model-level",
+          "value": 58
+        },
+        {
+          "minute": 62,
+          "type": "model-level",
+          "value": 59
+        },
+        {
+          "minute": 63,
+          "type": "model-level",
+          "value": 60
+        },
+        {
+          "minute": 64,
+          "type": "model-level",
+          "value": 61
+        },
+        {
+          "minute": 65,
+          "type": "model-level",
+          "value": 62
+        },
+        {
+          "minute": 66,
+          "type": "model-level",
+          "value": 63
+        },
+        {
+          "minute": 67,
+          "type": "model-level",
+          "value": 64
+        },
+        {
+          "minute": 68,
+          "type": "model-level",
+          "value": 65
+        },
+        {
+          "minute": 69,
+          "type": "model-level",
+          "value": 66
+        },
+        {
+          "minute": 70,
+          "type": "model-level",
+          "value": 67
+        },
+        {
+          "minute": 71,
+          "type": "model-level",
+          "value": 68
+        },
+        {
+          "minute": 72,
+          "type": "model-level",
+          "value": 69
+        },
+        {
+          "minute": 73,
+          "type": "model-level",
+          "value": 70
+        },
+        {
+          "minute": 74,
+          "type": "model-level",
+          "value": 71
+        },
+        {
+          "minute": 75,
+          "type": "model-level",
+          "value": 72
+        },
+        {
+          "minute": 76,
+          "type": "model-level",
+          "value": 73
+        },
+        {
+          "minute": 77,
+          "type": "model-level",
+          "value": 74
+        },
+        {
+          "minute": 78,
+          "type": "model-level",
+          "value": 75
+        },
+        {
+          "minute": 79,
+          "type": "model-level",
+          "value": 76
+        },
+        {
+          "minute": 80,
+          "type": "model-level",
+          "value": 77
+        },
+        {
+          "minute": 81,
+          "type": "model-level",
+          "value": 78
+        },
+        {
+          "minute": 82,
+          "type": "model-level",
+          "value": 79
+        },
+        {
+          "minute": 83,
+          "type": "model-level",
+          "value": 80
+        },
+        {
+          "minute": 84,
+          "type": "model-level",
+          "value": 81
+        },
+        {
+          "minute": 85,
+          "type": "model-level",
+          "value": 82
+        },
+        {
+          "minute": 86,
+          "type": "model-level",
+          "value": 83
+        },
+        {
+          "minute": 87,
+          "type": "model-level",
+          "value": 84
+        },
+        {
+          "minute": 88,
+          "type": "model-level",
+          "value": 85
+        },
+        {
+          "minute": 89,
+          "type": "model-level",
+          "value": 86
+        },
+        {
+          "minute": 90,
+          "type": "model-level",
+          "value": 87
+        },
+        {
+          "minute": 91,
+          "type": "model-level",
+          "value": 88
+        },
+        {
+          "minute": 92,
+          "type": "model-level",
+          "value": 89
+        },
+        {
+          "minute": 93,
+          "type": "model-level",
+          "value": 90
+        },
+        {
+          "minute": 94,
+          "type": "model-level",
+          "value": 91
+        },
+        {
+          "minute": 95,
+          "type": "model-level",
+          "value": 92
+        },
+        {
+          "minute": 96,
+          "type": "model-level",
+          "value": 93
+        },
+        {
+          "minute": 97,
+          "type": "model-level",
+          "value": 94
+        },
+        {
+          "minute": 98,
+          "type": "model-level",
+          "value": 95
+        },
+        {
+          "minute": 99,
+          "type": "model-level",
+          "value": 96
+        },
+        {
+          "minute": 100,
+          "type": "model-level",
+          "value": 97
+        },
+        {
+          "minute": 101,
+          "type": "model-level",
+          "value": 98
+        },
+        {
+          "minute": 102,
+          "type": "model-level",
+          "value": 99
+        },
+        {
+          "minute": 103,
+          "type": "model-level",
+          "value": 100
+        },
+        {
+          "minute": 104,
+          "type": "model-level",
+          "value": 101
+        },
+        {
+          "minute": 105,
+          "type": "model-level",
+          "value": 102
+        },
+        {
+          "minute": 106,
+          "type": "model-level",
+          "value": 103
+        },
+        {
+          "minute": 107,
+          "type": "model-level",
+          "value": 104
+        },
+        {
+          "minute": 108,
+          "type": "model-level",
+          "value": 105
+        },
+        {
+          "minute": 109,
+          "type": "model-level",
+          "value": 106
+        },
+        {
+          "minute": 110,
+          "type": "model-level",
+          "value": 107
+        },
+        {
+          "minute": 111,
+          "type": "model-level",
+          "value": 108
+        },
+        {
+          "minute": 112,
+          "type": "model-level",
+          "value": 109
+        },
+        {
+          "minute": 113,
+          "type": "model-level",
+          "value": 110
+        },
+        {
+          "minute": 114,
+          "type": "model-level",
+          "value": 111
+        },
+        {
+          "minute": 115,
+          "type": "model-level",
+          "value": 112
+        },
+        {
+          "minute": 116,
+          "type": "model-level",
+          "value": 113
+        },
+        {
+          "minute": 117,
+          "type": "model-level",
+          "value": 114
+        },
+        {
+          "minute": 118,
+          "type": "model-level",
+          "value": 115
+        },
+        {
+          "minute": 119,
+          "type": "model-level",
+          "value": 116
+        },
+        {
+          "minute": 120,
+          "type": "model-level",
+          "value": 117
+        }
+      ],
+      "eligibleAt": 75,
+      "maxDeadZoneMinutes": 2,
+      "eventDensityPerHour": 60.5,
+      "finalState": {
+        "minutes": 120,
+        "credits": 15209861.58310162,
+        "creditsPerSecond": 54247.05252186003,
+        "computePerSecond": 486243.69600000005,
+        "hardware": {
+          "calculator": 2,
+          "homeComputer": 3,
+          "gamingPc": 1,
+          "workstation": 10,
+          "gpuServer": 37,
+          "miniDatacenter": 15
+        },
+        "totalHardware": 68,
+        "highestHardware": "Server Rack",
+        "trainingAllocation": 60,
+        "inferenceAllocation": 40,
+        "model": "tinyChat",
+        "modelLevel": 117,
+        "trainingProgress": 0,
+        "trainingRequirement": 1412589.230950577,
+        "trainingRate": 635595.762616741,
+        "trainingEta": 2.2224648338355215,
+        "quality": 13,
+        "efficiency": 12,
+        "popularity": 16,
+        "potentialDemand": 146776.90520206591,
+        "currentUsers": 143425.77935148185,
+        "capacity": 714078.0220007213,
+        "servedUsers": 143425.77935148185,
+        "utilization": 0.20085449339223183,
+        "revenuePerUser": 0.3782238644066992,
+        "revenuePerSecond": 54247.05252186003,
+        "marketing": 22,
+        "reputation": 1,
+        "adoption": 100,
+        "developmentCycleEligible": true,
+        "nextAction": "GPU Cluster",
+        "nextActionEta": 958.3956362596441
+      }
+    },
+    {
+      "name": "HARDWARE_HEAVY",
+      "checkpoints": [
+        {
+          "minutes": 5,
+          "credits": 1620.4239031039247,
+          "creditsPerSecond": 1.4937627493264607,
+          "computePerSecond": 3.2,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1
+          },
+          "totalHardware": 3,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 4,
+          "trainingProgress": 0,
+          "trainingRequirement": 452,
+          "trainingRate": 2.254587011926903,
+          "trainingEta": 200.48017557490238,
+          "quality": 3,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 312.1536169179401,
+          "currentUsers": 184.14402679861854,
+          "capacity": 4.684530791448121,
+          "servedUsers": 4.684530791448121,
+          "utilization": 1,
+          "revenuePerUser": 0.31887136958378204,
+          "revenuePerSecond": 1.4937627493264607,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 1.3611805790383358,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 53.27224616623777
+        },
+        {
+          "minutes": 10,
+          "credits": 7655.477956834592,
+          "creditsPerSecond": 21.484575541323093,
+          "computePerSecond": 42.2,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3
+          },
+          "totalHardware": 6,
+          "highestHardware": "Laptop",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 8,
+          "trainingProgress": 0,
+          "trainingRequirement": 2258.6643558619276,
+          "trainingRate": 31.586540953769813,
+          "trainingEta": 71.50717640047125,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 5,
+          "potentialDemand": 1128.3572423345145,
+          "currentUsers": 671.9337580723118,
+          "capacity": 65.62981287061062,
+          "servedUsers": 65.62981287061062,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 21.484575541323093,
+          "marketing": 1,
+          "reputation": 1,
+          "adoption": 7.454373475531959,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 71.50717640047125
+        },
+        {
+          "minutes": 15,
+          "credits": 41319.32080157193,
+          "creditsPerSecond": 308.3845976453678,
+          "computePerSecond": 592.2,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 5
+          },
+          "totalHardware": 11,
+          "highestHardware": "Gaming PC",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 13,
+          "trainingProgress": 0,
+          "trainingRequirement": 7080.62440720402,
+          "trainingRate": 443.2594680763621,
+          "trainingEta": 15.973994730292398,
+          "quality": 5,
+          "efficiency": 3,
+          "popularity": 8,
+          "potentialDemand": 4324.640112460176,
+          "currentUsers": 2952.2252815577895,
+          "capacity": 920.9946725586636,
+          "servedUsers": 920.9946725586636,
+          "utilization": 1,
+          "revenuePerUser": 0.33483863352719334,
+          "revenuePerSecond": 308.3845976453678,
+          "marketing": 1,
+          "reputation": 1,
+          "adoption": 36.53308529553761,
+          "developmentCycleEligible": false,
+          "nextAction": "Workstation",
+          "nextActionEta": 11.9353535375354
+        },
+        {
+          "minutes": 20,
+          "credits": 418889.88661725423,
+          "creditsPerSecond": 3295.4207216731206,
+          "computePerSecond": 6351.732,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 5,
+            "gpuServer": 4
+          },
+          "totalHardware": 15,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 18,
+          "trainingProgress": 0,
+          "trainingRequirement": 15329.23245232651,
+          "trainingRate": 4838.553457210995,
+          "trainingEta": 3.1681436586137215,
+          "quality": 6,
+          "efficiency": 4,
+          "popularity": 8,
+          "potentialDemand": 14499.24467305502,
+          "currentUsers": 9647.020822412116,
+          "capacity": 10053.438849982844,
+          "servedUsers": 9647.020822412116,
+          "utilization": 0.9595742279198902,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 3295.4207216731206,
+          "marketing": 2,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 297.7192280579657
+        },
+        {
+          "minutes": 30,
+          "credits": 1359069.02085667,
+          "creditsPerSecond": 11941.0752764298,
+          "computePerSecond": 68952.952,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 5,
+            "gpuServer": 10,
+            "miniDatacenter": 2
+          },
+          "totalHardware": 23,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 28,
+          "trainingProgress": 0,
+          "trainingRequirement": 44082.57347386887,
+          "trainingRate": 61414.63997716785,
+          "trainingEta": 0.7177860765813733,
+          "quality": 7,
+          "efficiency": 5,
+          "popularity": 10,
+          "potentialDemand": 45364.64759216591,
+          "currentUsers": 34331.44869620464,
+          "capacity": 126496.35700804488,
+          "servedUsers": 34331.44869620464,
+          "utilization": 0.27140266730385953,
+          "revenuePerUser": 0.3478174015345263,
+          "revenuePerSecond": 11941.0752764298,
+          "marketing": 3,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 46.84862679390033
+        },
+        {
+          "minutes": 45,
+          "credits": 2114173.5039578257,
+          "creditsPerSecond": 21305.039901524975,
+          "computePerSecond": 206888.552,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 5,
+            "gpuServer": 16,
+            "miniDatacenter": 7
+          },
+          "totalHardware": 34,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 43,
+          "trainingProgress": 0,
+          "trainingRequirement": 123861.23256719239,
+          "trainingRate": 189996.8830091561,
+          "trainingEta": 0.6519119187930227,
+          "quality": 8,
+          "efficiency": 7,
+          "popularity": 12,
+          "potentialDemand": 63392.99168626598,
+          "currentUsers": 60251.030755847045,
+          "capacity": 391338.5074385691,
+          "servedUsers": 60251.030755847045,
+          "utilization": 0.15396141603904143,
+          "revenuePerUser": 0.3536045713119594,
+          "revenuePerSecond": 21305.039901524975,
+          "marketing": 5,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 98.71722868219707
+        },
+        {
+          "minutes": 60,
+          "credits": 4389514.719040431,
+          "creditsPerSecond": 28001.67021232035,
+          "computePerSecond": 276877.152,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 5,
+            "gpuServer": 27,
+            "miniDatacenter": 9
+          },
+          "totalHardware": 47,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 58,
+          "trainingProgress": 0,
+          "trainingRequirement": 255610.41618907262,
+          "trainingRate": 257911.06708799998,
+          "trainingEta": 0.9910796736064748,
+          "quality": 10,
+          "efficiency": 8,
+          "popularity": 13,
+          "potentialDemand": 80120.42206706697,
+          "currentUsers": 76889.44116902785,
+          "capacity": 531222.0413702402,
+          "servedUsers": 76889.44116902785,
+          "utilization": 0.14474068314390412,
+          "revenuePerUser": 0.36418095627413427,
+          "revenuePerSecond": 28001.67021232035,
+          "marketing": 7,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 41.37479200972151
+        },
+        {
+          "minutes": 75,
+          "credits": 3162542.061374453,
+          "creditsPerSecond": 33514.28844436084,
+          "computePerSecond": 340485.752,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 9,
+            "gpuServer": 34,
+            "miniDatacenter": 10
+          },
+          "totalHardware": 59,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 73,
+          "trainingProgress": 0,
+          "trainingRequirement": 446964.7156497755,
+          "trainingRate": 321500.7541296844,
+          "trainingEta": 1.3902446881026054,
+          "quality": 10,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 94649.23000831433,
+          "currentUsers": 92026.47163992077,
+          "capacity": 662198.3648827645,
+          "servedUsers": 92026.47163992077,
+          "utilization": 0.13897115504991184,
+          "revenuePerUser": 0.36418095627413427,
+          "revenuePerSecond": 33514.28844436084,
+          "marketing": 9,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "Workstation",
+          "nextActionEta": 74.22344480788476
+        },
+        {
+          "minutes": 90,
+          "credits": 7808834.348544112,
+          "creditsPerSecond": 40514.80379220086,
+          "computePerSecond": 427521.712,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 16,
+            "gpuServer": 35,
+            "miniDatacenter": 13
+          },
+          "totalHardware": 70,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 88,
+          "trainingProgress": 0,
+          "trainingRequirement": 704603.8539492348,
+          "trainingRate": 403683.71365746233,
+          "trainingEta": 1.7454354240981647,
+          "quality": 13,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 110082.89760854973,
+          "currentUsers": 107118.58136121156,
+          "capacity": 831471.4403622982,
+          "servedUsers": 107118.58136121156,
+          "utilization": 0.12883013915010313,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 40514.80379220086,
+          "marketing": 11,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "Server Rack",
+          "nextActionEta": 64.4131627747943
+        },
+        {
+          "minutes": 120,
+          "credits": 17933717.196905337,
+          "creditsPerSecond": 50816.542801926094,
+          "computePerSecond": 494805.19200000004,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 1,
+            "gamingPc": 3,
+            "workstation": 34,
+            "gpuServer": 40,
+            "miniDatacenter": 15
+          },
+          "totalHardware": 95,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 118,
+          "trainingProgress": 0,
+          "trainingRequirement": 1442298.5222555103,
+          "trainingRate": 485090.2221608899,
+          "trainingEta": 2.973258285501255,
+          "quality": 13,
+          "efficiency": 12,
+          "popularity": 16,
+          "potentialDemand": 136972.64310877863,
+          "currentUsers": 134355.72840344027,
+          "capacity": 999145.2517899376,
+          "servedUsers": 134355.72840344027,
+          "utilization": 0.13447066696533477,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 50816.542801926094,
+          "marketing": 14,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 928.1678800334863
+        }
+      ],
+      "events": [
+        {
+          "minute": 2,
+          "type": "model-level",
+          "value": 2
+        },
+        {
+          "minute": 3,
+          "type": "model-level",
+          "value": 3
+        },
+        {
+          "minute": 3,
+          "type": "hardware-tier",
+          "value": "Pocket Computer"
+        },
+        {
+          "minute": 5,
+          "type": "model-level",
+          "value": 4
+        },
+        {
+          "minute": 7,
+          "type": "model-level",
+          "value": 5
+        },
+        {
+          "minute": 7,
+          "type": "hardware-tier",
+          "value": "Laptop"
+        },
+        {
+          "minute": 8,
+          "type": "model-level",
+          "value": 6
+        },
+        {
+          "minute": 9,
+          "type": "model-level",
+          "value": 7
+        },
+        {
+          "minute": 10,
+          "type": "model-level",
+          "value": 8
+        },
+        {
+          "minute": 11,
+          "type": "model-level",
+          "value": 9
+        },
+        {
+          "minute": 11,
+          "type": "hardware-tier",
+          "value": "Gaming PC"
+        },
+        {
+          "minute": 12,
+          "type": "model-level",
+          "value": 10
+        },
+        {
+          "minute": 13,
+          "type": "model-level",
+          "value": 11
+        },
+        {
+          "minute": 14,
+          "type": "model-level",
+          "value": 12
+        },
+        {
+          "minute": 15,
+          "type": "model-level",
+          "value": 13
+        },
+        {
+          "minute": 16,
+          "type": "model-level",
+          "value": 14
+        },
+        {
+          "minute": 17,
+          "type": "model-level",
+          "value": 15
+        },
+        {
+          "minute": 17,
+          "type": "hardware-tier",
+          "value": "Workstation"
+        },
+        {
+          "minute": 18,
+          "type": "model-level",
+          "value": 16
+        },
+        {
+          "minute": 19,
+          "type": "model-level",
+          "value": 17
+        },
+        {
+          "minute": 20,
+          "type": "model-level",
+          "value": 18
+        },
+        {
+          "minute": 21,
+          "type": "model-level",
+          "value": 19
+        },
+        {
+          "minute": 22,
+          "type": "model-level",
+          "value": 20
+        },
+        {
+          "minute": 23,
+          "type": "model-level",
+          "value": 21
+        },
+        {
+          "minute": 24,
+          "type": "model-level",
+          "value": 22
+        },
+        {
+          "minute": 25,
+          "type": "model-level",
+          "value": 23
+        },
+        {
+          "minute": 26,
+          "type": "model-level",
+          "value": 24
+        },
+        {
+          "minute": 27,
+          "type": "model-level",
+          "value": 25
+        },
+        {
+          "minute": 28,
+          "type": "model-level",
+          "value": 26
+        },
+        {
+          "minute": 28,
+          "type": "hardware-tier",
+          "value": "Server Rack"
+        },
+        {
+          "minute": 29,
+          "type": "model-level",
+          "value": 27
+        },
+        {
+          "minute": 30,
+          "type": "model-level",
+          "value": 28
+        },
+        {
+          "minute": 31,
+          "type": "model-level",
+          "value": 29
+        },
+        {
+          "minute": 32,
+          "type": "model-level",
+          "value": 30
+        },
+        {
+          "minute": 33,
+          "type": "model-level",
+          "value": 31
+        },
+        {
+          "minute": 34,
+          "type": "model-level",
+          "value": 32
+        },
+        {
+          "minute": 35,
+          "type": "model-level",
+          "value": 33
+        },
+        {
+          "minute": 36,
+          "type": "model-level",
+          "value": 34
+        },
+        {
+          "minute": 37,
+          "type": "model-level",
+          "value": 35
+        },
+        {
+          "minute": 38,
+          "type": "model-level",
+          "value": 36
+        },
+        {
+          "minute": 39,
+          "type": "model-level",
+          "value": 37
+        },
+        {
+          "minute": 40,
+          "type": "model-level",
+          "value": 38
+        },
+        {
+          "minute": 41,
+          "type": "model-level",
+          "value": 39
+        },
+        {
+          "minute": 42,
+          "type": "model-level",
+          "value": 40
+        },
+        {
+          "minute": 43,
+          "type": "model-level",
+          "value": 41
+        },
+        {
+          "minute": 44,
+          "type": "model-level",
+          "value": 42
+        },
+        {
+          "minute": 45,
+          "type": "model-level",
+          "value": 43
+        },
+        {
+          "minute": 46,
+          "type": "model-level",
+          "value": 44
+        },
+        {
+          "minute": 47,
+          "type": "model-level",
+          "value": 45
+        },
+        {
+          "minute": 48,
+          "type": "model-level",
+          "value": 46
+        },
+        {
+          "minute": 49,
+          "type": "model-level",
+          "value": 47
+        },
+        {
+          "minute": 50,
+          "type": "model-level",
+          "value": 48
+        },
+        {
+          "minute": 51,
+          "type": "model-level",
+          "value": 49
+        },
+        {
+          "minute": 52,
+          "type": "model-level",
+          "value": 50
+        },
+        {
+          "minute": 53,
+          "type": "model-level",
+          "value": 51
+        },
+        {
+          "minute": 54,
+          "type": "model-level",
+          "value": 52
+        },
+        {
+          "minute": 55,
+          "type": "model-level",
+          "value": 53
+        },
+        {
+          "minute": 56,
+          "type": "model-level",
+          "value": 54
+        },
+        {
+          "minute": 57,
+          "type": "model-level",
+          "value": 55
+        },
+        {
+          "minute": 58,
+          "type": "model-level",
+          "value": 56
+        },
+        {
+          "minute": 59,
+          "type": "model-level",
+          "value": 57
+        },
+        {
+          "minute": 60,
+          "type": "model-level",
+          "value": 58
+        },
+        {
+          "minute": 61,
+          "type": "model-level",
+          "value": 59
+        },
+        {
+          "minute": 62,
+          "type": "model-level",
+          "value": 60
+        },
+        {
+          "minute": 63,
+          "type": "model-level",
+          "value": 61
+        },
+        {
+          "minute": 64,
+          "type": "model-level",
+          "value": 62
+        },
+        {
+          "minute": 65,
+          "type": "model-level",
+          "value": 63
+        },
+        {
+          "minute": 66,
+          "type": "model-level",
+          "value": 64
+        },
+        {
+          "minute": 67,
+          "type": "model-level",
+          "value": 65
+        },
+        {
+          "minute": 68,
+          "type": "model-level",
+          "value": 66
+        },
+        {
+          "minute": 69,
+          "type": "model-level",
+          "value": 67
+        },
+        {
+          "minute": 70,
+          "type": "model-level",
+          "value": 68
+        },
+        {
+          "minute": 71,
+          "type": "model-level",
+          "value": 69
+        },
+        {
+          "minute": 72,
+          "type": "model-level",
+          "value": 70
+        },
+        {
+          "minute": 73,
+          "type": "model-level",
+          "value": 71
+        },
+        {
+          "minute": 74,
+          "type": "model-level",
+          "value": 72
+        },
+        {
+          "minute": 75,
+          "type": "model-level",
+          "value": 73
+        },
+        {
+          "minute": 76,
+          "type": "model-level",
+          "value": 74
+        },
+        {
+          "minute": 77,
+          "type": "model-level",
+          "value": 75
+        },
+        {
+          "minute": 78,
+          "type": "model-level",
+          "value": 76
+        },
+        {
+          "minute": 79,
+          "type": "model-level",
+          "value": 77
+        },
+        {
+          "minute": 80,
+          "type": "model-level",
+          "value": 78
+        },
+        {
+          "minute": 81,
+          "type": "model-level",
+          "value": 79
+        },
+        {
+          "minute": 82,
+          "type": "model-level",
+          "value": 80
+        },
+        {
+          "minute": 83,
+          "type": "model-level",
+          "value": 81
+        },
+        {
+          "minute": 84,
+          "type": "model-level",
+          "value": 82
+        },
+        {
+          "minute": 85,
+          "type": "model-level",
+          "value": 83
+        },
+        {
+          "minute": 86,
+          "type": "model-level",
+          "value": 84
+        },
+        {
+          "minute": 87,
+          "type": "model-level",
+          "value": 85
+        },
+        {
+          "minute": 88,
+          "type": "model-level",
+          "value": 86
+        },
+        {
+          "minute": 89,
+          "type": "model-level",
+          "value": 87
+        },
+        {
+          "minute": 90,
+          "type": "model-level",
+          "value": 88
+        },
+        {
+          "minute": 91,
+          "type": "model-level",
+          "value": 89
+        },
+        {
+          "minute": 92,
+          "type": "model-level",
+          "value": 90
+        },
+        {
+          "minute": 93,
+          "type": "model-level",
+          "value": 91
+        },
+        {
+          "minute": 94,
+          "type": "model-level",
+          "value": 92
+        },
+        {
+          "minute": 95,
+          "type": "model-level",
+          "value": 93
+        },
+        {
+          "minute": 96,
+          "type": "model-level",
+          "value": 94
+        },
+        {
+          "minute": 97,
+          "type": "model-level",
+          "value": 95
+        },
+        {
+          "minute": 98,
+          "type": "model-level",
+          "value": 96
+        },
+        {
+          "minute": 99,
+          "type": "model-level",
+          "value": 97
+        },
+        {
+          "minute": 100,
+          "type": "model-level",
+          "value": 98
+        },
+        {
+          "minute": 101,
+          "type": "model-level",
+          "value": 99
+        },
+        {
+          "minute": 102,
+          "type": "model-level",
+          "value": 100
+        },
+        {
+          "minute": 103,
+          "type": "model-level",
+          "value": 101
+        },
+        {
+          "minute": 104,
+          "type": "model-level",
+          "value": 102
+        },
+        {
+          "minute": 105,
+          "type": "model-level",
+          "value": 103
+        },
+        {
+          "minute": 106,
+          "type": "model-level",
+          "value": 104
+        },
+        {
+          "minute": 107,
+          "type": "model-level",
+          "value": 105
+        },
+        {
+          "minute": 108,
+          "type": "model-level",
+          "value": 106
+        },
+        {
+          "minute": 109,
+          "type": "model-level",
+          "value": 107
+        },
+        {
+          "minute": 110,
+          "type": "model-level",
+          "value": 108
+        },
+        {
+          "minute": 111,
+          "type": "model-level",
+          "value": 109
+        },
+        {
+          "minute": 112,
+          "type": "model-level",
+          "value": 110
+        },
+        {
+          "minute": 113,
+          "type": "model-level",
+          "value": 111
+        },
+        {
+          "minute": 114,
+          "type": "model-level",
+          "value": 112
+        },
+        {
+          "minute": 115,
+          "type": "model-level",
+          "value": 113
+        },
+        {
+          "minute": 116,
+          "type": "model-level",
+          "value": 114
+        },
+        {
+          "minute": 117,
+          "type": "model-level",
+          "value": 115
+        },
+        {
+          "minute": 118,
+          "type": "model-level",
+          "value": 116
+        },
+        {
+          "minute": 119,
+          "type": "model-level",
+          "value": 117
+        },
+        {
+          "minute": 120,
+          "type": "model-level",
+          "value": 118
+        }
+      ],
+      "eligibleAt": 75,
+      "maxDeadZoneMinutes": 2,
+      "eventDensityPerHour": 61,
+      "finalState": {
+        "minutes": 120,
+        "credits": 17933717.196905337,
+        "creditsPerSecond": 50816.542801926094,
+        "computePerSecond": 494805.19200000004,
+        "hardware": {
+          "calculator": 2,
+          "homeComputer": 1,
+          "gamingPc": 3,
+          "workstation": 34,
+          "gpuServer": 40,
+          "miniDatacenter": 15
+        },
+        "totalHardware": 95,
+        "highestHardware": "Server Rack",
+        "trainingAllocation": 45,
+        "inferenceAllocation": 55,
+        "model": "tinyChat",
+        "modelLevel": 118,
+        "trainingProgress": 0,
+        "trainingRequirement": 1442298.5222555103,
+        "trainingRate": 485090.2221608899,
+        "trainingEta": 2.973258285501255,
+        "quality": 13,
+        "efficiency": 12,
+        "popularity": 16,
+        "potentialDemand": 136972.64310877863,
+        "currentUsers": 134355.72840344027,
+        "capacity": 999145.2517899376,
+        "servedUsers": 134355.72840344027,
+        "utilization": 0.13447066696533477,
+        "revenuePerUser": 0.3782238644066992,
+        "revenuePerSecond": 50816.542801926094,
+        "marketing": 14,
+        "reputation": 1,
+        "adoption": 100,
+        "developmentCycleEligible": true,
+        "nextAction": "GPU Cluster",
+        "nextActionEta": 928.1678800334863
+      }
+    },
+    {
+      "name": "TRAINING_HEAVY",
+      "checkpoints": [
+        {
+          "minutes": 5,
+          "credits": 912.9301029474052,
+          "creditsPerSecond": 1.1919694908223915,
+          "computePerSecond": 7.6000000000000005,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3
+          },
+          "totalHardware": 5,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 756.4144452187053,
+          "trainingRate": 9.757351568283653,
+          "trainingEta": 77.52251622022479,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 336.3884692475154,
+          "currentUsers": 192.64136492354984,
+          "capacity": 3.641158024261949,
+          "servedUsers": 3.641158024261949,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 1.1919694908223915,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 1.3920257220685717,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 660.3104384069102
+        },
+        {
+          "minutes": 10,
+          "credits": 7775.845412438906,
+          "creditsPerSecond": 5.598393488751487,
+          "computePerSecond": 33.6,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2
+          },
+          "totalHardware": 7,
+          "highestHardware": "Laptop",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 10,
+          "trainingProgress": 0,
+          "trainingRequirement": 3812.9360111431224,
+          "trainingRate": 45.8279292447744,
+          "trainingEta": 83.20114118134408,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 7,
+          "potentialDemand": 1545.4781985169634,
+          "currentUsers": 890.8825938095755,
+          "capacity": 17.101641888903615,
+          "servedUsers": 17.101641888903615,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 5.598393488751487,
+          "marketing": 1,
+          "reputation": 1,
+          "adoption": 8.820777780789841,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 83.20114118134408
+        },
+        {
+          "minutes": 15,
+          "credits": 16945.1036361503,
+          "creditsPerSecond": 82.34322582446188,
+          "computePerSecond": 473.6,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 4
+          },
+          "totalHardware": 11,
+          "highestHardware": "Gaming PC",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 15,
+          "trainingProgress": 0,
+          "trainingRequirement": 9938.330649621685,
+          "trainingRate": 645.9555741168201,
+          "trainingEta": 15.385470840173216,
+          "quality": 6,
+          "efficiency": 3,
+          "popularity": 8,
+          "potentialDemand": 4755.685715183458,
+          "currentUsers": 3370.2941177946514,
+          "capacity": 241.05171424359384,
+          "servedUsers": 241.05171424359384,
+          "utilization": 1,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 82.34322582446188,
+          "marketing": 1,
+          "reputation": 1,
+          "adoption": 43.95690634140321,
+          "developmentCycleEligible": false,
+          "nextAction": "Workstation",
+          "nextActionEta": 340.7067926104417
+        },
+        {
+          "minutes": 20,
+          "credits": 106605.69121262446,
+          "creditsPerSecond": 1141.0802533714818,
+          "computePerSecond": 6342.616000000001,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 5,
+            "gpuServer": 4
+          },
+          "totalHardware": 16,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 20,
+          "trainingProgress": 0,
+          "trainingRequirement": 19705.26224699857,
+          "trainingRate": 8951.399982206844,
+          "trainingEta": 2.201360936408576,
+          "quality": 6,
+          "efficiency": 5,
+          "popularity": 8,
+          "potentialDemand": 12954.060060319553,
+          "currentUsers": 9669.318458013395,
+          "capacity": 3340.4004811649925,
+          "servedUsers": 3340.4004811649925,
+          "utilization": 1,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 1141.0802533714818,
+          "marketing": 2,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 1133.4823339251209
+        },
+        {
+          "minutes": 30,
+          "credits": 402561.3993477246,
+          "creditsPerSecond": 3926.070267565212,
+          "computePerSecond": 21081.916,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 5,
+            "gpuServer": 13
+          },
+          "totalHardware": 25,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 30,
+          "trainingProgress": 0,
+          "trainingRequirement": 52025.77564914521,
+          "trainingRate": 34216.09662060246,
+          "trainingEta": 1.5205058667568483,
+          "quality": 8,
+          "efficiency": 5,
+          "popularity": 10,
+          "potentialDemand": 24303.01776013167,
+          "currentUsers": 20237.68515344133,
+          "capacity": 11102.996358329112,
+          "servedUsers": 11102.996358329112,
+          "utilization": 1,
+          "revenuePerUser": 0.3536045713119594,
+          "revenuePerSecond": 3926.070267565212,
+          "marketing": 3,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 254.05520856121763
+        },
+        {
+          "minutes": 45,
+          "credits": 3239575.4633529857,
+          "creditsPerSecond": 13480.073113070559,
+          "computePerSecond": 60648.976,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 5,
+            "gpuServer": 20,
+            "miniDatacenter": 1
+          },
+          "totalHardware": 33,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 45,
+          "trainingProgress": 0,
+          "trainingRequirement": 138246.2101881454,
+          "trainingRate": 101492.70496676379,
+          "trainingEta": 1.3621295267814315,
+          "quality": 9,
+          "efficiency": 7,
+          "popularity": 12,
+          "potentialDemand": 64548.17710642708,
+          "currentUsers": 46095.56555639379,
+          "capacity": 37544.76691474643,
+          "servedUsers": 37544.76691474643,
+          "utilization": 1,
+          "revenuePerUser": 0.35903999999999997,
+          "revenuePerSecond": 13480.073113070559,
+          "marketing": 5,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 4952.5268874035055
+        },
+        {
+          "minutes": 60,
+          "credits": 5027506.684874494,
+          "creditsPerSecond": 28546.047267964255,
+          "computePerSecond": 241011.576,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 5,
+            "gpuServer": 21,
+            "miniDatacenter": 8
+          },
+          "totalHardware": 41,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 60,
+          "trainingProgress": 0,
+          "trainingRequirement": 277526.5807878939,
+          "trainingRate": 409093.0491024,
+          "trainingEta": 0.6783947598152084,
+          "quality": 10,
+          "efficiency": 8,
+          "popularity": 13,
+          "potentialDemand": 81319.74233564144,
+          "currentUsers": 78384.23941771532,
+          "capacity": 151334.060709312,
+          "servedUsers": 78384.23941771532,
+          "utilization": 0.5179550396673663,
+          "revenuePerUser": 0.36418095627413427,
+          "revenuePerSecond": 28546.047267964255,
+          "marketing": 7,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 2276.0591932474226
+        },
+        {
+          "minutes": 75,
+          "credits": 7759026.510464605,
+          "creditsPerSecond": 34633.64182143981,
+          "computePerSecond": 355979.1759999999,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 5,
+            "gpuServer": 27,
+            "miniDatacenter": 11
+          },
+          "totalHardware": 50,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 75,
+          "trainingProgress": 0,
+          "trainingRequirement": 477349.64618443477,
+          "trainingRate": 612504.0785295486,
+          "trainingEta": 0.7793411716219394,
+          "quality": 11,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 96887.54692337161,
+          "currentUsers": 93840.135024226,
+          "capacity": 226581.04215720866,
+          "servedUsers": 93840.135024226,
+          "utilization": 0.4141570456680878,
+          "revenuePerUser": 0.36907067335845906,
+          "revenuePerSecond": 34633.64182143981,
+          "marketing": 9,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1716.2784611561904
+        },
+        {
+          "minutes": 90,
+          "credits": 11083434.853340423,
+          "creditsPerSecond": 41034.22987876922,
+          "computePerSecond": 396109.37599999993,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 5,
+            "gpuServer": 34,
+            "miniDatacenter": 12
+          },
+          "totalHardware": 58,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 90,
+          "trainingProgress": 0,
+          "trainingRequirement": 744293.4507077788,
+          "trainingRate": 681552.8117964814,
+          "trainingEta": 1.092055432573041,
+          "quality": 13,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 111250.42235488984,
+          "currentUsers": 108491.91111496245,
+          "capacity": 252123.9478972265,
+          "servedUsers": 108491.91111496245,
+          "utilization": 0.43031180504593364,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 41034.22987876922,
+          "marketing": 11,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1367.5549733100713
+        },
+        {
+          "minutes": 120,
+          "credits": 8957124.410776448,
+          "creditsPerSecond": 51437.36368421425,
+          "computePerSecond": 517265.57600000006,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 7,
+            "gpuServer": 39,
+            "miniDatacenter": 16
+          },
+          "totalHardware": 69,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 120,
+          "trainingProgress": 0,
+          "trainingRequirement": 1502824.8207726467,
+          "trainingRate": 924066.4197305036,
+          "trainingEta": 1.626316884462627,
+          "quality": 13,
+          "efficiency": 12,
+          "popularity": 16,
+          "potentialDemand": 138117.7602807589,
+          "currentUsers": 135997.13959060056,
+          "capacity": 341835.98076223634,
+          "servedUsers": 135997.13959060056,
+          "utilization": 0.3978432559596271,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 51437.36368421425,
+          "marketing": 14,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "Workstation",
+          "nextActionEta": 50.78807314584982
+        }
+      ],
+      "events": [
+        {
+          "minute": 2,
+          "type": "model-level",
+          "value": 2
+        },
+        {
+          "minute": 3,
+          "type": "model-level",
+          "value": 3
+        },
+        {
+          "minute": 3,
+          "type": "hardware-tier",
+          "value": "Pocket Computer"
+        },
+        {
+          "minute": 4,
+          "type": "model-level",
+          "value": 4
+        },
+        {
+          "minute": 5,
+          "type": "model-level",
+          "value": 5
+        },
+        {
+          "minute": 6,
+          "type": "model-level",
+          "value": 6
+        },
+        {
+          "minute": 7,
+          "type": "model-level",
+          "value": 7
+        },
+        {
+          "minute": 7,
+          "type": "hardware-tier",
+          "value": "Laptop"
+        },
+        {
+          "minute": 8,
+          "type": "model-level",
+          "value": 8
+        },
+        {
+          "minute": 9,
+          "type": "model-level",
+          "value": 9
+        },
+        {
+          "minute": 10,
+          "type": "model-level",
+          "value": 10
+        },
+        {
+          "minute": 11,
+          "type": "model-level",
+          "value": 11
+        },
+        {
+          "minute": 11,
+          "type": "hardware-tier",
+          "value": "Gaming PC"
+        },
+        {
+          "minute": 12,
+          "type": "model-level",
+          "value": 12
+        },
+        {
+          "minute": 13,
+          "type": "model-level",
+          "value": 13
+        },
+        {
+          "minute": 14,
+          "type": "model-level",
+          "value": 14
+        },
+        {
+          "minute": 15,
+          "type": "model-level",
+          "value": 15
+        },
+        {
+          "minute": 16,
+          "type": "model-level",
+          "value": 16
+        },
+        {
+          "minute": 17,
+          "type": "model-level",
+          "value": 17
+        },
+        {
+          "minute": 17,
+          "type": "hardware-tier",
+          "value": "Workstation"
+        },
+        {
+          "minute": 18,
+          "type": "model-level",
+          "value": 18
+        },
+        {
+          "minute": 19,
+          "type": "model-level",
+          "value": 19
+        },
+        {
+          "minute": 20,
+          "type": "model-level",
+          "value": 20
+        },
+        {
+          "minute": 21,
+          "type": "model-level",
+          "value": 21
+        },
+        {
+          "minute": 22,
+          "type": "model-level",
+          "value": 22
+        },
+        {
+          "minute": 23,
+          "type": "model-level",
+          "value": 23
+        },
+        {
+          "minute": 24,
+          "type": "model-level",
+          "value": 24
+        },
+        {
+          "minute": 25,
+          "type": "model-level",
+          "value": 25
+        },
+        {
+          "minute": 26,
+          "type": "model-level",
+          "value": 26
+        },
+        {
+          "minute": 27,
+          "type": "model-level",
+          "value": 27
+        },
+        {
+          "minute": 28,
+          "type": "model-level",
+          "value": 28
+        },
+        {
+          "minute": 29,
+          "type": "model-level",
+          "value": 29
+        },
+        {
+          "minute": 30,
+          "type": "model-level",
+          "value": 30
+        },
+        {
+          "minute": 31,
+          "type": "model-level",
+          "value": 31
+        },
+        {
+          "minute": 32,
+          "type": "model-level",
+          "value": 32
+        },
+        {
+          "minute": 33,
+          "type": "model-level",
+          "value": 33
+        },
+        {
+          "minute": 34,
+          "type": "model-level",
+          "value": 34
+        },
+        {
+          "minute": 35,
+          "type": "model-level",
+          "value": 35
+        },
+        {
+          "minute": 36,
+          "type": "model-level",
+          "value": 36
+        },
+        {
+          "minute": 37,
+          "type": "model-level",
+          "value": 37
+        },
+        {
+          "minute": 38,
+          "type": "model-level",
+          "value": 38
+        },
+        {
+          "minute": 39,
+          "type": "model-level",
+          "value": 39
+        },
+        {
+          "minute": 40,
+          "type": "model-level",
+          "value": 40
+        },
+        {
+          "minute": 41,
+          "type": "model-level",
+          "value": 41
+        },
+        {
+          "minute": 42,
+          "type": "model-level",
+          "value": 42
+        },
+        {
+          "minute": 43,
+          "type": "model-level",
+          "value": 43
+        },
+        {
+          "minute": 44,
+          "type": "model-level",
+          "value": 44
+        },
+        {
+          "minute": 44,
+          "type": "hardware-tier",
+          "value": "Server Rack"
+        },
+        {
+          "minute": 45,
+          "type": "model-level",
+          "value": 45
+        },
+        {
+          "minute": 46,
+          "type": "model-level",
+          "value": 46
+        },
+        {
+          "minute": 47,
+          "type": "model-level",
+          "value": 47
+        },
+        {
+          "minute": 48,
+          "type": "model-level",
+          "value": 48
+        },
+        {
+          "minute": 49,
+          "type": "model-level",
+          "value": 49
+        },
+        {
+          "minute": 50,
+          "type": "model-level",
+          "value": 50
+        },
+        {
+          "minute": 51,
+          "type": "model-level",
+          "value": 51
+        },
+        {
+          "minute": 52,
+          "type": "model-level",
+          "value": 52
+        },
+        {
+          "minute": 53,
+          "type": "model-level",
+          "value": 53
+        },
+        {
+          "minute": 54,
+          "type": "model-level",
+          "value": 54
+        },
+        {
+          "minute": 55,
+          "type": "model-level",
+          "value": 55
+        },
+        {
+          "minute": 56,
+          "type": "model-level",
+          "value": 56
+        },
+        {
+          "minute": 57,
+          "type": "model-level",
+          "value": 57
+        },
+        {
+          "minute": 58,
+          "type": "model-level",
+          "value": 58
+        },
+        {
+          "minute": 59,
+          "type": "model-level",
+          "value": 59
+        },
+        {
+          "minute": 60,
+          "type": "model-level",
+          "value": 60
+        },
+        {
+          "minute": 61,
+          "type": "model-level",
+          "value": 61
+        },
+        {
+          "minute": 62,
+          "type": "model-level",
+          "value": 62
+        },
+        {
+          "minute": 63,
+          "type": "model-level",
+          "value": 63
+        },
+        {
+          "minute": 64,
+          "type": "model-level",
+          "value": 64
+        },
+        {
+          "minute": 65,
+          "type": "model-level",
+          "value": 65
+        },
+        {
+          "minute": 66,
+          "type": "model-level",
+          "value": 66
+        },
+        {
+          "minute": 67,
+          "type": "model-level",
+          "value": 67
+        },
+        {
+          "minute": 68,
+          "type": "model-level",
+          "value": 68
+        },
+        {
+          "minute": 69,
+          "type": "model-level",
+          "value": 69
+        },
+        {
+          "minute": 70,
+          "type": "model-level",
+          "value": 70
+        },
+        {
+          "minute": 71,
+          "type": "model-level",
+          "value": 71
+        },
+        {
+          "minute": 72,
+          "type": "model-level",
+          "value": 72
+        },
+        {
+          "minute": 73,
+          "type": "model-level",
+          "value": 73
+        },
+        {
+          "minute": 74,
+          "type": "model-level",
+          "value": 74
+        },
+        {
+          "minute": 75,
+          "type": "model-level",
+          "value": 75
+        },
+        {
+          "minute": 76,
+          "type": "model-level",
+          "value": 76
+        },
+        {
+          "minute": 77,
+          "type": "model-level",
+          "value": 77
+        },
+        {
+          "minute": 78,
+          "type": "model-level",
+          "value": 78
+        },
+        {
+          "minute": 79,
+          "type": "model-level",
+          "value": 79
+        },
+        {
+          "minute": 80,
+          "type": "model-level",
+          "value": 80
+        },
+        {
+          "minute": 81,
+          "type": "model-level",
+          "value": 81
+        },
+        {
+          "minute": 82,
+          "type": "model-level",
+          "value": 82
+        },
+        {
+          "minute": 83,
+          "type": "model-level",
+          "value": 83
+        },
+        {
+          "minute": 84,
+          "type": "model-level",
+          "value": 84
+        },
+        {
+          "minute": 85,
+          "type": "model-level",
+          "value": 85
+        },
+        {
+          "minute": 86,
+          "type": "model-level",
+          "value": 86
+        },
+        {
+          "minute": 87,
+          "type": "model-level",
+          "value": 87
+        },
+        {
+          "minute": 88,
+          "type": "model-level",
+          "value": 88
+        },
+        {
+          "minute": 89,
+          "type": "model-level",
+          "value": 89
+        },
+        {
+          "minute": 90,
+          "type": "model-level",
+          "value": 90
+        },
+        {
+          "minute": 91,
+          "type": "model-level",
+          "value": 91
+        },
+        {
+          "minute": 92,
+          "type": "model-level",
+          "value": 92
+        },
+        {
+          "minute": 93,
+          "type": "model-level",
+          "value": 93
+        },
+        {
+          "minute": 94,
+          "type": "model-level",
+          "value": 94
+        },
+        {
+          "minute": 95,
+          "type": "model-level",
+          "value": 95
+        },
+        {
+          "minute": 96,
+          "type": "model-level",
+          "value": 96
+        },
+        {
+          "minute": 97,
+          "type": "model-level",
+          "value": 97
+        },
+        {
+          "minute": 98,
+          "type": "model-level",
+          "value": 98
+        },
+        {
+          "minute": 99,
+          "type": "model-level",
+          "value": 99
+        },
+        {
+          "minute": 100,
+          "type": "model-level",
+          "value": 100
+        },
+        {
+          "minute": 101,
+          "type": "model-level",
+          "value": 101
+        },
+        {
+          "minute": 102,
+          "type": "model-level",
+          "value": 102
+        },
+        {
+          "minute": 103,
+          "type": "model-level",
+          "value": 103
+        },
+        {
+          "minute": 104,
+          "type": "model-level",
+          "value": 104
+        },
+        {
+          "minute": 105,
+          "type": "model-level",
+          "value": 105
+        },
+        {
+          "minute": 106,
+          "type": "model-level",
+          "value": 106
+        },
+        {
+          "minute": 107,
+          "type": "model-level",
+          "value": 107
+        },
+        {
+          "minute": 108,
+          "type": "model-level",
+          "value": 108
+        },
+        {
+          "minute": 109,
+          "type": "model-level",
+          "value": 109
+        },
+        {
+          "minute": 110,
+          "type": "model-level",
+          "value": 110
+        },
+        {
+          "minute": 111,
+          "type": "model-level",
+          "value": 111
+        },
+        {
+          "minute": 112,
+          "type": "model-level",
+          "value": 112
+        },
+        {
+          "minute": 113,
+          "type": "model-level",
+          "value": 113
+        },
+        {
+          "minute": 114,
+          "type": "model-level",
+          "value": 114
+        },
+        {
+          "minute": 115,
+          "type": "model-level",
+          "value": 115
+        },
+        {
+          "minute": 116,
+          "type": "model-level",
+          "value": 116
+        },
+        {
+          "minute": 117,
+          "type": "model-level",
+          "value": 117
+        },
+        {
+          "minute": 118,
+          "type": "model-level",
+          "value": 118
+        },
+        {
+          "minute": 119,
+          "type": "model-level",
+          "value": 119
+        },
+        {
+          "minute": 120,
+          "type": "model-level",
+          "value": 120
+        }
+      ],
+      "eligibleAt": 90,
+      "maxDeadZoneMinutes": 1,
+      "eventDensityPerHour": 62.00000000000001,
+      "finalState": {
+        "minutes": 120,
+        "credits": 8957124.410776448,
+        "creditsPerSecond": 51437.36368421425,
+        "computePerSecond": 517265.57600000006,
+        "hardware": {
+          "calculator": 2,
+          "homeComputer": 3,
+          "gamingPc": 2,
+          "workstation": 7,
+          "gpuServer": 39,
+          "miniDatacenter": 16
+        },
+        "totalHardware": 69,
+        "highestHardware": "Server Rack",
+        "trainingAllocation": 82,
+        "inferenceAllocation": 18,
+        "model": "tinyChat",
+        "modelLevel": 120,
+        "trainingProgress": 0,
+        "trainingRequirement": 1502824.8207726467,
+        "trainingRate": 924066.4197305036,
+        "trainingEta": 1.626316884462627,
+        "quality": 13,
+        "efficiency": 12,
+        "popularity": 16,
+        "potentialDemand": 138117.7602807589,
+        "currentUsers": 135997.13959060056,
+        "capacity": 341835.98076223634,
+        "servedUsers": 135997.13959060056,
+        "utilization": 0.3978432559596271,
+        "revenuePerUser": 0.3782238644066992,
+        "revenuePerSecond": 51437.36368421425,
+        "marketing": 14,
+        "reputation": 1,
+        "adoption": 100,
+        "developmentCycleEligible": true,
+        "nextAction": "Workstation",
+        "nextActionEta": 50.78807314584982
+      }
+    },
+    {
+      "name": "MARKET_HEAVY",
+      "checkpoints": [
+        {
+          "minutes": 5,
+          "credits": 902.4758230478103,
+          "creditsPerSecond": 3.3110263633955315,
+          "computePerSecond": 7.6000000000000005,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3
+          },
+          "totalHardware": 5,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 4,
+          "trainingProgress": 359.3248050258502,
+          "trainingRequirement": 452,
+          "trainingRate": 5.354644153326395,
+          "trainingEta": 17.307442347327303,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 445.08637325019816,
+          "currentUsers": 242.56562535348127,
+          "capacity": 11.125760629689287,
+          "servedUsers": 11.125760629689287,
+          "utilization": 1,
+          "revenuePerUser": 0.2976,
+          "revenuePerSecond": 3.3110263633955315,
+          "marketing": 2,
+          "reputation": 1,
+          "adoption": 1.6180102701743098,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 240.86917149590764
+        },
+        {
+          "minutes": 10,
+          "credits": 6779.192715010257,
+          "creditsPerSecond": 11.607780150288304,
+          "computePerSecond": 22.8,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 1
+          },
+          "totalHardware": 7,
+          "highestHardware": "Laptop",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 7,
+          "trainingProgress": 1194.5999848866495,
+          "trainingRequirement": 1653.205421058402,
+          "trainingRate": 17.06571406980928,
+          "trainingEta": 26.872912220125905,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 5,
+          "potentialDemand": 1629.402911903482,
+          "currentUsers": 874.539231316394,
+          "capacity": 35.45876145615929,
+          "servedUsers": 35.45876145615929,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 11.607780150288304,
+          "marketing": 4,
+          "reputation": 1,
+          "adoption": 8.850681020299684,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 26.872912220125905
+        },
+        {
+          "minutes": 15,
+          "credits": 3166.526760096741,
+          "creditsPerSecond": 11.607780150288304,
+          "computePerSecond": 22.8,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 1
+          },
+          "totalHardware": 7,
+          "highestHardware": "Laptop",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 9,
+          "trainingProgress": 2943.8356770421005,
+          "trainingRequirement": 2976.75,
+          "trainingRate": 19.625571180280673,
+          "trainingEta": 1.6771141413183948,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 7,
+          "potentialDemand": 2518.993900775182,
+          "currentUsers": 1936.6673123593753,
+          "capacity": 35.45876145615929,
+          "servedUsers": 35.45876145615929,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 11.607780150288304,
+          "marketing": 7,
+          "reputation": 1,
+          "adoption": 31.32989019753217,
+          "developmentCycleEligible": false,
+          "nextAction": "Gaming PC",
+          "nextActionEta": 287.17577320935607
+        },
+        {
+          "minutes": 20,
+          "credits": 3004.9690734825663,
+          "creditsPerSecond": 18.22625128861058,
+          "computePerSecond": 35.8,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 2
+          },
+          "totalHardware": 8,
+          "highestHardware": "Laptop",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 11,
+          "trainingProgress": 2437.7025255506514,
+          "trainingRequirement": 4772.398596880529,
+          "trainingRate": 30.81558983570386,
+          "trainingEta": 75.76347179390443,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 8,
+          "potentialDemand": 3155.4525186689334,
+          "currentUsers": 2742.1601544404,
+          "capacity": 55.676476321513256,
+          "servedUsers": 55.676476321513256,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 18.22625128861058,
+          "marketing": 8,
+          "reputation": 1,
+          "adoption": 68.36823935736216,
+          "developmentCycleEligible": false,
+          "nextAction": "Gaming PC",
+          "nextActionEta": 191.7580785633877
+        },
+        {
+          "minutes": 30,
+          "credits": 177846.09022173058,
+          "creditsPerSecond": 1858.1086372873258,
+          "computePerSecond": 3380.128,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 3,
+            "workstation": 4,
+            "gpuServer": 2
+          },
+          "totalHardware": 15,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 19,
+          "trainingProgress": 0,
+          "trainingRequirement": 17436.53140825456,
+          "trainingRate": 3010.594009038865,
+          "trainingEta": 5.79172460846728,
+          "quality": 6,
+          "efficiency": 5,
+          "popularity": 8,
+          "potentialDemand": 17170.61405082366,
+          "currentUsers": 11437.577047975134,
+          "capacity": 5439.430721645099,
+          "servedUsers": 5439.430721645099,
+          "utilization": 1,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 1858.1086372873258,
+          "marketing": 11,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 657.7408259414294
+        },
+        {
+          "minutes": 45,
+          "credits": 2248569.2138494886,
+          "creditsPerSecond": 11740.629667453786,
+          "computePerSecond": 26406.007999999998,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 3,
+            "workstation": 4,
+            "gpuServer": 15
+          },
+          "totalHardware": 28,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 34,
+          "trainingProgress": 0,
+          "trainingRequirement": 70299.93331874993,
+          "trainingRate": 23891.14045095062,
+          "trainingEta": 2.942510570522083,
+          "quality": 8,
+          "efficiency": 6,
+          "popularity": 10,
+          "potentialDemand": 34938.26262913788,
+          "currentUsers": 33202.70895789944,
+          "capacity": 49208.82436071164,
+          "servedUsers": 33202.70895789944,
+          "utilization": 0.6747307904475871,
+          "revenuePerUser": 0.3536045713119594,
+          "revenuePerSecond": 11740.629667453786,
+          "marketing": 17,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 2.942510570522083
+        },
+        {
+          "minutes": 60,
+          "credits": 6507147.480813266,
+          "creditsPerSecond": 29240.895296310253,
+          "computePerSecond": 133653.808,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 3,
+            "workstation": 4,
+            "gpuServer": 18,
+            "miniDatacenter": 4
+          },
+          "totalHardware": 35,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 49,
+          "trainingProgress": 0,
+          "trainingRequirement": 169870.75,
+          "trainingRate": 124498.52215199998,
+          "trainingEta": 1.3644398910422821,
+          "quality": 9,
+          "efficiency": 8,
+          "popularity": 12,
+          "potentialDemand": 85330.40823617628,
+          "currentUsers": 81441.88752314576,
+          "capacity": 256430.86910496006,
+          "servedUsers": 81441.88752314576,
+          "utilization": 0.31759782980656154,
+          "revenuePerUser": 0.35903999999999997,
+          "revenuePerSecond": 29240.895296310253,
+          "marketing": 19,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 2171.3716996619646
+        },
+        {
+          "minutes": 75,
+          "credits": 10513120.488779655,
+          "creditsPerSecond": 35645.7371807831,
+          "computePerSecond": 262976.408,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 3,
+            "workstation": 4,
+            "gpuServer": 19,
+            "miniDatacenter": 9
+          },
+          "totalHardware": 41,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 64,
+          "trainingProgress": 0,
+          "trainingRequirement": 324608,
+          "trainingRate": 248313.22013825583,
+          "trainingEta": 1.3072521866506535,
+          "quality": 10,
+          "efficiency": 9,
+          "popularity": 13,
+          "potentialDemand": 99958.78038491063,
+          "currentUsers": 97879.19045923713,
+          "capacity": 511453.2586383902,
+          "servedUsers": 97879.19045923713,
+          "utilization": 0.19137465409803964,
+          "revenuePerUser": 0.36418095627413427,
+          "revenuePerSecond": 35645.7371807831,
+          "marketing": 20,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1668.8357210715842
+        },
+        {
+          "minutes": 90,
+          "credits": 11109544.652148487,
+          "creditsPerSecond": 41452.40887495373,
+          "computePerSecond": 375328.208,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 3,
+            "workstation": 4,
+            "gpuServer": 22,
+            "miniDatacenter": 12
+          },
+          "totalHardware": 47,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 79,
+          "trainingProgress": 0,
+          "trainingRequirement": 541716.631546966,
+          "trainingRate": 354400.4446862818,
+          "trainingEta": 1.5285438821232238,
+          "quality": 11,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 114320.72480613187,
+          "currentUsers": 112315.63997688101,
+          "capacity": 729962.1912871649,
+          "servedUsers": 112315.63997688101,
+          "utilization": 0.15386501015734988,
+          "revenuePerUser": 0.36907067335845906,
+          "revenuePerSecond": 41452.40887495373,
+          "marketing": 21,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1420.6763116107868
+        },
+        {
+          "minutes": 120,
+          "credits": 20463102.177344244,
+          "creditsPerSecond": 51065.83927090263,
+          "computePerSecond": 453866.008,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 4,
+            "gamingPc": 3,
+            "workstation": 4,
+            "gpuServer": 35,
+            "miniDatacenter": 14
+          },
+          "totalHardware": 62,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 109,
+          "trainingProgress": 0,
+          "trainingRequirement": 1188012.143875113,
+          "trainingRate": 444954.83517884393,
+          "trainingEta": 2.6699611959438685,
+          "quality": 13,
+          "efficiency": 12,
+          "popularity": 14,
+          "potentialDemand": 136597.76134704976,
+          "currentUsers": 135014.85251600147,
+          "capacity": 916477.9880524247,
+          "servedUsers": 135014.85251600147,
+          "utilization": 0.1473192529183563,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 51065.83927090263,
+          "marketing": 22,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 915.2282326100236
+        }
+      ],
+      "events": [
+        {
+          "minute": 2,
+          "type": "model-level",
+          "value": 2
+        },
+        {
+          "minute": 3,
+          "type": "model-level",
+          "value": 3
+        },
+        {
+          "minute": 3,
+          "type": "hardware-tier",
+          "value": "Pocket Computer"
+        },
+        {
+          "minute": 4,
+          "type": "model-level",
+          "value": 4
+        },
+        {
+          "minute": 6,
+          "type": "model-level",
+          "value": 5
+        },
+        {
+          "minute": 8,
+          "type": "model-level",
+          "value": 6
+        },
+        {
+          "minute": 9,
+          "type": "model-level",
+          "value": 7
+        },
+        {
+          "minute": 9,
+          "type": "hardware-tier",
+          "value": "Laptop"
+        },
+        {
+          "minute": 11,
+          "type": "model-level",
+          "value": 8
+        },
+        {
+          "minute": 13,
+          "type": "model-level",
+          "value": 9
+        },
+        {
+          "minute": 16,
+          "type": "model-level",
+          "value": 10
+        },
+        {
+          "minute": 19,
+          "type": "model-level",
+          "value": 11
+        },
+        {
+          "minute": 22,
+          "type": "model-level",
+          "value": 12
+        },
+        {
+          "minute": 24,
+          "type": "model-level",
+          "value": 13
+        },
+        {
+          "minute": 24,
+          "type": "hardware-tier",
+          "value": "Gaming PC"
+        },
+        {
+          "minute": 25,
+          "type": "model-level",
+          "value": 14
+        },
+        {
+          "minute": 26,
+          "type": "model-level",
+          "value": 15
+        },
+        {
+          "minute": 27,
+          "type": "model-level",
+          "value": 16
+        },
+        {
+          "minute": 28,
+          "type": "model-level",
+          "value": 17
+        },
+        {
+          "minute": 29,
+          "type": "model-level",
+          "value": 18
+        },
+        {
+          "minute": 29,
+          "type": "hardware-tier",
+          "value": "Workstation"
+        },
+        {
+          "minute": 30,
+          "type": "model-level",
+          "value": 19
+        },
+        {
+          "minute": 31,
+          "type": "model-level",
+          "value": 20
+        },
+        {
+          "minute": 32,
+          "type": "model-level",
+          "value": 21
+        },
+        {
+          "minute": 33,
+          "type": "model-level",
+          "value": 22
+        },
+        {
+          "minute": 34,
+          "type": "model-level",
+          "value": 23
+        },
+        {
+          "minute": 35,
+          "type": "model-level",
+          "value": 24
+        },
+        {
+          "minute": 36,
+          "type": "model-level",
+          "value": 25
+        },
+        {
+          "minute": 37,
+          "type": "model-level",
+          "value": 26
+        },
+        {
+          "minute": 38,
+          "type": "model-level",
+          "value": 27
+        },
+        {
+          "minute": 39,
+          "type": "model-level",
+          "value": 28
+        },
+        {
+          "minute": 40,
+          "type": "model-level",
+          "value": 29
+        },
+        {
+          "minute": 41,
+          "type": "model-level",
+          "value": 30
+        },
+        {
+          "minute": 42,
+          "type": "model-level",
+          "value": 31
+        },
+        {
+          "minute": 43,
+          "type": "model-level",
+          "value": 32
+        },
+        {
+          "minute": 44,
+          "type": "model-level",
+          "value": 33
+        },
+        {
+          "minute": 45,
+          "type": "model-level",
+          "value": 34
+        },
+        {
+          "minute": 46,
+          "type": "model-level",
+          "value": 35
+        },
+        {
+          "minute": 47,
+          "type": "model-level",
+          "value": 36
+        },
+        {
+          "minute": 48,
+          "type": "model-level",
+          "value": 37
+        },
+        {
+          "minute": 49,
+          "type": "model-level",
+          "value": 38
+        },
+        {
+          "minute": 50,
+          "type": "model-level",
+          "value": 39
+        },
+        {
+          "minute": 51,
+          "type": "model-level",
+          "value": 40
+        },
+        {
+          "minute": 51,
+          "type": "hardware-tier",
+          "value": "Server Rack"
+        },
+        {
+          "minute": 52,
+          "type": "model-level",
+          "value": 41
+        },
+        {
+          "minute": 53,
+          "type": "model-level",
+          "value": 42
+        },
+        {
+          "minute": 54,
+          "type": "model-level",
+          "value": 43
+        },
+        {
+          "minute": 55,
+          "type": "model-level",
+          "value": 44
+        },
+        {
+          "minute": 56,
+          "type": "model-level",
+          "value": 45
+        },
+        {
+          "minute": 57,
+          "type": "model-level",
+          "value": 46
+        },
+        {
+          "minute": 58,
+          "type": "model-level",
+          "value": 47
+        },
+        {
+          "minute": 59,
+          "type": "model-level",
+          "value": 48
+        },
+        {
+          "minute": 60,
+          "type": "model-level",
+          "value": 49
+        },
+        {
+          "minute": 61,
+          "type": "model-level",
+          "value": 50
+        },
+        {
+          "minute": 62,
+          "type": "model-level",
+          "value": 51
+        },
+        {
+          "minute": 63,
+          "type": "model-level",
+          "value": 52
+        },
+        {
+          "minute": 64,
+          "type": "model-level",
+          "value": 53
+        },
+        {
+          "minute": 65,
+          "type": "model-level",
+          "value": 54
+        },
+        {
+          "minute": 66,
+          "type": "model-level",
+          "value": 55
+        },
+        {
+          "minute": 67,
+          "type": "model-level",
+          "value": 56
+        },
+        {
+          "minute": 68,
+          "type": "model-level",
+          "value": 57
+        },
+        {
+          "minute": 69,
+          "type": "model-level",
+          "value": 58
+        },
+        {
+          "minute": 70,
+          "type": "model-level",
+          "value": 59
+        },
+        {
+          "minute": 71,
+          "type": "model-level",
+          "value": 60
+        },
+        {
+          "minute": 72,
+          "type": "model-level",
+          "value": 61
+        },
+        {
+          "minute": 73,
+          "type": "model-level",
+          "value": 62
+        },
+        {
+          "minute": 74,
+          "type": "model-level",
+          "value": 63
+        },
+        {
+          "minute": 75,
+          "type": "model-level",
+          "value": 64
+        },
+        {
+          "minute": 76,
+          "type": "model-level",
+          "value": 65
+        },
+        {
+          "minute": 77,
+          "type": "model-level",
+          "value": 66
+        },
+        {
+          "minute": 78,
+          "type": "model-level",
+          "value": 67
+        },
+        {
+          "minute": 79,
+          "type": "model-level",
+          "value": 68
+        },
+        {
+          "minute": 80,
+          "type": "model-level",
+          "value": 69
+        },
+        {
+          "minute": 81,
+          "type": "model-level",
+          "value": 70
+        },
+        {
+          "minute": 82,
+          "type": "model-level",
+          "value": 71
+        },
+        {
+          "minute": 83,
+          "type": "model-level",
+          "value": 72
+        },
+        {
+          "minute": 84,
+          "type": "model-level",
+          "value": 73
+        },
+        {
+          "minute": 85,
+          "type": "model-level",
+          "value": 74
+        },
+        {
+          "minute": 86,
+          "type": "model-level",
+          "value": 75
+        },
+        {
+          "minute": 87,
+          "type": "model-level",
+          "value": 76
+        },
+        {
+          "minute": 88,
+          "type": "model-level",
+          "value": 77
+        },
+        {
+          "minute": 89,
+          "type": "model-level",
+          "value": 78
+        },
+        {
+          "minute": 90,
+          "type": "model-level",
+          "value": 79
+        },
+        {
+          "minute": 91,
+          "type": "model-level",
+          "value": 80
+        },
+        {
+          "minute": 92,
+          "type": "model-level",
+          "value": 81
+        },
+        {
+          "minute": 93,
+          "type": "model-level",
+          "value": 82
+        },
+        {
+          "minute": 94,
+          "type": "model-level",
+          "value": 83
+        },
+        {
+          "minute": 95,
+          "type": "model-level",
+          "value": 84
+        },
+        {
+          "minute": 96,
+          "type": "model-level",
+          "value": 85
+        },
+        {
+          "minute": 97,
+          "type": "model-level",
+          "value": 86
+        },
+        {
+          "minute": 98,
+          "type": "model-level",
+          "value": 87
+        },
+        {
+          "minute": 99,
+          "type": "model-level",
+          "value": 88
+        },
+        {
+          "minute": 100,
+          "type": "model-level",
+          "value": 89
+        },
+        {
+          "minute": 101,
+          "type": "model-level",
+          "value": 90
+        },
+        {
+          "minute": 102,
+          "type": "model-level",
+          "value": 91
+        },
+        {
+          "minute": 103,
+          "type": "model-level",
+          "value": 92
+        },
+        {
+          "minute": 104,
+          "type": "model-level",
+          "value": 93
+        },
+        {
+          "minute": 105,
+          "type": "model-level",
+          "value": 94
+        },
+        {
+          "minute": 106,
+          "type": "model-level",
+          "value": 95
+        },
+        {
+          "minute": 107,
+          "type": "model-level",
+          "value": 96
+        },
+        {
+          "minute": 108,
+          "type": "model-level",
+          "value": 97
+        },
+        {
+          "minute": 109,
+          "type": "model-level",
+          "value": 98
+        },
+        {
+          "minute": 110,
+          "type": "model-level",
+          "value": 99
+        },
+        {
+          "minute": 111,
+          "type": "model-level",
+          "value": 100
+        },
+        {
+          "minute": 112,
+          "type": "model-level",
+          "value": 101
+        },
+        {
+          "minute": 113,
+          "type": "model-level",
+          "value": 102
+        },
+        {
+          "minute": 114,
+          "type": "model-level",
+          "value": 103
+        },
+        {
+          "minute": 115,
+          "type": "model-level",
+          "value": 104
+        },
+        {
+          "minute": 116,
+          "type": "model-level",
+          "value": 105
+        },
+        {
+          "minute": 117,
+          "type": "model-level",
+          "value": 106
+        },
+        {
+          "minute": 118,
+          "type": "model-level",
+          "value": 107
+        },
+        {
+          "minute": 119,
+          "type": "model-level",
+          "value": 108
+        },
+        {
+          "minute": 120,
+          "type": "model-level",
+          "value": 109
+        }
+      ],
+      "eligibleAt": 90,
+      "maxDeadZoneMinutes": 3,
+      "eventDensityPerHour": 56.5,
+      "finalState": {
+        "minutes": 120,
+        "credits": 20463102.177344244,
+        "creditsPerSecond": 51065.83927090263,
+        "computePerSecond": 453866.008,
+        "hardware": {
+          "calculator": 2,
+          "homeComputer": 4,
+          "gamingPc": 3,
+          "workstation": 4,
+          "gpuServer": 35,
+          "miniDatacenter": 14
+        },
+        "totalHardware": 62,
+        "highestHardware": "Server Rack",
+        "trainingAllocation": 45,
+        "inferenceAllocation": 55,
+        "model": "tinyChat",
+        "modelLevel": 109,
+        "trainingProgress": 0,
+        "trainingRequirement": 1188012.143875113,
+        "trainingRate": 444954.83517884393,
+        "trainingEta": 2.6699611959438685,
+        "quality": 13,
+        "efficiency": 12,
+        "popularity": 14,
+        "potentialDemand": 136597.76134704976,
+        "currentUsers": 135014.85251600147,
+        "capacity": 916477.9880524247,
+        "servedUsers": 135014.85251600147,
+        "utilization": 0.1473192529183563,
+        "revenuePerUser": 0.3782238644066992,
+        "revenuePerSecond": 51065.83927090263,
+        "marketing": 22,
+        "reputation": 1,
+        "adoption": 100,
+        "developmentCycleEligible": true,
+        "nextAction": "GPU Cluster",
+        "nextActionEta": 915.2282326100236
+      }
+    },
+    {
+      "name": "GREEDY_ROI",
+      "checkpoints": [
+        {
+          "minutes": 5,
+          "credits": 1347.3584114613213,
+          "creditsPerSecond": 0.9548199392001525,
+          "computePerSecond": 2.5,
+          "hardware": {
+            "calculator": 5
+          },
+          "totalHardware": 5,
+          "highestHardware": "Calculator",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 4,
+          "trainingProgress": 0,
+          "trainingRequirement": 452,
+          "trainingRate": 2.1528174593052025,
+          "trainingEta": 209.9574202384432,
+          "quality": 3,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 160.58434790552778,
+          "currentUsers": 105.69256560072635,
+          "capacity": 2.9943733752154182,
+          "servedUsers": 2.9943733752154182,
+          "utilization": 1,
+          "revenuePerUser": 0.31887136958378204,
+          "revenuePerSecond": 0.9548199392001525,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 0.9479051297556562,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 209.9574202384432
+        },
+        {
+          "minutes": 10,
+          "credits": 2479.791588625175,
+          "creditsPerSecond": 2.20378752,
+          "computePerSecond": 5.5,
+          "hardware": {
+            "calculator": 10
+          },
+          "totalHardware": 10,
+          "highestHardware": "Calculator",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 677.1599999999999,
+          "trainingRequirement": 756.4144452187053,
+          "trainingRate": 5.566,
+          "trainingEta": 14.239030761535291,
+          "quality": 4,
+          "efficiency": 1,
+          "popularity": 5,
+          "potentialDemand": 249.4387365638848,
+          "currentUsers": 196.59417647241713,
+          "capacity": 6.732,
+          "servedUsers": 6.732,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 2.20378752,
+          "marketing": 1,
+          "reputation": 1,
+          "adoption": 3.319161256912503,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 14.239030761535291
+        },
+        {
+          "minutes": 15,
+          "credits": 10924.675213410852,
+          "creditsPerSecond": 100.49199621735836,
+          "computePerSecond": 241.25,
+          "hardware": {
+            "calculator": 11,
+            "homeComputer": 1,
+            "gamingPc": 1,
+            "workstation": 2
+          },
+          "totalHardware": 15,
+          "highestHardware": "Gaming PC",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 9,
+          "trainingProgress": 0,
+          "trainingRequirement": 2976.75,
+          "trainingRate": 253.8077949301649,
+          "trainingEta": 11.728363192387576,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 6,
+          "potentialDemand": 2844.827414062883,
+          "currentUsers": 1398.1580961203217,
+          "capacity": 306.97701679300576,
+          "servedUsers": 306.97701679300576,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 100.49199621735836,
+          "marketing": 2,
+          "reputation": 1,
+          "adoption": 12.179630431585828,
+          "developmentCycleEligible": false,
+          "nextAction": "Workstation",
+          "nextActionEta": 339.08496267589504
+        },
+        {
+          "minutes": 20,
+          "credits": 45633.19131053604,
+          "creditsPerSecond": 337.12256546960106,
+          "computePerSecond": 791.25,
+          "hardware": {
+            "calculator": 11,
+            "homeComputer": 1,
+            "gamingPc": 1,
+            "workstation": 7
+          },
+          "totalHardware": 20,
+          "highestHardware": "Gaming PC",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 14,
+          "trainingProgress": 0,
+          "trainingRequirement": 8438.601206365387,
+          "trainingRate": 832.4369647191419,
+          "trainingEta": 10.13722547654105,
+          "quality": 5,
+          "efficiency": 3,
+          "popularity": 8,
+          "potentialDemand": 5625.098722666165,
+          "currentUsers": 4011.1500670630658,
+          "capacity": 1006.8209929014128,
+          "servedUsers": 1006.8209929014128,
+          "utilization": 1,
+          "revenuePerUser": 0.33483863352719334,
+          "revenuePerSecond": 337.12256546960106,
+          "marketing": 3,
+          "reputation": 1,
+          "adoption": 54.53894787368747,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 10.13722547654105
+        },
+        {
+          "minutes": 30,
+          "credits": 1496130.3271039992,
+          "creditsPerSecond": 6680.393834083835,
+          "computePerSecond": 15011.849999999999,
+          "hardware": {
+            "calculator": 11,
+            "homeComputer": 1,
+            "gamingPc": 1,
+            "workstation": 7,
+            "gpuServer": 9
+          },
+          "totalHardware": 29,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 24,
+          "trainingProgress": 0,
+          "trainingRequirement": 30465.403561332878,
+          "trainingRate": 16341.933481693617,
+          "trainingEta": 1.8642471893219061,
+          "quality": 6,
+          "efficiency": 5,
+          "popularity": 10,
+          "potentialDemand": 22812.94525613965,
+          "currentUsers": 19556.19748200175,
+          "capacity": 22532.490418000012,
+          "servedUsers": 19556.19748200175,
+          "utilization": 0.8679110528492376,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 6680.393834083835,
+          "marketing": 4,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 1.8642471893219061
+        },
+        {
+          "minutes": 45,
+          "credits": 2959567.0235153935,
+          "creditsPerSecond": 20993.8919641129,
+          "computePerSecond": 174852.368,
+          "hardware": {
+            "calculator": 12,
+            "homeComputer": 1,
+            "gamingPc": 2,
+            "workstation": 8,
+            "gpuServer": 12,
+            "miniDatacenter": 6
+          },
+          "totalHardware": 41,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 39,
+          "trainingProgress": 0,
+          "trainingRequirement": 97849.70662229371,
+          "trainingRate": 196259.96188757973,
+          "trainingEta": 0.4985719230820156,
+          "quality": 8,
+          "efficiency": 7,
+          "popularity": 11,
+          "potentialDemand": 63146.81462298945,
+          "currentUsers": 59371.09886962273,
+          "capacity": 270606.0280824637,
+          "servedUsers": 59371.09886962273,
+          "utilization": 0.2194005037150545,
+          "revenuePerUser": 0.3536045713119594,
+          "revenuePerSecond": 20993.8919641129,
+          "marketing": 7,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 30.632480036761045
+        },
+        {
+          "minutes": 60,
+          "credits": 11994766.44306543,
+          "creditsPerSecond": 27726.061838554422,
+          "computePerSecond": 255294.53999999998,
+          "hardware": {
+            "calculator": 14,
+            "homeComputer": 4,
+            "gamingPc": 5,
+            "workstation": 10,
+            "gpuServer": 14,
+            "miniDatacenter": 9
+          },
+          "totalHardware": 56,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 54,
+          "trainingProgress": 0,
+          "trainingRequirement": 214944.15829387156,
+          "trainingRate": 290652.83379,
+          "trainingEta": 0.7395219770992192,
+          "quality": 9,
+          "efficiency": 8,
+          "popularity": 13,
+          "potentialDemand": 80190.85955126006,
+          "currentUsers": 77222.76581593812,
+          "capacity": 400756.2630012,
+          "servedUsers": 77222.76581593812,
+          "utilization": 0.19269259883209086,
+          "revenuePerUser": 0.35903999999999997,
+          "revenuePerSecond": 27726.061838554422,
+          "marketing": 9,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 2092.0833941254327
+        },
+        {
+          "minutes": 75,
+          "credits": 26023117.69029083,
+          "creditsPerSecond": 34095.08715934745,
+          "computePerSecond": 340032.59799999994,
+          "hardware": {
+            "calculator": 17,
+            "homeComputer": 6,
+            "gamingPc": 7,
+            "workstation": 13,
+            "gpuServer": 17,
+            "miniDatacenter": 11
+          },
+          "totalHardware": 71,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 69,
+          "trainingProgress": 0,
+          "trainingRequirement": 389717.85779650015,
+          "trainingRate": 392422.3934249592,
+          "trainingEta": 0.9931081006747484,
+          "quality": 10,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 96922.3219773109,
+          "currentUsers": 93621.27967417015,
+          "capacity": 541077.5799302878,
+          "servedUsers": 93621.27967417015,
+          "utilization": 0.17302746065773464,
+          "revenuePerUser": 0.36418095627413427,
+          "revenuePerSecond": 34095.08715934745,
+          "marketing": 12,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1289.830470418743
+        },
+        {
+          "minutes": 90,
+          "credits": 41167348.082072675,
+          "creditsPerSecond": 40771.187907619584,
+          "computePerSecond": 399972.40799999994,
+          "hardware": {
+            "calculator": 20,
+            "homeComputer": 9,
+            "gamingPc": 10,
+            "workstation": 15,
+            "gpuServer": 19,
+            "miniDatacenter": 13
+          },
+          "totalHardware": 86,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 84,
+          "trainingProgress": 0,
+          "trainingRequirement": 629069.1197613429,
+          "trainingRate": 461597.30147785513,
+          "trainingEta": 1.362809352973486,
+          "quality": 12,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 111185.09354659352,
+          "currentUsers": 109088.9096559551,
+          "capacity": 636456.9274606127,
+          "servedUsers": 109088.9096559551,
+          "utilization": 0.17140030212446086,
+          "revenuePerUser": 0.37374273916756406,
+          "revenuePerSecond": 40771.187907619584,
+          "marketing": 14,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 707.1820419669178
+        },
+        {
+          "minutes": 120,
+          "credits": 35731669.234757826,
+          "creditsPerSecond": 51747.21837673997,
+          "computePerSecond": 549749.6708000001,
+          "hardware": {
+            "calculator": 25,
+            "homeComputer": 14,
+            "gamingPc": 15,
+            "workstation": 20,
+            "gpuServer": 24,
+            "miniDatacenter": 18
+          },
+          "totalHardware": 116,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 114,
+          "trainingProgress": 0,
+          "trainingRequirement": 1325659.126188891,
+          "trainingRate": 658723.9083137837,
+          "trainingEta": 2.012465479782483,
+          "quality": 13,
+          "efficiency": 12,
+          "popularity": 15,
+          "potentialDemand": 139022.11616936658,
+          "currentUsers": 136816.3758199479,
+          "capacity": 908257.8979295667,
+          "servedUsers": 136816.3758199479,
+          "utilization": 0.15063604305762687,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 51747.21837673997,
+          "marketing": 19,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 621.6436704103428
+        }
+      ],
+      "events": [
+        {
+          "minute": 2,
+          "type": "model-level",
+          "value": 2
+        },
+        {
+          "minute": 3,
+          "type": "model-level",
+          "value": 3
+        },
+        {
+          "minute": 5,
+          "type": "model-level",
+          "value": 4
+        },
+        {
+          "minute": 8,
+          "type": "model-level",
+          "value": 5
+        },
+        {
+          "minute": 11,
+          "type": "model-level",
+          "value": 6
+        },
+        {
+          "minute": 12,
+          "type": "hardware-tier",
+          "value": "Pocket Computer"
+        },
+        {
+          "minute": 13,
+          "type": "model-level",
+          "value": 7
+        },
+        {
+          "minute": 13,
+          "type": "hardware-tier",
+          "value": "Laptop"
+        },
+        {
+          "minute": 14,
+          "type": "model-level",
+          "value": 8
+        },
+        {
+          "minute": 14,
+          "type": "hardware-tier",
+          "value": "Gaming PC"
+        },
+        {
+          "minute": 15,
+          "type": "model-level",
+          "value": 9
+        },
+        {
+          "minute": 16,
+          "type": "model-level",
+          "value": 10
+        },
+        {
+          "minute": 17,
+          "type": "model-level",
+          "value": 11
+        },
+        {
+          "minute": 18,
+          "type": "model-level",
+          "value": 12
+        },
+        {
+          "minute": 19,
+          "type": "model-level",
+          "value": 13
+        },
+        {
+          "minute": 20,
+          "type": "model-level",
+          "value": 14
+        },
+        {
+          "minute": 21,
+          "type": "model-level",
+          "value": 15
+        },
+        {
+          "minute": 22,
+          "type": "model-level",
+          "value": 16
+        },
+        {
+          "minute": 22,
+          "type": "hardware-tier",
+          "value": "Workstation"
+        },
+        {
+          "minute": 23,
+          "type": "model-level",
+          "value": 17
+        },
+        {
+          "minute": 24,
+          "type": "model-level",
+          "value": 18
+        },
+        {
+          "minute": 25,
+          "type": "model-level",
+          "value": 19
+        },
+        {
+          "minute": 26,
+          "type": "model-level",
+          "value": 20
+        },
+        {
+          "minute": 27,
+          "type": "model-level",
+          "value": 21
+        },
+        {
+          "minute": 28,
+          "type": "model-level",
+          "value": 22
+        },
+        {
+          "minute": 29,
+          "type": "model-level",
+          "value": 23
+        },
+        {
+          "minute": 30,
+          "type": "model-level",
+          "value": 24
+        },
+        {
+          "minute": 31,
+          "type": "model-level",
+          "value": 25
+        },
+        {
+          "minute": 32,
+          "type": "model-level",
+          "value": 26
+        },
+        {
+          "minute": 32,
+          "type": "hardware-tier",
+          "value": "Server Rack"
+        },
+        {
+          "minute": 33,
+          "type": "model-level",
+          "value": 27
+        },
+        {
+          "minute": 34,
+          "type": "model-level",
+          "value": 28
+        },
+        {
+          "minute": 35,
+          "type": "model-level",
+          "value": 29
+        },
+        {
+          "minute": 36,
+          "type": "model-level",
+          "value": 30
+        },
+        {
+          "minute": 37,
+          "type": "model-level",
+          "value": 31
+        },
+        {
+          "minute": 38,
+          "type": "model-level",
+          "value": 32
+        },
+        {
+          "minute": 39,
+          "type": "model-level",
+          "value": 33
+        },
+        {
+          "minute": 40,
+          "type": "model-level",
+          "value": 34
+        },
+        {
+          "minute": 41,
+          "type": "model-level",
+          "value": 35
+        },
+        {
+          "minute": 42,
+          "type": "model-level",
+          "value": 36
+        },
+        {
+          "minute": 43,
+          "type": "model-level",
+          "value": 37
+        },
+        {
+          "minute": 44,
+          "type": "model-level",
+          "value": 38
+        },
+        {
+          "minute": 45,
+          "type": "model-level",
+          "value": 39
+        },
+        {
+          "minute": 46,
+          "type": "model-level",
+          "value": 40
+        },
+        {
+          "minute": 47,
+          "type": "model-level",
+          "value": 41
+        },
+        {
+          "minute": 48,
+          "type": "model-level",
+          "value": 42
+        },
+        {
+          "minute": 49,
+          "type": "model-level",
+          "value": 43
+        },
+        {
+          "minute": 50,
+          "type": "model-level",
+          "value": 44
+        },
+        {
+          "minute": 51,
+          "type": "model-level",
+          "value": 45
+        },
+        {
+          "minute": 52,
+          "type": "model-level",
+          "value": 46
+        },
+        {
+          "minute": 53,
+          "type": "model-level",
+          "value": 47
+        },
+        {
+          "minute": 54,
+          "type": "model-level",
+          "value": 48
+        },
+        {
+          "minute": 55,
+          "type": "model-level",
+          "value": 49
+        },
+        {
+          "minute": 56,
+          "type": "model-level",
+          "value": 50
+        },
+        {
+          "minute": 57,
+          "type": "model-level",
+          "value": 51
+        },
+        {
+          "minute": 58,
+          "type": "model-level",
+          "value": 52
+        },
+        {
+          "minute": 59,
+          "type": "model-level",
+          "value": 53
+        },
+        {
+          "minute": 60,
+          "type": "model-level",
+          "value": 54
+        },
+        {
+          "minute": 61,
+          "type": "model-level",
+          "value": 55
+        },
+        {
+          "minute": 62,
+          "type": "model-level",
+          "value": 56
+        },
+        {
+          "minute": 63,
+          "type": "model-level",
+          "value": 57
+        },
+        {
+          "minute": 64,
+          "type": "model-level",
+          "value": 58
+        },
+        {
+          "minute": 65,
+          "type": "model-level",
+          "value": 59
+        },
+        {
+          "minute": 66,
+          "type": "model-level",
+          "value": 60
+        },
+        {
+          "minute": 67,
+          "type": "model-level",
+          "value": 61
+        },
+        {
+          "minute": 68,
+          "type": "model-level",
+          "value": 62
+        },
+        {
+          "minute": 69,
+          "type": "model-level",
+          "value": 63
+        },
+        {
+          "minute": 70,
+          "type": "model-level",
+          "value": 64
+        },
+        {
+          "minute": 71,
+          "type": "model-level",
+          "value": 65
+        },
+        {
+          "minute": 72,
+          "type": "model-level",
+          "value": 66
+        },
+        {
+          "minute": 73,
+          "type": "model-level",
+          "value": 67
+        },
+        {
+          "minute": 74,
+          "type": "model-level",
+          "value": 68
+        },
+        {
+          "minute": 75,
+          "type": "model-level",
+          "value": 69
+        },
+        {
+          "minute": 76,
+          "type": "model-level",
+          "value": 70
+        },
+        {
+          "minute": 77,
+          "type": "model-level",
+          "value": 71
+        },
+        {
+          "minute": 78,
+          "type": "model-level",
+          "value": 72
+        },
+        {
+          "minute": 79,
+          "type": "model-level",
+          "value": 73
+        },
+        {
+          "minute": 80,
+          "type": "model-level",
+          "value": 74
+        },
+        {
+          "minute": 81,
+          "type": "model-level",
+          "value": 75
+        },
+        {
+          "minute": 82,
+          "type": "model-level",
+          "value": 76
+        },
+        {
+          "minute": 83,
+          "type": "model-level",
+          "value": 77
+        },
+        {
+          "minute": 84,
+          "type": "model-level",
+          "value": 78
+        },
+        {
+          "minute": 85,
+          "type": "model-level",
+          "value": 79
+        },
+        {
+          "minute": 86,
+          "type": "model-level",
+          "value": 80
+        },
+        {
+          "minute": 87,
+          "type": "model-level",
+          "value": 81
+        },
+        {
+          "minute": 88,
+          "type": "model-level",
+          "value": 82
+        },
+        {
+          "minute": 89,
+          "type": "model-level",
+          "value": 83
+        },
+        {
+          "minute": 90,
+          "type": "model-level",
+          "value": 84
+        },
+        {
+          "minute": 91,
+          "type": "model-level",
+          "value": 85
+        },
+        {
+          "minute": 92,
+          "type": "model-level",
+          "value": 86
+        },
+        {
+          "minute": 93,
+          "type": "model-level",
+          "value": 87
+        },
+        {
+          "minute": 94,
+          "type": "model-level",
+          "value": 88
+        },
+        {
+          "minute": 95,
+          "type": "model-level",
+          "value": 89
+        },
+        {
+          "minute": 96,
+          "type": "model-level",
+          "value": 90
+        },
+        {
+          "minute": 97,
+          "type": "model-level",
+          "value": 91
+        },
+        {
+          "minute": 98,
+          "type": "model-level",
+          "value": 92
+        },
+        {
+          "minute": 99,
+          "type": "model-level",
+          "value": 93
+        },
+        {
+          "minute": 100,
+          "type": "model-level",
+          "value": 94
+        },
+        {
+          "minute": 101,
+          "type": "model-level",
+          "value": 95
+        },
+        {
+          "minute": 102,
+          "type": "model-level",
+          "value": 96
+        },
+        {
+          "minute": 103,
+          "type": "model-level",
+          "value": 97
+        },
+        {
+          "minute": 104,
+          "type": "model-level",
+          "value": 98
+        },
+        {
+          "minute": 105,
+          "type": "model-level",
+          "value": 99
+        },
+        {
+          "minute": 106,
+          "type": "model-level",
+          "value": 100
+        },
+        {
+          "minute": 107,
+          "type": "model-level",
+          "value": 101
+        },
+        {
+          "minute": 108,
+          "type": "model-level",
+          "value": 102
+        },
+        {
+          "minute": 109,
+          "type": "model-level",
+          "value": 103
+        },
+        {
+          "minute": 110,
+          "type": "model-level",
+          "value": 104
+        },
+        {
+          "minute": 111,
+          "type": "model-level",
+          "value": 105
+        },
+        {
+          "minute": 112,
+          "type": "model-level",
+          "value": 106
+        },
+        {
+          "minute": 113,
+          "type": "model-level",
+          "value": 107
+        },
+        {
+          "minute": 114,
+          "type": "model-level",
+          "value": 108
+        },
+        {
+          "minute": 115,
+          "type": "model-level",
+          "value": 109
+        },
+        {
+          "minute": 116,
+          "type": "model-level",
+          "value": 110
+        },
+        {
+          "minute": 117,
+          "type": "model-level",
+          "value": 111
+        },
+        {
+          "minute": 118,
+          "type": "model-level",
+          "value": 112
+        },
+        {
+          "minute": 119,
+          "type": "model-level",
+          "value": 113
+        },
+        {
+          "minute": 120,
+          "type": "model-level",
+          "value": 114
+        }
+      ],
+      "eligibleAt": 75,
+      "maxDeadZoneMinutes": 3,
+      "eventDensityPerHour": 59,
+      "finalState": {
+        "minutes": 120,
+        "credits": 35731669.234757826,
+        "creditsPerSecond": 51747.21837673997,
+        "computePerSecond": 549749.6708000001,
+        "hardware": {
+          "calculator": 25,
+          "homeComputer": 14,
+          "gamingPc": 15,
+          "workstation": 20,
+          "gpuServer": 24,
+          "miniDatacenter": 18
+        },
+        "totalHardware": 116,
+        "highestHardware": "Server Rack",
+        "trainingAllocation": 55,
+        "inferenceAllocation": 45,
+        "model": "tinyChat",
+        "modelLevel": 114,
+        "trainingProgress": 0,
+        "trainingRequirement": 1325659.126188891,
+        "trainingRate": 658723.9083137837,
+        "trainingEta": 2.012465479782483,
+        "quality": 13,
+        "efficiency": 12,
+        "popularity": 15,
+        "potentialDemand": 139022.11616936658,
+        "currentUsers": 136816.3758199479,
+        "capacity": 908257.8979295667,
+        "servedUsers": 136816.3758199479,
+        "utilization": 0.15063604305762687,
+        "revenuePerUser": 0.3782238644066992,
+        "revenuePerSecond": 51747.21837673997,
+        "marketing": 19,
+        "reputation": 1,
+        "adoption": 100,
+        "developmentCycleEligible": true,
+        "nextAction": "GPU Cluster",
+        "nextActionEta": 621.6436704103428
+      }
+    },
+    {
+      "name": "LOW_INTERACTION",
+      "checkpoints": [
+        {
+          "minutes": 5,
+          "credits": 1101.0668954386786,
+          "creditsPerSecond": 2.6488210907164254,
+          "computePerSecond": 7.6000000000000005,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3
+          },
+          "totalHardware": 5,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 756.4144452187053,
+          "trainingRate": 7.139525537768527,
+          "trainingEta": 105.9474388343072,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 336.02812492729544,
+          "currentUsers": 189.87500417080128,
+          "capacity": 8.091462276137664,
+          "servedUsers": 8.091462276137664,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 2.6488210907164254,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 1.379788455756372,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 226.1130835376006
+        },
+        {
+          "minutes": 10,
+          "credits": 10518.476265452384,
+          "creditsPerSecond": 93.89898073726039,
+          "computePerSecond": 253.6,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 2
+          },
+          "totalHardware": 9,
+          "highestHardware": "Gaming PC",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 10,
+          "trainingProgress": 0,
+          "trainingRequirement": 3812.9360111431224,
+          "trainingRate": 253.09152562009552,
+          "trainingEta": 15.065443229681865,
+          "quality": 4,
+          "efficiency": 3,
+          "popularity": 7,
+          "potentialDemand": 2729.5489389903364,
+          "currentUsers": 1415.3017024987114,
+          "capacity": 286.8370623694416,
+          "servedUsers": 286.8370623694416,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 93.89898073726039,
+          "marketing": 1,
+          "reputation": 1,
+          "adoption": 11.543473962286116,
+          "developmentCycleEligible": false,
+          "nextAction": "Workstation",
+          "nextActionEta": 367.2193613158666
+        },
+        {
+          "minutes": 15,
+          "credits": 34973.105125744885,
+          "creditsPerSecond": 310.4871259034233,
+          "computePerSecond": 803.6,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 7
+          },
+          "totalHardware": 14,
+          "highestHardware": "Gaming PC",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 15,
+          "trainingProgress": 0,
+          "trainingRequirement": 9938.330649621685,
+          "trainingRate": 801.988761783552,
+          "trainingEta": 12.392107125690536,
+          "quality": 6,
+          "efficiency": 3,
+          "popularity": 8,
+          "potentialDemand": 5466.532550045777,
+          "currentUsers": 3938.6316639974393,
+          "capacity": 908.9205966880256,
+          "servedUsers": 908.9205966880256,
+          "utilization": 1,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 310.4871259034233,
+          "marketing": 2,
+          "reputation": 1,
+          "adoption": 54.01630888023851,
+          "developmentCycleEligible": false,
+          "nextAction": "Workstation",
+          "nextActionEta": 32.29407610727786
+        },
+        {
+          "minutes": 20,
+          "credits": 342242.06482041226,
+          "creditsPerSecond": 2628.965639345814,
+          "computePerSecond": 6575.816000000001,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 7,
+            "gpuServer": 4
+          },
+          "totalHardware": 18,
+          "highestHardware": "Workstation",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 20,
+          "trainingProgress": 0,
+          "trainingRequirement": 19705.26224699857,
+          "trainingRate": 6790.622611921982,
+          "trainingEta": 2.901834393270943,
+          "quality": 6,
+          "efficiency": 5,
+          "popularity": 8,
+          "potentialDemand": 16170.260498559863,
+          "currentUsers": 10959.656832146531,
+          "capacity": 7696.038960178246,
+          "servedUsers": 7696.038960178246,
+          "utilization": 1,
+          "revenuePerUser": 0.34159983505137104,
+          "revenuePerSecond": 2628.965639345814,
+          "marketing": 3,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 402.347569458077
+        },
+        {
+          "minutes": 30,
+          "credits": 2899335.3660349837,
+          "creditsPerSecond": 12177.013220625226,
+          "computePerSecond": 43678.17600000001,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 7,
+            "gpuServer": 10,
+            "miniDatacenter": 1
+          },
+          "totalHardware": 25,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 30,
+          "trainingProgress": 0,
+          "trainingRequirement": 52025.77564914521,
+          "trainingRate": 51870.72007977021,
+          "trainingEta": 1.0029892696522535,
+          "quality": 8,
+          "efficiency": 5,
+          "popularity": 10,
+          "potentialDemand": 49530.556472861186,
+          "currentUsers": 34436.809386953144,
+          "capacity": 58275.626385272284,
+          "servedUsers": 34436.809386953144,
+          "utilization": 0.5909298882397975,
+          "revenuePerUser": 0.3536045713119594,
+          "revenuePerSecond": 12177.013220625226,
+          "marketing": 4,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 5510.437035603362
+        },
+        {
+          "minutes": 45,
+          "credits": 4007536.2452019574,
+          "creditsPerSecond": 23573.771681075563,
+          "computePerSecond": 203688.576,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 7,
+            "gpuServer": 14,
+            "miniDatacenter": 7
+          },
+          "totalHardware": 35,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 45,
+          "trainingProgress": 0,
+          "trainingRequirement": 138246.2101881454,
+          "trainingRate": 249410.89728717713,
+          "trainingEta": 0.5542909780279797,
+          "quality": 9,
+          "efficiency": 7,
+          "popularity": 12,
+          "potentialDemand": 69499.51632181143,
+          "currentUsers": 65657.78654488515,
+          "capacity": 280207.7211261156,
+          "servedUsers": 65657.78654488515,
+          "utilization": 0.23431826318352578,
+          "revenuePerUser": 0.35903999999999997,
+          "revenuePerSecond": 23573.771681075563,
+          "marketing": 7,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "Server Rack",
+          "nextActionEta": 8.90022002573624
+        },
+        {
+          "minutes": 60,
+          "credits": 11066645.916967565,
+          "creditsPerSecond": 30038.95557132589,
+          "computePerSecond": 314381.576,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 7,
+            "gpuServer": 19,
+            "miniDatacenter": 10
+          },
+          "totalHardware": 43,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 60,
+          "trainingProgress": 0,
+          "trainingRequirement": 277526.5807878939,
+          "trainingRate": 390461.9173919999,
+          "trainingEta": 0.7107647850565518,
+          "quality": 10,
+          "efficiency": 8,
+          "popularity": 13,
+          "potentialDemand": 84992.08576743111,
+          "currentUsers": 82483.59793067903,
+          "capacity": 438675.47588736005,
+          "servedUsers": 82483.59793067903,
+          "utilization": 0.18802874212156453,
+          "revenuePerUser": 0.36418095627413427,
+          "revenuePerSecond": 30038.95557132589,
+          "marketing": 9,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": false,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1961.897574737522
+        },
+        {
+          "minutes": 75,
+          "credits": 7649889.968551603,
+          "creditsPerSecond": 36461.94857784149,
+          "computePerSecond": 412378.37599999993,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 7,
+            "gpuServer": 27,
+            "miniDatacenter": 13
+          },
+          "totalHardware": 54,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 75,
+          "trainingProgress": 0,
+          "trainingRequirement": 477349.64618443477,
+          "trainingRate": 519179.66451167694,
+          "trainingEta": 0.9194305532621619,
+          "quality": 11,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 101783.84247472284,
+          "currentUsers": 98793.94709432224,
+          "capacity": 583287.0665644234,
+          "servedUsers": 98793.94709432224,
+          "utilization": 0.16937448600775817,
+          "revenuePerUser": 0.36907067335845906,
+          "revenuePerSecond": 36461.94857784149,
+          "marketing": 12,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "Server Rack",
+          "nextActionEta": 75.93206450658367
+        },
+        {
+          "minutes": 90,
+          "credits": 14404253.703446073,
+          "creditsPerSecond": 43052.25695665382,
+          "computePerSecond": 426286.77599999995,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 8,
+            "gpuServer": 35,
+            "miniDatacenter": 13
+          },
+          "totalHardware": 63,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 90,
+          "trainingProgress": 0,
+          "trainingRequirement": 744293.4507077788,
+          "trainingRate": 536690.181226778,
+          "trainingEta": 1.3868214413881335,
+          "quality": 13,
+          "efficiency": 9,
+          "popularity": 14,
+          "potentialDemand": 115892.5955140307,
+          "currentUsers": 113827.44720296202,
+          "capacity": 602959.7514304324,
+          "servedUsers": 113827.44720296202,
+          "utilization": 0.1887811697761307,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 43052.25695665382,
+          "marketing": 14,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 1226.3177363665304
+        },
+        {
+          "minutes": 120,
+          "credits": 22875918.547368526,
+          "creditsPerSecond": 54064.191613916286,
+          "computePerSecond": 518197.0560000001,
+          "hardware": {
+            "calculator": 2,
+            "homeComputer": 3,
+            "gamingPc": 2,
+            "workstation": 13,
+            "gpuServer": 39,
+            "miniDatacenter": 16
+          },
+          "totalHardware": 75,
+          "highestHardware": "Server Rack",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 120,
+          "trainingProgress": 0,
+          "trainingRequirement": 1502824.8207726467,
+          "trainingRate": 677363.7492959294,
+          "trainingEta": 2.2186378032995187,
+          "quality": 13,
+          "efficiency": 12,
+          "popularity": 16,
+          "potentialDemand": 145194.14508446274,
+          "currentUsers": 142942.30666466293,
+          "capacity": 761003.4470350791,
+          "servedUsers": 142942.30666466293,
+          "utilization": 0.18783398054447167,
+          "revenuePerUser": 0.3782238644066992,
+          "revenuePerSecond": 54064.191613916286,
+          "marketing": 19,
+          "reputation": 1,
+          "adoption": 100,
+          "developmentCycleEligible": true,
+          "nextAction": "GPU Cluster",
+          "nextActionEta": 819.8417497695891
+        }
+      ],
+      "events": [
+        {
+          "minute": 2,
+          "type": "model-level",
+          "value": 2
+        },
+        {
+          "minute": 3,
+          "type": "model-level",
+          "value": 3
+        },
+        {
+          "minute": 3,
+          "type": "hardware-tier",
+          "value": "Pocket Computer"
+        },
+        {
+          "minute": 4,
+          "type": "model-level",
+          "value": 4
+        },
+        {
+          "minute": 5,
+          "type": "model-level",
+          "value": 5
+        },
+        {
+          "minute": 6,
+          "type": "model-level",
+          "value": 6
+        },
+        {
+          "minute": 6,
+          "type": "hardware-tier",
+          "value": "Laptop"
+        },
+        {
+          "minute": 7,
+          "type": "model-level",
+          "value": 7
+        },
+        {
+          "minute": 8,
+          "type": "model-level",
+          "value": 8
+        },
+        {
+          "minute": 9,
+          "type": "model-level",
+          "value": 9
+        },
+        {
+          "minute": 9,
+          "type": "hardware-tier",
+          "value": "Gaming PC"
+        },
+        {
+          "minute": 10,
+          "type": "model-level",
+          "value": 10
+        },
+        {
+          "minute": 11,
+          "type": "model-level",
+          "value": 11
+        },
+        {
+          "minute": 12,
+          "type": "model-level",
+          "value": 12
+        },
+        {
+          "minute": 13,
+          "type": "model-level",
+          "value": 13
+        },
+        {
+          "minute": 14,
+          "type": "model-level",
+          "value": 14
+        },
+        {
+          "minute": 15,
+          "type": "model-level",
+          "value": 15
+        },
+        {
+          "minute": 16,
+          "type": "model-level",
+          "value": 16
+        },
+        {
+          "minute": 17,
+          "type": "model-level",
+          "value": 17
+        },
+        {
+          "minute": 17,
+          "type": "hardware-tier",
+          "value": "Workstation"
+        },
+        {
+          "minute": 18,
+          "type": "model-level",
+          "value": 18
+        },
+        {
+          "minute": 19,
+          "type": "model-level",
+          "value": 19
+        },
+        {
+          "minute": 20,
+          "type": "model-level",
+          "value": 20
+        },
+        {
+          "minute": 21,
+          "type": "model-level",
+          "value": 21
+        },
+        {
+          "minute": 22,
+          "type": "model-level",
+          "value": 22
+        },
+        {
+          "minute": 23,
+          "type": "model-level",
+          "value": 23
+        },
+        {
+          "minute": 24,
+          "type": "model-level",
+          "value": 24
+        },
+        {
+          "minute": 25,
+          "type": "model-level",
+          "value": 25
+        },
+        {
+          "minute": 26,
+          "type": "model-level",
+          "value": 26
+        },
+        {
+          "minute": 27,
+          "type": "model-level",
+          "value": 27
+        },
+        {
+          "minute": 28,
+          "type": "model-level",
+          "value": 28
+        },
+        {
+          "minute": 29,
+          "type": "model-level",
+          "value": 29
+        },
+        {
+          "minute": 29,
+          "type": "hardware-tier",
+          "value": "Server Rack"
+        },
+        {
+          "minute": 30,
+          "type": "model-level",
+          "value": 30
+        },
+        {
+          "minute": 31,
+          "type": "model-level",
+          "value": 31
+        },
+        {
+          "minute": 32,
+          "type": "model-level",
+          "value": 32
+        },
+        {
+          "minute": 33,
+          "type": "model-level",
+          "value": 33
+        },
+        {
+          "minute": 34,
+          "type": "model-level",
+          "value": 34
+        },
+        {
+          "minute": 35,
+          "type": "model-level",
+          "value": 35
+        },
+        {
+          "minute": 36,
+          "type": "model-level",
+          "value": 36
+        },
+        {
+          "minute": 37,
+          "type": "model-level",
+          "value": 37
+        },
+        {
+          "minute": 38,
+          "type": "model-level",
+          "value": 38
+        },
+        {
+          "minute": 39,
+          "type": "model-level",
+          "value": 39
+        },
+        {
+          "minute": 40,
+          "type": "model-level",
+          "value": 40
+        },
+        {
+          "minute": 41,
+          "type": "model-level",
+          "value": 41
+        },
+        {
+          "minute": 42,
+          "type": "model-level",
+          "value": 42
+        },
+        {
+          "minute": 43,
+          "type": "model-level",
+          "value": 43
+        },
+        {
+          "minute": 44,
+          "type": "model-level",
+          "value": 44
+        },
+        {
+          "minute": 45,
+          "type": "model-level",
+          "value": 45
+        },
+        {
+          "minute": 46,
+          "type": "model-level",
+          "value": 46
+        },
+        {
+          "minute": 47,
+          "type": "model-level",
+          "value": 47
+        },
+        {
+          "minute": 48,
+          "type": "model-level",
+          "value": 48
+        },
+        {
+          "minute": 49,
+          "type": "model-level",
+          "value": 49
+        },
+        {
+          "minute": 50,
+          "type": "model-level",
+          "value": 50
+        },
+        {
+          "minute": 51,
+          "type": "model-level",
+          "value": 51
+        },
+        {
+          "minute": 52,
+          "type": "model-level",
+          "value": 52
+        },
+        {
+          "minute": 53,
+          "type": "model-level",
+          "value": 53
+        },
+        {
+          "minute": 54,
+          "type": "model-level",
+          "value": 54
+        },
+        {
+          "minute": 55,
+          "type": "model-level",
+          "value": 55
+        },
+        {
+          "minute": 56,
+          "type": "model-level",
+          "value": 56
+        },
+        {
+          "minute": 57,
+          "type": "model-level",
+          "value": 57
+        },
+        {
+          "minute": 58,
+          "type": "model-level",
+          "value": 58
+        },
+        {
+          "minute": 59,
+          "type": "model-level",
+          "value": 59
+        },
+        {
+          "minute": 60,
+          "type": "model-level",
+          "value": 60
+        },
+        {
+          "minute": 61,
+          "type": "model-level",
+          "value": 61
+        },
+        {
+          "minute": 62,
+          "type": "model-level",
+          "value": 62
+        },
+        {
+          "minute": 63,
+          "type": "model-level",
+          "value": 63
+        },
+        {
+          "minute": 64,
+          "type": "model-level",
+          "value": 64
+        },
+        {
+          "minute": 65,
+          "type": "model-level",
+          "value": 65
+        },
+        {
+          "minute": 66,
+          "type": "model-level",
+          "value": 66
+        },
+        {
+          "minute": 67,
+          "type": "model-level",
+          "value": 67
+        },
+        {
+          "minute": 68,
+          "type": "model-level",
+          "value": 68
+        },
+        {
+          "minute": 69,
+          "type": "model-level",
+          "value": 69
+        },
+        {
+          "minute": 70,
+          "type": "model-level",
+          "value": 70
+        },
+        {
+          "minute": 71,
+          "type": "model-level",
+          "value": 71
+        },
+        {
+          "minute": 72,
+          "type": "model-level",
+          "value": 72
+        },
+        {
+          "minute": 73,
+          "type": "model-level",
+          "value": 73
+        },
+        {
+          "minute": 74,
+          "type": "model-level",
+          "value": 74
+        },
+        {
+          "minute": 75,
+          "type": "model-level",
+          "value": 75
+        },
+        {
+          "minute": 76,
+          "type": "model-level",
+          "value": 76
+        },
+        {
+          "minute": 77,
+          "type": "model-level",
+          "value": 77
+        },
+        {
+          "minute": 78,
+          "type": "model-level",
+          "value": 78
+        },
+        {
+          "minute": 79,
+          "type": "model-level",
+          "value": 79
+        },
+        {
+          "minute": 80,
+          "type": "model-level",
+          "value": 80
+        },
+        {
+          "minute": 81,
+          "type": "model-level",
+          "value": 81
+        },
+        {
+          "minute": 82,
+          "type": "model-level",
+          "value": 82
+        },
+        {
+          "minute": 83,
+          "type": "model-level",
+          "value": 83
+        },
+        {
+          "minute": 84,
+          "type": "model-level",
+          "value": 84
+        },
+        {
+          "minute": 85,
+          "type": "model-level",
+          "value": 85
+        },
+        {
+          "minute": 86,
+          "type": "model-level",
+          "value": 86
+        },
+        {
+          "minute": 87,
+          "type": "model-level",
+          "value": 87
+        },
+        {
+          "minute": 88,
+          "type": "model-level",
+          "value": 88
+        },
+        {
+          "minute": 89,
+          "type": "model-level",
+          "value": 89
+        },
+        {
+          "minute": 90,
+          "type": "model-level",
+          "value": 90
+        },
+        {
+          "minute": 91,
+          "type": "model-level",
+          "value": 91
+        },
+        {
+          "minute": 92,
+          "type": "model-level",
+          "value": 92
+        },
+        {
+          "minute": 93,
+          "type": "model-level",
+          "value": 93
+        },
+        {
+          "minute": 94,
+          "type": "model-level",
+          "value": 94
+        },
+        {
+          "minute": 95,
+          "type": "model-level",
+          "value": 95
+        },
+        {
+          "minute": 96,
+          "type": "model-level",
+          "value": 96
+        },
+        {
+          "minute": 97,
+          "type": "model-level",
+          "value": 97
+        },
+        {
+          "minute": 98,
+          "type": "model-level",
+          "value": 98
+        },
+        {
+          "minute": 99,
+          "type": "model-level",
+          "value": 99
+        },
+        {
+          "minute": 100,
+          "type": "model-level",
+          "value": 100
+        },
+        {
+          "minute": 101,
+          "type": "model-level",
+          "value": 101
+        },
+        {
+          "minute": 102,
+          "type": "model-level",
+          "value": 102
+        },
+        {
+          "minute": 103,
+          "type": "model-level",
+          "value": 103
+        },
+        {
+          "minute": 104,
+          "type": "model-level",
+          "value": 104
+        },
+        {
+          "minute": 105,
+          "type": "model-level",
+          "value": 105
+        },
+        {
+          "minute": 106,
+          "type": "model-level",
+          "value": 106
+        },
+        {
+          "minute": 107,
+          "type": "model-level",
+          "value": 107
+        },
+        {
+          "minute": 108,
+          "type": "model-level",
+          "value": 108
+        },
+        {
+          "minute": 109,
+          "type": "model-level",
+          "value": 109
+        },
+        {
+          "minute": 110,
+          "type": "model-level",
+          "value": 110
+        },
+        {
+          "minute": 111,
+          "type": "model-level",
+          "value": 111
+        },
+        {
+          "minute": 112,
+          "type": "model-level",
+          "value": 112
+        },
+        {
+          "minute": 113,
+          "type": "model-level",
+          "value": 113
+        },
+        {
+          "minute": 114,
+          "type": "model-level",
+          "value": 114
+        },
+        {
+          "minute": 115,
+          "type": "model-level",
+          "value": 115
+        },
+        {
+          "minute": 116,
+          "type": "model-level",
+          "value": 116
+        },
+        {
+          "minute": 117,
+          "type": "model-level",
+          "value": 117
+        },
+        {
+          "minute": 118,
+          "type": "model-level",
+          "value": 118
+        },
+        {
+          "minute": 119,
+          "type": "model-level",
+          "value": 119
+        },
+        {
+          "minute": 120,
+          "type": "model-level",
+          "value": 120
+        }
+      ],
+      "eligibleAt": 75,
+      "maxDeadZoneMinutes": 1,
+      "eventDensityPerHour": 62.00000000000001,
+      "finalState": {
+        "minutes": 120,
+        "credits": 22875918.547368526,
+        "creditsPerSecond": 54064.191613916286,
+        "computePerSecond": 518197.0560000001,
+        "hardware": {
+          "calculator": 2,
+          "homeComputer": 3,
+          "gamingPc": 2,
+          "workstation": 13,
+          "gpuServer": 39,
+          "miniDatacenter": 16
+        },
+        "totalHardware": 75,
+        "highestHardware": "Server Rack",
+        "trainingAllocation": 60,
+        "inferenceAllocation": 40,
+        "model": "tinyChat",
+        "modelLevel": 120,
+        "trainingProgress": 0,
+        "trainingRequirement": 1502824.8207726467,
+        "trainingRate": 677363.7492959294,
+        "trainingEta": 2.2186378032995187,
+        "quality": 13,
+        "efficiency": 12,
+        "popularity": 16,
+        "potentialDemand": 145194.14508446274,
+        "currentUsers": 142942.30666466293,
+        "capacity": 761003.4470350791,
+        "servedUsers": 142942.30666466293,
+        "utilization": 0.18783398054447167,
+        "revenuePerUser": 0.3782238644066992,
+        "revenuePerSecond": 54064.191613916286,
+        "marketing": 19,
+        "reputation": 1,
+        "adoption": 100,
+        "developmentCycleEligible": true,
+        "nextAction": "GPU Cluster",
+        "nextActionEta": 819.8417497695891
+      }
+    }
+  ]
+}
