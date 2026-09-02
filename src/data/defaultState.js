@@ -96,20 +96,21 @@ export const UPGRADES = [
   ...progressionUpgrades(RESEARCH_UPGRADES, 'research', BALANCE.research.upgradeBaseCost, BALANCE.research.upgradeFamilyGrowth),
 ];
 
-const objective = (id, category, text, metric, target, reward, order) => ({ id, category, text, metric, type: metric, target, reward, order });
+export const objectiveTitle = (titleTemplate,target) => titleTemplate.replaceAll('{target}',new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(target));
+const objective = (id, category, titleTemplate, metric, target, reward, order) => ({ id, category, titleTemplate, text:objectiveTitle(titleTemplate,target), metric, type: metric, target, reward, order });
 const objectiveTracks = [
-  ['users','MARKET','Reach {n} Active Users','users',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e12]],
-  ['compute','INFRASTRUCTURE','Produce {n} total Compute','totalCompute',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e13]],
-  ['compute-rate','INFRASTRUCTURE','Reach {n} Compute/sec','computeRate',[1,10,100,1e3,1e4,1e6,1e8,1e10]],
-  ['credits','STARTUP','Earn {n} lifetime Credits','creditsEarned',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e12]],
-  ['model-level','MODEL','Train a Model to Level {n}','level',[2,3,5,8,12,20,35,50]],
-  ['training','MODEL','Complete {n} Training runs','trainings',[1,3,5,10,20,40,75,120]],
-  ['skills','MODEL','Spend {n} Improvement Points','pointsSpent',[1,3,5,10,20,40,75,120]],
-  ['marketing','MARKET','Reach Marketing Level {n}','marketing',[1,3,5,10,20,35,60,100]],
-  ['research','RESEARCH','Generate {n} Research','research',[1,10,100,1e3,1e4,1e5,1e7,1e9]],
-  ['patents','RESEARCH','Discover {n} Patents','patents',[1,2,3,5,10,20,35,50]],
-  ['cycles','PRESTIGE','Complete {n} Development Cycles','cycles',[1,2,3,5,10,20,50,100]],
-  ['technology','TECHNOLOGY','Purchase {n} permanent Technologies','tech',[1,3,5,10,20,35,60,100]],
+  ['users','MARKET','Reach {target} Active Users','users',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e12]],
+  ['compute','INFRASTRUCTURE','Produce {target} total Compute','totalCompute',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e13]],
+  ['compute-rate','INFRASTRUCTURE','Reach {target} Compute/sec','computeRate',[1,10,100,1e3,1e4,1e6,1e8,1e10]],
+  ['credits','STARTUP','Earn {target} lifetime Credits','creditsEarned',[100,1e3,1e4,1e5,1e6,1e8,1e10,1e12]],
+  ['model-level','MODEL','Train a Model to Level {target}','level',[2,3,5,8,12,20,35,50]],
+  ['training','MODEL','Complete {target} Training runs','trainings',[1,3,5,10,20,40,75,120]],
+  ['skills','MODEL','Spend {target} Improvement Points','pointsSpent',[1,3,5,10,20,40,75,120]],
+  ['marketing','MARKET','Reach Marketing Level {target}','marketing',[1,3,5,10,20,35,60,100]],
+  ['research','RESEARCH','Generate {target} Research','research',[1,10,100,1e3,1e4,1e5,1e7,1e9]],
+  ['patents','RESEARCH','Discover {target} Patents','patents',[1,2,3,5,10,20,35,50]],
+  ['cycles','PRESTIGE','Complete {target} Development Cycles','cycles',[1,2,3,5,10,20,50,100]],
+  ['technology','TECHNOLOGY','Purchase {target} permanent Technologies','tech',[1,3,5,10,20,35,60,100]],
 ];
 export const OBJECTIVES = [
   objective('first-calculator','STARTUP','Buy your first Calculator','hardware:calculator',1,50,0),
@@ -120,7 +121,7 @@ export const OBJECTIVES = [
   objective('marketing-3','MARKET','Launch 3 Marketing campaigns','marketing',3,750,5),
   objective('compute-rate-1000','INFRASTRUCTURE','Reach 1,000 Compute/sec','computeRate',1_000,1_000,6),
   objective('users-10000','MARKET','Reach 10,000 active Users','users',10_000,2_000,7),
-  objective('training-6','MODEL','Complete 6 Trainings','trainings',6,3_000,8),
+  objective('training-6','MODEL','Complete {target} Trainings','trainings',6,3_000,8),
   objective('model-level-10','MODEL','Reach Model Level 10','level',10,5_000,9),
   objective('users-100000','MARKET','Reach 100,000 active Users','users',100_000,8_000,10),
   objective('marketing-10','MARKET','Launch 10 Marketing campaigns','marketing',10,10_000,11),
@@ -144,7 +145,7 @@ export const OBJECTIVES = [
   objective('first-tech-model','MODEL','Unlock a Model through Technology','models',2,1_500,21),
   objective('branch-investment-10','TECHNOLOGY','Invest 10 INT in one Technology branch','maxBranchInvestment',10,3_000,22),
   ...HARDWARE_CATALOG.map((item,index)=>objective(`hardware-${item.id}`,'INFRASTRUCTURE',`Own a ${item.name}`,`hardware:${item.id}`,1,Math.ceil(item.baseCost*.5),10+index)),
-  ...objectiveTracks.flatMap(([id,category,label,metric,targets],track)=>targets.map((target,index)=>objective(`${id}-${index+1}`,category,label.replace('{n}',target.toLocaleString('en-US')),metric,target,Math.ceil(100*3**Math.min(10,index)),40+track*10+index))),
+  ...objectiveTracks.flatMap(([id,category,label,metric,targets],track)=>targets.map((target,index)=>objective(`${id}-${index+1}`,category,label,metric,target,Math.ceil(100*3**Math.min(10,index)),40+track*10+index))),
 ].sort((a,b)=>a.order-b.order);
 
 export const TECH_ERAS = TECHNOLOGY_ERAS;
@@ -269,10 +270,10 @@ export function createDefaultState() {
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
     patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3 },
     premium: { purchases: [], adCooldowns: {}, freeGemClaimedAt:0 },
-    retention: { lastLoginDate: null, loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null, dailyCompletionStreak: 0, lastDailyCompletionPeriod: null, completedDailyPeriods: 0 },
+    retention: { lastLoginDate: null, loginDays:[], loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null, dailyCompletionStreak: 0, lastDailyCompletionPeriod: null, completedDailyPeriods: 0 },
     inventory: { instances: [], equipped: {}, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },
     consumables: {}, rewardCaches: {},
-    missions: { dailyPeriodId: null, weeklyPeriodId: null, monthlyPeriodId: null, daily: [], weekly: [], monthly: [], claims: {}, generatedAt: null, seeds: {} },
+    missions: { dailyPeriodId: null, weeklyPeriodId: null, monthlyPeriodId: null, daily: [], weekly: [], monthly: [], claims: {}, claimHistory:[], tracks:{}, generatedAt: null, seeds: {} },
     gemEconomy: { earned: 0, spent: 0, consumablesUsed: 0, history: [] },
     rewardedBoosts: { periodId: null, claims: {}, offered: 0, started: 0, completed: 0 },
     artifacts: { owned: [], collection: [] },
@@ -283,7 +284,7 @@ export function createDefaultState() {
     balanceRun: { id: null, startedAt: null, natural: true },
     tutorial: { step: 0, completed: false, acknowledged: [] }, intro:{step:0,completed:false},
     settings: { numberNotation: 'compact', sound: true },
-    statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, creditSources: { 'user-revenue':0, objective:0, 'daily-mission':0, 'weekly-mission':0, 'monthly-mission':0, event:0, offline:0, other:0 }, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, playTimeMs: 0 },
+    statistics: { totalCreditsEarned: 0, totalCreditsSpent: 0, creditSources: { 'user-revenue':0, objective:0, 'daily-mission':0, 'weekly-mission':0, 'monthly-mission':0, event:0, offline:0, other:0 }, totalComputeProduced: 0, totalManualComputeProduced: 0, totalComputeConsumed: 0, totalComputeWasted: 0, totalClicks: 0, totalItemsAcquired: 0, totalMissionsClaimed: 0, totalTrainings:0,totalModelLevels:0,totalModelPointsSpent:0,totalHardwarePurchased:0,totalMarketingPurchased:0,totalUsersServed:0,objectivesClaimed:0,totalResearchProjects:0,totalResearchPointsSpent:0,researchLabSeconds:0,peakActiveLabs:0,totalTechPurchased:0,totalPatentsDiscovered:0, playTimeMs: 0 },
     run: { number: 1, startedAtSessionMs: 0, creditsEarned: 0, computeProduced: 0, taps:0, manualComputeGenerated:0 },
     session: { elapsedMs: 0, lastSavedAt: null, taps:0, manualComputeGenerated:0 },
     ui: { activeView: 'dashboard', sidebarOpen: false, toast: null, selectedTechnologyId: TECH_NODES[0]?.id ?? null, lastTechInteraction: null },

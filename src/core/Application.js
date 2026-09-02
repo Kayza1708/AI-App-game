@@ -12,7 +12,7 @@ import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
 import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, skipTutorial, buyGemShopItem, buyHardware, buyHardwareBulk, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
-import { claimMission, ensureMissions } from '../systems/MissionSystem.js';
+import { claimAllMissions, claimMission, claimMissionTrack, ensureMissions } from '../systems/MissionSystem.js';
 import { activateGemBoost, RewardedBoostService } from '../systems/RewardedBoostService.js';
 import { doubleOfflineRewardWithGems, reconcileOffline } from '../systems/OfflineProgressSystem.js';
 import { dismissReward } from '../systems/RewardQueue.js';
@@ -154,6 +154,8 @@ export class Application {
       this.#eventBus.on('model:deploy', (modelId) => this.#store.update((state) => toggleModelDeployment(state, modelId), 'model')),
       this.#eventBus.on('retention:login', () => this.#store.update(claimLoginReward, 'retention')),
       this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimMission(state, missionId), 'mission')),
+      this.#eventBus.on('retention:claim-all', (period) => this.#store.update((state) => claimAllMissions(state, period), 'mission-claim-all')),
+      this.#eventBus.on('retention:claim-track', ({period,target}) => this.#store.update((state) => claimMissionTrack(state,period,target), 'mission-track')),
       this.#eventBus.on('item:equip', ({instanceId,modelId}) => this.#store.update((state)=>equipItem(state,instanceId,modelId),'item-equipped')),
       this.#eventBus.on('item:unequip', ({modelId,slotType}) => this.#store.update((state)=>unequipItem(state,modelId,slotType),'item-unequipped')),
       this.#eventBus.on('item:favorite', (instanceId) => this.#store.update((state)=>toggleItemFavorite(state,instanceId),'item-favorited')),
