@@ -7,6 +7,7 @@ import { branchInvestment, hasTechnologyMechanic, purchasedTechnologyNodes, tech
 import { earnGems, spendGems } from './GemSystem.js';
 import { enqueueReward } from './RewardQueue.js';
 import { RESEARCH_PROJECTS, researchProjectCost, startResearchProject, tickResearchLabs, unlockedResearchLabs } from './ResearchSystem.js';
+import { advanceUsers, marketSnapshot, potentialDemand as calculatePotentialDemand } from './MarketSystem.js';
 
 
 
@@ -69,7 +70,8 @@ function effectiveMarketModels(state){const ids=[...new Set([...(state.model.dep
 function activeProgress(state){return state.model.progress?.[state.model.activeId]??{level:state.model.level,xp:state.model.xp,upgradePoints:state.model.upgradePoints??0,trainings:0,totalPointsEarned:state.model.upgradePoints??0,totalPointsSpent:0,skills:state.model.improvements?.[state.model.activeId]??{}}}
 function modelImprovementLevel(state, modelId, path) { return state.model.progress?.[modelId]?.skills?.[path] ?? state.model.improvements[modelId]?.[path] ?? 0; }
 export function effectiveModelStat(state, model, stat) { const base=model.stats[stat]??0; const points=skillUnlocked(state,stat)?modelImprovementLevel(state,model.id,stat):0;const skillPower=Math.max(.1,1+technologyEffect(state,'modelSkillPower')+(stat==='efficiency'?technologyEffect(state,'efficiencyPower'):0)+(stat==='popularity'?technologyEffect(state,'popularityPower'):0)+(stat==='quality'?technologyEffect(state,'qualityPower'):0));const portfolio=hasTechnologyMechanic(state,'specialist-ai')&&model.id!==state.model.activeId?.5:hasTechnologyMechanic(state,'generalist-ai')?.8:1; return (base + points * BALANCE.training.skillGain*skillPower + modifierValue(state,stat,model.id)) * portfolio * (stat==='quality' ? 1 + strategicBonus(state,'quality') + deployedIdentityBonus(state,'quality') : 1); }
-export function lifetimeIncomeMultiplier(state) { return 1 + Math.max(0, state.meta.totalIntelligence ?? 0) * 0.10; }
+// Temporary Phase-2A compatibility boundary; final INT entitlement belongs to Phase 2C.
+export function lifetimeIncomeMultiplier(state) { const root=Math.sqrt(Math.max(0,state.meta.totalIntelligence??0));return 1+.5*root/(10+root); }
 export function revenuePerUser(state) { const revenueModels=[...new Set([...state.model.deployed,state.model.activeId])];const enterpriseModels = revenueModels.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'enterprise')*.04+effectiveModelStat(state,model,'quality')*.025:0)}, 0) + (state.model.deployed.includes('agi') ? 0.5 : 0); return BALANCE.market.revenueBase * state.market.priceMultiplier * lifetimeIncomeMultiplier(state) * Math.max(0.1, 1 + enterpriseModels + upgradeBonus(state, 'revenue') + milestoneBonus(state, 'revenue') + strategicBonus(state, 'revenue') + deployedIdentityBonus(state,'revenue') + strategicBonus(state, 'enterprise') * 0.7 - strategicBonus(state, 'adoption') * 0.25); }
 export function xpRequired() { return 0; }
 export function trainingRequired(level) { const anchors=BALANCE.training.requirementAnchors; const target=Math.max(1,Number(level)||1); const upper=anchors.find(([anchor])=>anchor>=target)??anchors.at(-1); const lower=[...anchors].reverse().find(([anchor])=>anchor<=target)??anchors[0]; if(upper[0]===lower[0])return lower[1]; const ratio=(target-lower[0])/(upper[0]-lower[0]); return Math.round(Math.exp(Math.log(lower[1])+(Math.log(upper[1])-Math.log(lower[1]))*ratio)); }
@@ -83,50 +85,30 @@ export function modelAvailablePoints(progress){return Math.max(0,progress?.avail
 export function modelTrainingCount(progress){return Math.max(0,progress?.trainingCount??progress?.trainings??0)}
 export function completeTrainingProgress(progress,pointsEarned=1){const availablePoints=modelAvailablePoints(progress)+pointsEarned,totalPointsSpent=Math.max(0,progress.totalPointsSpent??0),trainingCount=modelTrainingCount(progress)+1;return{...progress,level:Math.max(1,progress.level??1)+1,xp:0,trainings:trainingCount,trainingCount,upgradePoints:availablePoints,availablePoints,totalPointsSpent,totalPointsEarned:availablePoints+totalPointsSpent}}
 
-export function marketMetrics(input) {
-  const state = ensureGameState(input);
-  const deployed = effectiveMarketModels(state);
-  const highestTier = HARDWARE_CATALOG.reduce((tier, item) => state.hardware[item.id] > 0 ? Math.max(tier, item.tier) : tier, 0);
-  const deployedLevel = Math.max(1, ...deployed.map((model) => state.model.progress?.[model.id]?.level ?? 1));
-  const deployedQuality = deployed.reduce((sum, model) => sum + effectiveModelStat(state, model, 'quality'), 0) / Math.max(1, deployed.length);
-  const unlockedMarketSize = (30 + deployedLevel * 18) * BALANCE.market.tierMarketGrowth ** highestTier * (1 + upgradeBonus(state, 'marketSize') + strategicBonus(state, 'marketSize') + deployedIdentityBonus(state, 'marketSize'));
-  const appeal = deployed.reduce((sum, deployedModel) => sum + effectiveModelStat(state,deployedModel,'popularity') + effectiveModelStat(state,deployedModel,'quality')*.5 + effectiveModelStat(state,deployedModel,'vision')*.2 + effectiveModelStat(state,deployedModel,'creativity')*.2 + effectiveModelStat(state,deployedModel,'context')*.1 + effectiveModelStat(state,deployedModel,'reasoning')*.1, 0) + upgradeBonus(state, 'appeal') * 10;
-  const qualityAppeal = (appeal + strategicBonus(state, 'appeal') * 10 + deployedIdentityBonus(state,'demand') * 10) * (1 + deployedQuality * (0.2 + upgradeBonus(state, 'quality') + strategicBonus(state, 'quality')));
-  const priceResistance = 1 / state.market.priceMultiplier ** Math.max(0.55, 1.35 - strategicBonus(state, 'priceElasticity'));
-  const marketingPower = 1 + state.market.marketing * (BALANCE.market.marketingBase + upgradeBonus(state, 'marketing') + strategicBonus(state,'marketing'));
-  // Reputation is a visible, gently bounded modifier rather than a hidden wall.
-  const reputationPower = (0.85 + 0.15 * Math.min(2, Math.max(0, state.market.reputation))) * (1 + upgradeBonus(state, 'reputation'));
-  const adoptionPower = 1 + Math.min(1, Math.max(0, state.market.adoption) / 100) * (0.35 + upgradeBonus(state, 'adoption'));
-  const modelEfficiency = deployed.reduce((sum, deployedModel) => sum + effectiveModelStat(state,deployedModel,'efficiency') * (1+effectiveModelStat(state,deployedModel,'latency')*.04), 0) / Math.max(1, deployed.length);
-  const capacity = computePerSecond(state) * state.allocation.inference / 100 * modelEfficiency * BALANCE.market.capacityScale * Math.max(0.1, 1 + upgradeBonus(state, 'inference') + strategicBonus(state,'inference') + strategicBonus(state, 'enterprise') * 0.35);
-  const organicDemand = unlockedMarketSize * qualityAppeal * BALANCE.market.demandScale * marketingPower * reputationPower * adoptionPower * priceResistance * Math.max(0.1, 1 + upgradeBonus(state, 'demand') + milestoneBonus(state, 'demand') + strategicBonus(state, 'demand') + strategicBonus(state, 'adoption') - strategicBonus(state, 'enterprise') * 0.2);
-  // Distribution is capacity-linked, but Model appeal still determines how much
-  // of that reach turns into real Demand. Otherwise the floor masks every
-  // Quality/Popularity point once infrastructure becomes large.
-  const averagePopularity=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'popularity'),0)/Math.max(1,deployed.length);
-  // Capacity creates addressable reach, while Marketing and Model choices decide
-  // how much converts. Logarithmic Marketing keeps large campaigns meaningful
-  // without allowing unbounded linear growth.
-  const reachRatio = 0.10 + highestTier * 0.025 + Math.log1p(state.market.marketing) * 0.14 + averagePopularity * 0.035 + deployedQuality * 0.015;
-  const capacityDemand = capacity * reachRatio * reputationPower * adoptionPower * priceResistance * Math.max(.1,1+strategicBonus(state,'demand'));
-  const demand = Math.max(organicDemand, capacityDemand + organicDemand*.25);
-  const target = Math.floor(Math.min(demand, capacity));
-  const servedUsers=Math.min(state.resources.users,demand,capacity);
-  const utilization = capacity > 0 ? servedUsers / capacity : 0;
-  const userGap=Math.max(0,target-state.resources.users);
-  const momentum=Math.sqrt(Math.max(0,state.resources.users))*Math.max(.05,.18+averagePopularity*.035)*marketingPower*Math.min(1,userGap/Math.max(1,target));
-  const organicUsersPerSecond=Math.min(userGap*.2,userGap*BALANCE.market.userConvergence+momentum);
-  return { demand, capacity, target, servedUsers, utilization, unlockedMarketSize, organicDemand, capacityDemand, organicUsersPerSecond, marketingPower, qualityMultiplier:1+deployedQuality*.015, popularityMultiplier:1+averagePopularity*.035, reputationPower, adoptionPower, priceResistance, demandCapacityRatio:capacity?demand/capacity:0, bottleneck: demand < capacity ? 'DEMAND LIMITED' : 'CAPACITY LIMITED', revenue: servedUsers * revenuePerUser(state) };
+function marketFactors(state) {
+  const deployed=effectiveMarketModels(state),highestTier=HARDWARE_CATALOG.reduce((tier,item)=>state.hardware[item.id]>0?Math.max(tier,item.tier):tier,0);
+  const level=Math.max(1,...deployed.map(model=>state.model.progress?.[model.id]?.level??1));
+  const quality=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'quality'),0)/Math.max(1,deployed.length);
+  const popularity=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'popularity'),0)/Math.max(1,deployed.length);
+  const otherAppeal=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'vision')*.2+effectiveModelStat(state,model,'creativity')*.2+effectiveModelStat(state,model,'context')*.1+effectiveModelStat(state,model,'reasoning')*.1,0);
+  const modelTier=deployed.reduce((sum,model)=>sum+Math.max(0,MODEL_CATALOG.findIndex(item=>item.id===model.id)),0)/Math.max(1,deployed.length);
+  return{baseMarket:(30+level*18)*BALANCE.market.tierMarketGrowth**highestTier,modelTier:1+modelTier*.25,modelLevel:1,quality,popularity,infrastructure:1,marketing:state.market.marketing,reputation:state.market.reputation,adoption:state.market.adoption,price:state.market.priceMultiplier,priceElasticity:Math.max(0,strategicBonus(state,'priceElasticity')),marketSizeModifiers:Math.max(.1,1+upgradeBonus(state,'marketSize')+strategicBonus(state,'marketSize')+deployedIdentityBonus(state,'marketSize')),demandModifiers:Math.max(.1,1+upgradeBonus(state,'demand')+milestoneBonus(state,'demand')+strategicBonus(state,'demand')+deployedIdentityBonus(state,'demand')-strategicBonus(state,'enterprise')*.2),appealModifiers:Math.max(.1,1+otherAppeal*.02+upgradeBonus(state,'appeal')+strategicBonus(state,'appeal')),highestTier,level};
 }
+function marketContext(state,totalCompute=computePerSecond(state)) {
+  const deployed=effectiveMarketModels(state),modelEfficiency=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'efficiency')*(1+effectiveModelStat(state,model,'latency')*.04),0)/Math.max(1,deployed.length);
+  return{totalComputePerSecond:totalCompute,modelEfficiency,inferenceModifiers:BALANCE.market.capacityScale*Math.max(.1,1+upgradeBonus(state,'inference')+strategicBonus(state,'inference')+strategicBonus(state,'enterprise')*.35),revenuePerUser:revenuePerUser(state),factors:marketFactors(state)};
+}
+export function potentialDemand(state){return calculatePotentialDemand(state,marketFactors(ensureGameState(state)))}
+export function marketMetrics(input,users){const state=ensureGameState(input);return marketSnapshot(state,marketContext(state),users??state.resources.users)}
 
-export function userGrowthPerSecond(state) { return marketMetrics(state).organicUsersPerSecond; }
+export function userGrowthPerSecond(state) { return marketMetrics(state).userGrowthPerSecond; }
 
 export function createDefaultEconomySnapshot() {
   return {
     credits: 0, creditsPerSecond: 0, revenuePerSecond: 0,
     compute: 0, computePerSecond: 0, computeConsumed: 0, computeWasted: 0, storedComputeRate: 0,
     trainingCompute: 0, research: 0, researchPerSecond: 0,
-    users: 0, usersPerSecond: 0, targetUsers: 0, unlockedMarketSize: 0, demand: 0, capacity: 0,
+    users: 0, currentUsers:0, servedUsers:0, usersPerSecond: 0, targetUsers: 0, potentialDemand:0, unlockedMarketSize: 0, demand: 0, capacity: 0, inferenceComputePerSecond:0,
     utilization: 0, revenuePerUser: 0, priceMultiplier: 1, marketing: 0, marketingBonus: 1,
     reputation: 1, adoption: 0, energyProduction: 0, energyDemand: 0, energySurplus: 0, energyEfficiency: 1, currentHardwareTier: 0,
     currentModel: MODEL_CATALOG[0].id, trainingTarget: MODEL_CATALOG[0].id,
@@ -149,9 +131,9 @@ export function economySnapshot(input) {
     credits: state.resources.credits, creditsPerSecond: market.revenue, revenuePerSecond: market.revenue,
     compute: state.resources.compute, computePerSecond: compute, computeConsumed, computeWasted: Math.max(0, inferenceRate * (1 - market.utilization)), storedComputeRate,
     trainingCompute: trainingRate, research: state.resources.research, researchPerSecond: researchPerSecond(state),
-    users: state.resources.users, usersPerSecond: market.organicUsersPerSecond, organicUsersPerSecond:market.organicUsersPerSecond, targetUsers: market.target, unlockedMarketSize: market.unlockedMarketSize, demand: market.demand, capacity: market.capacity,
+    users: state.resources.users, currentUsers:state.resources.users, servedUsers:market.servedUsers, usersPerSecond: market.userGrowthPerSecond, organicUsersPerSecond:market.userGrowthPerSecond, targetUsers: market.potentialDemand, potentialDemand:market.potentialDemand, unlockedMarketSize: market.factors.baseMarket, demand: market.potentialDemand, capacity: market.inferenceCapacity, inferenceComputePerSecond:market.inferenceComputePerSecond,
     utilization: market.utilization, revenuePerUser: revenuePerUser(state), priceMultiplier: state.market.priceMultiplier,
-    organicDemand:market.organicDemand,capacityDemand:market.capacityDemand,organicUsersPerSecond:market.organicUsersPerSecond,marketingPower:market.marketingPower,qualityMultiplier:market.qualityMultiplier,popularityMultiplier:market.popularityMultiplier,reputationMultiplier:market.reputationPower,adoptionMultiplier:market.adoptionPower,priceDemandMultiplier:market.priceResistance,demandCapacityRatio:market.demandCapacityRatio,
+    organicDemand:market.potentialDemand,capacityDemand:0,marketFactors:market.factors,acquisitionHalfLife:market.acquisitionHalfLife,churnHalfLife:market.churnHalfLife,demandCapacityRatio:market.inferenceCapacity?market.potentialDemand/market.inferenceCapacity:0,
     marketing: state.market.marketing, marketingBonus: 1 + state.market.marketing * (BALANCE.market.marketingBase + upgradeBonus(state, 'marketing')),
     reputation: state.market.reputation, adoption: state.market.adoption,
     currentHardwareTier: HARDWARE_CATALOG.reduce((tier, item) => state.hardware[item.id] > 0 ? Math.max(tier, item.tier) : tier, 0),
@@ -198,10 +180,11 @@ export function tickGame(state, deltaMs) {
   const researchGain = researchEnabled ? researchPerSecond(state) * seconds : 0;
   const dataGain = produced * state.allocation.data / 100 * allocationEfficiency;
   const autonomy=state.model.deployed.reduce((sum,id)=>{const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'autonomy')*.015:0)},0);const agentGain = produced * state.allocation.agents / 100 * (1 + strategicBonus(state, 'agents') + autonomy) * allocationEfficiency * (1 + deployedIdentityBonus(state,'agents'));
-  const metrics = marketMetrics(state);
-  const userStep = Math.max(0.2 * seconds, Math.abs(metrics.target - state.resources.users) * BALANCE.market.userConvergence * seconds);
-  const users = metrics.target > state.resources.users ? Math.min(metrics.target, state.resources.users + userStep) : Math.max(metrics.target, state.resources.users - userStep);
-  const creditGain = users * revenuePerUser(state) * seconds;
+  const beforeMarket=marketMetrics(state);
+  const users=advanceUsers(state.resources.users,beforeMarket.potentialDemand,seconds,beforeMarket.factors.popularity,beforeMarket.factors.marketing);
+  // Revenue uses the same post-convergence Market snapshot exposed to UI and telemetry.
+  const metrics=marketMetrics(state,users);
+  const creditGain=metrics.revenuePerSecond*seconds;
   const safety = state.model.deployed.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'safety')*.1:0)}, 0);
   const reputation = Math.min(10, state.market.reputation + dataGain * 0.00004 * (1 + safety * 0.06 + strategicBonus(state, 'reputationGrowth')));
   const adoption = Math.min(100, state.market.adoption + agentGain * 0.0002 + users * seconds * 0.00004 * (1 + deployedIdentityBonus(state,'adoption')));
@@ -234,7 +217,7 @@ export function tickGame(state, deltaMs) {
     resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: Math.max(0, state.resources.compute - storedTrainingUsed + (wasTrainingActive ? 0 : rawTrainingGain)), users, research: state.resources.research + researchGain },
     model: { ...state.model, level, xp, quality: effectiveModelStat(state,activeModel(state),'quality'), upgradePoints, trainingProgress, trainingActive, trainingSession, lastTrainingResult, progress: { ...state.model.progress, [state.model.activeId]: { ...activeProgress(state), level, xp, upgradePoints, availablePoints:upgradePoints, trainings, trainingCount:trainings, totalPointsEarned, totalPointsSpent } } },
     market: { ...state.market, reputation, adoption, demand: metrics.demand },
-    statistics: { ...state.statistics, totalCreditsEarned: state.statistics.totalCreditsEarned + creditGain, creditSources:addCreditSource(state.statistics.creditSources,'user-revenue',creditGain), totalComputeProduced: state.statistics.totalComputeProduced + produced, totalComputeConsumed: state.statistics.totalComputeConsumed + produced * (researchAllocation(state) + state.allocation.data + state.allocation.agents) / 100 + produced * state.allocation.inference / 100 * metrics.utilization + (wasTrainingActive ? rawTrainingGain : 0) + storedTrainingUsed, totalComputeWasted: state.statistics.totalComputeWasted + produced * state.allocation.inference / 100 * (1 - metrics.utilization),totalUsersServed:(state.statistics.totalUsersServed??0)+users*seconds,totalTrainings:(state.statistics.totalTrainings??0)+(completedTraining?1:0),totalModelLevels:(state.statistics.totalModelLevels??0)+(completedTraining?1:0),totalPatentsDiscovered:(state.statistics.totalPatentsDiscovered??0)+(patentDiscovery?1:0), playTimeMs: state.statistics.playTimeMs + deltaMs },
+    statistics: { ...state.statistics, totalCreditsEarned: state.statistics.totalCreditsEarned + creditGain, creditSources:addCreditSource(state.statistics.creditSources,'user-revenue',creditGain), totalComputeProduced: state.statistics.totalComputeProduced + produced, totalComputeConsumed: state.statistics.totalComputeConsumed + produced * (researchAllocation(state) + state.allocation.data + state.allocation.agents) / 100 + produced * state.allocation.inference / 100 * metrics.utilization + (wasTrainingActive ? rawTrainingGain : 0) + storedTrainingUsed, totalComputeWasted: state.statistics.totalComputeWasted + produced * state.allocation.inference / 100 * (1 - metrics.utilization),totalUsersServed:(state.statistics.totalUsersServed??0)+metrics.servedUsers*seconds,totalTrainings:(state.statistics.totalTrainings??0)+(completedTraining?1:0),totalModelLevels:(state.statistics.totalModelLevels??0)+(completedTraining?1:0),totalPatentsDiscovered:(state.statistics.totalPatentsDiscovered??0)+(patentDiscovery?1:0), playTimeMs: state.statistics.playTimeMs + deltaMs },
     run: { ...state.run, creditsEarned: state.run.creditsEarned + creditGain, computeProduced: state.run.computeProduced + produced },
     session: { ...state.session, elapsedMs: state.session.elapsedMs + deltaMs },
     world: { ...state.world, activeEvent: event, nextEventMs: event ? Math.max(0, eventCountdown) : eventCountdown, modifiers: state.world.modifiers.filter((modifier) => modifier.expiresAt > state.statistics.playTimeMs && (!modifier.expiresAtEpoch || modifier.expiresAtEpoch > Date.now())) },

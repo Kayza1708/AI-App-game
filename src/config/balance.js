@@ -11,6 +11,16 @@ export const BALANCE = Object.freeze({
   }),
   training: Object.freeze({ requirementAnchors: Object.freeze([[1,18],[2,480],[3,4_500],[4,45_000],[5,300_000],[10,40_000_000],[20,4e11],[50,2e18],[100,1e27],[250,1e43],[500,1e65]]), skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4 }),
   market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.025, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
+  marketV3: Object.freeze({
+    marketingCoefficient:.32,qualityDemandCoefficient:.18,
+    reputation:Object.freeze({min:.75,max:1.25,steepness:2.2,midpoint:1}),
+    adoption:Object.freeze({maxBonus:.5,halfSaturation:50}),
+    wordOfMouth:Object.freeze({userScale:1_000,maxBonus:1.5,saturation:3}),
+    price:Object.freeze({discountDemandCoefficient:.8,premiumElasticity:1.15,qualityToleranceCoefficient:.1}),
+    popularity:Object.freeze({sqrtCoefficient:.3,logCoefficient:.08}),
+    acquisition:Object.freeze({baseHalfLifeSeconds:180,minimumHalfLifeSeconds:30,popularityCoefficient:.08,marketingCoefficient:.06}),
+    churnHalfLifeSeconds:90,
+  }),
   patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
   intelligence: Object.freeze({
     computeScale: 400_000_000,
