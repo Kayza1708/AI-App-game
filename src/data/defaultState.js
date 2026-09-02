@@ -22,7 +22,7 @@ export const HARDWARE_CATALOG = [
   ['lunarFacility','☼','Dyson Compute Array','Stellar collectors turn a meaningful fraction of sunlight into thought.'],
   ['dysonSwarm','◎','Matrioshka Brain','Nested computational shells enclose and coordinate a star.'],
   ['matrioshkaBrain','∞','Singularity Core','Self-improving infrastructure operating beyond human-scale planning.'],
-].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],tier,
+].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],costGrowth:BALANCE.hardware.tierGrowth[tier],targetPurchaseCount:BALANCE.hardware.targetPurchaseCounts[tier],targetFinalCostRatio:BALANCE.hardware.targetFinalCostRatios[tier],tier,
   milestones:[
     {quantity:10,name:'Thermal Rhythm',description:`${name} output +10%`,effect:'hardwareOutput',value:.1},
     {quantity:25,name:'Bulk Procurement',description:`All hardware costs -${3+tier%3}%`,effect:'hardwareDiscount',value:(3+tier%3)/100},

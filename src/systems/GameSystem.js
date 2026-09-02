@@ -1,5 +1,5 @@
 import { ACHIEVEMENTS, createDefaultState, GEM_SHOP_ITEMS, HARDWARE_CATALOG, MODEL_CATALOG, MODEL_SKILLS, OBJECTIVES, PATENTS, TECH_NODES, UPGRADES, WORLD_EVENTS } from '../data/defaultState.js';
-import { BALANCE, curveValue, FEATURE_UNLOCKS, featureUnlocked, isResearchUnlocked, skillUnlocked, SYSTEM_TECH_NODES, viewUnlocked } from '../config/balance.js';
+import { BALANCE, FEATURE_UNLOCKS, featureUnlocked, isResearchUnlocked, skillUnlocked, SYSTEM_TECH_NODES, viewUnlocked } from '../config/balance.js';
 import { modifierValue } from './ModifierSystem.js';
 import { ensureMissions, missionsWithProgress } from './MissionSystem.js';
 import { ensureGameState } from '../core/GameStateContract.js';
@@ -8,6 +8,7 @@ import { earnGems, spendGems } from './GemSystem.js';
 import { enqueueReward } from './RewardQueue.js';
 import { RESEARCH_PROJECTS, researchProjectCost, startResearchProject, tickResearchLabs, unlockedResearchLabs } from './ResearchSystem.js';
 import { advanceUsers, marketSnapshot, potentialDemand as calculatePotentialDemand } from './MarketSystem.js';
+import { allocatedCompute, efficiencyFactor, hardwareUnitCost, modelTierScale, qualityRevenueFactor, trainingRequirement, withinModelLevelFactor } from './ProgressionSystem.js';
 
 
 
@@ -24,7 +25,7 @@ function strategicBonus(state, effect) {
   return positive - penalties + events + patents + (['allOutput', 'hardwareOutput', 'demand', 'revenue', 'training'].includes(effect) ? achievementBonus : 0) + (modelStats.includes(effect) ? 0 : modifierValue(state, effect));
 }
 
-export function hardwareCost(item, quantity) { return Math.ceil(curveValue(item.baseCost, BALANCE.hardware.costGrowth, quantity)); }
+export function hardwareCost(item, quantity) { return hardwareUnitCost(item, quantity); }
 export function isHardwareUnlocked(state, item) { return item.tier === 0 || state.hardware[HARDWARE_CATALOG[item.tier - 1].id] > 0; }
 
 function upgradeBonus(state, effect, hardwareId = null) {
@@ -72,12 +73,12 @@ function modelImprovementLevel(state, modelId, path) { return state.model.progre
 export function effectiveModelStat(state, model, stat) { const base=model.stats[stat]??0; const points=skillUnlocked(state,stat)?modelImprovementLevel(state,model.id,stat):0;const skillPower=Math.max(.1,1+technologyEffect(state,'modelSkillPower')+(stat==='efficiency'?technologyEffect(state,'efficiencyPower'):0)+(stat==='popularity'?technologyEffect(state,'popularityPower'):0)+(stat==='quality'?technologyEffect(state,'qualityPower'):0));const portfolio=hasTechnologyMechanic(state,'specialist-ai')&&model.id!==state.model.activeId?.5:hasTechnologyMechanic(state,'generalist-ai')?.8:1; return (base + points * BALANCE.training.skillGain*skillPower + modifierValue(state,stat,model.id)) * portfolio * (stat==='quality' ? 1 + strategicBonus(state,'quality') + deployedIdentityBonus(state,'quality') : 1); }
 // Temporary Phase-2A compatibility boundary; final INT entitlement belongs to Phase 2C.
 export function lifetimeIncomeMultiplier(state) { const root=Math.sqrt(Math.max(0,state.meta.totalIntelligence??0));return 1+.5*root/(10+root); }
-export function revenuePerUser(state) { const revenueModels=[...new Set([...state.model.deployed,state.model.activeId])];const enterpriseModels = revenueModels.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'enterprise')*.04+effectiveModelStat(state,model,'quality')*.025:0)}, 0) + (state.model.deployed.includes('agi') ? 0.5 : 0); return BALANCE.market.revenueBase * state.market.priceMultiplier * lifetimeIncomeMultiplier(state) * Math.max(0.1, 1 + enterpriseModels + upgradeBonus(state, 'revenue') + milestoneBonus(state, 'revenue') + strategicBonus(state, 'revenue') + deployedIdentityBonus(state,'revenue') + strategicBonus(state, 'enterprise') * 0.7 - strategicBonus(state, 'adoption') * 0.25); }
+export function revenuePerUser(state) { const revenueModels=[...new Set([...state.model.deployed,state.model.activeId])],models=revenueModels.map(id=>MODEL_CATALOG.find(item=>item.id===id)).filter(Boolean);const enterpriseModels=models.reduce((sum,model)=>sum+effectiveModelStat(state,model,'enterprise')*.04,0)+(state.model.deployed.includes('agi')?.5:0),quality=models.reduce((sum,model)=>sum+effectiveModelStat(state,model,'quality'),0)/Math.max(1,models.length);return BALANCE.market.revenueBase*state.market.priceMultiplier*qualityRevenueFactor(quality)*lifetimeIncomeMultiplier(state)*Math.max(.1,1+enterpriseModels+upgradeBonus(state,'revenue')+milestoneBonus(state,'revenue')+strategicBonus(state,'revenue')+deployedIdentityBonus(state,'revenue')+strategicBonus(state,'enterprise')*.7-strategicBonus(state,'adoption')*.25); }
 export function xpRequired() { return 0; }
-export function trainingRequired(level) { const anchors=BALANCE.training.requirementAnchors; const target=Math.max(1,Number(level)||1); const upper=anchors.find(([anchor])=>anchor>=target)??anchors.at(-1); const lower=[...anchors].reverse().find(([anchor])=>anchor<=target)??anchors[0]; if(upper[0]===lower[0])return lower[1]; const ratio=(target-lower[0])/(upper[0]-lower[0]); return Math.round(Math.exp(Math.log(lower[1])+(Math.log(upper[1])-Math.log(lower[1]))*ratio)); }
-export function trainingRequiredForState(state) { const progress=activeProgress(state);return trainingRequired(progress.level) * (activeModel(state).trainingScale??1); }
-function trainingMultiplier(state) { const skills=modelImprovementLevel(state,state.model.activeId,'efficiency')*.02;const momentum=hasTechnologyMechanic(state,'training-momentum')?Math.min(.5,(activeProgress(state).trainings??0)*.03):0;const gpu=hasTechnologyMechanic(state,'gpu-training')?HARDWARE_CATALOG.filter(item=>item.tier>=3).reduce((sum,item)=>sum+state.hardware[item.id],0)>.0?.2:0:0;return Math.max(.1,1+upgradeBonus(state,'training')+strategicBonus(state,'training')+strategicBonus(state,'quality')*.5+deployedIdentityBonus(state,'coding')+skills+momentum+gpu) }
-export function trainingRatePerSecond(state) { return computePerSecond(state) * state.allocation.training / 100 * trainingMultiplier(state); }
+export function trainingRequired(level, tier = 0) { return trainingRequirement(level, tier); }
+export function trainingRequiredForState(state) { const progress=activeProgress(state),tier=Math.max(0,MODEL_CATALOG.findIndex(model=>model.id===state.model.activeId));return trainingRequired(progress.level,tier); }
+function trainingMultiplier(state) { const efficiency=effectiveModelStat(state,activeModel(state),'efficiency'),momentum=hasTechnologyMechanic(state,'training-momentum')?Math.min(.5,(activeProgress(state).trainings??0)*.03):0,gpu=hasTechnologyMechanic(state,'gpu-training')&&HARDWARE_CATALOG.filter(item=>item.tier>=3).some(item=>state.hardware[item.id]>0)?.2:0;const add=Math.max(.1,1+upgradeBonus(state,'training')+strategicBonus(state,'training')+deployedIdentityBonus(state,'coding')+momentum+gpu);return efficiencyFactor(efficiency)*add; }
+export function trainingRatePerSecond(state) { return allocatedCompute(computePerSecond(state),state.allocation.training)*Math.max(0,1+strategicBonus(state,'allocationEfficiency'))*trainingMultiplier(state); }
 function researchAllocation(state){return isResearchUnlocked(state)?state.allocation.research:0}
 export function researchPerSecond(state){if(!isResearchUnlocked(state))return 0;return computePerSecond(state)*researchAllocation(state)/100*Math.max(.1,1+strategicBonus(state,'research'))*(1+strategicBonus(state,'allocationEfficiency'))}
 export function trainingEtaSeconds(state){const rate=trainingRatePerSecond(state);const banked=state.model.trainingActive?(state.resources.compute??0)*trainingMultiplier(state):0;return rate>0?Math.max(0,trainingRequiredForState(state)-state.model.trainingProgress-banked)/rate:Infinity}
@@ -91,11 +92,11 @@ function marketFactors(state) {
   const quality=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'quality'),0)/Math.max(1,deployed.length);
   const popularity=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'popularity'),0)/Math.max(1,deployed.length);
   const otherAppeal=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'vision')*.2+effectiveModelStat(state,model,'creativity')*.2+effectiveModelStat(state,model,'context')*.1+effectiveModelStat(state,model,'reasoning')*.1,0);
-  const modelTier=deployed.reduce((sum,model)=>sum+Math.max(0,MODEL_CATALOG.findIndex(item=>item.id===model.id)),0)/Math.max(1,deployed.length);
-  return{baseMarket:(30+level*18)*BALANCE.market.tierMarketGrowth**highestTier,modelTier:1+modelTier*.25,modelLevel:1,quality,popularity,infrastructure:1,marketing:state.market.marketing,reputation:state.market.reputation,adoption:state.market.adoption,price:state.market.priceMultiplier,priceElasticity:Math.max(0,strategicBonus(state,'priceElasticity')),marketSizeModifiers:Math.max(.1,1+upgradeBonus(state,'marketSize')+strategicBonus(state,'marketSize')+deployedIdentityBonus(state,'marketSize')),demandModifiers:Math.max(.1,1+upgradeBonus(state,'demand')+milestoneBonus(state,'demand')+strategicBonus(state,'demand')+deployedIdentityBonus(state,'demand')-strategicBonus(state,'enterprise')*.2),appealModifiers:Math.max(.1,1+otherAppeal*.02+upgradeBonus(state,'appeal')+strategicBonus(state,'appeal')),highestTier,level};
+  const tier=deployed.reduce((sum,model)=>sum+Math.max(0,MODEL_CATALOG.findIndex(item=>item.id===model.id)),0)/Math.max(1,deployed.length);
+  return{baseMarket:48*BALANCE.market.tierMarketGrowth**highestTier,modelTier:modelTierScale(Math.round(tier)),modelLevel:withinModelLevelFactor(level),quality,popularity,infrastructure:1,marketing:state.market.marketing,reputation:state.market.reputation,adoption:state.market.adoption,price:state.market.priceMultiplier,priceElasticity:Math.max(0,strategicBonus(state,'priceElasticity')),marketSizeModifiers:Math.max(.1,1+upgradeBonus(state,'marketSize')+strategicBonus(state,'marketSize')+deployedIdentityBonus(state,'marketSize')),demandModifiers:Math.max(.1,1+upgradeBonus(state,'demand')+milestoneBonus(state,'demand')+strategicBonus(state,'demand')+deployedIdentityBonus(state,'demand')-strategicBonus(state,'enterprise')*.2),appealModifiers:Math.max(.1,1+otherAppeal*.02+upgradeBonus(state,'appeal')+strategicBonus(state,'appeal')),highestTier,level};
 }
 function marketContext(state,totalCompute=computePerSecond(state)) {
-  const deployed=effectiveMarketModels(state),modelEfficiency=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'efficiency')*(1+effectiveModelStat(state,model,'latency')*.04),0)/Math.max(1,deployed.length);
+  const deployed=effectiveMarketModels(state),effectiveEfficiency=deployed.reduce((sum,model)=>sum+effectiveModelStat(state,model,'efficiency'),0)/Math.max(1,deployed.length),modelEfficiency=efficiencyFactor(effectiveEfficiency);
   return{totalComputePerSecond:totalCompute,modelEfficiency,inferenceModifiers:BALANCE.market.capacityScale*Math.max(.1,1+upgradeBonus(state,'inference')+strategicBonus(state,'inference')+strategicBonus(state,'enterprise')*.35),revenuePerUser:revenuePerUser(state),factors:marketFactors(state)};
 }
 export function potentialDemand(state){return calculatePotentialDemand(state,marketFactors(ensureGameState(state)))}
@@ -167,6 +168,13 @@ export function reconcileTutorial(state){if(state.tutorial.completed)return stat
 export function activeTutorialStep(state){if(state.tutorial.completed)return null;const definition=TUTORIAL_STEPS[state.tutorial.step];return definition?.eligible(state)?definition:null}
 
 export function tickGame(state, deltaMs) {
+  // Revenue depends on a moving user population. Bound integration steps so
+  // direct/background ticks share the same canonical numerical resolution.
+  if (deltaMs > BALANCE.training.maximumSimulationStepMs) {
+    let next=state,remaining=deltaMs;
+    while(remaining>0){const step=Math.min(remaining,BALANCE.training.maximumSimulationStepMs);next=tickGame(next,step);remaining-=step}
+    return next;
+  }
   const missionsBefore=missionsWithProgress(state);
   const seconds = deltaMs / 1000;
   const rate = computePerSecond(state);

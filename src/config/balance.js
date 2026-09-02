@@ -5,11 +5,24 @@
 import { RESEARCH_UNLOCK_TECH_ID, TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
 export const BALANCE = Object.freeze({
   hardware: Object.freeze({
-    costGrowth: 1.18, bulkDiscountCap: 0.42, upgradeCostFactor: 3, upgradeCostGrowth: 1.78,
-    tierCosts: Object.freeze([20,400,1_800,6_000,40_000,1_500_000,75_000_000,35_000_000_000,2_400_000_000_000,190_000_000_000_000,18_000_000_000_000_000,2_100_000_000_000_000_000,300_000_000_000_000_000_000,52_000_000_000_000_000_000_000,11_000_000_000_000_000_000_000_000,2_800_000_000_000_000_000_000_000_000]),
-    tierProduction: Object.freeze([.5,2,12,100,1_200,20_000,450_000,12_000_000,400_000_000,16_000_000_000,750_000_000_000,42_000_000_000_000,2_800_000_000_000_000,220_000_000_000_000_000,20_000_000_000_000_000_000,2_200_000_000_000_000_000_000]),
+    bulkDiscountCap: 0.42, upgradeCostFactor: 3, upgradeCostGrowth: 1.78,
+    // Each local growth rate is derived as finalCostRatio^(1 / targetPurchaseCount).
+    targetPurchaseCounts:Object.freeze([30,30,28,25,25,22,22,20,20,18,18,16,16,15,15,12]),
+    targetFinalCostRatios:Object.freeze([48,48,42,36,36,32,32,28,28,24,24,20,20,18,18,15]),
+    tierGrowth:Object.freeze([1.13773567,1.13773567,1.14280778,1.15412301,1.15412301,1.17061991,1.17061991,1.18129374,1.18129374,1.19310428,1.19310428,1.20590855,1.20590855,1.21250862,1.21250862,1.25316312]),
+    tierCosts: Object.freeze([20,360,1_700,6_500,45_000,1_400_000,70_000_000,32_000_000_000,2_200_000_000_000,180_000_000_000_000,17_000_000_000_000_000,2_000_000_000_000_000_000,280_000_000_000_000_000_000,50_000_000_000_000_000_000_000,12_000_000_000_000_000_000_000_000,32_000_000_000_000_000_000_000_000_000]),
+    tierProduction: Object.freeze([.5,2.2,13,110,1_350,22_000,500_000,14_000_000,480_000_000,20_000_000_000,950_000_000_000,55_000_000_000_000,3_800_000_000_000_000,300_000_000_000_000_000,30_000_000_000_000_000_000,3_600_000_000_000_000_000_000]),
   }),
-  training: Object.freeze({ requirementAnchors: Object.freeze([[1,18],[2,480],[3,4_500],[4,45_000],[5,300_000],[10,40_000_000],[20,4e11],[50,2e18],[100,1e27],[250,1e43],[500,1e65]]), skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4 }),
+  training: Object.freeze({
+    maximumSimulationStepMs:10_000,
+    durationBaseSeconds:45,durationSqrtCoefficient:34,
+    tierTransitionSeconds:Object.freeze([0,60,180,420,900,1_800,3_600,7_200,14_400]),
+    // Static expected throughput anchors; never read actual player modifiers.
+    referenceRateByTier:Object.freeze([.25,8,240,7_200,220_000,7_000_000,240_000_000,10_000_000_000,500_000_000_000]),
+    referenceLevelPower:2,
+    skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4,
+  }),
+  models:Object.freeze({tierScale:Object.freeze([1,3.5,12,42,160,650,2_800,14_000,80_000]),levelCoefficient:.16,levelPower:.62,qualityRevenueCoefficient:.12,efficiencyCoefficient:.20}),
   market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.025, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
   marketV3: Object.freeze({
     marketingCoefficient:.32,qualityDemandCoefficient:.18,
