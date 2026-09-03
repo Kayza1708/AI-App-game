@@ -268,7 +268,7 @@ export function createDefaultState() {
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     automation: { lastHardwarePurchaseMs: -1_000 },
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
-    patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3 },
+    patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3, researchActive:false, researchPointsSpent:0 },
     premium: { purchases: [], adCooldowns: {}, freeGemClaimedAt:0 },
     retention: { lastLoginDate: null, loginDays:[], loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null, dailyCompletionStreak: 0, lastDailyCompletionPeriod: null, completedDailyPeriods: 0 },
     inventory: { instances: [], equipped: {}, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },

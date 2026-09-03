@@ -18,9 +18,16 @@ export const BALANCE = Object.freeze({
     maximumSimulationStepMs:10_000,
     durationBaseSeconds:45,durationSqrtCoefficient:34,
     tierTransitionSeconds:Object.freeze([0,60,180,420,900,1_800,3_600,7_200,14_400]),
-    // Static expected throughput anchors; never read actual player modifiers.
-    referenceRateByTier:Object.freeze([.25,8,240,7_200,220_000,7_000_000,240_000_000,10_000_000_000,500_000_000_000]),
-    referenceLevelPower:2,
+    // Log-interpolated static anchors derived from the first human run. The
+    // L25 anchor turns its observed 4s completion into a ~74s baseline while
+    // remaining wholly independent of the player's live throughput.
+    referenceRateAnchors:Object.freeze([
+      Object.freeze({level:1,rate:.38}),Object.freeze({level:5,rate:4.15}),Object.freeze({level:10,rate:39}),
+      Object.freeze({level:15,rate:170}),Object.freeze({level:20,rate:510}),Object.freeze({level:25,rate:1_395}),
+      Object.freeze({level:30,rate:3_030}),Object.freeze({level:50,rate:18_000}),Object.freeze({level:100,rate:180_000}),
+      Object.freeze({level:250,rate:5_000_000}),Object.freeze({level:500,rate:100_000_000}),
+    ]),
+    referenceRateByTier:Object.freeze([1,32,960,28_800,880_000,28_000_000,960_000_000,40_000_000_000,2_000_000_000_000]),
     skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4,
   }),
   models:Object.freeze({tierScale:Object.freeze([1,3.5,12,42,160,650,2_800,14_000,80_000]),levelCoefficient:.16,levelPower:.62,qualityRevenueCoefficient:.12,efficiencyCoefficient:.20}),
@@ -35,7 +42,7 @@ export const BALANCE = Object.freeze({
     acquisition:Object.freeze({baseHalfLifeSeconds:180,minimumHalfLifeSeconds:30,popularityCoefficient:.08,marketingCoefficient:.06}),
     churnHalfLifeSeconds:90,
   }),
-  patents: Object.freeze({ baseRequirement: 120, discoveryGrowth: 1.62, tierGrowth: 1.35, baseResearchRate: 1 }),
+  patents: Object.freeze({ baseRequirement: 1_500, discoveryGrowth: 1.52, tierGrowth: 1.28 }),
   intelligence: Object.freeze({
     // Piecewise curve derived from Phase-2B's 6.5e8 => 3 INT early anchor,
     // a 1e14 transition anchor, and 1e300 => 1e30 INT Number-safety anchor.
@@ -69,7 +76,7 @@ export const BALANCE = Object.freeze({
     gems:Object.freeze({daily:2,weekly:7,monthly:24}),
     repeatableCreditWarningShare:.25,
   }),
-  research: Object.freeze({ upgradeBaseCost:25_000, upgradeLevelGrowth:2.6, upgradeFamilyGrowth:2.4, maxLabs:5, labGemCosts:Object.freeze({3:120,4:360,5:900}), baseSpeed:1 }),
+  research: Object.freeze({ researchRpScale:4,researchComputeNormalization:1_000,researchComputeExponent:.72,costLevelCoefficient:.55,costExponent:1.7,upgradeBaseCost:25_000,upgradeFamilyGrowth:2.4,maxLabs:5,labGemCosts:Object.freeze({3:120,4:360,5:900}),baseSpeed:1,speedMaxBonus:1.5,speedHalfSaturation:20 }),
   rewardedAds:Object.freeze({dailyGemClaims:2,gemReward:2}),
   offline: Object.freeze({ capMs: 2 * 60 * 60 * 1000, maxCapMs:8 * 60 * 60 * 1000, efficiency:.6, doubleGemCost:8, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
   tapping:Object.freeze({base:1.5,modelLevelsPerStep:5,modelLevelBonus:.04,pocketComputersPerStep:10,pocketComputerBonus:.03,calculatorUnitsPerStep:25,calculatorFlatBonus:1,techBonus:.025,datacenterShare:.002}),

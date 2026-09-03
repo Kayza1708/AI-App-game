@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, skipTutorial, buyGemShopItem, buyHardware, buyHardwareBulk, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
+import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, skipTutorial, buyGemShopItem, buyHardware, buyHardwareBulk, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, startPatentResearch, stopPatentResearch, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimAllMissions, claimMission, claimMissionTrack, ensureMissions } from '../systems/MissionSystem.js';
 import { activateGemBoost, RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -164,6 +164,8 @@ export class Application {
       this.#eventBus.on('cache:open', (id) => this.#store.update((state)=>openCache(state,id),'cache-opened')),
       this.#eventBus.on('gems:spend', (id) => this.#store.update((state)=>buyGemConvenience(state,id),'gems-spent')),
       this.#eventBus.on('reward:dismiss', (id) => this.#store.update((state)=>dismissReward(state,id),'reward-dismissed')),
+      this.#eventBus.on('patent:research-start', () => this.#store.update(startPatentResearch, 'patent-research-start')),
+      this.#eventBus.on('patent:research-stop', () => this.#store.update(stopPatentResearch, 'patent-research-stop')),
       this.#eventBus.on('patent:dismiss', () => this.#store.update(dismissPatentDiscovery, 'patent')),
       this.#eventBus.on('patent:equip', (patentId) => this.#store.update((state) => togglePatentEquipped(state, patentId), 'patent-equip')),
       this.#eventBus.on('patent:upgrade', (patentId) => this.#store.update((state) => upgradePatent(state, patentId), 'patent-upgrade')),

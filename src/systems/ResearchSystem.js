@@ -2,6 +2,7 @@ import { BALANCE } from '../config/balance.js';
 import { UPGRADES } from '../data/defaultState.js';
 import { hasTechnologyMechanic, technologyEffect } from '../data/technologyCatalog.js';
 import { earnGems, spendGems } from './GemSystem.js';
+import { boundedResearchSpeed, researchLevelCost } from './ResearchEconomySystem.js';
 
 const CATEGORIES=['COMPUTE SCIENCE','MACHINE LEARNING','MARKET SCIENCE','SYSTEMS ENGINEERING','FUNDAMENTAL RESEARCH'];
 export const RESEARCH_PROJECTS=Object.freeze(UPGRADES.filter(upgrade=>upgrade.category==='research').map((upgrade,index)=>Object.freeze({
@@ -13,10 +14,11 @@ export function researchSpeed(state){
   const datacenters=(state.hardware?.hyperscaleDatacenter??0)+(state.hardware?.tpuCluster??0);
   const modelLevel=Math.max(1,state.model?.level??1);
   const patentBonus=(state.patents?.equipped??[]).includes('lab-notebook')?Math.min(.5,datacenters*.01):0;
-  return Math.max(.1,BALANCE.research.baseSpeed*(1+technologyEffect(state,'researchSpeed')+Math.min(.5,datacenters*.01)+Math.floor(modelLevel/5)*.01+patentBonus));
+  const permanent=technologyEffect(state,'researchSpeed')+Math.min(.5,datacenters*.01)+Math.floor(modelLevel/5)*.01+patentBonus;
+  return BALANCE.research.baseSpeed*boundedResearchSpeed(permanent);
 }
 export function effectiveResearchDuration(state,project){return project.baseDurationSeconds/researchSpeed(state)}
-export function researchProjectCost(state,project){const level=state.researchUpgradeLevels?.[project.id]??0;return Math.ceil(project.researchCost*BALANCE.research.upgradeLevelGrowth**level)}
+export function researchProjectCost(state,project){const level=state.researchUpgradeLevels?.[project.id]??0;return Math.ceil(researchLevelCost(project.researchCost,level))}
 export function unlockedResearchLabs(state){if(!state.meta.techNodes.includes('research-1'))return 0;return Math.min(BALANCE.research.maxLabs,1+(state.meta.techNodes.includes('research-4')?1:0)+(state.premium.purchases.includes('researchLab3')?1:0)+(state.premium.purchases.includes('researchLab4')?1:0)+(state.premium.purchases.includes('researchLab5')?1:0))}
 export function canQueueResearch(state){return hasTechnologyMechanic(state,'research-queue-1')}
 export function startResearchProject(state,projectId,labId){const project=RESEARCH_PROJECTS.find(item=>item.id===projectId),labs=state.researchLabs?.labs??[],index=labs.findIndex(lab=>lab.id===Number(labId)),lab=labs[index],level=state.researchUpgradeLevels?.[projectId]??0;if(!project||!lab||lab.id>unlockedResearchLabs(state)||level>=project.maxLevel)return state;const cost=researchProjectCost(state,project);if(state.resources.research<cost||lab.projectId)return state;const totalSeconds=effectiveResearchDuration(state,project);const nextLab={...lab,projectId,level:level+1,remainingSeconds:totalSeconds,totalSeconds,startedAt:Date.now()};return{...state,resources:{...state.resources,research:state.resources.research-cost},statistics:{...state.statistics,totalResearchPointsSpent:(state.statistics.totalResearchPointsSpent??0)+cost},researchLabs:{...state.researchLabs,unlocked:unlockedResearchLabs(state),labs:labs.map((entry,i)=>i===index?nextLab:entry),pointsSpent:(state.researchLabs.pointsSpent??0)+cost,lastStarted:{projectId,labId:lab.id,cost,researchSpeed:researchSpeed(state),at:Date.now()}}};}

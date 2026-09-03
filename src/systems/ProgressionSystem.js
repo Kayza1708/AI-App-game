@@ -35,8 +35,13 @@ export function targetTrainingDuration(level, tier = 0) {
 
 /** Static calibration anchor. It deliberately cannot inspect player state. */
 export function referenceTrainingRate(level, tier = 0) {
-  const base = BALANCE.training.referenceRateByTier[Math.min(BALANCE.training.referenceRateByTier.length - 1, Math.max(0, Math.floor(nonNegative(tier))))];
-  return base * Math.max(1, nonNegative(level)) ** BALANCE.training.referenceLevelPower;
+  const value=Math.max(1,nonNegative(level));
+  const anchors=BALANCE.training.referenceRateAnchors;
+  const upper=anchors.find(anchor=>anchor.level>=value)??anchors.at(-1);
+  const lower=[...anchors].reverse().find(anchor=>anchor.level<=value)??anchors[0];
+  const localRate=lower===upper?lower.rate:Math.exp(Math.log(lower.rate)+(Math.log(upper.rate)-Math.log(lower.rate))*(value-lower.level)/(upper.level-lower.level));
+  const tierScale=BALANCE.training.referenceRateByTier[Math.min(BALANCE.training.referenceRateByTier.length-1,Math.max(0,Math.floor(nonNegative(tier))))];
+  return localRate*tierScale;
 }
 
 export function trainingRequirement(level, tier = 0) {

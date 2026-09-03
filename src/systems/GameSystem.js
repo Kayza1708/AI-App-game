@@ -7,8 +7,9 @@ import { branchInvestment, hasTechnologyMechanic, purchasedTechnologyNodes, tech
 import { earnGems, spendGems } from './GemSystem.js';
 import { enqueueReward } from './RewardQueue.js';
 import { RESEARCH_PROJECTS, researchProjectCost, startResearchProject, tickResearchLabs, unlockedResearchLabs } from './ResearchSystem.js';
-import { advanceUsers, marketSnapshot, potentialDemand as calculatePotentialDemand } from './MarketSystem.js';
+import { marketSnapshot, potentialDemand as calculatePotentialDemand } from './MarketSystem.js';
 import { allocatedCompute, efficiencyFactor, hardwareUnitCost, modelTierScale, qualityRevenueFactor, trainingRequirement, withinModelLevelFactor } from './ProgressionSystem.js';
+import { patentLevelMultiplier as boundedPatentLevelMultiplier, researchComputePerSecond, researchPointsPerSecond, spendResearchOnPatent } from './ResearchEconomySystem.js';
 import { claimableInt, intEntitlement, lifetimeQualifyingCompute } from './PrestigeSystem.js';
 
 
@@ -81,7 +82,7 @@ export function trainingRequiredForState(state) { const progress=activeProgress(
 function trainingMultiplier(state) { const efficiency=effectiveModelStat(state,activeModel(state),'efficiency'),momentum=hasTechnologyMechanic(state,'training-momentum')?Math.min(.5,(activeProgress(state).trainings??0)*.03):0,gpu=hasTechnologyMechanic(state,'gpu-training')&&HARDWARE_CATALOG.filter(item=>item.tier>=3).some(item=>state.hardware[item.id]>0)?.2:0;const add=Math.max(.1,1+upgradeBonus(state,'training')+strategicBonus(state,'training')+deployedIdentityBonus(state,'coding')+momentum+gpu);return efficiencyFactor(efficiency)*add; }
 export function trainingRatePerSecond(state) { return allocatedCompute(computePerSecond(state),state.allocation.training)*Math.max(0,1+strategicBonus(state,'allocationEfficiency'))*trainingMultiplier(state); }
 function researchAllocation(state){return isResearchUnlocked(state)?state.allocation.research:0}
-export function researchPerSecond(state){if(!isResearchUnlocked(state))return 0;return computePerSecond(state)*researchAllocation(state)/100*Math.max(.1,1+strategicBonus(state,'research'))*(1+strategicBonus(state,'allocationEfficiency'))}
+export function researchPerSecond(state){if(!isResearchUnlocked(state))return 0;const compute=researchComputePerSecond(computePerSecond(state),researchAllocation(state));return researchPointsPerSecond(compute,Math.max(.1,1+strategicBonus(state,'research'))*Math.max(.1,1+strategicBonus(state,'allocationEfficiency')))}
 export function trainingEtaSeconds(state){const rate=trainingRatePerSecond(state);const banked=state.model.trainingActive?(state.resources.compute??0)*trainingMultiplier(state):0;return rate>0?Math.max(0,trainingRequiredForState(state)-state.model.trainingProgress-banked)/rate:Infinity}
 export function modelAvailablePoints(progress){return Math.max(0,progress?.availablePoints??0,progress?.upgradePoints??0)}
 export function modelTrainingCount(progress){return Math.max(0,progress?.trainingCount??progress?.trainings??0)}
@@ -189,10 +190,9 @@ export function tickGame(state, deltaMs, options={}) {
   const researchGain = researchEnabled ? researchPerSecond(state) * seconds : 0;
   const dataGain = produced * state.allocation.data / 100 * allocationEfficiency;
   const autonomy=state.model.deployed.reduce((sum,id)=>{const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'autonomy')*.015:0)},0);const agentGain = produced * state.allocation.agents / 100 * (1 + strategicBonus(state, 'agents') + autonomy) * allocationEfficiency * (1 + deployedIdentityBonus(state,'agents'));
-  const beforeMarket=marketMetrics(state);
-  const users=advanceUsers(state.resources.users,beforeMarket.potentialDemand,seconds,beforeMarket.factors.popularity,beforeMarket.factors.marketing);
-  // Revenue uses the same post-convergence Market snapshot exposed to UI and telemetry.
-  const metrics=marketMetrics(state,users);
+  // Users are Demand; only Capacity constrains how many can be served.
+  const metrics=marketMetrics(state);
+  const users=metrics.potentialDemand;
   const creditGain=metrics.revenuePerSecond*seconds;
   const safety = state.model.deployed.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'safety')*.1:0)}, 0);
   const reputation = Math.min(10, state.market.reputation + dataGain * 0.00004 * (1 + safety * 0.06 + strategicBonus(state, 'reputationGrowth')));
@@ -214,8 +214,9 @@ export function tickGame(state, deltaMs, options={}) {
     const required = trainingRequiredForState(state);
     if (trainingProgress >= required) { const startingLevel=trainingSession?.startingLevel??level,pointsEarned=trainingSession?.doublePointsPurchased?2:1,completed=completeTrainingProgress({level,xp,upgradePoints,trainings,totalPointsEarned,totalPointsSpent},pointsEarned);({level,xp,upgradePoints,trainings,totalPointsEarned}=completed);trainingProgress = 0; trainingActive = false; completedTraining = true; lastTrainingResult={...trainingSession,modelId:state.model.activeId,completedAt:Date.now(),completionPlaytimeMs:state.statistics.playTimeMs+deltaMs,actualDuration:(trainingSession?.activeElapsedMs??deltaMs)/1000,effectiveDuration:(trainingSession?.activeElapsedMs??deltaMs)/1000,computeInvested:trainingSession?.computeInvested??computeInvested,requiredCompute:required,startingLevel,resultingLevel:level,upgradePointsGained:pointsEarned,offline:false,availablePointsAfter:upgradePoints,totalPointsEarned};trainingSession=null; }
   }
-  const patentRate = patentEnabled ? patentResearchPerSecond(state) : 0;
-  let patentProgress = state.patents.progress + patentRate * seconds;
+  const patentRequirement=patentResearchRequired(state.patents.discovered.length);
+  const patentSpend=patentEnabled&&state.patents.researchActive?spendResearchOnPatent(state.resources.research+researchGain,state.patents.progress,patentRequirement):{spent:0,points:state.resources.research+researchGain,progress:state.patents.progress};
+  let patentProgress = patentSpend.progress;
   let discoveredPatents = state.patents.discovered; let patentHistory = state.patents.history; let equippedPatents = state.patents.equipped; let patentDiscovery = null;
   const nextPatent = PATENTS[discoveredPatents.length];
   if (nextPatent && patentProgress >= patentResearchRequired(discoveredPatents.length)) { patentProgress -= patentResearchRequired(discoveredPatents.length); discoveredPatents = [...discoveredPatents, nextPatent.id]; patentHistory = [...patentHistory, { id: nextPatent.id, discoveredAt: Date.now(), cycle: state.meta.cycles }]; if (equippedPatents.length < state.patents.slots) equippedPatents = [...equippedPatents, nextPatent.id]; patentDiscovery = nextPatent; }
@@ -223,14 +224,14 @@ export function tickGame(state, deltaMs, options={}) {
   const event = featureUnlocked(state,'marketing') && !state.world.activeEvent && eventCountdown <= 0 ? WORLD_EVENTS[(state.meta.cycles + Math.floor(state.statistics.playTimeMs / 90_000)) % WORLD_EVENTS.length] : state.world.activeEvent;
   let next = {
     ...state,
-    resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: Math.max(0, state.resources.compute - storedTrainingUsed + (wasTrainingActive ? 0 : rawTrainingGain)), users, research: state.resources.research + researchGain },
+    resources: { ...state.resources, credits: state.resources.credits + creditGain, compute: Math.max(0, state.resources.compute - storedTrainingUsed + (wasTrainingActive ? 0 : rawTrainingGain)), users, research: patentSpend.points },
     model: { ...state.model, level, xp, quality: effectiveModelStat(state,activeModel(state),'quality'), upgradePoints, trainingProgress, trainingActive, trainingSession, lastTrainingResult, progress: { ...state.model.progress, [state.model.activeId]: { ...activeProgress(state), level, xp, upgradePoints, availablePoints:upgradePoints, trainings, trainingCount:trainings, totalPointsEarned, totalPointsSpent } } },
     market: { ...state.market, reputation, adoption, demand: metrics.demand },
     statistics: { ...state.statistics, totalCreditsEarned: state.statistics.totalCreditsEarned + creditGain, creditSources:addCreditSource(state.statistics.creditSources,'user-revenue',creditGain), totalComputeProduced: state.statistics.totalComputeProduced + produced, totalComputeConsumed: state.statistics.totalComputeConsumed + produced * (researchAllocation(state) + state.allocation.data + state.allocation.agents) / 100 + produced * state.allocation.inference / 100 * metrics.utilization + (wasTrainingActive ? rawTrainingGain : 0) + storedTrainingUsed, totalComputeWasted: state.statistics.totalComputeWasted + produced * state.allocation.inference / 100 * (1 - metrics.utilization),totalUsersServed:(state.statistics.totalUsersServed??0)+metrics.servedUsers*seconds,totalTrainings:(state.statistics.totalTrainings??0)+(completedTraining?1:0),totalModelLevels:(state.statistics.totalModelLevels??0)+(completedTraining?1:0),totalPatentsDiscovered:(state.statistics.totalPatentsDiscovered??0)+(patentDiscovery?1:0), playTimeMs: state.statistics.playTimeMs + deltaMs },
     run: { ...state.run, creditsEarned: state.run.creditsEarned + creditGain, computeProduced: state.run.computeProduced + produced },
     session: { ...state.session, elapsedMs: state.session.elapsedMs + deltaMs },
     world: { ...state.world, activeEvent: event, nextEventMs: event ? Math.max(0, eventCountdown) : eventCountdown, modifiers: state.world.modifiers.filter((modifier) => modifier.expiresAt > state.statistics.playTimeMs && (!modifier.expiresAtEpoch || modifier.expiresAtEpoch > Date.now())) },
-    patents: { ...state.patents, discovered: discoveredPatents, progress: patentProgress, history: patentHistory, equipped: equippedPatents },
+    patents: { ...state.patents, discovered: discoveredPatents, progress: patentProgress, history: patentHistory, equipped: equippedPatents, researchPointsSpent:(state.patents.researchPointsSpent??0)+patentSpend.spent },
     ui: { ...state.ui, patentDiscovery: patentDiscovery ?? state.ui.patentDiscovery },
   };
   next=tickResearchLabs(next,deltaMs);
@@ -314,7 +315,7 @@ export function finishTrainingWithGems(state){const cost=trainingFinishGemCost(s
 
 export function patentResearchRequired(index) { const tier=Math.floor(index/10); return Math.floor(BALANCE.patents.baseRequirement * BALANCE.patents.discoveryGrowth ** index * BALANCE.patents.tierGrowth ** tier); }
 function patentLevel(state, patentId) { return state.patents.levels[patentId] ?? 1; }
-function patentLevelMultiplier(state, patentId) { return 1 + (patentLevel(state, patentId) - 1) * 0.5; }
+function patentLevelMultiplier(state, patentId) { return boundedPatentLevelMultiplier(patentLevel(state,patentId)); }
 export function patentUpgradeCost(state, patentId) { return Math.ceil(2 * patentLevel(state, patentId) ** 1.7*Math.max(.2,1-technologyEffect(state,'patentUpgradeCost'))); }
 export function patentCurrentBonus(state, patentId) { const patent = PATENTS.find(({ id }) => id === patentId); return patent ? patent.value * patentLevelMultiplier(state, patentId) : 0; }
 export function effectivePatentSlots(state){return hasTechnologyMechanic(state,'narrow-patents')?2:Math.max(1,state.patents.slots+technologyEffect(state,'patentSlots'))}
@@ -322,7 +323,11 @@ export function togglePatentEquipped(state, patentId) { if (!featureUnlocked(sta
 export function upgradePatent(state, patentId) { if (!state.patents.discovered.includes(patentId)) return state; const cost = patentUpgradeCost(state, patentId); if (state.meta.intelligence < cost) return state; return feedback({ ...state, meta: { ...state.meta, intelligence: state.meta.intelligence - cost }, patents: { ...state.patents, levels: { ...state.patents.levels, [patentId]: patentLevel(state, patentId) + 1 }, intInvested: { ...state.patents.intInvested, [patentId]: (state.patents.intInvested[patentId] ?? 0) + cost } } }, `${PATENTS.find(({id}) => id === patentId).name} upgraded`); }
 export const PATENT_SLOT_PRICES = { 4: 250, 5: 600, 6: 1_200, 7: 2_500, 8: 5_000 };
 export function buyPatentSlot(state) { const nextSlot = state.patents.slots + 1, cost = PATENT_SLOT_PRICES[nextSlot]; if (!cost) return state;const paid=spendGems(state,cost,'patent-slot',{slot:nextSlot});if(paid===state)return state;return feedback({ ...paid, patents: { ...paid.patents, slots: nextSlot } }, `Patent Slot ${nextSlot} unlocked`); }
-export function patentResearchPerSecond(state) { if (!featureUnlocked(state,'patents') || state.patents.discovered.length >= PATENTS.length) return 0; const allocated=computePerSecond(state)*state.allocation.research/100; const researchSkill=state.model.deployed.reduce((sum,id)=>{const model=MODEL_CATALOG.find(entry=>entry.id===id);return sum+(model?effectiveModelStat(state,model,'research')*.03:0)},0); const patentFeedback=hasTechnologyMechanic(state,'recursive-discovery')?state.patents.equipped.filter(id=>PATENTS.find(p=>p.id===id)?.tags?.includes('RESEARCH')).length*.08:0;const agentScience=hasTechnologyMechanic(state,'agent-research')*state.allocation.agents*.005;const specialization=1+strategicBonus(state,'research')+deployedIdentityBonus(state,'research')+researchSkill+patentFeedback+agentScience; return allocated * BALANCE.patents.baseResearchRate * Math.max(.1,specialization) / (hasTechnologyMechanic(state,'deep-research')?1.5:1); }
+// Diagnostic throughput: Patents consume produced RP; they never receive a
+// second direct stream from the same Research Compute.
+export function patentResearchPerSecond(state) { return featureUnlocked(state,'patents')&&state.patents.researchActive?researchPerSecond(state):0; }
+export function startPatentResearch(state){if(!featureUnlocked(state,'patents')||state.patents.discovered.length>=PATENTS.length)return state;return{...state,patents:{...state.patents,researchActive:true}}}
+export function stopPatentResearch(state){return{...state,patents:{...state.patents,researchActive:false}}}
 
 export function energyBuildingCost() { return Infinity; }
 export function buyEnergyBuilding(state) { return state; }

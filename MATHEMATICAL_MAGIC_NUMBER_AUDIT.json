@@ -1,0 +1,885 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-03T11:45:54.884Z",
+  "classifications": [
+    "LOCKED_FORMULA_COMPONENT",
+    "DERIVED_PARAMETER",
+    "TUNABLE_PARAMETER",
+    "CONTENT_ANCHOR",
+    "LEGACY_MAGIC_NUMBER",
+    "NON_ECONOMY_CONSTANT",
+    "AUDIT_ONLY"
+  ],
+  "counts": {
+    "CONTENT_ANCHOR": 97,
+    "DERIVED_PARAMETER": 16,
+    "LOCKED_FORMULA_COMPONENT": 5,
+    "TUNABLE_PARAMETER": 16,
+    "AUDIT_ONLY": 3,
+    "LEGACY_MAGIC_NUMBER": 4
+  },
+  "entries": [
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.calculator.baseCost",
+      "value": 20,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.calculator.computePerSecond",
+      "value": 0.5,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.calculator.costGrowth",
+      "value": 1.13773567,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.homeComputer.baseCost",
+      "value": 360,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.homeComputer.computePerSecond",
+      "value": 2.2,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.homeComputer.costGrowth",
+      "value": 1.13773567,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.gamingPc.baseCost",
+      "value": 1700,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.gamingPc.computePerSecond",
+      "value": 13,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.gamingPc.costGrowth",
+      "value": 1.14280778,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.workstation.baseCost",
+      "value": 6500,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.workstation.computePerSecond",
+      "value": 110,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.workstation.costGrowth",
+      "value": 1.15412301,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.gpuServer.baseCost",
+      "value": 45000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.gpuServer.computePerSecond",
+      "value": 1350,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.gpuServer.costGrowth",
+      "value": 1.15412301,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.miniDatacenter.baseCost",
+      "value": 1400000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.miniDatacenter.computePerSecond",
+      "value": 22000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.miniDatacenter.costGrowth",
+      "value": 1.17061991,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.enterpriseDatacenter.baseCost",
+      "value": 70000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.enterpriseDatacenter.computePerSecond",
+      "value": 500000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.enterpriseDatacenter.costGrowth",
+      "value": 1.17061991,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.hyperscaleDatacenter.baseCost",
+      "value": 32000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.hyperscaleDatacenter.computePerSecond",
+      "value": 14000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.hyperscaleDatacenter.costGrowth",
+      "value": 1.18129374,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.tpuCluster.baseCost",
+      "value": 2200000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.tpuCluster.computePerSecond",
+      "value": 480000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.tpuCluster.costGrowth",
+      "value": 1.18129374,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.aiSupercomputer.baseCost",
+      "value": 180000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.aiSupercomputer.computePerSecond",
+      "value": 20000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.aiSupercomputer.costGrowth",
+      "value": 1.19310428,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.planetaryGrid.baseCost",
+      "value": 17000000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.planetaryGrid.computePerSecond",
+      "value": 950000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.planetaryGrid.costGrowth",
+      "value": 1.19310428,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.underwaterDatacenter.baseCost",
+      "value": 2000000000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.underwaterDatacenter.computePerSecond",
+      "value": 55000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.underwaterDatacenter.costGrowth",
+      "value": 1.20590855,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.orbitalDatacenter.baseCost",
+      "value": 280000000000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.orbitalDatacenter.computePerSecond",
+      "value": 3800000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.orbitalDatacenter.costGrowth",
+      "value": 1.20590855,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.lunarFacility.baseCost",
+      "value": 5e+22,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.lunarFacility.computePerSecond",
+      "value": 300000000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.lunarFacility.costGrowth",
+      "value": 1.21250862,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.dysonSwarm.baseCost",
+      "value": 1.2e+25,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.dysonSwarm.computePerSecond",
+      "value": 30000000000000000000,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.dysonSwarm.costGrowth",
+      "value": 1.21250862,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.matrioshkaBrain.baseCost",
+      "value": 3.2e+28,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.matrioshkaBrain.computePerSecond",
+      "value": 3.6e+21,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Hardware",
+      "source": "HARDWARE_CATALOG.matrioshkaBrain.costGrowth",
+      "value": 1.25316312,
+      "classification": "DERIVED_PARAMETER"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.tinyChat.trainingScale",
+      "value": 1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.smartChat.trainingScale",
+      "value": 4,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.gptClass.trainingScale",
+      "value": 10,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.omni.trainingScale",
+      "value": 15,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.research.trainingScale",
+      "value": 35,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.agent.trainingScale",
+      "value": 75,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.enterprise.trainingScale",
+      "value": 150,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.agi.trainingScale",
+      "value": 300,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Models",
+      "source": "MODEL_CATALOG.asiSeed.trainingScale",
+      "value": 600,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Research",
+      "source": "UPGRADES.research-algorithms.cost",
+      "value": 25000,
+      "classification": "CONTENT_ANCHOR",
+      "note": "BaseTierCost for locked level formula"
+    },
+    {
+      "system": "Research",
+      "source": "UPGRADES.research-silicon.cost",
+      "value": 60000,
+      "classification": "CONTENT_ANCHOR",
+      "note": "BaseTierCost for locked level formula"
+    },
+    {
+      "system": "Research",
+      "source": "UPGRADES.research-behavior.cost",
+      "value": 144000,
+      "classification": "CONTENT_ANCHOR",
+      "note": "BaseTierCost for locked level formula"
+    },
+    {
+      "system": "Research",
+      "source": "UPGRADES.research-compression.cost",
+      "value": 345600,
+      "classification": "CONTENT_ANCHOR",
+      "note": "BaseTierCost for locked level formula"
+    },
+    {
+      "system": "Research",
+      "source": "UPGRADES.research-economics.cost",
+      "value": 829440,
+      "classification": "CONTENT_ANCHOR",
+      "note": "BaseTierCost for locked level formula"
+    },
+    {
+      "system": "Research",
+      "source": "UPGRADES.research-automation.cost",
+      "value": 1990656,
+      "classification": "CONTENT_ANCHOR",
+      "note": "BaseTierCost for locked level formula"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.cold-kernels.value",
+      "value": 0.05,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.gradient-cache.value",
+      "value": 0.1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.viral-embedding.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.trust-ledger.value",
+      "value": 0.15,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.lab-notebook.value",
+      "value": 1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.voltage-curve.value",
+      "value": 0.05,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.recursive-insight.value",
+      "value": 0.01,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.elastic-pricing.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.compute-router.value",
+      "value": 0.02,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.agent-contracts.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.sparse-attention.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.semantic-cache.value",
+      "value": 0.1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.synthetic-curriculum.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.reputation-graph.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.market-telescope.value",
+      "value": 0.1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.liquid-bus.value",
+      "value": 0.07,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.checkpoint-delta.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.context-folding.value",
+      "value": 0.06,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.microgrid-ai.value",
+      "value": 0.1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.sales-copilot.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.privacy-learning.value",
+      "value": 0.18,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.optical-fabric.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.reward-model.value",
+      "value": 0.09,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.data-distillery.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.carbon-aware.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.federated-agents.value",
+      "value": 0.15,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.compiler-proof.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.demand-simulator.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.retention-memory.value",
+      "value": 0.1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.energy-arbitrage.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.neural-firewall.value",
+      "value": 0.2,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.mixture-routing.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.research-swarm.value",
+      "value": 0.15,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.zero-copy.value",
+      "value": 0.14,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.thermal-storage.value",
+      "value": 0.15,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.reasoning-distill.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.global-api.value",
+      "value": 0.15,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.safe-agency.value",
+      "value": 0.18,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.dynamic-batching.value",
+      "value": 0.16,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.fusion-control.value",
+      "value": 0.2,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.scientific-memory.value",
+      "value": 0.18,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.universal-tokenizer.value",
+      "value": 0.14,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.autonomous-audit.value",
+      "value": 0.18,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.lossless-quant.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.market-maker.value",
+      "value": 0.12,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.self-repair.value",
+      "value": 0.15,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.collective-alignment.value",
+      "value": 0.25,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.stellar-load.value",
+      "value": 0.08,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.recursive-science.value",
+      "value": 5,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Patents",
+      "source": "PATENTS.singularity-proof.value",
+      "value": 0.1,
+      "classification": "CONTENT_ANCHOR"
+    },
+    {
+      "system": "Research",
+      "source": "BALANCE.research.researchRpScale",
+      "value": 4,
+      "classification": "LOCKED_FORMULA_COMPONENT"
+    },
+    {
+      "system": "Research",
+      "source": "BALANCE.research.researchComputeNormalization",
+      "value": 1000,
+      "classification": "LOCKED_FORMULA_COMPONENT"
+    },
+    {
+      "system": "Research",
+      "source": "BALANCE.research.researchComputeExponent",
+      "value": 0.72,
+      "classification": "LOCKED_FORMULA_COMPONENT"
+    },
+    {
+      "system": "Research costs",
+      "source": "BALANCE.research.costLevelCoefficient",
+      "value": 0.55,
+      "classification": "LOCKED_FORMULA_COMPONENT"
+    },
+    {
+      "system": "Research costs",
+      "source": "BALANCE.research.costExponent",
+      "value": 1.7,
+      "classification": "LOCKED_FORMULA_COMPONENT"
+    },
+    {
+      "system": "Research duration",
+      "source": "BALANCE.research.speedMaxBonus",
+      "value": 1.5,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Research duration",
+      "source": "BALANCE.research.speedHalfSaturation",
+      "value": 20,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Patents",
+      "source": "BALANCE.patents.baseRequirement",
+      "value": 1500,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Patents",
+      "source": "BALANCE.patents.discoveryGrowth",
+      "value": 1.52,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Patents",
+      "source": "BALANCE.patents.tierGrowth",
+      "value": 1.28,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Training",
+      "source": "BALANCE.training.durationBaseSeconds",
+      "value": 45,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Training",
+      "source": "BALANCE.training.durationSqrtCoefficient",
+      "value": 34,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Models/Market",
+      "source": "BALANCE.models.levelCoefficient",
+      "value": 0.16,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Models/Market",
+      "source": "BALANCE.models.levelPower",
+      "value": 0.62,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Market",
+      "source": "BALANCE.marketV3.marketingCoefficient",
+      "value": 0.32,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Market",
+      "source": "BALANCE.marketV3.qualityDemandCoefficient",
+      "value": 0.18,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Market",
+      "source": "BALANCE.marketV3.price.premiumElasticity",
+      "value": 1.15,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Capacity",
+      "source": "BALANCE.market.capacityScale",
+      "value": 1.7,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Revenue",
+      "source": "BALANCE.market.revenueBase",
+      "value": 0.24,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Offline",
+      "source": "BALANCE.offline.efficiency",
+      "value": 0.6,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Offline",
+      "source": "BALANCE.offline.capMs",
+      "value": 7200000,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Tapping",
+      "source": "BALANCE.tapping.base",
+      "value": 1.5,
+      "classification": "AUDIT_ONLY"
+    },
+    {
+      "system": "INT",
+      "source": "BALANCE.intelligence entitlement parameters",
+      "value": "see PrestigeSystem",
+      "classification": "AUDIT_ONLY"
+    },
+    {
+      "system": "Research",
+      "source": "BALANCE.research.upgradeBaseCost",
+      "value": 25000,
+      "classification": "LEGACY_MAGIC_NUMBER",
+      "note": "Not consumed by canonical researchProjectCost"
+    },
+    {
+      "system": "Research",
+      "source": "BALANCE.research.upgradeFamilyGrowth",
+      "value": 2.4,
+      "classification": "LEGACY_MAGIC_NUMBER",
+      "note": "Not consumed by canonical researchProjectCost"
+    },
+    {
+      "system": "Patents",
+      "source": "legacy patent level coefficient",
+      "value": 0.5,
+      "classification": "AUDIT_ONLY",
+      "note": "Pre-Phase-2D live compatibility"
+    },
+    {
+      "system": "Research",
+      "source": "research project duration array",
+      "value": [
+        120,
+        300,
+        600,
+        900,
+        1800,
+        3600
+      ],
+      "classification": "LEGACY_MAGIC_NUMBER"
+    },
+    {
+      "system": "Patents",
+      "source": "patent tier width",
+      "value": 10,
+      "classification": "LEGACY_MAGIC_NUMBER"
+    }
+  ]
+}

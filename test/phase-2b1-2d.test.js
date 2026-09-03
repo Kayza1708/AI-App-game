@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createDefaultState, PATENTS } from '../src/data/defaultState.js';
+import { economySnapshot, marketMetrics, researchPerSecond, startPatentResearch, tickGame, trainingRequiredForState } from '../src/systems/GameSystem.js';
+import { referenceTrainingRate, trainingRequirement } from '../src/systems/ProgressionSystem.js';
+import { patentLevelMultiplier, researchLevelCost, researchPointsPerSecond, spendResearchOnPatent } from '../src/systems/ResearchEconomySystem.js';
+
+const close=(a,b,t=1e-10)=>assert.ok(Math.abs(a-b)<=Math.max(1,Math.abs(a),Math.abs(b))*t,`${a} != ${b}`);
+function marketState(){const s=createDefaultState();s.hardware.workstation=5;s.model.progress.tinyChat={...s.model.progress.tinyChat,level:25,skills:{quality:9,efficiency:8,popularity:8}};s.model.level=25;return s}
+
+test('Users are exactly Demand with no Capacity, allocation, or old-user feedback',()=>{const a=marketState(),b=structuredClone(a);b.allocation={...b.allocation,training:10,inference:90};b.resources.users=1e100;const ma=marketMetrics(a),mb=marketMetrics(b);close(ma.currentUsers,ma.potentialDemand);close(mb.currentUsers,mb.potentialDemand);close(ma.potentialDemand,mb.potentialDemand);assert.equal(ma.factors.wordOfMouth,1);assert.ok(ma.servedUsers<=ma.potentialDemand&&ma.servedUsers<=ma.capacity)});
+
+test('static Training anchors repair the human L25 collapse and remain modifier independent',()=>{const s=marketState(),requirement=trainingRequiredForState(s);assert.ok(requirement>250_000,requirement);for(const mutation of [x=>x.allocation.training=1,x=>x.model.progress.tinyChat.skills.efficiency=1e6,x=>x.hardware.workstation=1e6]){const copy=structuredClone(s);mutation(copy);assert.equal(trainingRequiredForState(copy),requirement)}for(const level of [1,5,10,15,20,25,30,50,100,250,500])assert.ok(Number.isFinite(referenceTrainingRate(level))&&Number.isFinite(trainingRequirement(level)));close(requirement/8_000,requirement/4_000/2)});
+
+test('locked Research production is exact, finite, monotonic, concave, and allocation-conserving',()=>{const inputs=[0,100,1_000,10_000,1e6,1e9],modifier=1.37,values=inputs.map(value=>researchPointsPerSecond(value,modifier));inputs.forEach((value,index)=>close(values[index],value===0?0:4*(value/1_000)**.72*modifier));for(let i=1;i<values.length;i++)assert.ok(values[i]>values[i-1]&&Number.isFinite(values[i]));assert.ok(researchPointsPerSecond(2e6)<2*researchPointsPerSecond(1e6));const s=marketState();s.meta.cycles=1;s.meta.techNodes.push('system-research');s.allocation={training:30,inference:40,research:30,data:0,agents:0};assert.ok(researchPerSecond(s)>0);assert.ok(economySnapshot(s).computeConsumed<=economySnapshot(s).computePerSecond*1.000001)});
+
+test('Patent progress spends stored RP once and live levels retain pre-Phase-2D scaling',()=>{assert.deepEqual(spendResearchOnPatent(100,20,70),{spent:50,points:50,progress:70});assert.equal(patentLevelMultiplier(1),1);assert.equal(patentLevelMultiplier(2),1.5);assert.equal(patentLevelMultiplier(5),3);assert.equal(researchLevelCost(1_000,2),1_000*(1+.55*2)**1.7);const s=marketState();s.meta.cycles=1;s.meta.techNodes.push('system-research','system-patents');s.resources.research=2_000;const active=startPatentResearch(s),next=tickGame(active,0);assert.equal(next.patents.discovered[0],PATENTS[0].id);assert.equal(next.patents.researchPointsSpent,1500);assert.equal(next.resources.research,500)});
