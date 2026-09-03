@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-03T11:45:54.884Z",
+  "generatedAt": "2026-09-03T13:37:10.357Z",
   "classifications": [
     "LOCKED_FORMULA_COMPONENT",
     "DERIVED_PARAMETER",
@@ -14,7 +14,7 @@
     "CONTENT_ANCHOR": 97,
     "DERIVED_PARAMETER": 16,
     "LOCKED_FORMULA_COMPONENT": 5,
-    "TUNABLE_PARAMETER": 16,
+    "TUNABLE_PARAMETER": 18,
     "AUDIT_ONLY": 3,
     "LEGACY_MAGIC_NUMBER": 4
   },
@@ -765,26 +765,38 @@
     },
     {
       "system": "Training",
-      "source": "BALANCE.training.durationBaseSeconds",
-      "value": 45,
+      "source": "BALANCE.training.expectedRateBase",
+      "value": 0.5,
       "classification": "TUNABLE_PARAMETER"
     },
     {
       "system": "Training",
-      "source": "BALANCE.training.durationSqrtCoefficient",
-      "value": 34,
+      "source": "BALANCE.training.expectedRateLevelGrowth",
+      "value": 1.67,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Training",
+      "source": "BALANCE.training.durationBaseSeconds",
+      "value": 28,
+      "classification": "TUNABLE_PARAMETER"
+    },
+    {
+      "system": "Training",
+      "source": "BALANCE.training.durationLevelCoefficient",
+      "value": 2,
       "classification": "TUNABLE_PARAMETER"
     },
     {
       "system": "Models/Market",
       "source": "BALANCE.models.levelCoefficient",
-      "value": 0.16,
+      "value": 0.8,
       "classification": "TUNABLE_PARAMETER"
     },
     {
       "system": "Models/Market",
       "source": "BALANCE.models.levelPower",
-      "value": 0.62,
+      "value": 0.72,
       "classification": "TUNABLE_PARAMETER"
     },
     {
@@ -796,7 +808,7 @@
     {
       "system": "Market",
       "source": "BALANCE.marketV3.qualityDemandCoefficient",
-      "value": 0.18,
+      "value": 0.5,
       "classification": "TUNABLE_PARAMETER"
     },
     {
@@ -881,5 +893,9 @@
       "value": 10,
       "classification": "LEGACY_MAGIC_NUMBER"
     }
-  ]
+  ],
+  "phase2B2": {
+    "status": "implemented",
+    "legacyMagicNumbersIntroduced": 0
+  }
 }

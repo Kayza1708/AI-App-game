@@ -1,0 +1,2859 @@
+{
+  "phase": "2B.2",
+  "deterministic": true,
+  "progressionStage": "P ~= max(modelLevel/25, hardwareTier, modelTier*2)",
+  "training": [
+    {
+      "level": 1,
+      "expectedRate": 0.5,
+      "targetDurationSeconds": 30,
+      "requirement": 15,
+      "log10Requirement": 1.1760913
+    },
+    {
+      "level": 5,
+      "expectedRate": 3.8889816,
+      "targetDurationSeconds": 34.372185,
+      "requirement": 133.6728,
+      "log10Requirement": 2.126043
+    },
+    {
+      "level": 10,
+      "expectedRate": 50.514754,
+      "targetDurationSeconds": 38.496149,
+      "requirement": 1944.6235,
+      "log10Requirement": 3.2888355
+    },
+    {
+      "level": 15,
+      "expectedRate": 656.14617,
+      "targetDurationSeconds": 42.05451,
+      "requirement": 27593.906,
+      "log10Requirement": 4.4408132
+    },
+    {
+      "level": 20,
+      "expectedRate": 8522.8129,
+      "targetDurationSeconds": 45.289068,
+      "requirement": 385990.26,
+      "log10Requirement": 5.5865763
+    },
+    {
+      "level": 25,
+      "expectedRate": 110704.51,
+      "targetDurationSeconds": 48.302373,
+      "requirement": 5347290.5,
+      "log10Requirement": 6.7281338
+    },
+    {
+      "level": 30,
+      "expectedRate": 1437962.9,
+      "targetDurationSeconds": 51.150336,
+      "requirement": 73552283,
+      "log10Requirement": 7.8665962
+    },
+    {
+      "level": 50,
+      "expectedRate": 40933331000,
+      "targetDurationSeconds": 61.441704,
+      "requirement": 2515013600000,
+      "log10Requirement": 12.40054
+    },
+    {
+      "level": 100,
+      "expectedRate": 5.5962956e+21,
+      "targetDurationSeconds": 83.084574,
+      "requirement": 4.6496584e+23,
+      "log10Requirement": 23.667421
+    },
+    {
+      "level": 250,
+      "expectedRate": 1.4301162e+55,
+      "targetDurationSeconds": 134.54837,
+      "requirement": 1.924198e+57,
+      "log10Requirement": 57.28425
+    },
+    {
+      "level": 500,
+      "expectedRate": 6.8310758e+110,
+      "targetDurationSeconds": 203.50456,
+      "requirement": 1.3901551e+113,
+      "log10Requirement": 113.14306
+    }
+  ],
+  "modelLevel": [
+    {
+      "level": 1,
+      "power": 1.8
+    },
+    {
+      "level": 5,
+      "power": 3.5488741
+    },
+    {
+      "level": 10,
+      "power": 5.1984597
+    },
+    {
+      "level": 15,
+      "power": 6.6218039
+    },
+    {
+      "level": 20,
+      "power": 7.9156274
+    },
+    {
+      "level": 25,
+      "power": 9.1209492
+    },
+    {
+      "level": 30,
+      "power": 10.260134
+    },
+    {
+      "level": 50,
+      "power": 14.376682
+    },
+    {
+      "level": 100,
+      "power": 23.03383
+    },
+    {
+      "level": 250,
+      "power": 43.619347
+    },
+    {
+      "level": 500,
+      "power": 71.201823
+    }
+  ],
+  "modelTier": [
+    {
+      "tier": 0,
+      "power": 1
+    },
+    {
+      "tier": 1,
+      "power": 4.2
+    },
+    {
+      "tier": 2,
+      "power": 19.0512
+    },
+    {
+      "tier": 3,
+      "power": 93.329543
+    },
+    {
+      "tier": 4,
+      "power": 493.78705
+    },
+    {
+      "tier": 5,
+      "power": 2821.5257
+    },
+    {
+      "tier": 6,
+      "power": 17412.137
+    },
+    {
+      "tier": 7,
+      "power": 116049.67
+    },
+    {
+      "tier": 8,
+      "power": 835332.69
+    }
+  ],
+  "strategies": [
+    {
+      "strategy": "BALANCED",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 139.32,
+          "currentUsers": 139.32,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 0.94922349,
+          "trainingEtaSeconds": 26.130794,
+          "demand": 212.34355,
+          "currentUsers": 212.34355,
+          "capacity": 2.0566509,
+          "servedUsers": 2.0566509,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.62807724,
+          "credits": 56.526952,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 6
+          },
+          "computePerSecond": 3,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 1.1390682,
+          "trainingEtaSeconds": 22.9405,
+          "demand": 212.34355,
+          "currentUsers": 212.34355,
+          "capacity": 2.4679811,
+          "servedUsers": 2.4679811,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.75369269,
+          "credits": 113.0539,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 4,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 9
+          },
+          "computePerSecond": 19.8,
+          "trainingRequirement": 77.841151,
+          "trainingRate": 8.171417,
+          "trainingEtaSeconds": 9.5260285,
+          "demand": 678.08534,
+          "currentUsers": 678.08534,
+          "capacity": 17.704737,
+          "servedUsers": 17.704737,
+          "revenuePerUser": 0.3312,
+          "creditsPerSecond": 5.8638088,
+          "credits": 1759.1426,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 289.91395,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 6,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 11
+          },
+          "computePerSecond": 24.2,
+          "trainingRequirement": 229.03892,
+          "trainingRate": 10.600231,
+          "trainingEtaSeconds": 21.606974,
+          "demand": 972.14103,
+          "currentUsers": 972.14103,
+          "capacity": 22.967168,
+          "servedUsers": 22.967168,
+          "revenuePerUser": 0.35079461,
+          "creditsPerSecond": 8.0567587,
+          "credits": 3625.5414,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 211.00297,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 7,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 14
+          },
+          "computePerSecond": 182,
+          "trainingRequirement": 391.74558,
+          "trainingRate": 81.733508,
+          "trainingEtaSeconds": 4.7929618,
+          "demand": 2115.8532,
+          "currentUsers": 2115.8532,
+          "capacity": 177.08927,
+          "servedUsers": 177.08927,
+          "revenuePerUser": 0.35930348,
+          "creditsPerSecond": 63.62879,
+          "credits": 38177.274,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 102.15502,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 11,
+          "modelTier": 0,
+          "highestHardwareTier": 3,
+          "hardwareOwnership": {
+            "workstation": 19
+          },
+          "computePerSecond": 2090,
+          "trainingRequirement": 3310.4173,
+          "trainingRate": 1017.5963,
+          "trainingEtaSeconds": 3.2531733,
+          "demand": 6291.0923,
+          "currentUsers": 6291.0923,
+          "capacity": 2204.7921,
+          "servedUsers": 2204.7921,
+          "revenuePerUser": 0.38820898,
+          "creditsPerSecond": 855.92009,
+          "credits": 770328.08,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 52.575001,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 16,
+          "modelTier": 0,
+          "highestHardwareTier": 5,
+          "hardwareOwnership": {
+            "miniDatacenter": 26
+          },
+          "computePerSecond": 572000,
+          "trainingRequirement": 46814.333,
+          "trainingRate": 300526.31,
+          "trainingEtaSeconds": 0.15577449,
+          "demand": 33549.271,
+          "currentUsers": 33549.271,
+          "capacity": 651140.34,
+          "servedUsers": 33549.271,
+          "revenuePerUser": 0.41741226,
+          "creditsPerSecond": 14003.877,
+          "credits": 18905234,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 4998.6157,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 21,
+          "modelTier": 0,
+          "highestHardwareTier": 7,
+          "hardwareOwnership": {
+            "hyperscaleDatacenter": 34
+          },
+          "computePerSecond": 476000000,
+          "trainingRequirement": 653401.78,
+          "trainingRate": 265714220,
+          "trainingEtaSeconds": 0.0024590395,
+          "demand": 162520.08,
+          "currentUsers": 162520.08,
+          "capacity": 575714150,
+          "servedUsers": 162520.08,
+          "revenuePerUser": 0.44214886,
+          "creditsPerSecond": 71858.068,
+          "credits": 129344520,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 30615908,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 26,
+          "modelTier": 1,
+          "highestHardwareTier": 9,
+          "hardwareOwnership": {
+            "aiSupercomputer": 41
+          },
+          "computePerSecond": 820000000000,
+          "trainingRequirement": 732902990,
+          "trainingRate": 481605850000,
+          "trainingEtaSeconds": 0.0015217901,
+          "demand": 3119239.4,
+          "currentUsers": 3119239.4,
+          "capacity": 1043479300000,
+          "servedUsers": 3119239.4,
+          "revenuePerUser": 0.46397175,
+          "creditsPerSecond": 1447239,
+          "credits": 3256287700,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 11746505000,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 31,
+          "modelTier": 1,
+          "highestHardwareTier": 11,
+          "hardwareOwnership": {
+            "underwaterDatacenter": 49
+          },
+          "computePerSecond": 2695000000000000,
+          "trainingRequirement": 9736488200,
+          "trainingRate": 1654022500000000,
+          "trainingEtaSeconds": 0.0000058865513,
+          "demand": 13702778,
+          "currentUsers": 13702778,
+          "capacity": 3583715400000000,
+          "servedUsers": 13702778,
+          "revenuePerUser": 0.48370232,
+          "creditsPerSecond": 6628065.4,
+          "credits": 17895777000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 42244604000000,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 41,
+          "modelTier": 1,
+          "highestHardwareTier": 15,
+          "hardwareOwnership": {
+            "matrioshkaBrain": 64
+          },
+          "computePerSecond": 2.304e+23,
+          "trainingRequirement": 1711263200000,
+          "trainingRate": 1.5225041e+23,
+          "trainingEtaSeconds": 1.1239794e-11,
+          "demand": 244386900,
+          "currentUsers": 244386900,
+          "capacity": 3.298759e+23,
+          "servedUsers": 244386900,
+          "revenuePerUser": 0.51870342,
+          "creditsPerSecond": 126764320,
+          "credits": 456351550000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": null,
+          "skillAllocation": {
+            "quality": 3,
+            "efficiency": 2,
+            "popularity": 4
+          }
+        }
+      ]
+    },
+    {
+      "strategy": "HARDWARE_HEAVY",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 111.456,
+          "currentUsers": 111.456,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 15,
+          "trainingRate": 0.89087228,
+          "trainingEtaSeconds": 15,
+          "demand": 111.456,
+          "currentUsers": 111.456,
+          "capacity": 1.9302233,
+          "servedUsers": 1.9302233,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.5537463,
+          "credits": 49.837167,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 7
+          },
+          "computePerSecond": 3.5,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 1.3289129,
+          "trainingEtaSeconds": 19.663286,
+          "demand": 169.87484,
+          "currentUsers": 169.87484,
+          "capacity": 2.8793113,
+          "servedUsers": 2.8793113,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.87930814,
+          "credits": 131.89622,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 3,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 10
+          },
+          "computePerSecond": 22,
+          "trainingRequirement": 45.195806,
+          "trainingRate": 8.747182,
+          "trainingEtaSeconds": 5.166899,
+          "demand": 429.64332,
+          "currentUsers": 429.64332,
+          "capacity": 18.952228,
+          "servedUsers": 18.952228,
+          "revenuePerUser": 0.31943726,
+          "creditsPerSecond": 6.0540476,
+          "credits": 1816.2143,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 280.80387,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 5,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 13
+          },
+          "computePerSecond": 169,
+          "trainingRequirement": 133.6728,
+          "trainingRate": 71.994,
+          "trainingEtaSeconds": 1.8567213,
+          "demand": 1237.8463,
+          "currentUsers": 1237.8463,
+          "capacity": 155.987,
+          "servedUsers": 155.987,
+          "revenuePerUser": 0.34151066,
+          "creditsPerSecond": 53.271223,
+          "credits": 23972.05,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 122.0171,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 6,
+          "modelTier": 0,
+          "highestHardwareTier": 3,
+          "hardwareOwnership": {
+            "workstation": 16
+          },
+          "computePerSecond": 1760,
+          "trainingRequirement": 229.03892,
+          "trainingRate": 770.92591,
+          "trainingEtaSeconds": 0.29709589,
+          "demand": 2748.7482,
+          "currentUsers": 2748.7482,
+          "capacity": 1670.3395,
+          "servedUsers": 1670.3395,
+          "revenuePerUser": 0.35079461,
+          "creditsPerSecond": 585.94609,
+          "credits": 351567.65,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 76.798875,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 9,
+          "modelTier": 0,
+          "highestHardwareTier": 4,
+          "hardwareOwnership": {
+            "gpuServer": 22
+          },
+          "computePerSecond": 29700,
+          "trainingRequirement": 1141.2513,
+          "trainingRate": 13930.688,
+          "trainingEtaSeconds": 0.081923543,
+          "demand": 7679.0281,
+          "currentUsers": 7679.0281,
+          "capacity": 30183.158,
+          "servedUsers": 7679.0281,
+          "revenuePerUser": 0.37459919,
+          "creditsPerSecond": 2876.5577,
+          "credits": 2588902,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 486.69282,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 13,
+          "modelTier": 0,
+          "highestHardwareTier": 7,
+          "hardwareOwnership": {
+            "hyperscaleDatacenter": 32
+          },
+          "computePerSecond": 448000000,
+          "trainingRequirement": 9570.4642,
+          "trainingRate": 225419670,
+          "trainingEtaSeconds": 0.000042456208,
+          "demand": 75269.607,
+          "currentUsers": 75269.607,
+          "capacity": 488409270,
+          "servedUsers": 75269.607,
+          "revenuePerUser": 0.40058274,
+          "creditsPerSecond": 30151.705,
+          "credits": 40704802,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 72964365,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 17,
+          "modelTier": 0,
+          "highestHardwareTier": 9,
+          "hardwareOwnership": {
+            "aiSupercomputer": 41
+          },
+          "computePerSecond": 820000000000,
+          "trainingRequirement": 79381.991,
+          "trainingRate": 436512670000,
+          "trainingEtaSeconds": 1.8185495e-7,
+          "demand": 359262.53,
+          "currentUsers": 359262.53,
+          "capacity": 945777440000,
+          "servedUsers": 359262.53,
+          "revenuePerUser": 0.42265078,
+          "creditsPerSecond": 151842.59,
+          "credits": 273316660,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 111958050000,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 21,
+          "modelTier": 0,
+          "highestHardwareTier": 11,
+          "hardwareOwnership": {
+            "underwaterDatacenter": 50
+          },
+          "computePerSecond": 2750000000000000,
+          "trainingRequirement": 653401.78,
+          "trainingRate": 1535113700000000,
+          "trainingEtaSeconds": 4.2563739e-10,
+          "demand": 1624158.5,
+          "currentUsers": 1624158.5,
+          "capacity": 3326079700000000,
+          "servedUsers": 1624158.5,
+          "revenuePerUser": 0.44214886,
+          "creditsPerSecond": 718119.83,
+          "credits": 1615769600,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 389907070000000,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 25,
+          "modelTier": 1,
+          "highestHardwareTier": 14,
+          "hardwareOwnership": {
+            "dysonSwarm": 60
+          },
+          "computePerSecond": 1.8e+21,
+          "trainingRequirement": 436804120,
+          "trainingRate": 1.0471402e+21,
+          "trainingEtaSeconds": 4.1714005e-13,
+          "demand": 55870048,
+          "currentUsers": 55870048,
+          "capacity": 2.2688038e+21,
+          "servedUsers": 55870048,
+          "revenuePerUser": 0.45979472,
+          "creditsPerSecond": 25688753,
+          "credits": 69359632000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 1.2456813e+21,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 33,
+          "modelTier": 1,
+          "highestHardwareTier": 15,
+          "hardwareOwnership": {
+            "matrioshkaBrain": 79
+          },
+          "computePerSecond": 2.844e+23,
+          "trainingRequirement": 27387988000,
+          "trainingRate": 1.7738024e+23,
+          "trainingEtaSeconds": 1.544027e-13,
+          "demand": 148128160,
+          "currentUsers": 148128160,
+          "capacity": 3.8432385e+23,
+          "servedUsers": 148128160,
+          "revenuePerUser": 0.49112661,
+          "creditsPerSecond": 72749681,
+          "credits": 261898850000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": null,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        }
+      ]
+    },
+    {
+      "strategy": "TRAINING_HEAVY",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 111.456,
+          "currentUsers": 111.456,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 0.94922349,
+          "trainingEtaSeconds": 26.130794,
+          "demand": 169.87484,
+          "currentUsers": 169.87484,
+          "capacity": 2.0566509,
+          "servedUsers": 2.0566509,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.62807724,
+          "credits": 56.526952,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 3,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 6
+          },
+          "computePerSecond": 3,
+          "trainingRequirement": 45.195806,
+          "trainingRate": 1.1927975,
+          "trainingEtaSeconds": 37.890593,
+          "demand": 228.53368,
+          "currentUsers": 228.53368,
+          "capacity": 2.5843947,
+          "servedUsers": 2.5843947,
+          "revenuePerUser": 0.31943726,
+          "creditsPerSecond": 0.82555195,
+          "credits": 123.83279,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 5,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 8
+          },
+          "computePerSecond": 17.6,
+          "trainingRequirement": 133.6728,
+          "trainingRate": 7.4976,
+          "trainingEtaSeconds": 17.828745,
+          "demand": 658.42886,
+          "currentUsers": 658.42886,
+          "capacity": 16.2448,
+          "servedUsers": 16.2448,
+          "revenuePerUser": 0.34151066,
+          "creditsPerSecond": 5.5477723,
+          "credits": 1664.3317,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 306.4293,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 7,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 10
+          },
+          "computePerSecond": 22,
+          "trainingRequirement": 391.74558,
+          "trainingRate": 9.8798746,
+          "trainingEtaSeconds": 39.650866,
+          "demand": 900.36306,
+          "currentUsers": 900.36306,
+          "capacity": 21.406395,
+          "servedUsers": 21.406395,
+          "revenuePerUser": 0.35930348,
+          "creditsPerSecond": 7.6913922,
+          "credits": 3461.1265,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 221.02631,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 9,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 12
+          },
+          "computePerSecond": 156,
+          "trainingRequirement": 1141.2513,
+          "trainingRate": 73.171291,
+          "trainingEtaSeconds": 15.596982,
+          "demand": 2172.654,
+          "currentUsers": 2172.654,
+          "capacity": 158.5378,
+          "servedUsers": 158.5378,
+          "revenuePerUser": 0.37459919,
+          "creditsPerSecond": 59.388131,
+          "credits": 35632.878,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 109.44948,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 13,
+          "modelTier": 0,
+          "highestHardwareTier": 3,
+          "hardwareOwnership": {
+            "workstation": 16
+          },
+          "computePerSecond": 1760,
+          "trainingRequirement": 9570.4642,
+          "trainingRate": 885.57726,
+          "trainingEtaSeconds": 10.807035,
+          "demand": 6025.4328,
+          "currentUsers": 6025.4328,
+          "capacity": 1918.7507,
+          "servedUsers": 1918.7507,
+          "revenuePerUser": 0.40058274,
+          "creditsPerSecond": 768.61841,
+          "credits": 691756.57,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 58.546607,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 19,
+          "modelTier": 0,
+          "highestHardwareTier": 4,
+          "hardwareOwnership": {
+            "gpuServer": 23
+          },
+          "computePerSecond": 31050,
+          "trainingRequirement": 227932.73,
+          "trainingRate": 16941.477,
+          "trainingEtaSeconds": 13.454124,
+          "demand": 17395.991,
+          "currentUsers": 17395.991,
+          "capacity": 36706.533,
+          "servedUsers": 17395.991,
+          "revenuePerUser": 0.43266719,
+          "creditsPerSecond": 7526.6747,
+          "credits": 10161011,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 186.00512,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 26,
+          "modelTier": 1,
+          "highestHardwareTier": 6,
+          "hardwareOwnership": {
+            "enterpriseDatacenter": 29
+          },
+          "computePerSecond": 14500000,
+          "trainingRequirement": 732902990,
+          "trainingRate": 8516201,
+          "trainingEtaSeconds": 86.059851,
+          "demand": 375547.74,
+          "currentUsers": 375547.74,
+          "capacity": 18451769,
+          "servedUsers": 375547.74,
+          "revenuePerUser": 0.46397175,
+          "creditsPerSecond": 174243.54,
+          "credits": 313638380,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 183651,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 32,
+          "modelTier": 1,
+          "highestHardwareTier": 7,
+          "hardwareOwnership": {
+            "hyperscaleDatacenter": 35
+          },
+          "computePerSecond": 490000000,
+          "trainingRequirement": 16330271000,
+          "trainingRate": 303191220,
+          "trainingEtaSeconds": 53.861291,
+          "demand": 913172.58,
+          "currentUsers": 913172.58,
+          "capacity": 656914310,
+          "servedUsers": 913172.58,
+          "revenuePerUser": 0.48744463,
+          "creditsPerSecond": 445121.07,
+          "credits": 1001522400,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 4942475.5,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 38,
+          "modelTier": 1,
+          "highestHardwareTier": 9,
+          "hardwareOwnership": {
+            "aiSupercomputer": 42
+          },
+          "computePerSecond": 840000000000,
+          "trainingRequirement": 363127510000,
+          "trainingRate": 543780740000,
+          "trainingEtaSeconds": 0.66778296,
+          "demand": 4014771.1,
+          "currentUsers": 4014771.1,
+          "capacity": 1178191600000,
+          "servedUsers": 4014771.1,
+          "revenuePerUser": 0.50872135,
+          "creditsPerSecond": 2042399.7,
+          "credits": 5514479300,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 8323542000,
+          "skillAllocation": {
+            "quality": 3,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 51,
+          "modelTier": 2,
+          "highestHardwareTier": 12,
+          "hardwareOwnership": {
+            "orbitalDatacenter": 55
+          },
+          "computePerSecond": 209000000000000000,
+          "trainingRequirement": 19034337000000000,
+          "trainingRate": 146804050000000000,
+          "trainingEtaSeconds": 0.12965812,
+          "demand": 177718800,
+          "currentUsers": 177718800,
+          "capacity": 318075440000000000,
+          "servedUsers": 177718800,
+          "revenuePerUser": 0.54948509,
+          "creditsPerSecond": 97653833,
+          "credits": 351553800000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 512012670000000,
+          "skillAllocation": {
+            "quality": 4,
+            "efficiency": 3,
+            "popularity": 5
+          }
+        }
+      ]
+    },
+    {
+      "strategy": "MARKET_HEAVY",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 181.116,
+          "currentUsers": 181.116,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 15,
+          "trainingRate": 0.89087228,
+          "trainingEtaSeconds": 15,
+          "demand": 181.116,
+          "currentUsers": 181.116,
+          "capacity": 1.9302233,
+          "servedUsers": 1.9302233,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.5537463,
+          "credits": 49.837167,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 6
+          },
+          "computePerSecond": 3,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 1.1390682,
+          "trainingEtaSeconds": 22.9405,
+          "demand": 276.04661,
+          "currentUsers": 276.04661,
+          "capacity": 2.4679811,
+          "servedUsers": 2.4679811,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.75369269,
+          "credits": 113.0539,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 3,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 8
+          },
+          "computePerSecond": 17.6,
+          "trainingRequirement": 45.195806,
+          "trainingRate": 6.9977456,
+          "trainingEtaSeconds": 6.4586237,
+          "demand": 698.17039,
+          "currentUsers": 698.17039,
+          "capacity": 15.161782,
+          "servedUsers": 15.161782,
+          "revenuePerUser": 0.31943726,
+          "creditsPerSecond": 4.8432381,
+          "credits": 1452.9714,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 351.00484,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 5,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 10
+          },
+          "computePerSecond": 22,
+          "trainingRequirement": 133.6728,
+          "trainingRate": 9.372,
+          "trainingEtaSeconds": 14.262996,
+          "demand": 1069.9469,
+          "currentUsers": 1069.9469,
+          "capacity": 20.306,
+          "servedUsers": 20.306,
+          "revenuePerUser": 0.34151066,
+          "creditsPerSecond": 6.9347154,
+          "credits": 3120.6219,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 245.14344,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 6,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 12
+          },
+          "computePerSecond": 156,
+          "trainingRequirement": 229.03892,
+          "trainingRate": 68.332069,
+          "trainingEtaSeconds": 3.3518511,
+          "demand": 2375.9127,
+          "currentUsers": 2375.9127,
+          "capacity": 148.05282,
+          "servedUsers": 148.05282,
+          "revenuePerUser": 0.35079461,
+          "creditsPerSecond": 51.93613,
+          "credits": 31161.678,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 125.15372,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 9,
+          "modelTier": 0,
+          "highestHardwareTier": 3,
+          "hardwareOwnership": {
+            "workstation": 16
+          },
+          "computePerSecond": 1760,
+          "trainingRequirement": 1141.2513,
+          "trainingRate": 825.52226,
+          "trainingEtaSeconds": 1.3824598,
+          "demand": 6637.4578,
+          "currentUsers": 6637.4578,
+          "capacity": 1788.6316,
+          "servedUsers": 1788.6316,
+          "revenuePerUser": 0.37459919,
+          "creditsPerSecond": 670.01994,
+          "credits": 603017.94,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 67.162181,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 13,
+          "modelTier": 0,
+          "highestHardwareTier": 4,
+          "hardwareOwnership": {
+            "gpuServer": 23
+          },
+          "computePerSecond": 31050,
+          "trainingRequirement": 9570.4642,
+          "trainingRate": 15623.394,
+          "trainingEtaSeconds": 0.61257267,
+          "demand": 18407.697,
+          "currentUsers": 18407.697,
+          "capacity": 33850.687,
+          "servedUsers": 18407.697,
+          "revenuePerUser": 0.40058274,
+          "creditsPerSecond": 7373.8058,
+          "credits": 9954637.8,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 189.86125,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 18,
+          "modelTier": 0,
+          "highestHardwareTier": 6,
+          "hardwareOwnership": {
+            "enterpriseDatacenter": 29
+          },
+          "computePerSecond": 14500000,
+          "trainingRequirement": 134542.54,
+          "trainingRate": 7816488.8,
+          "trainingEtaSeconds": 0.017212657,
+          "demand": 93833.243,
+          "currentUsers": 93833.243,
+          "capacity": 16935726,
+          "servedUsers": 93833.243,
+          "revenuePerUser": 0.42773137,
+          "creditsPerSecond": 40135.422,
+          "credits": 72243759,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 797300.71,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 22,
+          "modelTier": 0,
+          "highestHardwareTier": 7,
+          "hardwareOwnership": {
+            "hyperscaleDatacenter": 35
+          },
+          "computePerSecond": 490000000,
+          "trainingRequirement": 1105679,
+          "trainingRate": 276506920,
+          "trainingEtaSeconds": 0.0039987391,
+          "demand": 223283.52,
+          "currentUsers": 223283.52,
+          "capacity": 599098320,
+          "servedUsers": 223283.52,
+          "revenuePerUser": 0.44671354,
+          "creditsPerSecond": 99743.771,
+          "credits": 224423480,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 22056515,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 26,
+          "modelTier": 1,
+          "highestHardwareTier": 9,
+          "hardwareOwnership": {
+            "aiSupercomputer": 42
+          },
+          "computePerSecond": 840000000000,
+          "trainingRequirement": 732902990,
+          "trainingRate": 493352330000,
+          "trainingEtaSeconds": 0.001485557,
+          "demand": 4055011.2,
+          "currentUsers": 4055011.2,
+          "capacity": 1068930100000,
+          "servedUsers": 4055011.2,
+          "revenuePerUser": 0.46397175,
+          "creditsPerSecond": 1881410.7,
+          "credits": 5079808800,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 9035773100,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 35,
+          "modelTier": 1,
+          "highestHardwareTier": 12,
+          "hardwareOwnership": {
+            "orbitalDatacenter": 55
+          },
+          "computePerSecond": 209000000000000000,
+          "trainingRequirement": 77023689000,
+          "trainingRate": 132373220000000000,
+          "trainingEtaSeconds": 5.8186763e-7,
+          "demand": 39027360,
+          "currentUsers": 39027360,
+          "capacity": 286808630000000000,
+          "servedUsers": 39027360,
+          "revenuePerUser": 0.4983204,
+          "creditsPerSecond": 19448130,
+          "credits": 70013267000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 2570941300000000,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        }
+      ]
+    },
+    {
+      "strategy": "GREEDY_ROI",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 139.32,
+          "currentUsers": 139.32,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 0.94922349,
+          "trainingEtaSeconds": 26.130794,
+          "demand": 212.34355,
+          "currentUsers": 212.34355,
+          "capacity": 2.0566509,
+          "servedUsers": 2.0566509,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.62807724,
+          "credits": 56.526952,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 6
+          },
+          "computePerSecond": 3,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 1.1390682,
+          "trainingEtaSeconds": 22.9405,
+          "demand": 212.34355,
+          "currentUsers": 212.34355,
+          "capacity": 2.4679811,
+          "servedUsers": 2.4679811,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.75369269,
+          "credits": 113.0539,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 4,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 9
+          },
+          "computePerSecond": 19.8,
+          "trainingRequirement": 77.841151,
+          "trainingRate": 8.171417,
+          "trainingEtaSeconds": 9.5260285,
+          "demand": 678.08534,
+          "currentUsers": 678.08534,
+          "capacity": 17.704737,
+          "servedUsers": 17.704737,
+          "revenuePerUser": 0.3312,
+          "creditsPerSecond": 5.8638088,
+          "credits": 1759.1426,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 289.91395,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 6,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 12
+          },
+          "computePerSecond": 156,
+          "trainingRequirement": 229.03892,
+          "trainingRate": 68.332069,
+          "trainingEtaSeconds": 3.3518511,
+          "demand": 1827.6251,
+          "currentUsers": 1827.6251,
+          "capacity": 148.05282,
+          "servedUsers": 148.05282,
+          "revenuePerUser": 0.35079461,
+          "creditsPerSecond": 51.93613,
+          "credits": 23371.259,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 125.15372,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 8,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 15
+          },
+          "computePerSecond": 195,
+          "trainingRequirement": 669.05554,
+          "trainingRate": 89.578865,
+          "trainingEtaSeconds": 7.4688995,
+          "demand": 2411.9515,
+          "currentUsers": 2411.9515,
+          "capacity": 194.08754,
+          "servedUsers": 194.08754,
+          "revenuePerUser": 0.36720062,
+          "creditsPerSecond": 71.269066,
+          "credits": 42761.439,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 91.203665,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 11,
+          "modelTier": 0,
+          "highestHardwareTier": 4,
+          "hardwareOwnership": {
+            "gpuServer": 21
+          },
+          "computePerSecond": 28350,
+          "trainingRequirement": 3310.4173,
+          "trainingRate": 13803.281,
+          "trainingEtaSeconds": 0.2398283,
+          "demand": 11827.254,
+          "currentUsers": 11827.254,
+          "capacity": 29907.108,
+          "servedUsers": 11827.254,
+          "revenuePerUser": 0.38820898,
+          "creditsPerSecond": 4591.4461,
+          "credits": 4132301.5,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 304.91483,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 16,
+          "modelTier": 0,
+          "highestHardwareTier": 6,
+          "hardwareOwnership": {
+            "enterpriseDatacenter": 29
+          },
+          "computePerSecond": 14500000,
+          "trainingRequirement": 46814.333,
+          "trainingRate": 7618237,
+          "trainingEtaSeconds": 0.006145035,
+          "demand": 63072.629,
+          "currentUsers": 63072.629,
+          "capacity": 16506180,
+          "servedUsers": 63072.629,
+          "revenuePerUser": 0.41741226,
+          "creditsPerSecond": 26327.289,
+          "credits": 35541840,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 1215468.9,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 22,
+          "modelTier": 0,
+          "highestHardwareTier": 8,
+          "hardwareOwnership": {
+            "tpuCluster": 38
+          },
+          "computePerSecond": 18240000000,
+          "trainingRequirement": 1105679,
+          "trainingRate": 10292829000,
+          "trainingEtaSeconds": 0.00010742227,
+          "demand": 322902.32,
+          "currentUsers": 322902.32,
+          "capacity": 22301129000,
+          "servedUsers": 322902.32,
+          "revenuePerUser": 0.44671354,
+          "creditsPerSecond": 144244.84,
+          "credits": 259640710,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 1247878300,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 27,
+          "modelTier": 1,
+          "highestHardwareTier": 10,
+          "hardwareOwnership": {
+            "planetaryGrid": 47
+          },
+          "computePerSecond": 44650000000000,
+          "trainingRequirement": 1229631400,
+          "trainingRate": 26468410000000,
+          "trainingEtaSeconds": 0.000046456566,
+          "demand": 6141582.9,
+          "currentUsers": 6141582.9,
+          "capacity": 57348222000000,
+          "servedUsers": 6141582.9,
+          "revenuePerUser": 0.46806605,
+          "creditsPerSecond": 2874666.5,
+          "credits": 6467999500,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 695732890000,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 32,
+          "modelTier": 1,
+          "highestHardwareTier": 12,
+          "hardwareOwnership": {
+            "orbitalDatacenter": 55
+          },
+          "computePerSecond": 209000000000000000,
+          "trainingRequirement": 16330271000,
+          "trainingRate": 129320340000000000,
+          "trainingEtaSeconds": 1.2627767e-7,
+          "demand": 26807241,
+          "currentUsers": 26807241,
+          "capacity": 280194060000000000,
+          "servedUsers": 26807241,
+          "revenuePerUser": 0.48744463,
+          "creditsPerSecond": 13067046,
+          "credits": 35281023000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 3826419600000000,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 43,
+          "modelTier": 1,
+          "highestHardwareTier": 15,
+          "hardwareOwnership": {
+            "matrioshkaBrain": 73
+          },
+          "computePerSecond": 2.628e+23,
+          "trainingRequirement": 4809110700000,
+          "trainingRate": 1.7594579e+23,
+          "trainingEtaSeconds": 2.7332911e-11,
+          "demand": 259987130,
+          "currentUsers": 259987130,
+          "capacity": 3.8121588e+23,
+          "servedUsers": 259987130,
+          "revenuePerUser": 0.52514838,
+          "creditsPerSecond": 136531820,
+          "credits": 491514550000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": null,
+          "skillAllocation": {
+            "quality": 3,
+            "efficiency": 2,
+            "popularity": 4
+          }
+        }
+      ]
+    },
+    {
+      "strategy": "LOW_INTERACTION",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 90.558,
+          "currentUsers": 90.558,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 90.558,
+          "currentUsers": 90.558,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 39.869733,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 0.94922349,
+          "trainingEtaSeconds": 26.130794,
+          "demand": 138.02331,
+          "currentUsers": 138.02331,
+          "capacity": 2.0566509,
+          "servedUsers": 2.0566509,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.62807724,
+          "credits": 94.211587,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 3,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 7
+          },
+          "computePerSecond": 3.5,
+          "trainingRequirement": 45.195806,
+          "trainingRate": 1.3915971,
+          "trainingEtaSeconds": 32.477651,
+          "demand": 185.68361,
+          "currentUsers": 185.68361,
+          "capacity": 3.0151271,
+          "servedUsers": 3.0151271,
+          "revenuePerUser": 0.31943726,
+          "creditsPerSecond": 0.96314394,
+          "credits": 288.94318,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 4,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 8
+          },
+          "computePerSecond": 17.6,
+          "trainingRequirement": 77.841151,
+          "trainingRate": 7.2634817,
+          "trainingEtaSeconds": 10.716782,
+          "demand": 440.75547,
+          "currentUsers": 440.75547,
+          "capacity": 15.737544,
+          "servedUsers": 15.737544,
+          "revenuePerUser": 0.3312,
+          "creditsPerSecond": 5.2122745,
+          "credits": 2345.5235,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 326.1532,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 5,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 10
+          },
+          "computePerSecond": 22,
+          "trainingRequirement": 133.6728,
+          "trainingRate": 9.372,
+          "trainingEtaSeconds": 14.262996,
+          "demand": 534.97345,
+          "currentUsers": 534.97345,
+          "capacity": 20.306,
+          "servedUsers": 20.306,
+          "revenuePerUser": 0.34151066,
+          "creditsPerSecond": 6.9347154,
+          "credits": 4160.8293,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 245.14344,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 7,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 13
+          },
+          "computePerSecond": 169,
+          "trainingRequirement": 391.74558,
+          "trainingRate": 75.895401,
+          "trainingEtaSeconds": 5.1616512,
+          "demand": 1375.3046,
+          "currentUsers": 1375.3046,
+          "capacity": 164.44003,
+          "servedUsers": 164.44003,
+          "revenuePerUser": 0.35930348,
+          "creditsPerSecond": 59.083876,
+          "credits": 53175.489,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 110.01309,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 10,
+          "modelTier": 0,
+          "highestHardwareTier": 3,
+          "hardwareOwnership": {
+            "workstation": 18
+          },
+          "computePerSecond": 1980,
+          "trainingRequirement": 1944.6235,
+          "trainingRate": 946.818,
+          "trainingEtaSeconds": 2.0538514,
+          "demand": 3699.3874,
+          "currentUsers": 3699.3874,
+          "capacity": 2051.439,
+          "servedUsers": 2051.439,
+          "revenuePerUser": 0.38158135,
+          "creditsPerSecond": 782.79086,
+          "credits": 1056767.7,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 57.486619,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 14,
+          "modelTier": 0,
+          "highestHardwareTier": 4,
+          "hardwareOwnership": {
+            "gpuServer": 23
+          },
+          "computePerSecond": 31050,
+          "trainingRequirement": 16255.692,
+          "trainingRate": 15861.53,
+          "trainingEtaSeconds": 1.0248502,
+          "demand": 9986.494,
+          "currentUsers": 9986.494,
+          "capacity": 34366.648,
+          "servedUsers": 9986.494,
+          "revenuePerUser": 0.40639777,
+          "creditsPerSecond": 4058.4889,
+          "credits": 7305280,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 344.95598,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 17,
+          "modelTier": 0,
+          "highestHardwareTier": 6,
+          "hardwareOwnership": {
+            "enterpriseDatacenter": 28
+          },
+          "computePerSecond": 14000000,
+          "trainingRequirement": 79381.991,
+          "trainingRate": 7452655.3,
+          "trainingEtaSeconds": 0.010651504,
+          "demand": 43930.055,
+          "currentUsers": 43930.055,
+          "capacity": 16147420,
+          "servedUsers": 43930.055,
+          "revenuePerUser": 0.42265078,
+          "creditsPerSecond": 18567.072,
+          "credits": 41775912,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 1723481.2,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 20,
+          "modelTier": 0,
+          "highestHardwareTier": 7,
+          "hardwareOwnership": {
+            "hyperscaleDatacenter": 33
+          },
+          "computePerSecond": 462000000,
+          "trainingRequirement": 385990.26,
+          "trainingRate": 255024000,
+          "trainingEtaSeconds": 0.0015135448,
+          "demand": 99729.483,
+          "currentUsers": 99729.483,
+          "capacity": 552552000,
+          "servedUsers": 99729.483,
+          "revenuePerUser": 0.43746969,
+          "creditsPerSecond": 43628.626,
+          "credits": 117797290,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 50425609,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 27,
+          "modelTier": 1,
+          "highestHardwareTier": 9,
+          "hardwareOwnership": {
+            "aiSupercomputer": 43
+          },
+          "computePerSecond": 860000000000,
+          "trainingRequirement": 1229631400,
+          "trainingRate": 509805890000,
+          "trainingEtaSeconds": 0.0024119601,
+          "demand": 2123419.6,
+          "currentUsers": 2123419.6,
+          "capacity": 1104579400000,
+          "servedUsers": 2123419.6,
+          "revenuePerUser": 0.46806605,
+          "creditsPerSecond": 993900.64,
+          "credits": 3578042300,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 17104325000,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        }
+      ]
+    },
+    {
+      "strategy": "MODEL_HEAVY",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 160.218,
+          "currentUsers": 160.218,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 0.94922349,
+          "trainingEtaSeconds": 26.130794,
+          "demand": 244.19508,
+          "currentUsers": 244.19508,
+          "capacity": 2.0566509,
+          "servedUsers": 2.0566509,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.62807724,
+          "credits": 56.526952,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 3,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 6
+          },
+          "computePerSecond": 3,
+          "trainingRequirement": 45.195806,
+          "trainingRate": 1.1927975,
+          "trainingEtaSeconds": 37.890593,
+          "demand": 328.51716,
+          "currentUsers": 328.51716,
+          "capacity": 2.5843947,
+          "servedUsers": 2.5843947,
+          "revenuePerUser": 0.31943726,
+          "creditsPerSecond": 0.82555195,
+          "credits": 123.83279,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 5,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 8
+          },
+          "computePerSecond": 17.6,
+          "trainingRequirement": 133.6728,
+          "trainingRate": 7.4976,
+          "trainingEtaSeconds": 17.828745,
+          "demand": 946.49148,
+          "currentUsers": 946.49148,
+          "capacity": 16.2448,
+          "servedUsers": 16.2448,
+          "revenuePerUser": 0.34151066,
+          "creditsPerSecond": 5.5477723,
+          "credits": 1664.3317,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 306.4293,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 7,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 10
+          },
+          "computePerSecond": 22,
+          "trainingRequirement": 391.74558,
+          "trainingRate": 9.8798746,
+          "trainingEtaSeconds": 39.650866,
+          "demand": 1294.2719,
+          "currentUsers": 1294.2719,
+          "capacity": 21.406395,
+          "servedUsers": 21.406395,
+          "revenuePerUser": 0.35930348,
+          "creditsPerSecond": 7.6913922,
+          "credits": 3461.1265,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 221.02631,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 10,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 12
+          },
+          "computePerSecond": 156,
+          "trainingRequirement": 1944.6235,
+          "trainingRate": 74.597782,
+          "trainingEtaSeconds": 26.068115,
+          "demand": 3481.4202,
+          "currentUsers": 3481.4202,
+          "capacity": 161.62853,
+          "servedUsers": 161.62853,
+          "revenuePerUser": 0.38158135,
+          "creditsPerSecond": 61.674431,
+          "credits": 37004.659,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 105.39214,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 14,
+          "modelTier": 0,
+          "highestHardwareTier": 3,
+          "hardwareOwnership": {
+            "workstation": 16
+          },
+          "computePerSecond": 1760,
+          "trainingRequirement": 16255.692,
+          "trainingRate": 899.07545,
+          "trainingEtaSeconds": 18.080453,
+          "demand": 9398.0918,
+          "currentUsers": 9398.0918,
+          "capacity": 1947.9968,
+          "servedUsers": 1947.9968,
+          "revenuePerUser": 0.40639777,
+          "creditsPerSecond": 791.66156,
+          "credits": 712495.41,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 56.842472,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 21,
+          "modelTier": 0,
+          "highestHardwareTier": 4,
+          "hardwareOwnership": {
+            "gpuServer": 22
+          },
+          "computePerSecond": 29700,
+          "trainingRequirement": 653401.78,
+          "trainingRate": 16579.228,
+          "trainingEtaSeconds": 39.410869,
+          "demand": 28127.512,
+          "currentUsers": 28127.512,
+          "capacity": 35921.66,
+          "servedUsers": 28127.512,
+          "revenuePerUser": 0.44214886,
+          "creditsPerSecond": 12436.547,
+          "credits": 16789339,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 112.57144,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 28,
+          "modelTier": 1,
+          "highestHardwareTier": 6,
+          "hardwareOwnership": {
+            "enterpriseDatacenter": 28
+          },
+          "computePerSecond": 14000000,
+          "trainingRequirement": 2062877900,
+          "trainingRate": 8374385.9,
+          "trainingEtaSeconds": 246.33184,
+          "demand": 591275.39,
+          "currentUsers": 591275.39,
+          "capacity": 18144503,
+          "servedUsers": 591275.39,
+          "revenuePerUser": 0.47208223,
+          "creditsPerSecond": 279130.61,
+          "credits": 502435090,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 114641.67,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 34,
+          "modelTier": 1,
+          "highestHardwareTier": 7,
+          "hardwareOwnership": {
+            "hyperscaleDatacenter": 34
+          },
+          "computePerSecond": 476000000,
+          "trainingRequirement": 45930746000,
+          "trainingRate": 299198270,
+          "trainingEtaSeconds": 153.51274,
+          "demand": 1416988.1,
+          "currentUsers": 1416988.1,
+          "capacity": 648262930,
+          "servedUsers": 1416988.1,
+          "revenuePerUser": 0.49475101,
+          "creditsPerSecond": 701056.28,
+          "credits": 1577376600,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 3138121.8,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 41,
+          "modelTier": 1,
+          "highestHardwareTier": 9,
+          "hardwareOwnership": {
+            "aiSupercomputer": 40
+          },
+          "computePerSecond": 800000000000,
+          "trainingRequirement": 1711263200000,
+          "trainingRate": 528647270000,
+          "trainingEtaSeconds": 3.2370605,
+          "demand": 6365443.5,
+          "currentUsers": 6365443.5,
+          "capacity": 1145402400000,
+          "servedUsers": 6365443.5,
+          "revenuePerUser": 0.51870342,
+          "creditsPerSecond": 3301777.3,
+          "credits": 8914798700,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 5148742200,
+          "skillAllocation": {
+            "quality": 3,
+            "efficiency": 2,
+            "popularity": 4
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 55,
+          "modelTier": 2,
+          "highestHardwareTier": 12,
+          "hardwareOwnership": {
+            "orbitalDatacenter": 52
+          },
+          "computePerSecond": 197600000000000000,
+          "trainingRequirement": 149080230000000000,
+          "trainingRate": 141856000000000000,
+          "trainingEtaSeconds": 1.0509265,
+          "demand": 282538170,
+          "currentUsers": 282538170,
+          "capacity": 307354660000000000,
+          "servedUsers": 282538170,
+          "revenuePerUser": 0.5609077,
+          "creditsPerSecond": 158477840,
+          "credits": 570520210000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 315501530000000,
+          "skillAllocation": {
+            "quality": 4,
+            "efficiency": 3,
+            "popularity": 5
+          }
+        }
+      ]
+    },
+    {
+      "strategy": "MILESTONE_HUNTER",
+      "checkpoints": [
+        {
+          "minutes": 1,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 4
+          },
+          "computePerSecond": 2,
+          "trainingRequirement": 15,
+          "trainingRate": 0.71269783,
+          "trainingEtaSeconds": 15,
+          "demand": 125.388,
+          "currentUsers": 125.388,
+          "capacity": 1.5441786,
+          "servedUsers": 1.5441786,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.44299704,
+          "credits": 13.289911,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 3,
+          "modelLevel": 1,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 5
+          },
+          "computePerSecond": 2.5,
+          "trainingRequirement": 15,
+          "trainingRate": 0.89087228,
+          "trainingEtaSeconds": 15,
+          "demand": 125.388,
+          "currentUsers": 125.388,
+          "capacity": 1.9302233,
+          "servedUsers": 1.9302233,
+          "revenuePerUser": 0.28688199,
+          "creditsPerSecond": 0.5537463,
+          "credits": 49.837167,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 5,
+          "modelLevel": 2,
+          "modelTier": 0,
+          "highestHardwareTier": 0,
+          "hardwareOwnership": {
+            "calculator": 6
+          },
+          "computePerSecond": 3,
+          "trainingRequirement": 26.130794,
+          "trainingRate": 1.1390682,
+          "trainingEtaSeconds": 22.9405,
+          "demand": 191.10919,
+          "currentUsers": 191.10919,
+          "capacity": 2.4679811,
+          "servedUsers": 2.4679811,
+          "revenuePerUser": 0.30538836,
+          "creditsPerSecond": 0.75369269,
+          "credits": 113.0539,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 360,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 10,
+          "modelLevel": 4,
+          "modelTier": 0,
+          "highestHardwareTier": 1,
+          "hardwareOwnership": {
+            "homeComputer": 9
+          },
+          "computePerSecond": 19.8,
+          "trainingRequirement": 77.841151,
+          "trainingRate": 8.171417,
+          "trainingEtaSeconds": 9.5260285,
+          "demand": 610.27681,
+          "currentUsers": 610.27681,
+          "capacity": 17.704737,
+          "servedUsers": 17.704737,
+          "revenuePerUser": 0.3312,
+          "creditsPerSecond": 5.8638088,
+          "credits": 1759.1426,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 289.91395,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 15,
+          "modelLevel": 5,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 12
+          },
+          "computePerSecond": 156,
+          "trainingRequirement": 133.6728,
+          "trainingRate": 66.456,
+          "trainingEtaSeconds": 2.0114481,
+          "demand": 1392.577,
+          "currentUsers": 1392.577,
+          "capacity": 143.988,
+          "servedUsers": 143.988,
+          "revenuePerUser": 0.34151066,
+          "creditsPerSecond": 49.173437,
+          "credits": 22128.047,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 132.18519,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 20,
+          "modelLevel": 7,
+          "modelTier": 0,
+          "highestHardwareTier": 2,
+          "hardwareOwnership": {
+            "gamingPc": 15
+          },
+          "computePerSecond": 195,
+          "trainingRequirement": 391.74558,
+          "trainingRate": 87.571616,
+          "trainingEtaSeconds": 4.473431,
+          "demand": 1904.2679,
+          "currentUsers": 1904.2679,
+          "capacity": 189.7385,
+          "servedUsers": 189.7385,
+          "revenuePerUser": 0.35930348,
+          "creditsPerSecond": 68.173703,
+          "credits": 40904.222,
+          "marketBottleneck": "CAPACITY_LIMITED",
+          "nextHardwareAffordabilitySeconds": 95.344681,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 0
+          }
+        },
+        {
+          "minutes": 30,
+          "modelLevel": 10,
+          "modelTier": 0,
+          "highestHardwareTier": 4,
+          "hardwareOwnership": {
+            "gpuServer": 20
+          },
+          "computePerSecond": 27000,
+          "trainingRequirement": 1944.6235,
+          "trainingRate": 12911.155,
+          "trainingEtaSeconds": 0.15061577,
+          "demand": 9629.7898,
+          "currentUsers": 9629.7898,
+          "capacity": 27974.168,
+          "servedUsers": 9629.7898,
+          "revenuePerUser": 0.38158135,
+          "creditsPerSecond": 3674.5482,
+          "credits": 3307093.4,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 380.99922,
+          "skillAllocation": {
+            "quality": 0,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 45,
+          "modelLevel": 14,
+          "modelTier": 0,
+          "highestHardwareTier": 6,
+          "hardwareOwnership": {
+            "enterpriseDatacenter": 28
+          },
+          "computePerSecond": 14000000,
+          "trainingRequirement": 16255.692,
+          "trainingRate": 7151736.6,
+          "trainingEtaSeconds": 0.0022729713,
+          "demand": 48871.751,
+          "currentUsers": 48871.751,
+          "capacity": 15495429,
+          "servedUsers": 48871.751,
+          "revenuePerUser": 0.40639777,
+          "creditsPerSecond": 19861.371,
+          "credits": 26812850,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 1611167.8,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 0,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 60,
+          "modelLevel": 19,
+          "modelTier": 0,
+          "highestHardwareTier": 8,
+          "hardwareOwnership": {
+            "tpuCluster": 37
+          },
+          "computePerSecond": 17760000000,
+          "trainingRequirement": 227932.73,
+          "trainingRate": 9690197300,
+          "trainingEtaSeconds": 0.00002352199,
+          "demand": 244474.24,
+          "currentUsers": 244474.24,
+          "capacity": 20995427000,
+          "servedUsers": 244474.24,
+          "revenuePerUser": 0.43266719,
+          "creditsPerSecond": 105775.98,
+          "credits": 190396770,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 1701709600,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 1
+          }
+        },
+        {
+          "minutes": 75,
+          "modelLevel": 23,
+          "modelTier": 0,
+          "highestHardwareTier": 10,
+          "hardwareOwnership": {
+            "planetaryGrid": 45
+          },
+          "computePerSecond": 42750000000000,
+          "trainingRequirement": 1870389.4,
+          "trainingRate": 24377755000000,
+          "trainingEtaSeconds": 7.6725251e-8,
+          "demand": 1083238.8,
+          "currentUsers": 1083238.8,
+          "capacity": 52818470000000,
+          "servedUsers": 1083238.8,
+          "revenuePerUser": 0.45117155,
+          "creditsPerSecond": 488726.54,
+          "credits": 1099634700,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 4092268000000,
+          "skillAllocation": {
+            "quality": 1,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 90,
+          "modelLevel": 28,
+          "modelTier": 1,
+          "highestHardwareTier": 12,
+          "hardwareOwnership": {
+            "orbitalDatacenter": 53
+          },
+          "computePerSecond": 201400000000000000,
+          "trainingRequirement": 2062877900,
+          "trainingRate": 120471520000000000,
+          "trainingEtaSeconds": 1.7123365e-8,
+          "demand": 20430621,
+          "currentUsers": 20430621,
+          "capacity": 261021630000000000,
+          "servedUsers": 20430621,
+          "revenuePerUser": 0.47208223,
+          "creditsPerSecond": 9644933.2,
+          "credits": 26041320000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": 5184069100000000,
+          "skillAllocation": {
+            "quality": 2,
+            "efficiency": 1,
+            "popularity": 2
+          }
+        },
+        {
+          "minutes": 120,
+          "modelLevel": 37,
+          "modelTier": 1,
+          "highestHardwareTier": 15,
+          "hardwareOwnership": {
+            "matrioshkaBrain": 70
+          },
+          "computePerSecond": 2.52e+23,
+          "trainingRequirement": 216571560000,
+          "trainingRate": 1.6197478e+23,
+          "trainingEtaSeconds": 1.3370697e-12,
+          "demand": 192715330,
+          "currentUsers": 192715330,
+          "capacity": 3.5094535e+23,
+          "servedUsers": 192715330,
+          "revenuePerUser": 0.50530343,
+          "creditsPerSecond": 97379719,
+          "credits": 350566990000,
+          "marketBottleneck": "DEMAND_LIMITED",
+          "nextHardwareAffordabilitySeconds": null,
+          "skillAllocation": {
+            "quality": 3,
+            "efficiency": 2,
+            "popularity": 3
+          }
+        }
+      ]
+    }
+  ],
+  "largeNumberThresholds": [
+    {
+      "threshold": 1000,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    },
+    {
+      "threshold": 1000000,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    },
+    {
+      "threshold": 1000000000,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    },
+    {
+      "threshold": 1000000000000,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    },
+    {
+      "threshold": 1000000000000000,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    },
+    {
+      "threshold": 1000000000000000000,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    },
+    {
+      "threshold": 1e+24,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    },
+    {
+      "threshold": 1e+30,
+      "note": "strategy-specific first-hit times are null when not reached in the 120-minute projection"
+    }
+  ],
+  "endgame": {
+    "level500Requirement": 1.2771073e+127,
+    "level500RequirementLog10": 127.10623,
+    "maximumHardwareProduction": 3.6e+21,
+    "numberSafety": "Projected values remain below Number.MAX_VALUE; Decimal migration is not required in Phase 2B.2."
+  },
+  "sensitivity": {
+    "trainingSpeedKnob": "training.expectedRateLevelGrowth",
+    "userSpeedKnob": "marketV3.userResponse95Seconds",
+    "hardwareUnlockKnob": "hardware.tierCosts",
+    "modelPointKnobs": [
+      "marketV3.qualityDemandCoefficient",
+      "models.efficiencyCoefficient",
+      "marketV3.popularity.coefficient"
+    ],
+    "testedDeltas": [
+      -0.25,
+      -0.1,
+      0,
+      0.1,
+      0.25
+    ]
+  }
+}

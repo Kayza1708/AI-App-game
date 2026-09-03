@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createDefaultState } from '../src/data/defaultState.js';
+import { economySnapshot, marketMetrics, tickGame, trainingEtaSeconds, trainingRequiredForState } from '../src/systems/GameSystem.js';
+import { advanceUsers, popularityDemandFactor, potentialDemand, qualityDemandFactor, revenueRate, servedUsers, userResponse95Seconds } from '../src/systems/MarketSystem.js';
+import { efficiencyFactor, modelTierScale, qualityRevenueFactor, trainingRequirement, withinModelLevelFactor } from '../src/systems/ProgressionSystem.js';
+
+test('Phase 2B.2 Training is static, monotonic, finite, and locally escalates',()=>{const base=createDefaultState(),required=trainingRequiredForState(base);for(const mutate of [s=>s.hardware.calculator=1e6,s=>s.allocation.training=1,s=>s.model.progress.tinyChat.skills.efficiency=1e6]){const copy=structuredClone(base);mutate(copy);assert.equal(trainingRequiredForState(copy),required)}let prior=trainingRequirement(1);for(let level=2;level<=500;level++){const next=trainingRequirement(level),ratio=next/prior;assert(Number.isFinite(next));assert(ratio>=1.45&&ratio<=1.9);prior=next}});
+
+test('Phase 2B.2 model and skill curves are monotonic and concave',()=>{for(const fn of [withinModelLevelFactor,qualityDemandFactor,qualityRevenueFactor,efficiencyFactor,popularityDemandFactor]){const start=fn===withinModelLevelFactor?1:0;let previous=fn(start),gain=Infinity;for(let level=start+1;level<=100;level++){const value=fn(level),nextGain=value-previous;assert(value>previous);assert(nextGain<=gain+1e-12);previous=value;gain=nextGain}}for(let tier=1;tier<9;tier++)assert(modelTierScale(tier)>modelTierScale(tier-1))});
+
+test('Phase 2B.2 user response converges symmetrically without overshoot',()=>{for(const [start,target] of [[100,1000],[1000,100],[1e6,1e9],[1e9,1e6]]){let users=start;for(let i=0;i<100;i++){const next=advanceUsers(users,target,.1,20);assert(next>=Math.min(users,target)&&next<=Math.max(users,target));users=next}assert(Math.abs(users-target)<Math.abs(start-target)*.001)}assert(userResponse95Seconds(100)>=1.25)});
+
+test('Phase 2B.2 Demand has no Capacity or Current Users path and revenue identities hold',()=>{const factors={baseMarket:100,modelTier:4,modelLevel:3,quality:2,popularity:2,infrastructure:1,marketing:0,reputation:1,adoption:0,price:1,priceElasticity:0,marketSizeModifiers:1,demandModifiers:1,appealModifiers:1};const a=potentialDemand(null,{...factors,currentUsers:0,capacity:1}),b=potentialDemand(null,{...factors,currentUsers:1e100,capacity:1e100});assert.equal(a,b);assert.equal(servedUsers(100,80,60),60);assert.equal(revenueRate(60,2),120)});
+
+test('Phase 2B.2 hardware Compute creates Training relief and tick uses canonical users',()=>{const state=createDefaultState();state.hardware.calculator=1;state.allocation={...state.allocation,training:50,inference:50};const before=trainingEtaSeconds(state),boosted=structuredClone(state);boosted.hardware.homeComputer=1;assert(trainingEtaSeconds(boosted)<before);const next=tickGame(state,1000),metrics=marketMetrics(next);assert.equal(economySnapshot(next).servedUsers,metrics.servedUsers);assert(next.resources.users>state.resources.users&&next.resources.users<metrics.potentialDemand)});

@@ -11,17 +11,17 @@ Statuses: **LOCKED** is specification-controlled, **DERIVED** is calculated from
 | Compute allocation | `TotalCompute × allocation/100`; total allocation ≤100% | LOCKED boundary | `ProgressionSystem.allocatedCompute` |
 | Training requirement | `StaticReferenceRate × TargetDuration` | LOCKED boundary / DERIVED anchors | `ProgressionSystem.trainingRequirement` |
 | Training throughput | allocated Training Compute × Efficiency × grouped modifiers | TUNABLE | `GameSystem.trainingRatePerSecond` |
-| Model level | `1 + 0.16 L^0.62` market factor | TUNABLE | `ProgressionSystem.withinModelLevelFactor` |
-| Model tiers | explicit tier scale table | CONTENT_ANCHOR | `BALANCE.models.tierScale` |
-| Quality | logarithmic Demand; root Revenue and price tolerance | TUNABLE | `MarketSystem`, `ProgressionSystem` |
-| Efficiency | `1 + 0.20√E` for Training and Capacity | TUNABLE | `ProgressionSystem.efficiencyFactor` |
-| Popularity | `1 + 0.30√P + 0.08 ln(1+P)` | TUNABLE | `MarketSystem.popularityDemandFactor` |
+| Model level | `1 + 0.8 L^0.72` market factor | TUNABLE | `ProgressionSystem.withinModelLevelFactor` |
+| Model tiers | `4.2^T × 1.08^(T(T-1)/2)` | TUNABLE | `ProgressionSystem.modelTierScale` |
+| Quality | concave root Demand and Revenue; root price tolerance | TUNABLE | `MarketSystem`, `ProgressionSystem` |
+| Efficiency | `1 + 0.42 E^0.5` for Training and Capacity | TUNABLE | `ProgressionSystem.efficiencyFactor` |
+| Popularity | `1 + 0.58 P^0.5` | TUNABLE | `MarketSystem.popularityDemandFactor` |
 | Potential Demand | product of independent Market fundamentals; never Capacity | LOCKED boundary | `MarketSystem.potentialDemand` |
 | Price | discount linear / premium exponential | TUNABLE | `MarketSystem.priceDemandFactor` |
 | Marketing | `1 + 0.32 ln(1+M)` | TUNABLE | `MarketSystem.marketingFactor` |
 | Reputation | bounded logistic `[0.75,1.25]` | TUNABLE | `MarketSystem.reputationFactor` |
 | Adoption | `1 + 0.5A/(50+A)` | TUNABLE | `MarketSystem.adoptionFactor` |
-| Users | `Users = PotentialDemand` | LOCKED | `MarketSystem.marketSnapshot` |
+| Users | symmetric exponential response toward Potential Demand | LOCKED | `MarketSystem.advanceUsers` |
 | Inference Capacity | Inference Compute × Efficiency × modifier group | LOCKED boundary | `MarketSystem.inferenceCapacity` |
 | Served Users | `min(Demand, Capacity)` | LOCKED | `MarketSystem.servedUsers` |
 | Revenue | Served Users × Revenue/User | LOCKED identity | `MarketSystem.revenueRate` |
@@ -46,3 +46,21 @@ Runtime, UI, telemetry, and offline progression consume `economySnapshot`, `tick
 
 ## Proposed future formula (inactive)
 `PROPOSED_FUTURE_FORMULA: PatentLevelMultiplier = 1 + (L-1)/(3+(L-1))`. This bounded candidate is exported only for comparison and is not called by live gameplay.
+# Phase 2B.2 superseding registry (2026-09-03)
+
+The following entries supersede older Training/Model/Market rows below. Canonical helpers are pure and shared by runtime, previews, offline ticks, telemetry snapshots, and simulators.
+
+| System | Canonical helper | Formula | Classification |
+|---|---|---|---|
+| Expected Training Rate | `referenceTrainingRate` | `0.5 × 1.67^(L-1) × 32^T` | `LOCKED_FORMULA`; inputs `TUNABLE_PARAMETER` / tier factor `DERIVED_PARAMETER` |
+| Training Requirement | `trainingRequirement` | expected rate × `(28 + 2L^0.72 + transition[T])` | `LOCKED_FORMULA` |
+| Model Level | `withinModelLevelFactor` | `1 + 0.8L^0.72` | `LOCKED_FORMULA`; coefficient/exponent `TUNABLE_PARAMETER` |
+| Model Tier | `modelTierScale` | `4.2^T × 1.08^(T(T-1)/2)` | `LOCKED_FORMULA` |
+| Quality Demand | `qualityDemandFactor` | `1 + 0.5Q^0.5` | `LOCKED_FORMULA` |
+| Quality Revenue | `qualityRevenueFactor` | `1 + 0.38Q^0.48` | `LOCKED_FORMULA` |
+| Efficiency | `efficiencyFactor` | `1 + 0.42E^0.5` | `LOCKED_FORMULA` |
+| Popularity Demand | `popularityDemandFactor` | `1 + 0.58P^0.5` | `LOCKED_FORMULA` |
+| User Response | `advanceUsers` | `Target +(U-Target)e^(-k dt)` | `LOCKED_FORMULA`; response95 `TUNABLE_PARAMETER` |
+| Served Users | `servedUsers` | `min(CurrentUsers, Demand, Capacity)` | `LOCKED_FORMULA` |
+| Revenue | `revenueRate` | `ServedUsers × RevenuePerUser` | `LOCKED_FORMULA` |
+| Hardware milestones | `rawHardwareContribution` | local cumulative output bonuses at 10/50/100 | `CONTENT_ANCHOR` |

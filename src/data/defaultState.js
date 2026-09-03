@@ -24,10 +24,10 @@ export const HARDWARE_CATALOG = [
   ['matrioshkaBrain','∞','Singularity Core','Self-improving infrastructure operating beyond human-scale planning.'],
 ].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],costGrowth:BALANCE.hardware.tierGrowth[tier],targetPurchaseCount:BALANCE.hardware.targetPurchaseCounts[tier],targetFinalCostRatio:BALANCE.hardware.targetFinalCostRatios[tier],tier,
   milestones:[
-    {quantity:10,name:'Thermal Rhythm',description:`${name} output +10%`,effect:'hardwareOutput',value:.1},
+    {quantity:10,name:'Thermal Rhythm',description:`${name} output +35%`,effect:'hardwareOutput',value:.35},
     {quantity:25,name:'Bulk Procurement',description:`All hardware costs -${3+tier%3}%`,effect:'hardwareDiscount',value:(3+tier%3)/100},
-    {quantity:50,name:'Fleet Intelligence',description:`Market demand +${5+tier}%`,effect:'demand',value:(5+tier)/100},
-    {quantity:100,name:'Autonomous Operations',description:`Revenue +${4+tier}%`,effect:'revenue',value:(4+tier)/100},
+    {quantity:50,name:'Fleet Intelligence',description:`${name} output +75%`,effect:'hardwareOutput',value:.75},
+    {quantity:100,name:'Autonomous Operations',description:`${name} output +150%`,effect:'hardwareOutput',value:1.5},
   ],
 }));
 

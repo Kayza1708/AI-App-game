@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-03T11:45:54.879Z",
+  "generatedAt": "2026-09-03T13:37:10.354Z",
   "purpose": "Parametric balancing map; AUDIT_ONLY entries are not change authorization.",
   "parameters": [
     {
@@ -156,9 +156,40 @@
       "lockedStatus": "TUNABLE"
     },
     {
+      "name": "training.expectedRateBase",
+      "currentValue": 0.5,
+      "formula": "base × levelGrowth^(L-1) × 32^T",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Training",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises every static requirement",
+      "decreaseEffect": "Opposite of: Raises every static requirement",
+      "dependencies": [
+        "level",
+        "model tier"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "training.expectedRateLevelGrowth",
+      "currentValue": 1.67,
+      "formula": "base × growth^(L-1)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Training",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Steepens local Training escalation",
+      "decreaseEffect": "Opposite of: Steepens local Training escalation",
+      "dependencies": [
+        "level"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
       "name": "training.durationBaseSeconds",
-      "currentValue": 45,
-      "formula": "base + 34√level + transition",
+      "currentValue": 28,
+      "formula": "base + coefficient × level^power + transition",
       "classification": "TUNABLE_PARAMETER",
       "system": "Training",
       "earlyGameSensitivity": "context-dependent",
@@ -171,9 +202,9 @@
       "lockedStatus": "TUNABLE"
     },
     {
-      "name": "training.durationSqrtCoefficient",
-      "currentValue": 34,
-      "formula": "45 + coefficient√level + transition",
+      "name": "training.durationLevelCoefficient",
+      "currentValue": 2,
+      "formula": "28 + coefficient × level^.72 + transition",
       "classification": "TUNABLE_PARAMETER",
       "system": "Training",
       "earlyGameSensitivity": "context-dependent",
@@ -187,8 +218,8 @@
     },
     {
       "name": "models.levelCoefficient",
-      "currentValue": 0.16,
-      "formula": "1 + coefficient × L^0.62",
+      "currentValue": 0.8,
+      "formula": "1 + coefficient × L^.72",
       "classification": "TUNABLE_PARAMETER",
       "system": "Models/Market",
       "earlyGameSensitivity": "context-dependent",
@@ -202,8 +233,8 @@
     },
     {
       "name": "models.levelPower",
-      "currentValue": 0.62,
-      "formula": "1 + .16 × L^power",
+      "currentValue": 0.72,
+      "formula": "1 + .8 × L^power",
       "classification": "TUNABLE_PARAMETER",
       "system": "Models/Market",
       "earlyGameSensitivity": "context-dependent",
@@ -232,7 +263,7 @@
     },
     {
       "name": "marketV3.qualityDemandCoefficient",
-      "currentValue": 0.18,
+      "currentValue": 0.5,
       "formula": "1 + coefficient ln(1+Q)",
       "classification": "TUNABLE_PARAMETER",
       "system": "Market",
@@ -350,5 +381,14 @@
       ],
       "lockedStatus": "AUDIT_ONLY"
     }
-  ]
+  ],
+  "phase2B2": {
+    "status": "implemented",
+    "canonicalSources": [
+      "src/systems/ProgressionSystem.js",
+      "src/systems/MarketSystem.js",
+      "src/systems/GameSystem.js"
+    ],
+    "legacyMagicNumbersIntroduced": 0
+  }
 }
