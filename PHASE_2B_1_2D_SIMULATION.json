@@ -1,0 +1,2162 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-03T11:45:58.720Z",
+  "humanCalibration": {
+    "observed": [
+      {
+        "level": 10,
+        "requirement": 3000,
+        "rate": 145,
+        "eta": 14
+      },
+      {
+        "level": 25,
+        "requirement": 30500,
+        "rate": 2500,
+        "eta": 4
+      },
+      {
+        "level": 25,
+        "computePerSecond": 14311.8,
+        "allocation": 18,
+        "rate": 4033.3998,
+        "requirement": 33593.75
+      }
+    ],
+    "rootCause": "Actual Compute grew faster than the old static L^2 reference anchor."
+  },
+  "trainingCurve": [
+    {
+      "level": 1,
+      "referenceRate": 0.38,
+      "targetDurationSeconds": 79,
+      "requirement": 30.02,
+      "comparisonRate": 0.38,
+      "etaSeconds": 79,
+      "etaAt125Percent": 63.2,
+      "etaAt150Percent": 52.66666666666666,
+      "etaAt200Percent": 39.5
+    },
+    {
+      "level": 5,
+      "referenceRate": 4.15,
+      "targetDurationSeconds": 121.02631123499285,
+      "requirement": 502.25919162522035,
+      "comparisonRate": 4.15,
+      "etaSeconds": 121.02631123499285,
+      "etaAt125Percent": 96.82104898799429,
+      "etaAt150Percent": 80.68420748999523,
+      "etaAt200Percent": 60.51315561749642
+    },
+    {
+      "level": 10,
+      "referenceRate": 39,
+      "targetDurationSeconds": 152.5174404457249,
+      "requirement": 5948.180177383271,
+      "comparisonRate": 145,
+      "etaSeconds": 41.02193225781566,
+      "etaAt125Percent": 32.81754580625253,
+      "etaAt150Percent": 27.347954838543775,
+      "etaAt200Percent": 20.51096612890783
+    },
+    {
+      "level": 15,
+      "referenceRate": 170,
+      "targetDurationSeconds": 176.68143377105218,
+      "requirement": 30035.843741078872,
+      "comparisonRate": 170,
+      "etaSeconds": 176.68143377105218,
+      "etaAt125Percent": 141.34514701684176,
+      "etaAt150Percent": 117.7876225140348,
+      "etaAt200Percent": 88.34071688552609
+    },
+    {
+      "level": 20,
+      "referenceRate": 510,
+      "targetDurationSeconds": 197.0526224699857,
+      "requirement": 100496.8374596927,
+      "comparisonRate": 510,
+      "etaSeconds": 197.0526224699857,
+      "etaAt125Percent": 157.64209797598855,
+      "etaAt150Percent": 131.36841497999046,
+      "etaAt200Percent": 98.52631123499285
+    },
+    {
+      "level": 25,
+      "referenceRate": 1395,
+      "targetDurationSeconds": 215,
+      "requirement": 299925,
+      "comparisonRate": 4033.3998,
+      "etaSeconds": 74.36034483861481,
+      "etaAt125Percent": 59.48827587089185,
+      "etaAt150Percent": 49.5735632257432,
+      "etaAt200Percent": 37.180172419307404
+    },
+    {
+      "level": 30,
+      "referenceRate": 3030,
+      "targetDurationSeconds": 231.22566955175648,
+      "requirement": 700613.7787418221,
+      "comparisonRate": 3030,
+      "etaSeconds": 231.22566955175648,
+      "etaAt125Percent": 184.98053564140517,
+      "etaAt150Percent": 154.15044636783765,
+      "etaAt200Percent": 115.61283477587824
+    },
+    {
+      "level": 50,
+      "referenceRate": 18000,
+      "targetDurationSeconds": 285.41630560342617,
+      "requirement": 5137493.500861671,
+      "comparisonRate": 18000,
+      "etaSeconds": 285.41630560342617,
+      "etaAt125Percent": 228.33304448274092,
+      "etaAt150Percent": 190.27753706895078,
+      "etaAt200Percent": 142.70815280171308
+    },
+    {
+      "level": 100,
+      "referenceRate": 180000,
+      "targetDurationSeconds": 385,
+      "requirement": 69300000,
+      "comparisonRate": 180000,
+      "etaSeconds": 385,
+      "etaAt125Percent": 308,
+      "etaAt150Percent": 256.6666666666667,
+      "etaAt200Percent": 192.5
+    },
+    {
+      "level": 250,
+      "referenceRate": 5000000,
+      "targetDurationSeconds": 582.5872022286245,
+      "requirement": 2912936011.1431227,
+      "comparisonRate": 5000000,
+      "etaSeconds": 582.5872022286245,
+      "etaAt125Percent": 466.0697617828996,
+      "etaAt150Percent": 388.39146815241634,
+      "etaAt200Percent": 291.29360111431225
+    },
+    {
+      "level": 500,
+      "referenceRate": 100000000,
+      "targetDurationSeconds": 805.2631123499285,
+      "requirement": 80526311234.99286,
+      "comparisonRate": 100000000,
+      "etaSeconds": 805.2631123499286,
+      "etaAt125Percent": 644.2104898799429,
+      "etaAt150Percent": 536.8420748999524,
+      "etaAt200Percent": 402.6315561749643
+    }
+  ],
+  "marketInvariants": {
+    "usersEqualDemand": true,
+    "capacityDoesNotCreateDemand": true,
+    "currentUsersDoNotFeedDemand": true,
+    "wordOfMouthActive": false
+  },
+  "researchParameters": {
+    "researchRpScale": 4,
+    "researchComputeNormalization": 1000,
+    "researchComputeExponent": 0.72,
+    "costLevelCoefficient": 0.55,
+    "costExponent": 1.7,
+    "upgradeBaseCost": 25000,
+    "upgradeFamilyGrowth": 2.4,
+    "maxLabs": 5,
+    "labGemCosts": {
+      "3": 120,
+      "4": 360,
+      "5": 900
+    },
+    "baseSpeed": 1,
+    "speedMaxBonus": 1.5,
+    "speedHalfSaturation": 20
+  },
+  "researchReferenceStates": [
+    {
+      "stage": "Research unlock",
+      "totalCompute": 60000,
+      "researchAllocation": 20,
+      "researchCompute": 12000,
+      "researchPointsPerSecond": 23.937042367881126,
+      "candidateProjectCost": 7181,
+      "affordSeconds": 299.99529138301193,
+      "projectDurationSeconds": 120,
+      "totalSeconds": 419.99529138301193
+    },
+    {
+      "stage": "Early",
+      "totalCompute": 300000,
+      "researchAllocation": 20,
+      "researchCompute": 60000,
+      "researchPointsPerSecond": 76.26563517324989,
+      "candidateProjectCost": 45759,
+      "affordSeconds": 599.9950029400651,
+      "projectDurationSeconds": 300,
+      "totalSeconds": 899.9950029400651
+    },
+    {
+      "stage": "Midgame",
+      "totalCompute": 1000000,
+      "researchAllocation": 20,
+      "researchCompute": 200000,
+      "researchPointsPerSecond": 181.46864156558632,
+      "candidateProjectCost": 217762,
+      "affordSeconds": 1199.9979617486504,
+      "projectDurationSeconds": 600,
+      "totalSeconds": 1799.9979617486504
+    },
+    {
+      "stage": "Datacenter",
+      "totalCompute": 100000000,
+      "researchAllocation": 20,
+      "researchCompute": 20000000,
+      "researchPointsPerSecond": 4998.061413557232,
+      "candidateProjectCost": 17993021,
+      "affordSeconds": 3599.9999822319037,
+      "projectDurationSeconds": 1800,
+      "totalSeconds": 5399.999982231904
+    },
+    {
+      "stage": "Planetary",
+      "totalCompute": 1000000000000,
+      "researchAllocation": 20,
+      "researchCompute": 200000000000,
+      "researchPointsPerSecond": 3791417.306943179,
+      "candidateProjectCost": 40947306915,
+      "affordSeconds": 10800.000000003605,
+      "projectDurationSeconds": 3600,
+      "totalSeconds": 14400.000000003605
+    },
+    {
+      "stage": "Stellar",
+      "totalCompute": 1000000000000000000,
+      "researchAllocation": 20,
+      "researchCompute": 200000000000000000,
+      "researchPointsPerSecond": 79213935098.49423,
+      "candidateProjectCost": 1711020998127476,
+      "affordSeconds": 21600.000000000007,
+      "projectDurationSeconds": 7200,
+      "totalSeconds": 28800.000000000007
+    },
+    {
+      "stage": "AGI",
+      "totalCompute": 1e+30,
+      "researchAllocation": 20,
+      "researchCompute": 2.0000000000000002e+29,
+      "researchPointsPerSecond": 34578136804537680000,
+      "candidateProjectCost": 1.493775509956028e+24,
+      "affordSeconds": 43200,
+      "projectDurationSeconds": 14400,
+      "totalSeconds": 57600
+    },
+    {
+      "stage": "ASI",
+      "totalCompute": 1e+60,
+      "researchAllocation": 20,
+      "researchCompute": 2e+59,
+      "researchPointsPerSecond": 1.3765804206266215e+41,
+      "candidateProjectCost": 1.1893654834214009e+46,
+      "affordSeconds": 86399.99999999999,
+      "projectDurationSeconds": 28800,
+      "totalSeconds": 115199.99999999999
+    },
+    {
+      "stage": "Matrioshka",
+      "totalCompute": 1e+120,
+      "researchAllocation": 20,
+      "researchCompute": 2.0000000000000002e+119,
+      "researchPointsPerSecond": 2.181732937526381e+84,
+      "candidateProjectCost": 3.770034516045587e+89,
+      "affordSeconds": 172800,
+      "projectDurationSeconds": 43200,
+      "totalSeconds": 216000
+    },
+    {
+      "stage": "Singularity",
+      "totalCompute": 1e+240,
+      "researchAllocation": 20,
+      "researchCompute": 2.0000000000000002e+239,
+      "researchPointsPerSecond": 5.480265362950014e+170,
+      "candidateProjectCost": 1.4204847820766436e+176,
+      "affordSeconds": 259199.99999999997,
+      "projectDurationSeconds": 86400,
+      "totalSeconds": 345600
+    }
+  ],
+  "researchProjects": [
+    {
+      "id": "research-algorithms",
+      "name": "Algorithmic Insight",
+      "description": "12% improvement to training",
+      "category": "research",
+      "effect": "training",
+      "value": 0.12,
+      "cost": 25000,
+      "unlock": 1
+    },
+    {
+      "id": "research-silicon",
+      "name": "Silicon Research",
+      "description": "10% improvement to hardware output",
+      "category": "research",
+      "effect": "hardwareOutput",
+      "value": 0.1,
+      "cost": 60000,
+      "unlock": 3
+    },
+    {
+      "id": "research-behavior",
+      "name": "Behavioral Science",
+      "description": "14% improvement to demand",
+      "category": "research",
+      "effect": "demand",
+      "value": 0.14,
+      "cost": 144000,
+      "unlock": 5
+    },
+    {
+      "id": "research-compression",
+      "name": "Neural Compression",
+      "description": "13% improvement to inference",
+      "category": "research",
+      "effect": "inference",
+      "value": 0.13,
+      "cost": 345600,
+      "unlock": 7
+    },
+    {
+      "id": "research-economics",
+      "name": "Market Simulation",
+      "description": "10% improvement to revenue",
+      "category": "research",
+      "effect": "revenue",
+      "value": 0.1,
+      "cost": 829440,
+      "unlock": 9
+    },
+    {
+      "id": "research-automation",
+      "name": "Lab Automation",
+      "description": "8% improvement to all output",
+      "category": "research",
+      "effect": "allOutput",
+      "value": 0.08,
+      "cost": 1990656,
+      "unlock": 11
+    }
+  ],
+  "patentParameters": {
+    "baseRequirement": 1500,
+    "discoveryGrowth": 1.52,
+    "tierGrowth": 1.28
+  },
+  "patentProgression": [
+    {
+      "index": 0,
+      "id": "cold-kernels",
+      "requirement": 1500,
+      "level1Power": 1.05,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 19.66809817544303
+    },
+    {
+      "index": 1,
+      "id": "gradient-cache",
+      "requirement": 2280,
+      "level1Power": 1.1,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 29.895509226673408
+    },
+    {
+      "index": 2,
+      "id": "viral-embedding",
+      "requirement": 3465,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 45.4333067852734
+    },
+    {
+      "index": 3,
+      "id": "trust-ledger",
+      "requirement": 5267,
+      "level1Power": 1.15,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 69.06124872670563
+    },
+    {
+      "index": 4,
+      "id": "lab-notebook",
+      "requirement": 8006,
+      "level1Power": 2,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 104.97519599506461
+    },
+    {
+      "index": 5,
+      "id": "voltage-curve",
+      "requirement": 12170,
+      "level1Power": 1.05,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 159.57383653009447
+    },
+    {
+      "index": 6,
+      "id": "recursive-insight",
+      "requirement": 18499,
+      "level1Power": 1.01,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 242.56009876501375
+    },
+    {
+      "index": 7,
+      "id": "elastic-pricing",
+      "requirement": 28118,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 368.6850563314048
+    },
+    {
+      "index": 8,
+      "id": "compute-router",
+      "requirement": 42740,
+      "level1Power": 1.02,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 560.4096773456234
+    },
+    {
+      "index": 9,
+      "id": "agent-contracts",
+      "requirement": 64965,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 851.8253319784377
+    },
+    {
+      "index": 10,
+      "id": "sparse-attention",
+      "requirement": 126397,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 1657.325736720982
+    },
+    {
+      "index": 11,
+      "id": "semantic-cache",
+      "requirement": 192123,
+      "level1Power": 1.1,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 2519.1293505070944
+    },
+    {
+      "index": 12,
+      "id": "synthetic-curriculum",
+      "requirement": 292027,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 3829.0771372534014
+    },
+    {
+      "index": 13,
+      "id": "reputation-graph",
+      "requirement": 443882,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 5820.209836208002
+    },
+    {
+      "index": 14,
+      "id": "market-telescope",
+      "requirement": 674701,
+      "level1Power": 1.1,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 8846.723671379725
+    },
+    {
+      "index": 15,
+      "id": "liquid-bus",
+      "requirement": 1025545,
+      "level1Power": 1.07,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 13447.01316222315
+    },
+    {
+      "index": 16,
+      "id": "checkpoint-delta",
+      "requirement": 1558829,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 20439.467873818456
+    },
+    {
+      "index": 17,
+      "id": "context-folding",
+      "requirement": 2369420,
+      "level1Power": 1.06,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 31067.990119238817
+    },
+    {
+      "index": 18,
+      "id": "microgrid-ai",
+      "requirement": 3601519,
+      "level1Power": 1.1,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 47223.352848482275
+    },
+    {
+      "index": 19,
+      "id": "sales-copilot",
+      "requirement": 5474310,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 71779.51101520636
+    },
+    {
+      "index": 20,
+      "id": "privacy-learning",
+      "requirement": 10650817,
+      "level1Power": 1.18,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 139654.20960311842
+    },
+    {
+      "index": 21,
+      "id": "optical-fabric",
+      "requirement": 16189243,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 212274.41380673592
+    },
+    {
+      "index": 22,
+      "id": "reward-model",
+      "requirement": 24607649,
+      "level1Power": 1.09,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 322657.10426589503
+    },
+    {
+      "index": 23,
+      "id": "data-distillery",
+      "requirement": 37403627,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 490438.8053024344
+    },
+    {
+      "index": 24,
+      "id": "carbon-aware",
+      "requirement": 56853513,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 745466.9835352177
+    },
+    {
+      "index": 25,
+      "id": "federated-agents",
+      "requirement": 86417340,
+      "level1Power": 1.15,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 1133109.8181204267
+    },
+    {
+      "index": 26,
+      "id": "compiler-proof",
+      "requirement": 131354357,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 1722326.9261654618
+    },
+    {
+      "index": 27,
+      "id": "demand-simulator",
+      "requirement": 199658623,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 2617936.9324918455
+    },
+    {
+      "index": 28,
+      "id": "retention-memory",
+      "requirement": 303481107,
+      "level1Power": 1.1,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 3979264.1379120876
+    },
+    {
+      "index": 29,
+      "id": "energy-arbitrage",
+      "requirement": 461291283,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 6048481.494346716
+    },
+    {
+      "index": 30,
+      "id": "neural-firewall",
+      "requirement": 897488322,
+      "level1Power": 1.2,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 11767925.618939752
+    },
+    {
+      "index": 31,
+      "id": "mixture-routing",
+      "requirement": 1364182249,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 17887246.935019113
+    },
+    {
+      "index": 32,
+      "id": "research-swarm",
+      "requirement": 2073557019,
+      "level1Power": 1.15,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 27188615.348047327
+    },
+    {
+      "index": 33,
+      "id": "zero-copy",
+      "requirement": 3151806669,
+      "level1Power": 1.1400000000000001,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 41326695.33060539
+    },
+    {
+      "index": 34,
+      "id": "thermal-storage",
+      "requirement": 4790746137,
+      "level1Power": 1.15,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 62816576.90409363
+    },
+    {
+      "index": 35,
+      "id": "reasoning-distill",
+      "requirement": 7281934128,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 95481196.89107542
+    },
+    {
+      "index": 36,
+      "id": "global-api",
+      "requirement": 11068539875,
+      "level1Power": 1.15,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 145131419.28020397
+    },
+    {
+      "index": 37,
+      "id": "safe-agency",
+      "requirement": 16824180611,
+      "level1Power": 1.18,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 220599757.3190221
+    },
+    {
+      "index": 38,
+      "id": "dynamic-batching",
+      "requirement": 25572754529,
+      "level1Power": 1.16,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 335311631.1285849
+    },
+    {
+      "index": 39,
+      "id": "fusion-control",
+      "requirement": 38870586884,
+      "level1Power": 1.2,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 509673679.31440014
+    },
+    {
+      "index": 40,
+      "id": "scientific-memory",
+      "requirement": 75626613843,
+      "level1Power": 1.18,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 991621110.4936286
+    },
+    {
+      "index": 41,
+      "id": "universal-tokenizer",
+      "requirement": 114952453041,
+      "level1Power": 1.1400000000000001,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 1507264087.9455953
+    },
+    {
+      "index": 42,
+      "id": "autonomous-audit",
+      "requirement": 174727728623,
+      "level1Power": 1.18,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 2291041413.6862206
+    },
+    {
+      "index": 43,
+      "id": "lossless-quant",
+      "requirement": 265586147507,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 3482382948.8035803
+    },
+    {
+      "index": 44,
+      "id": "market-maker",
+      "requirement": 403690944210,
+      "level1Power": 1.12,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 5293222082.17305
+    },
+    {
+      "index": 45,
+      "id": "self-repair",
+      "requirement": 613610235200,
+      "level1Power": 1.15,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 8045697564.913526
+    },
+    {
+      "index": 46,
+      "id": "collective-alignment",
+      "requirement": 932687557504,
+      "level1Power": 1.25,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 12229460298.66856
+    },
+    {
+      "index": 47,
+      "id": "stellar-load",
+      "requirement": 1417685087407,
+      "level1Power": 1.08,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 18588779653.988274
+    },
+    {
+      "index": 48,
+      "id": "recursive-science",
+      "requirement": 2154881332858,
+      "level1Power": 6,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 28254945074.053783
+    },
+    {
+      "index": 49,
+      "id": "singularity-proof",
+      "requirement": 3275419625945,
+      "level1Power": 1.1,
+      "liveLevel5Multiplier": 3,
+      "proposedFutureLevel5Multiplier": 1.5714285714285714,
+      "estimatedSecondsAtUnlockRps": 42947516512.57277
+    }
+  ],
+  "researchCostCompliance": {
+    "formula": "BaseTierCost * (1 + 0.55 * level)^1.7",
+    "projects": [
+      {
+        "id": "research-algorithms",
+        "baseTierCost": 25000,
+        "level0": 25000,
+        "level1": 52662.793865260195
+      },
+      {
+        "id": "research-silicon",
+        "baseTierCost": 60000,
+        "level0": 60000,
+        "level1": 126390.70527662446
+      },
+      {
+        "id": "research-behavior",
+        "baseTierCost": 144000,
+        "level0": 144000,
+        "level1": 303337.6926638987
+      },
+      {
+        "id": "research-compression",
+        "baseTierCost": 345600,
+        "level0": 345600,
+        "level1": 728010.462393357
+      },
+      {
+        "id": "research-economics",
+        "baseTierCost": 829440,
+        "level0": 829440,
+        "level1": 1747225.1097440566
+      },
+      {
+        "id": "research-automation",
+        "baseTierCost": 1990656,
+        "level0": 1990656,
+        "level1": 4193340.263385736
+      }
+    ]
+  },
+  "patentEquivalentPower": [
+    {
+      "id": "cold-kernels",
+      "early": 1.05,
+      "mid": 3.1500000000000004,
+      "late": 3.1500000000000004,
+      "endgame": 3.1500000000000004
+    },
+    {
+      "id": "gradient-cache",
+      "early": 1.1,
+      "mid": 3.3000000000000003,
+      "late": 3.3000000000000003,
+      "endgame": 3.3000000000000003
+    },
+    {
+      "id": "viral-embedding",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "trust-ledger",
+      "early": 1.15,
+      "mid": 3.4499999999999997,
+      "late": 3.4499999999999997,
+      "endgame": 3.4499999999999997
+    },
+    {
+      "id": "lab-notebook",
+      "early": 2,
+      "mid": 6,
+      "late": 6,
+      "endgame": 6
+    },
+    {
+      "id": "voltage-curve",
+      "early": 1.05,
+      "mid": 3.1500000000000004,
+      "late": 3.1500000000000004,
+      "endgame": 3.1500000000000004
+    },
+    {
+      "id": "recursive-insight",
+      "early": 1.01,
+      "mid": 3.0300000000000002,
+      "late": 3.0300000000000002,
+      "endgame": 3.0300000000000002
+    },
+    {
+      "id": "elastic-pricing",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "compute-router",
+      "early": 1.02,
+      "mid": 3.06,
+      "late": 3.06,
+      "endgame": 3.06
+    },
+    {
+      "id": "agent-contracts",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "sparse-attention",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "semantic-cache",
+      "early": 1.1,
+      "mid": 3.3000000000000003,
+      "late": 3.3000000000000003,
+      "endgame": 3.3000000000000003
+    },
+    {
+      "id": "synthetic-curriculum",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "reputation-graph",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "market-telescope",
+      "early": 1.1,
+      "mid": 3.3000000000000003,
+      "late": 3.3000000000000003,
+      "endgame": 3.3000000000000003
+    },
+    {
+      "id": "liquid-bus",
+      "early": 1.07,
+      "mid": 3.21,
+      "late": 3.21,
+      "endgame": 3.21
+    },
+    {
+      "id": "checkpoint-delta",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "context-folding",
+      "early": 1.06,
+      "mid": 3.18,
+      "late": 3.18,
+      "endgame": 3.18
+    },
+    {
+      "id": "microgrid-ai",
+      "early": 1.1,
+      "mid": 3.3000000000000003,
+      "late": 3.3000000000000003,
+      "endgame": 3.3000000000000003
+    },
+    {
+      "id": "sales-copilot",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "privacy-learning",
+      "early": 1.18,
+      "mid": 3.54,
+      "late": 3.54,
+      "endgame": 3.54
+    },
+    {
+      "id": "optical-fabric",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "reward-model",
+      "early": 1.09,
+      "mid": 3.2700000000000005,
+      "late": 3.2700000000000005,
+      "endgame": 3.2700000000000005
+    },
+    {
+      "id": "data-distillery",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "carbon-aware",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "federated-agents",
+      "early": 1.15,
+      "mid": 3.4499999999999997,
+      "late": 3.4499999999999997,
+      "endgame": 3.4499999999999997
+    },
+    {
+      "id": "compiler-proof",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "demand-simulator",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "retention-memory",
+      "early": 1.1,
+      "mid": 3.3000000000000003,
+      "late": 3.3000000000000003,
+      "endgame": 3.3000000000000003
+    },
+    {
+      "id": "energy-arbitrage",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "neural-firewall",
+      "early": 1.2,
+      "mid": 3.5999999999999996,
+      "late": 3.5999999999999996,
+      "endgame": 3.5999999999999996
+    },
+    {
+      "id": "mixture-routing",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "research-swarm",
+      "early": 1.15,
+      "mid": 3.4499999999999997,
+      "late": 3.4499999999999997,
+      "endgame": 3.4499999999999997
+    },
+    {
+      "id": "zero-copy",
+      "early": 1.1400000000000001,
+      "mid": 3.4200000000000004,
+      "late": 3.4200000000000004,
+      "endgame": 3.4200000000000004
+    },
+    {
+      "id": "thermal-storage",
+      "early": 1.15,
+      "mid": 3.4499999999999997,
+      "late": 3.4499999999999997,
+      "endgame": 3.4499999999999997
+    },
+    {
+      "id": "reasoning-distill",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "global-api",
+      "early": 1.15,
+      "mid": 3.4499999999999997,
+      "late": 3.4499999999999997,
+      "endgame": 3.4499999999999997
+    },
+    {
+      "id": "safe-agency",
+      "early": 1.18,
+      "mid": 3.54,
+      "late": 3.54,
+      "endgame": 3.54
+    },
+    {
+      "id": "dynamic-batching",
+      "early": 1.16,
+      "mid": 3.4799999999999995,
+      "late": 3.4799999999999995,
+      "endgame": 3.4799999999999995
+    },
+    {
+      "id": "fusion-control",
+      "early": 1.2,
+      "mid": 3.5999999999999996,
+      "late": 3.5999999999999996,
+      "endgame": 3.5999999999999996
+    },
+    {
+      "id": "scientific-memory",
+      "early": 1.18,
+      "mid": 3.54,
+      "late": 3.54,
+      "endgame": 3.54
+    },
+    {
+      "id": "universal-tokenizer",
+      "early": 1.1400000000000001,
+      "mid": 3.4200000000000004,
+      "late": 3.4200000000000004,
+      "endgame": 3.4200000000000004
+    },
+    {
+      "id": "autonomous-audit",
+      "early": 1.18,
+      "mid": 3.54,
+      "late": 3.54,
+      "endgame": 3.54
+    },
+    {
+      "id": "lossless-quant",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "market-maker",
+      "early": 1.12,
+      "mid": 3.3600000000000003,
+      "late": 3.3600000000000003,
+      "endgame": 3.3600000000000003
+    },
+    {
+      "id": "self-repair",
+      "early": 1.15,
+      "mid": 3.4499999999999997,
+      "late": 3.4499999999999997,
+      "endgame": 3.4499999999999997
+    },
+    {
+      "id": "collective-alignment",
+      "early": 1.25,
+      "mid": 3.75,
+      "late": 3.75,
+      "endgame": 3.75
+    },
+    {
+      "id": "stellar-load",
+      "early": 1.08,
+      "mid": 3.24,
+      "late": 3.24,
+      "endgame": 3.24
+    },
+    {
+      "id": "recursive-science",
+      "early": 6,
+      "mid": 18,
+      "late": 18,
+      "endgame": 18
+    },
+    {
+      "id": "singularity-proof",
+      "early": 1.1,
+      "mid": 3.3000000000000003,
+      "late": 3.3000000000000003,
+      "endgame": 3.3000000000000003
+    }
+  ],
+  "synergyAudit": {
+    "classification": "bounded",
+    "coldKernelsCap": 0.4,
+    "researchPatentFeedback": "strategically gated by equipped slots; RP production remains concave"
+  },
+  "dependencyGraph": [
+    "Hardware -> Total Compute",
+    "Total Compute -> allocated Training | Inference | Research Compute",
+    "Research Compute -> concave RP",
+    "RP -> Research Project OR Patent progress",
+    "Model + Market fundamentals -> Demand = Users",
+    "Inference Compute -> Capacity only",
+    "min(Demand, Capacity) -> Served Users -> Revenue"
+  ],
+  "strategySimulations": {
+    "BALANCED": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "BALANCED",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 1086.8002047615464,
+            "creditsPerSecond": 2.4745565452745555,
+            "computePerSecond": 7.1000000000000005,
+            "runComputeProduced": 942,
+            "lifetimeComputeProduced": 942,
+            "hardware": {
+              "calculator": 1,
+              "homeComputer": 3
+            },
+            "totalHardware": 4,
+            "highestHardware": "Pocket Computer",
+            "trainingAllocation": 60,
+            "inferenceAllocation": 40,
+            "model": "tinyChat",
+            "modelLevel": 5,
+            "trainingProgress": 0,
+            "trainingRequirement": 502.25919162522035,
+            "trainingRate": 6.669819910283756,
+            "trainingEta": 75.30326131457012,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 348.2596791025381,
+            "currentUsers": 347.9660683386672,
+            "capacity": 7.559129231654923,
+            "servedUsers": 7.559129231654923,
+            "utilization": 1,
+            "revenuePerUser": 0.32736,
+            "revenuePerSecond": 2.4745565452745555,
+            "marketing": 0,
+            "reputation": 1,
+            "adoption": 3.7972693068519527,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Laptop",
+            "nextActionEta": 247.8018925893723
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 3,
+            "type": "hardware-tier",
+            "value": "Pocket Computer"
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          },
+          {
+            "minute": 5,
+            "type": "model-level",
+            "value": 5
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 60,
+        "finalState": {
+          "minutes": 5,
+          "credits": 1086.8002047615464,
+          "creditsPerSecond": 2.4745565452745555,
+          "computePerSecond": 7.1000000000000005,
+          "runComputeProduced": 942,
+          "lifetimeComputeProduced": 942,
+          "hardware": {
+            "calculator": 1,
+            "homeComputer": 3
+          },
+          "totalHardware": 4,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 502.25919162522035,
+          "trainingRate": 6.669819910283756,
+          "trainingEta": 75.30326131457012,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 348.2596791025381,
+          "currentUsers": 347.9660683386672,
+          "capacity": 7.559129231654923,
+          "servedUsers": 7.559129231654923,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 2.4745565452745555,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 3.7972693068519527,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 247.8018925893723
+        }
+      },
+      "researchAllocation": 0,
+      "patentResearchActive": false
+    },
+    "HARDWARE_HEAVY": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "HARDWARE_HEAVY",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 719.3262679778366,
+            "creditsPerSecond": 6.8398834085934,
+            "computePerSecond": 15.7,
+            "runComputeProduced": 1326,
+            "lifetimeComputeProduced": 1326,
+            "hardware": {
+              "calculator": 1,
+              "homeComputer": 1,
+              "gamingPc": 1
+            },
+            "totalHardware": 3,
+            "highestHardware": "Laptop",
+            "trainingAllocation": 45,
+            "inferenceAllocation": 55,
+            "model": "tinyChat",
+            "modelLevel": 5,
+            "trainingProgress": 0,
+            "trainingRequirement": 502.25919162522035,
+            "trainingRate": 11.06156752726637,
+            "trainingEta": 45.40578813872169,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 657.4205683090204,
+            "currentUsers": 656.4035989817146,
+            "capacity": 22.98347919554234,
+            "servedUsers": 22.98347919554234,
+            "utilization": 1,
+            "revenuePerUser": 0.2976,
+            "revenuePerSecond": 6.8398834085934,
+            "marketing": 0,
+            "reputation": 1,
+            "adoption": 4.693689032453853,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Laptop",
+            "nextActionEta": 178.90271791545172
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 3,
+            "type": "hardware-tier",
+            "value": "Pocket Computer"
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          },
+          {
+            "minute": 5,
+            "type": "model-level",
+            "value": 5
+          },
+          {
+            "minute": 5,
+            "type": "hardware-tier",
+            "value": "Laptop"
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 72,
+        "finalState": {
+          "minutes": 5,
+          "credits": 719.3262679778366,
+          "creditsPerSecond": 6.8398834085934,
+          "computePerSecond": 15.7,
+          "runComputeProduced": 1326,
+          "lifetimeComputeProduced": 1326,
+          "hardware": {
+            "calculator": 1,
+            "homeComputer": 1,
+            "gamingPc": 1
+          },
+          "totalHardware": 3,
+          "highestHardware": "Laptop",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 502.25919162522035,
+          "trainingRate": 11.06156752726637,
+          "trainingEta": 45.40578813872169,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 657.4205683090204,
+          "currentUsers": 656.4035989817146,
+          "capacity": 22.98347919554234,
+          "servedUsers": 22.98347919554234,
+          "utilization": 1,
+          "revenuePerUser": 0.2976,
+          "revenuePerSecond": 6.8398834085934,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 4.693689032453853,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 178.90271791545172
+        }
+      },
+      "researchAllocation": 0,
+      "patentResearchActive": false
+    },
+    "TRAINING_HEAVY": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "TRAINING_HEAVY",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 919.1600921426955,
+            "creditsPerSecond": 1.1135504453735499,
+            "computePerSecond": 7.1000000000000005,
+            "runComputeProduced": 942,
+            "lifetimeComputeProduced": 942,
+            "hardware": {
+              "calculator": 1,
+              "homeComputer": 3
+            },
+            "totalHardware": 4,
+            "highestHardware": "Pocket Computer",
+            "trainingAllocation": 82,
+            "inferenceAllocation": 18,
+            "model": "tinyChat",
+            "modelLevel": 5,
+            "trainingProgress": 0,
+            "trainingRequirement": 502.25919162522035,
+            "trainingRate": 9.115420544054466,
+            "trainingEta": 55.099947303344,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 348.27300825168464,
+            "currentUsers": 347.9794565507032,
+            "capacity": 3.4016081542447147,
+            "servedUsers": 3.4016081542447147,
+            "utilization": 1,
+            "revenuePerUser": 0.32736,
+            "revenuePerSecond": 1.1135504453735499,
+            "marketing": 0,
+            "reputation": 1,
+            "adoption": 3.8055062567154083,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Laptop",
+            "nextActionEta": 701.21646585608
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 3,
+            "type": "hardware-tier",
+            "value": "Pocket Computer"
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          },
+          {
+            "minute": 5,
+            "type": "model-level",
+            "value": 5
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 60,
+        "finalState": {
+          "minutes": 5,
+          "credits": 919.1600921426955,
+          "creditsPerSecond": 1.1135504453735499,
+          "computePerSecond": 7.1000000000000005,
+          "runComputeProduced": 942,
+          "lifetimeComputeProduced": 942,
+          "hardware": {
+            "calculator": 1,
+            "homeComputer": 3
+          },
+          "totalHardware": 4,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 82,
+          "inferenceAllocation": 18,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 502.25919162522035,
+          "trainingRate": 9.115420544054466,
+          "trainingEta": 55.099947303344,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 348.27300825168464,
+          "currentUsers": 347.9794565507032,
+          "capacity": 3.4016081542447147,
+          "servedUsers": 3.4016081542447147,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 1.1135504453735499,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 3.8055062567154083,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 701.21646585608
+        }
+      },
+      "researchAllocation": 0,
+      "patentResearchActive": false
+    },
+    "MARKET_HEAVY": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "MARKET_HEAVY",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 875.5411074575659,
+            "creditsPerSecond": 3.093195681593194,
+            "computePerSecond": 7.1000000000000005,
+            "runComputeProduced": 942,
+            "lifetimeComputeProduced": 942,
+            "hardware": {
+              "calculator": 1,
+              "homeComputer": 3
+            },
+            "totalHardware": 4,
+            "highestHardware": "Pocket Computer",
+            "trainingAllocation": 45,
+            "inferenceAllocation": 55,
+            "model": "tinyChat",
+            "modelLevel": 5,
+            "trainingProgress": 0,
+            "trainingRequirement": 502.25919162522035,
+            "trainingRate": 5.002364932712816,
+            "trainingEta": 100.40434841942685,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 472.2879837559687,
+            "currentUsers": 471.7608466574616,
+            "capacity": 10.393802693525519,
+            "servedUsers": 10.393802693525519,
+            "utilization": 1,
+            "revenuePerUser": 0.2976,
+            "revenuePerSecond": 3.093195681593194,
+            "marketing": 2,
+            "reputation": 1,
+            "adoption": 4.534523512917743,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Laptop",
+            "nextActionEta": 266.53952009844556
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 3,
+            "type": "hardware-tier",
+            "value": "Pocket Computer"
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          },
+          {
+            "minute": 5,
+            "type": "model-level",
+            "value": 5
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 60,
+        "finalState": {
+          "minutes": 5,
+          "credits": 875.5411074575659,
+          "creditsPerSecond": 3.093195681593194,
+          "computePerSecond": 7.1000000000000005,
+          "runComputeProduced": 942,
+          "lifetimeComputeProduced": 942,
+          "hardware": {
+            "calculator": 1,
+            "homeComputer": 3
+          },
+          "totalHardware": 4,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 45,
+          "inferenceAllocation": 55,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 502.25919162522035,
+          "trainingRate": 5.002364932712816,
+          "trainingEta": 100.40434841942685,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 472.2879837559687,
+          "currentUsers": 471.7608466574616,
+          "capacity": 10.393802693525519,
+          "servedUsers": 10.393802693525519,
+          "utilization": 1,
+          "revenuePerUser": 0.2976,
+          "revenuePerSecond": 3.093195681593194,
+          "marketing": 2,
+          "reputation": 1,
+          "adoption": 4.534523512917743,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 266.53952009844556
+        }
+      },
+      "researchAllocation": 0,
+      "patentResearchActive": false
+    },
+    "RESEARCH_HEAVY": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "BALANCED",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 1086.8002047615464,
+            "creditsPerSecond": 2.4745565452745555,
+            "computePerSecond": 7.1000000000000005,
+            "runComputeProduced": 942,
+            "lifetimeComputeProduced": 942,
+            "hardware": {
+              "calculator": 1,
+              "homeComputer": 3
+            },
+            "totalHardware": 4,
+            "highestHardware": "Pocket Computer",
+            "trainingAllocation": 60,
+            "inferenceAllocation": 40,
+            "model": "tinyChat",
+            "modelLevel": 5,
+            "trainingProgress": 0,
+            "trainingRequirement": 502.25919162522035,
+            "trainingRate": 6.669819910283756,
+            "trainingEta": 75.30326131457012,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 348.2596791025381,
+            "currentUsers": 347.9660683386672,
+            "capacity": 7.559129231654923,
+            "servedUsers": 7.559129231654923,
+            "utilization": 1,
+            "revenuePerUser": 0.32736,
+            "revenuePerSecond": 2.4745565452745555,
+            "marketing": 0,
+            "reputation": 1,
+            "adoption": 3.7972693068519527,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Laptop",
+            "nextActionEta": 247.8018925893723
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 3,
+            "type": "hardware-tier",
+            "value": "Pocket Computer"
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          },
+          {
+            "minute": 5,
+            "type": "model-level",
+            "value": 5
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 60,
+        "finalState": {
+          "minutes": 5,
+          "credits": 1086.8002047615464,
+          "creditsPerSecond": 2.4745565452745555,
+          "computePerSecond": 7.1000000000000005,
+          "runComputeProduced": 942,
+          "lifetimeComputeProduced": 942,
+          "hardware": {
+            "calculator": 1,
+            "homeComputer": 3
+          },
+          "totalHardware": 4,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 502.25919162522035,
+          "trainingRate": 6.669819910283756,
+          "trainingEta": 75.30326131457012,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 348.2596791025381,
+          "currentUsers": 347.9660683386672,
+          "capacity": 7.559129231654923,
+          "servedUsers": 7.559129231654923,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 2.4745565452745555,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 3.7972693068519527,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 247.8018925893723
+        }
+      },
+      "researchAllocation": 45,
+      "patentResearchActive": false
+    },
+    "PATENT_HEAVY": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "BALANCED",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 1086.8002047615464,
+            "creditsPerSecond": 2.4745565452745555,
+            "computePerSecond": 7.1000000000000005,
+            "runComputeProduced": 942,
+            "lifetimeComputeProduced": 942,
+            "hardware": {
+              "calculator": 1,
+              "homeComputer": 3
+            },
+            "totalHardware": 4,
+            "highestHardware": "Pocket Computer",
+            "trainingAllocation": 60,
+            "inferenceAllocation": 40,
+            "model": "tinyChat",
+            "modelLevel": 5,
+            "trainingProgress": 0,
+            "trainingRequirement": 502.25919162522035,
+            "trainingRate": 6.669819910283756,
+            "trainingEta": 75.30326131457012,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 348.2596791025381,
+            "currentUsers": 347.9660683386672,
+            "capacity": 7.559129231654923,
+            "servedUsers": 7.559129231654923,
+            "utilization": 1,
+            "revenuePerUser": 0.32736,
+            "revenuePerSecond": 2.4745565452745555,
+            "marketing": 0,
+            "reputation": 1,
+            "adoption": 3.7972693068519527,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Laptop",
+            "nextActionEta": 247.8018925893723
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 3,
+            "type": "hardware-tier",
+            "value": "Pocket Computer"
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          },
+          {
+            "minute": 5,
+            "type": "model-level",
+            "value": 5
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 60,
+        "finalState": {
+          "minutes": 5,
+          "credits": 1086.8002047615464,
+          "creditsPerSecond": 2.4745565452745555,
+          "computePerSecond": 7.1000000000000005,
+          "runComputeProduced": 942,
+          "lifetimeComputeProduced": 942,
+          "hardware": {
+            "calculator": 1,
+            "homeComputer": 3
+          },
+          "totalHardware": 4,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 502.25919162522035,
+          "trainingRate": 6.669819910283756,
+          "trainingEta": 75.30326131457012,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 348.2596791025381,
+          "currentUsers": 347.9660683386672,
+          "capacity": 7.559129231654923,
+          "servedUsers": 7.559129231654923,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 2.4745565452745555,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 3.7972693068519527,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 247.8018925893723
+        }
+      },
+      "researchAllocation": 35,
+      "patentResearchActive": true
+    },
+    "GREEDY_ROI": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "GREEDY_ROI",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 1748.883499195943,
+            "creditsPerSecond": 0.9802380681105193,
+            "computePerSecond": 2.5,
+            "runComputeProduced": 450,
+            "lifetimeComputeProduced": 450,
+            "hardware": {
+              "calculator": 5
+            },
+            "totalHardware": 5,
+            "highestHardware": "Calculator",
+            "trainingAllocation": 55,
+            "inferenceAllocation": 45,
+            "model": "tinyChat",
+            "modelLevel": 4,
+            "trainingProgress": 146.39158723275378,
+            "trainingRequirement": 257.9647797043,
+            "trainingRate": 2.1528174593052025,
+            "trainingEta": 51.82659216613525,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 176.7925894009249,
+            "currentUsers": 176.7132077990482,
+            "capacity": 2.9943733752154182,
+            "servedUsers": 2.9943733752154182,
+            "utilization": 1,
+            "revenuePerUser": 0.32736,
+            "revenuePerSecond": 0.9802380681105193,
+            "marketing": 0,
+            "reputation": 1,
+            "adoption": 2.3670050911090237,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Train Model",
+            "nextActionEta": 51.82659216613525
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 36,
+        "finalState": {
+          "minutes": 5,
+          "credits": 1748.883499195943,
+          "creditsPerSecond": 0.9802380681105193,
+          "computePerSecond": 2.5,
+          "runComputeProduced": 450,
+          "lifetimeComputeProduced": 450,
+          "hardware": {
+            "calculator": 5
+          },
+          "totalHardware": 5,
+          "highestHardware": "Calculator",
+          "trainingAllocation": 55,
+          "inferenceAllocation": 45,
+          "model": "tinyChat",
+          "modelLevel": 4,
+          "trainingProgress": 146.39158723275378,
+          "trainingRequirement": 257.9647797043,
+          "trainingRate": 2.1528174593052025,
+          "trainingEta": 51.82659216613525,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 176.7925894009249,
+          "currentUsers": 176.7132077990482,
+          "capacity": 2.9943733752154182,
+          "servedUsers": 2.9943733752154182,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 0.9802380681105193,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 2.3670050911090237,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Train Model",
+          "nextActionEta": 51.82659216613525
+        }
+      },
+      "researchAllocation": 0,
+      "patentResearchActive": false
+    },
+    "LOW_INTERACTION": {
+      "authority": "engineering-only",
+      "phase2bFiveMinute": {
+        "name": "LOW_INTERACTION",
+        "checkpoints": [
+          {
+            "minutes": 5,
+            "credits": 1086.8002047615464,
+            "creditsPerSecond": 2.4745565452745555,
+            "computePerSecond": 7.1000000000000005,
+            "runComputeProduced": 942,
+            "lifetimeComputeProduced": 942,
+            "hardware": {
+              "calculator": 1,
+              "homeComputer": 3
+            },
+            "totalHardware": 4,
+            "highestHardware": "Pocket Computer",
+            "trainingAllocation": 60,
+            "inferenceAllocation": 40,
+            "model": "tinyChat",
+            "modelLevel": 5,
+            "trainingProgress": 0,
+            "trainingRequirement": 502.25919162522035,
+            "trainingRate": 6.669819910283756,
+            "trainingEta": 75.30326131457012,
+            "quality": 4,
+            "efficiency": 0,
+            "popularity": 5,
+            "potentialDemand": 348.2596791025381,
+            "currentUsers": 347.9660683386672,
+            "capacity": 7.559129231654923,
+            "servedUsers": 7.559129231654923,
+            "utilization": 1,
+            "revenuePerUser": 0.32736,
+            "revenuePerSecond": 2.4745565452745555,
+            "marketing": 0,
+            "reputation": 1,
+            "adoption": 3.7972693068519527,
+            "wordOfMouth": 1,
+            "developmentCycleEligible": false,
+            "nextAction": "Laptop",
+            "nextActionEta": 247.8018925893723
+          }
+        ],
+        "events": [
+          {
+            "minute": 2,
+            "type": "model-level",
+            "value": 2
+          },
+          {
+            "minute": 3,
+            "type": "model-level",
+            "value": 3
+          },
+          {
+            "minute": 3,
+            "type": "hardware-tier",
+            "value": "Pocket Computer"
+          },
+          {
+            "minute": 4,
+            "type": "model-level",
+            "value": 4
+          },
+          {
+            "minute": 5,
+            "type": "model-level",
+            "value": 5
+          }
+        ],
+        "eligibleAt": null,
+        "maxDeadZoneMinutes": 1,
+        "eventDensityPerHour": 60,
+        "finalState": {
+          "minutes": 5,
+          "credits": 1086.8002047615464,
+          "creditsPerSecond": 2.4745565452745555,
+          "computePerSecond": 7.1000000000000005,
+          "runComputeProduced": 942,
+          "lifetimeComputeProduced": 942,
+          "hardware": {
+            "calculator": 1,
+            "homeComputer": 3
+          },
+          "totalHardware": 4,
+          "highestHardware": "Pocket Computer",
+          "trainingAllocation": 60,
+          "inferenceAllocation": 40,
+          "model": "tinyChat",
+          "modelLevel": 5,
+          "trainingProgress": 0,
+          "trainingRequirement": 502.25919162522035,
+          "trainingRate": 6.669819910283756,
+          "trainingEta": 75.30326131457012,
+          "quality": 4,
+          "efficiency": 0,
+          "popularity": 5,
+          "potentialDemand": 348.2596791025381,
+          "currentUsers": 347.9660683386672,
+          "capacity": 7.559129231654923,
+          "servedUsers": 7.559129231654923,
+          "utilization": 1,
+          "revenuePerUser": 0.32736,
+          "revenuePerSecond": 2.4745565452745555,
+          "marketing": 0,
+          "reputation": 1,
+          "adoption": 3.7972693068519527,
+          "wordOfMouth": 1,
+          "developmentCycleEligible": false,
+          "nextAction": "Laptop",
+          "nextActionEta": 247.8018925893723
+        }
+      },
+      "researchAllocation": 0,
+      "patentResearchActive": false
+    }
+  },
+  "offlineTests": {
+    "authority": "covered by canonical tickGame and automated deterministic tests"
+  },
+  "telemetryInvariants": {
+    "actionsEmitEvents": true,
+    "emptyProgressionEventSetIsBroken": true,
+    "gemSessionEquation": "start + earned - spent = end"
+  }
+}

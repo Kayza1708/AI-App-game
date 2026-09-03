@@ -1,0 +1,506 @@
+{
+  "schema": "ai-singularity-mathematical-economy-v1",
+  "status": "ANALYSIS ONLY \u2014 NOT LIVE ECONOMY",
+  "hardware": {
+    "calculator": {
+      "displayName": "Calculator",
+      "era": "personal",
+      "baseCost": 20,
+      "baseProduction": 0.5,
+      "costGrowth": 1.13773567,
+      "derivation": {
+        "targetPurchaseCount": 30,
+        "targetFinalUnitCostRatio": 48,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          20,
+          45
+        ]
+      }
+    },
+    "homeComputer": {
+      "displayName": "Pocket Computer",
+      "era": "personal",
+      "baseCost": 360,
+      "baseProduction": 2.2,
+      "costGrowth": 1.13773567,
+      "derivation": {
+        "targetPurchaseCount": 30,
+        "targetFinalUnitCostRatio": 48,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          20,
+          45
+        ]
+      }
+    },
+    "gamingPc": {
+      "displayName": "Laptop",
+      "era": "personal",
+      "baseCost": 1700,
+      "baseProduction": 13,
+      "costGrowth": 1.14280778,
+      "derivation": {
+        "targetPurchaseCount": 28,
+        "targetFinalUnitCostRatio": 42,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          20,
+          45
+        ]
+      }
+    },
+    "workstation": {
+      "displayName": "Gaming PC",
+      "era": "professional",
+      "baseCost": 6500,
+      "baseProduction": 110,
+      "costGrowth": 1.15412301,
+      "derivation": {
+        "targetPurchaseCount": 25,
+        "targetFinalUnitCostRatio": 36,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          60,
+          300
+        ]
+      }
+    },
+    "gpuServer": {
+      "displayName": "Workstation",
+      "era": "professional",
+      "baseCost": 45000,
+      "baseProduction": 1350,
+      "costGrowth": 1.15412301,
+      "derivation": {
+        "targetPurchaseCount": 25,
+        "targetFinalUnitCostRatio": 36,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          60,
+          300
+        ]
+      }
+    },
+    "miniDatacenter": {
+      "displayName": "Server Rack",
+      "era": "datacenter",
+      "baseCost": 1400000.0,
+      "baseProduction": 22000,
+      "costGrowth": 1.17061991,
+      "derivation": {
+        "targetPurchaseCount": 22,
+        "targetFinalUnitCostRatio": 32,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          60,
+          300
+        ]
+      }
+    },
+    "enterpriseDatacenter": {
+      "displayName": "GPU Cluster",
+      "era": "datacenter",
+      "baseCost": 70000000.0,
+      "baseProduction": 500000,
+      "costGrowth": 1.17061991,
+      "derivation": {
+        "targetPurchaseCount": 22,
+        "targetFinalUnitCostRatio": 32,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          60,
+          300
+        ]
+      }
+    },
+    "hyperscaleDatacenter": {
+      "displayName": "Datacenter",
+      "era": "datacenter",
+      "baseCost": 32000000000.0,
+      "baseProduction": 14000000.0,
+      "costGrowth": 1.18129374,
+      "derivation": {
+        "targetPurchaseCount": 20,
+        "targetFinalUnitCostRatio": 28,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          60,
+          300
+        ]
+      }
+    },
+    "tpuCluster": {
+      "displayName": "Hyperscale Center",
+      "era": "planetary",
+      "baseCost": 2200000000000.0,
+      "baseProduction": 480000000.0,
+      "costGrowth": 1.18129374,
+      "derivation": {
+        "targetPurchaseCount": 20,
+        "targetFinalUnitCostRatio": 28,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    },
+    "aiSupercomputer": {
+      "displayName": "Orbital Datacenter",
+      "era": "planetary",
+      "baseCost": 180000000000000.0,
+      "baseProduction": 20000000000.0,
+      "costGrowth": 1.19310428,
+      "derivation": {
+        "targetPurchaseCount": 18,
+        "targetFinalUnitCostRatio": 24,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    },
+    "planetaryGrid": {
+      "displayName": "Moon Compute Facility",
+      "era": "planetary",
+      "baseCost": 1.7e+16,
+      "baseProduction": 950000000000.0,
+      "costGrowth": 1.19310428,
+      "derivation": {
+        "targetPurchaseCount": 18,
+        "targetFinalUnitCostRatio": 24,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    },
+    "underwaterDatacenter": {
+      "displayName": "Mars Compute Grid",
+      "era": "planetary",
+      "baseCost": 2e+18,
+      "baseProduction": 55000000000000.0,
+      "costGrowth": 1.20590855,
+      "derivation": {
+        "targetPurchaseCount": 16,
+        "targetFinalUnitCostRatio": 20,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    },
+    "orbitalDatacenter": {
+      "displayName": "Fusion Compute Network",
+      "era": "stellar",
+      "baseCost": 2.8e+20,
+      "baseProduction": 3800000000000000.0,
+      "costGrowth": 1.20590855,
+      "derivation": {
+        "targetPurchaseCount": 16,
+        "targetFinalUnitCostRatio": 20,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    },
+    "lunarFacility": {
+      "displayName": "Dyson Compute Array",
+      "era": "stellar",
+      "baseCost": 5e+22,
+      "baseProduction": 3e+17,
+      "costGrowth": 1.21250862,
+      "derivation": {
+        "targetPurchaseCount": 15,
+        "targetFinalUnitCostRatio": 18,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    },
+    "dysonSwarm": {
+      "displayName": "Matrioshka Brain",
+      "era": "stellar",
+      "baseCost": 1.2e+25,
+      "baseProduction": 3e+19,
+      "costGrowth": 1.21250862,
+      "derivation": {
+        "targetPurchaseCount": 15,
+        "targetFinalUnitCostRatio": 18,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    },
+    "matrioshkaBrain": {
+      "displayName": "Singularity Core",
+      "era": "post-singularity",
+      "baseCost": 3.2e+28,
+      "baseProduction": 3.6e+21,
+      "costGrowth": 1.25316312,
+      "derivation": {
+        "targetPurchaseCount": 12,
+        "targetFinalUnitCostRatio": 15,
+        "equation": "g = finalCostRatio^(1/targetPurchaseCount)",
+        "targetFirstUnitPaybackSeconds": [
+          300,
+          1800
+        ]
+      }
+    }
+  },
+  "training": {
+    "durationSeconds": {
+      "equation": "45 + 34*sqrt(L) + tierTransitionSeconds",
+      "base": 45,
+      "sqrtCoefficient": 34,
+      "tierTransitionSeconds": [
+        0,
+        60,
+        180,
+        420,
+        900,
+        1800,
+        3600,
+        7200,
+        14400
+      ]
+    },
+    "requirementDerivation": "expectedTrainingComputePerSecond * targetDurationSeconds",
+    "modelLevelFactor": {
+      "equation": "1 + 0.16*L^0.62",
+      "coefficient": 0.16,
+      "power": 0.62
+    }
+  },
+  "models": {
+    "tierScale": [
+      1,
+      3.5,
+      12,
+      42,
+      160,
+      650,
+      2800,
+      14000,
+      80000
+    ],
+    "skills": {
+      "qualityDemand": {
+        "equation": "1 + 0.18*ln(1+Q)"
+      },
+      "qualityRevenue": {
+        "equation": "1 + 0.12*sqrt(Q)"
+      },
+      "efficiency": {
+        "equation": "1 + 0.20*sqrt(E)"
+      },
+      "popularity": {
+        "equation": "1 + 0.30*sqrt(P) + 0.08*ln(1+P)"
+      }
+    }
+  },
+  "market": {
+    "baseMarketByModelTier": [
+      80,
+      500,
+      4000,
+      30000,
+      250000,
+      2000000.0,
+      20000000.0,
+      300000000.0,
+      6000000000.0
+    ],
+    "infrastructureReachByHighestHardwareTier": [
+      1,
+      1.4,
+      2.2,
+      3.5,
+      6,
+      12,
+      24,
+      50,
+      110,
+      250,
+      600,
+      1500,
+      4000,
+      12000,
+      40000,
+      150000
+    ],
+    "marketingFactor": {
+      "equation": "1 + 0.32*ln(1+M)",
+      "coefficient": 0.32
+    },
+    "wordOfMouth": {
+      "equation": "1 + Wmax*z/(K+z), z=ln(1+Users/U0)",
+      "maximumBonus": 1.5,
+      "K": 3,
+      "userScale": 1000
+    },
+    "reputation": {
+      "equation": "Rmin+(Rmax-Rmin)/(1+exp(-k*(R-R0)))",
+      "minimum": 0.75,
+      "maximum": 1.25,
+      "slope": 2.2,
+      "midpoint": 1
+    },
+    "adoption": {
+      "equation": "1 + A*x/(K+x)",
+      "maximumBonus": 0.5,
+      "halfSaturation": 50
+    }
+  },
+  "price": {
+    "minimum": 0.5,
+    "maximum": 3,
+    "discountSlope": 0.8,
+    "premiumDecay": 1.15,
+    "equations": {
+      "discount": "1+d*(1-p)",
+      "premium": "exp(-k*(p-1)/priceTolerance)"
+    }
+  },
+  "users": {
+    "baseAcquisitionHalfLifeSeconds": 180,
+    "baseChurnHalfLifeSeconds": 90,
+    "minimumHalfLifeSeconds": 30,
+    "popularityHalfLifeCoefficient": 0.08,
+    "marketingHalfLifeCoefficient": 0.06,
+    "derivation": "rate=ln(2)/halfLife; coefficients modify rate concavely"
+  },
+  "prestige": {
+    "entitlement": {
+      "equation": "floor((qualifyingCompute/C0)^alpha)",
+      "alpha": 0.30103,
+      "C0": 400000000.0,
+      "anchors": [
+        {
+          "compute": 400000000.0,
+          "int": 1
+        },
+        {
+          "compute": 4000000000000.0,
+          "int": 16
+        }
+      ],
+      "derivation": "alpha=ln(16/1)/ln(4e12/4e8)"
+    },
+    "passiveINT": {
+      "recommendation": "remove",
+      "boundedAlternative": "1 + 0.5*sqrt(INT)/(25+sqrt(INT))"
+    }
+  },
+  "technology": {
+    "depthCurve": {
+      "equation": "(1+0.45*d)^1.55",
+      "a": 0.45,
+      "power": 1.55
+    },
+    "typeMultipliers": {
+      "minor": 0.65,
+      "standard": 1,
+      "system": 1.6,
+      "major": 2.2,
+      "keystone": 3.5,
+      "era": 5
+    },
+    "runCostEquivalentTargets": {
+      "minor": [
+        0.25,
+        0.75
+      ],
+      "standard": [
+        0.75,
+        1.5
+      ],
+      "major": [
+        1.5,
+        3
+      ],
+      "keystone": [
+        3,
+        6
+      ],
+      "transformative": [
+        5,
+        10
+      ]
+    }
+  },
+  "research": {
+    "conversion": {
+      "equation": "A*(allocatedCompute/computeScale)^p",
+      "A": 4,
+      "computeScale": 1000,
+      "power": 0.72
+    },
+    "projectCost": {
+      "equation": "baseTierCost*(1+0.55*level)^1.7",
+      "levelCoefficient": 0.55,
+      "power": 1.7
+    },
+    "speed": {
+      "equation": "1 + 1.5*x/(20+x)",
+      "maximumPermanentBonus": 1.5,
+      "halfSaturation": 20
+    }
+  },
+  "patents": {
+    "ordinaryEquivalentPowerRange": [
+      1.05,
+      1.25
+    ],
+    "keystoneEquivalentPowerRange": [
+      1.2,
+      1.6
+    ],
+    "ownershipSynergy": "bounded A*x/(K+x); no uncapped ownership-linear effects"
+  },
+  "modifiers": {
+    "layers": [
+      "base",
+      "runAdd",
+      "permanentAdd",
+      "bounded",
+      "keystoneMultiply",
+      "temporaryMultiply"
+    ],
+    "maximumOrdinaryMultiplicativeDepth": 4
+  },
+  "offline": {
+    "baseCapacitySeconds": 7200,
+    "maximumCapacitySeconds": 28800,
+    "baseEfficiency": 0.6,
+    "maximumEfficiency": 1
+  },
+  "tapping": {
+    "normalTapEquivalentSeconds": {
+      "early": [
+        0.5,
+        2
+      ],
+      "mid": [
+        0.1,
+        0.5
+      ],
+      "late": [
+        0.01,
+        0.15
+      ]
+    },
+    "manualBuildMaximumEquivalentSeconds": 1.5
+  }
+}

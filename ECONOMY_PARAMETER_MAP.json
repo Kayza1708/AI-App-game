@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-03T11:45:54.879Z",
+  "purpose": "Parametric balancing map; AUDIT_ONLY entries are not change authorization.",
+  "parameters": [
+    {
+      "name": "research.researchRpScale",
+      "currentValue": 4,
+      "formula": "scale × (ResearchCompute / normalization)^exponent × modifiers",
+      "classification": "LOCKED_FORMULA_COMPONENT",
+      "system": "Research",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises RP/s proportionally",
+      "decreaseEffect": "Opposite of: Raises RP/s proportionally",
+      "dependencies": [
+        "Research Compute"
+      ],
+      "lockedStatus": "LOCKED"
+    },
+    {
+      "name": "research.researchComputeNormalization",
+      "currentValue": 1000,
+      "formula": "4 × (ResearchCompute / normalization)^0.72",
+      "classification": "LOCKED_FORMULA_COMPONENT",
+      "system": "Research",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Lowers RP/s at every positive input",
+      "decreaseEffect": "Opposite of: Lowers RP/s at every positive input",
+      "dependencies": [
+        "Research Compute"
+      ],
+      "lockedStatus": "LOCKED"
+    },
+    {
+      "name": "research.researchComputeExponent",
+      "currentValue": 0.72,
+      "formula": "4 × (ResearchCompute / 1000)^exponent",
+      "classification": "LOCKED_FORMULA_COMPONENT",
+      "system": "Research",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Increases high-Compute sensitivity; effect below normalization reverses",
+      "decreaseEffect": "Opposite of: Increases high-Compute sensitivity; effect below normalization reverses",
+      "dependencies": [
+        "Research Compute"
+      ],
+      "lockedStatus": "LOCKED"
+    },
+    {
+      "name": "research.costLevelCoefficient",
+      "currentValue": 0.55,
+      "formula": "BaseTierCost × (1 + coefficient × level)^1.7",
+      "classification": "LOCKED_FORMULA_COMPONENT",
+      "system": "Research costs",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises repeat-level costs",
+      "decreaseEffect": "Opposite of: Raises repeat-level costs",
+      "dependencies": [
+        "BaseTierCost",
+        "level"
+      ],
+      "lockedStatus": "LOCKED"
+    },
+    {
+      "name": "research.costExponent",
+      "currentValue": 1.7,
+      "formula": "BaseTierCost × (1 + .55 × level)^exponent",
+      "classification": "LOCKED_FORMULA_COMPONENT",
+      "system": "Research costs",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises repeat-level cost curvature",
+      "decreaseEffect": "Opposite of: Raises repeat-level cost curvature",
+      "dependencies": [
+        "BaseTierCost",
+        "level"
+      ],
+      "lockedStatus": "LOCKED"
+    },
+    {
+      "name": "research.speedMaxBonus",
+      "currentValue": 1.5,
+      "formula": "1 + maxBonus × x/(halfSaturation+x)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Research duration",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises maximum speed without changing RP cost",
+      "decreaseEffect": "Opposite of: Raises maximum speed without changing RP cost",
+      "dependencies": [
+        "research speed bonuses"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "research.speedHalfSaturation",
+      "currentValue": 20,
+      "formula": "1 + 1.5x/(halfSaturation+x)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Research duration",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Slows approach to the speed cap",
+      "decreaseEffect": "Opposite of: Slows approach to the speed cap",
+      "dependencies": [
+        "research speed bonuses"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "patents.baseRequirement",
+      "currentValue": 1500,
+      "formula": "base × discoveryGrowth^index × tierGrowth^tier",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Patents",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Lengthens every Patent discovery",
+      "decreaseEffect": "Opposite of: Lengthens every Patent discovery",
+      "dependencies": [
+        "RP/s"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "patents.discoveryGrowth",
+      "currentValue": 1.52,
+      "formula": "base × growth^index",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Patents",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Steepens discovery sequence",
+      "decreaseEffect": "Opposite of: Steepens discovery sequence",
+      "dependencies": [
+        "Patent index"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "patents.tierGrowth",
+      "currentValue": 1.28,
+      "formula": "requirement × tierGrowth^floor(index/10)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Patents",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Increases decade transition walls",
+      "decreaseEffect": "Opposite of: Increases decade transition walls",
+      "dependencies": [
+        "Patent tier"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "training.durationBaseSeconds",
+      "currentValue": 45,
+      "formula": "base + 34√level + transition",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Training",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Lengthens all reference requirements",
+      "decreaseEffect": "Opposite of: Lengthens all reference requirements",
+      "dependencies": [
+        "static reference rate"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "training.durationSqrtCoefficient",
+      "currentValue": 34,
+      "formula": "45 + coefficient√level + transition",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Training",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Lengthens higher-level targets concavely",
+      "decreaseEffect": "Opposite of: Lengthens higher-level targets concavely",
+      "dependencies": [
+        "level"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "models.levelCoefficient",
+      "currentValue": 0.16,
+      "formula": "1 + coefficient × L^0.62",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Models/Market",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises level contribution to Demand",
+      "decreaseEffect": "Opposite of: Raises level contribution to Demand",
+      "dependencies": [
+        "model level"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "models.levelPower",
+      "currentValue": 0.62,
+      "formula": "1 + .16 × L^power",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Models/Market",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises late-level sensitivity",
+      "decreaseEffect": "Opposite of: Raises late-level sensitivity",
+      "dependencies": [
+        "model level"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "marketV3.marketingCoefficient",
+      "currentValue": 0.32,
+      "formula": "1 + coefficient ln(1+M)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Market",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises Marketing Demand effect",
+      "decreaseEffect": "Opposite of: Raises Marketing Demand effect",
+      "dependencies": [
+        "Marketing"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "marketV3.qualityDemandCoefficient",
+      "currentValue": 0.18,
+      "formula": "1 + coefficient ln(1+Q)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Market",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises Quality Demand effect",
+      "decreaseEffect": "Opposite of: Raises Quality Demand effect",
+      "dependencies": [
+        "Quality"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "marketV3.price.premiumElasticity",
+      "currentValue": 1.15,
+      "formula": "exp(-elasticity(p-1)/tolerance)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Market",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Penalizes premium price more strongly",
+      "decreaseEffect": "Opposite of: Penalizes premium price more strongly",
+      "dependencies": [
+        "price",
+        "Quality"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "market.capacityScale",
+      "currentValue": 1.7,
+      "formula": "InferenceCompute × Efficiency × capacityScale",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Capacity",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises users serviceable per Inference Compute",
+      "decreaseEffect": "Opposite of: Raises users serviceable per Inference Compute",
+      "dependencies": [
+        "Inference allocation",
+        "Efficiency"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "market.revenueBase",
+      "currentValue": 0.24,
+      "formula": "ServedUsers × base × RPU modifiers",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Revenue",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises Revenue per served user",
+      "decreaseEffect": "Opposite of: Raises Revenue per served user",
+      "dependencies": [
+        "Served Users"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "offline.efficiency",
+      "currentValue": 0.6,
+      "formula": "canonical production × efficiency",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Offline",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises offline rewards",
+      "decreaseEffect": "Opposite of: Raises offline rewards",
+      "dependencies": [
+        "offline duration"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "offline.capMs",
+      "currentValue": 7200000,
+      "formula": "min(elapsed, cap)",
+      "classification": "TUNABLE_PARAMETER",
+      "system": "Offline",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Extends ordinary offline accumulation",
+      "decreaseEffect": "Opposite of: Extends ordinary offline accumulation",
+      "dependencies": [
+        "elapsed time"
+      ],
+      "lockedStatus": "TUNABLE"
+    },
+    {
+      "name": "tapping.base",
+      "currentValue": 1.5,
+      "formula": "authored tapping formula",
+      "classification": "AUDIT_ONLY",
+      "system": "Tapping",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Raises manual Compute baseline",
+      "decreaseEffect": "Opposite of: Raises manual Compute baseline",
+      "dependencies": [],
+      "lockedStatus": "AUDIT_ONLY"
+    },
+    {
+      "name": "intelligence entitlement parameters",
+      "currentValue": "see PrestigeSystem",
+      "formula": "piecewise cumulative Compute entitlement",
+      "classification": "AUDIT_ONLY",
+      "system": "INT",
+      "earlyGameSensitivity": "context-dependent",
+      "lateGameSensitivity": "context-dependent",
+      "increaseEffect": "Not authorized in this correction",
+      "decreaseEffect": "Opposite of: Not authorized in this correction",
+      "dependencies": [
+        "Lifetime qualifying Compute"
+      ],
+      "lockedStatus": "AUDIT_ONLY"
+    }
+  ]
+}
