@@ -1,0 +1,974 @@
+{
+  "phase": "2B.2",
+  "equation": "target + (users - target) * exp(-(-ln(0.05)/response95) * dt)",
+  "response": [
+    {
+      "popularity": 0,
+      "from": 100,
+      "to": 1000,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 100
+        },
+        {
+          "seconds": 0.5,
+          "users": 381.10958
+        },
+        {
+          "seconds": 1,
+          "users": 574.41628
+        },
+        {
+          "seconds": 2,
+          "users": 798.75388
+        },
+        {
+          "seconds": 3,
+          "users": 904.83659
+        },
+        {
+          "seconds": 4,
+          "users": 955
+        },
+        {
+          "seconds": 5,
+          "users": 978.72081
+        },
+        {
+          "seconds": 10,
+          "users": 999.49688
+        }
+      ]
+    },
+    {
+      "popularity": 0,
+      "from": 1000,
+      "to": 10000,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000
+        },
+        {
+          "seconds": 0.5,
+          "users": 3811.0958
+        },
+        {
+          "seconds": 1,
+          "users": 5744.1628
+        },
+        {
+          "seconds": 2,
+          "users": 7987.5388
+        },
+        {
+          "seconds": 3,
+          "users": 9048.3659
+        },
+        {
+          "seconds": 4,
+          "users": 9550
+        },
+        {
+          "seconds": 5,
+          "users": 9787.2081
+        },
+        {
+          "seconds": 10,
+          "users": 9994.9688
+        }
+      ]
+    },
+    {
+      "popularity": 0,
+      "from": 10000,
+      "to": 1000000,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 10000
+        },
+        {
+          "seconds": 0.5,
+          "users": 319220.54
+        },
+        {
+          "seconds": 1,
+          "users": 531857.9
+        },
+        {
+          "seconds": 2,
+          "users": 778629.27
+        },
+        {
+          "seconds": 3,
+          "users": 895320.24
+        },
+        {
+          "seconds": 4,
+          "users": 950500
+        },
+        {
+          "seconds": 5,
+          "users": 976592.9
+        },
+        {
+          "seconds": 10,
+          "users": 999446.57
+        }
+      ]
+    },
+    {
+      "popularity": 0,
+      "from": 1000000,
+      "to": 1000000000,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 313031630
+        },
+        {
+          "seconds": 1,
+          "users": 527602070
+        },
+        {
+          "seconds": 2,
+          "users": 776616810
+        },
+        {
+          "seconds": 3,
+          "users": 894368610
+        },
+        {
+          "seconds": 4,
+          "users": 950050000
+        },
+        {
+          "seconds": 5,
+          "users": 976380100
+        },
+        {
+          "seconds": 10,
+          "users": 999441540
+        }
+      ]
+    },
+    {
+      "popularity": 0,
+      "from": 1000,
+      "to": 100,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000
+        },
+        {
+          "seconds": 0.5,
+          "users": 718.89042
+        },
+        {
+          "seconds": 1,
+          "users": 525.58372
+        },
+        {
+          "seconds": 2,
+          "users": 301.24612
+        },
+        {
+          "seconds": 3,
+          "users": 195.16341
+        },
+        {
+          "seconds": 4,
+          "users": 145
+        },
+        {
+          "seconds": 5,
+          "users": 121.27919
+        },
+        {
+          "seconds": 10,
+          "users": 100.50312
+        }
+      ]
+    },
+    {
+      "popularity": 0,
+      "from": 10000,
+      "to": 1000,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 10000
+        },
+        {
+          "seconds": 0.5,
+          "users": 7188.9042
+        },
+        {
+          "seconds": 1,
+          "users": 5255.8372
+        },
+        {
+          "seconds": 2,
+          "users": 3012.4612
+        },
+        {
+          "seconds": 3,
+          "users": 1951.6341
+        },
+        {
+          "seconds": 4,
+          "users": 1450
+        },
+        {
+          "seconds": 5,
+          "users": 1212.7919
+        },
+        {
+          "seconds": 10,
+          "users": 1005.0312
+        }
+      ]
+    },
+    {
+      "popularity": 0,
+      "from": 1000000,
+      "to": 10000,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 690779.46
+        },
+        {
+          "seconds": 1,
+          "users": 478142.1
+        },
+        {
+          "seconds": 2,
+          "users": 231370.73
+        },
+        {
+          "seconds": 3,
+          "users": 114679.76
+        },
+        {
+          "seconds": 4,
+          "users": 59500
+        },
+        {
+          "seconds": 5,
+          "users": 33407.105
+        },
+        {
+          "seconds": 10,
+          "users": 10553.427
+        }
+      ]
+    },
+    {
+      "popularity": 0,
+      "from": 1000000000,
+      "to": 1000000,
+      "response95Seconds": 4,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 687968370
+        },
+        {
+          "seconds": 1,
+          "users": 473397930
+        },
+        {
+          "seconds": 2,
+          "users": 224383190
+        },
+        {
+          "seconds": 3,
+          "users": 106631390
+        },
+        {
+          "seconds": 4,
+          "users": 50950000
+        },
+        {
+          "seconds": 5,
+          "users": 24619897
+        },
+        {
+          "seconds": 10,
+          "users": 1558458
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 100,
+      "to": 1000,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 100
+        },
+        {
+          "seconds": 0.5,
+          "users": 590.05826
+        },
+        {
+          "seconds": 1,
+          "users": 813.2753
+        },
+        {
+          "seconds": 2,
+          "users": 961.25988
+        },
+        {
+          "seconds": 3,
+          "users": 991.96251
+        },
+        {
+          "seconds": 4,
+          "users": 998.33245
+        },
+        {
+          "seconds": 5,
+          "users": 999.65403
+        },
+        {
+          "seconds": 10,
+          "users": 999.99987
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 1000,
+      "to": 10000,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000
+        },
+        {
+          "seconds": 0.5,
+          "users": 5900.5826
+        },
+        {
+          "seconds": 1,
+          "users": 8132.753
+        },
+        {
+          "seconds": 2,
+          "users": 9612.5988
+        },
+        {
+          "seconds": 3,
+          "users": 9919.6251
+        },
+        {
+          "seconds": 4,
+          "users": 9983.3245
+        },
+        {
+          "seconds": 5,
+          "users": 9996.5403
+        },
+        {
+          "seconds": 10,
+          "users": 9999.9987
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 10000,
+      "to": 1000000,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 10000
+        },
+        {
+          "seconds": 0.5,
+          "users": 549064.09
+        },
+        {
+          "seconds": 1,
+          "users": 794602.83
+        },
+        {
+          "seconds": 2,
+          "users": 957385.86
+        },
+        {
+          "seconds": 3,
+          "users": 991158.76
+        },
+        {
+          "seconds": 4,
+          "users": 998165.69
+        },
+        {
+          "seconds": 5,
+          "users": 999619.43
+        },
+        {
+          "seconds": 10,
+          "users": 999999.85
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 1000000,
+      "to": 1000000000,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 544964670
+        },
+        {
+          "seconds": 1,
+          "users": 792735590
+        },
+        {
+          "seconds": 2,
+          "users": 956998460
+        },
+        {
+          "seconds": 3,
+          "users": 991078390
+        },
+        {
+          "seconds": 4,
+          "users": 998149020
+        },
+        {
+          "seconds": 5,
+          "users": 999615970
+        },
+        {
+          "seconds": 10,
+          "users": 999999850
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 1000,
+      "to": 100,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000
+        },
+        {
+          "seconds": 0.5,
+          "users": 509.94174
+        },
+        {
+          "seconds": 1,
+          "users": 286.7247
+        },
+        {
+          "seconds": 2,
+          "users": 138.74012
+        },
+        {
+          "seconds": 3,
+          "users": 108.03749
+        },
+        {
+          "seconds": 4,
+          "users": 101.66755
+        },
+        {
+          "seconds": 5,
+          "users": 100.34597
+        },
+        {
+          "seconds": 10,
+          "users": 100.00013
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 10000,
+      "to": 1000,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 10000
+        },
+        {
+          "seconds": 0.5,
+          "users": 5099.4174
+        },
+        {
+          "seconds": 1,
+          "users": 2867.247
+        },
+        {
+          "seconds": 2,
+          "users": 1387.4012
+        },
+        {
+          "seconds": 3,
+          "users": 1080.3749
+        },
+        {
+          "seconds": 4,
+          "users": 1016.6755
+        },
+        {
+          "seconds": 5,
+          "users": 1003.4597
+        },
+        {
+          "seconds": 10,
+          "users": 1000.0013
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 1000000,
+      "to": 10000,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 460935.91
+        },
+        {
+          "seconds": 1,
+          "users": 215397.17
+        },
+        {
+          "seconds": 2,
+          "users": 52614.137
+        },
+        {
+          "seconds": 3,
+          "users": 18841.235
+        },
+        {
+          "seconds": 4,
+          "users": 11834.308
+        },
+        {
+          "seconds": 5,
+          "users": 10380.567
+        },
+        {
+          "seconds": 10,
+          "users": 10000.146
+        }
+      ]
+    },
+    {
+      "popularity": 20,
+      "from": 1000000000,
+      "to": 1000000,
+      "response95Seconds": 1.9047619,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 456035330
+        },
+        {
+          "seconds": 1,
+          "users": 208264410
+        },
+        {
+          "seconds": 2,
+          "users": 44001538
+        },
+        {
+          "seconds": 3,
+          "users": 9921610.2
+        },
+        {
+          "seconds": 4,
+          "users": 2850983.3
+        },
+        {
+          "seconds": 5,
+          "users": 1384027
+        },
+        {
+          "seconds": 10,
+          "users": 1000147.6
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 100,
+      "to": 1000,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 100
+        },
+        {
+          "seconds": 0.5,
+          "users": 688.49785
+        },
+        {
+          "seconds": 1,
+          "users": 892.1849
+        },
+        {
+          "seconds": 2,
+          "users": 987.08434
+        },
+        {
+          "seconds": 3,
+          "users": 998.45277
+        },
+        {
+          "seconds": 4,
+          "users": 999.81465
+        },
+        {
+          "seconds": 5,
+          "users": 999.9778
+        },
+        {
+          "seconds": 10,
+          "users": 1000
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 1000,
+      "to": 10000,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000
+        },
+        {
+          "seconds": 0.5,
+          "users": 6884.9785
+        },
+        {
+          "seconds": 1,
+          "users": 8921.849
+        },
+        {
+          "seconds": 2,
+          "users": 9870.8434
+        },
+        {
+          "seconds": 3,
+          "users": 9984.5277
+        },
+        {
+          "seconds": 4,
+          "users": 9998.1465
+        },
+        {
+          "seconds": 5,
+          "users": 9999.778
+        },
+        {
+          "seconds": 10,
+          "users": 10000
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 10000,
+      "to": 1000000,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 10000
+        },
+        {
+          "seconds": 0.5,
+          "users": 657347.63
+        },
+        {
+          "seconds": 1,
+          "users": 881403.39
+        },
+        {
+          "seconds": 2,
+          "users": 985792.77
+        },
+        {
+          "seconds": 3,
+          "users": 998298.05
+        },
+        {
+          "seconds": 4,
+          "users": 999796.12
+        },
+        {
+          "seconds": 5,
+          "users": 999975.58
+        },
+        {
+          "seconds": 10,
+          "users": 1000000
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 1000000,
+      "to": 1000000000,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 654232610
+        },
+        {
+          "seconds": 1,
+          "users": 880325240
+        },
+        {
+          "seconds": 2,
+          "users": 985663610
+        },
+        {
+          "seconds": 3,
+          "users": 998282580
+        },
+        {
+          "seconds": 4,
+          "users": 999794260
+        },
+        {
+          "seconds": 5,
+          "users": 999975350
+        },
+        {
+          "seconds": 10,
+          "users": 1000000000
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 1000,
+      "to": 100,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000
+        },
+        {
+          "seconds": 0.5,
+          "users": 411.50215
+        },
+        {
+          "seconds": 1,
+          "users": 207.8151
+        },
+        {
+          "seconds": 2,
+          "users": 112.91566
+        },
+        {
+          "seconds": 3,
+          "users": 101.54723
+        },
+        {
+          "seconds": 4,
+          "users": 100.18535
+        },
+        {
+          "seconds": 5,
+          "users": 100.0222
+        },
+        {
+          "seconds": 10,
+          "users": 100
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 10000,
+      "to": 1000,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 10000
+        },
+        {
+          "seconds": 0.5,
+          "users": 4115.0215
+        },
+        {
+          "seconds": 1,
+          "users": 2078.151
+        },
+        {
+          "seconds": 2,
+          "users": 1129.1566
+        },
+        {
+          "seconds": 3,
+          "users": 1015.4723
+        },
+        {
+          "seconds": 4,
+          "users": 1001.8535
+        },
+        {
+          "seconds": 5,
+          "users": 1000.222
+        },
+        {
+          "seconds": 10,
+          "users": 1000
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 1000000,
+      "to": 10000,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 352652.37
+        },
+        {
+          "seconds": 1,
+          "users": 128596.61
+        },
+        {
+          "seconds": 2,
+          "users": 24207.229
+        },
+        {
+          "seconds": 3,
+          "users": 11701.949
+        },
+        {
+          "seconds": 4,
+          "users": 10203.884
+        },
+        {
+          "seconds": 5,
+          "users": 10024.424
+        },
+        {
+          "seconds": 10,
+          "users": 10000.001
+        }
+      ]
+    },
+    {
+      "popularity": 100,
+      "from": 1000000000,
+      "to": 1000000,
+      "response95Seconds": 1.4117647,
+      "samples": [
+        {
+          "seconds": 0,
+          "users": 1000000000
+        },
+        {
+          "seconds": 0.5,
+          "users": 346767390
+        },
+        {
+          "seconds": 1,
+          "users": 120674760
+        },
+        {
+          "seconds": 2,
+          "users": 15336385
+        },
+        {
+          "seconds": 3,
+          "users": 2717420.9
+        },
+        {
+          "seconds": 4,
+          "users": 1205737.7
+        },
+        {
+          "seconds": 5,
+          "users": 1024646.3
+        },
+        {
+          "seconds": 10,
+          "users": 1000000.6
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "smooth": true,
+    "noOvershoot": true,
+    "noOscillation": true,
+    "capacityToDemandPath": false,
+    "usersToDemandPath": false,
+    "finiteAtHugeValues": true
+  }
+}

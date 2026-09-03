@@ -1,0 +1,343 @@
+{
+  "phase": "2B.2",
+  "formulaSource": "src/systems/MarketSystem.js + src/systems/ProgressionSystem.js",
+  "levels": [
+    0,
+    1,
+    2,
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "skills": {
+    "quality": [
+      {
+        "level": 0,
+        "multiplier": 1,
+        "marginalNextPercent": 50,
+        "revenueMultiplier": 1,
+        "priceTolerance": 1,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 1,
+        "multiplier": 1.5,
+        "marginalNextPercent": 13.807119,
+        "revenueMultiplier": 1.38,
+        "priceTolerance": 1.1,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 2,
+        "multiplier": 1.7071068,
+        "marginalNextPercent": 9.3092374,
+        "revenueMultiplier": 1.5300026,
+        "priceTolerance": 1.1414214,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 5,
+        "multiplier": 2.118034,
+        "marginalNextPercent": 5.0382044,
+        "revenueMultiplier": 1.8227904,
+        "priceTolerance": 1.2236068,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 10,
+        "multiplier": 2.5811388,
+        "marginalNextPercent": 2.9899037,
+        "revenueMultiplier": 2.1475817,
+        "priceTolerance": 1.3162278,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 20,
+        "multiplier": 3.236068,
+        "marginalNextPercent": 1.7063878,
+        "revenueMultiplier": 2.6005822,
+        "priceTolerance": 1.4472136,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 50,
+        "multiplier": 4.5355339,
+        "marginalNextPercent": 0.77565969,
+        "revenueMultiplier": 3.4847872,
+        "priceTolerance": 1.7071068,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 100,
+        "multiplier": 6,
+        "marginalNextPercent": 0.41563018,
+        "revenueMultiplier": 4.4656412,
+        "priceTolerance": 2,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": true,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": false
+        }
+      }
+    ],
+    "efficiency": [
+      {
+        "level": 0,
+        "multiplier": 1,
+        "marginalNextPercent": 42,
+        "equivalentPower": 1,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 1,
+        "multiplier": 1.42,
+        "marginalNextPercent": 12.251387,
+        "equivalentPower": 2.0164,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 2,
+        "multiplier": 1.5939697,
+        "marginalNextPercent": 8.3747918,
+        "equivalentPower": 2.5407394,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 5,
+        "multiplier": 1.9391486,
+        "marginalNextPercent": 4.6225,
+        "equivalentPower": 3.7602971,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 10,
+        "multiplier": 2.3281566,
+        "marginalNextPercent": 2.7844258,
+        "equivalentPower": 5.4203132,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 20,
+        "multiplier": 2.8782971,
+        "marginalNextPercent": 1.6115324,
+        "equivalentPower": 8.2845942,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 50,
+        "multiplier": 3.9698485,
+        "marginalNextPercent": 0.74439766,
+        "equivalentPower": 15.759697,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      },
+      {
+        "level": 100,
+        "multiplier": 5.2,
+        "marginalNextPercent": 0.40284156,
+        "equivalentPower": 27.04,
+        "effects": {
+          "demand": false,
+          "revenuePerUser": false,
+          "capacity": true,
+          "training": true,
+          "responseSpeed": false
+        }
+      }
+    ],
+    "popularity": [
+      {
+        "level": 0,
+        "multiplier": 1,
+        "marginalNextPercent": 58,
+        "response95Seconds": 4,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      },
+      {
+        "level": 1,
+        "multiplier": 1.58,
+        "marginalNextPercent": 15.205308,
+        "response95Seconds": 3.6206897,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      },
+      {
+        "level": 2,
+        "multiplier": 1.8202439,
+        "marginalNextPercent": 10.127522,
+        "response95Seconds": 3.3333333,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      },
+      {
+        "level": 5,
+        "multiplier": 2.2969194,
+        "marginalNextPercent": 5.3891583,
+        "response95Seconds": 2.7777778,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      },
+      {
+        "level": 10,
+        "multiplier": 2.834121,
+        "marginalNextPercent": 3.1586984,
+        "response95Seconds": 2.3076923,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      },
+      {
+        "level": 20,
+        "multiplier": 3.5938389,
+        "marginalNextPercent": 1.7823573,
+        "response95Seconds": 1.9047619,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      },
+      {
+        "level": 50,
+        "multiplier": 5.1012193,
+        "marginalNextPercent": 0.7999883,
+        "response95Seconds": 1.5555556,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      },
+      {
+        "level": 100,
+        "multiplier": 6.8,
+        "marginalNextPercent": 0.42540971,
+        "response95Seconds": 1.4117647,
+        "effects": {
+          "demand": true,
+          "revenuePerUser": false,
+          "capacity": false,
+          "training": false,
+          "responseSpeed": true
+        }
+      }
+    ]
+  },
+  "flags": []
+}

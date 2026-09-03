@@ -1,0 +1,162 @@
+{
+  "phase": "2B.2",
+  "milestones": [
+    {
+      "quantity": 10,
+      "multiplier": 1.35
+    },
+    {
+      "quantity": 25,
+      "multiplier": 1.35
+    },
+    {
+      "quantity": 50,
+      "multiplier": 2.1
+    },
+    {
+      "quantity": 100,
+      "multiplier": 3.6
+    }
+  ],
+  "upgradeParameters": {
+    "costFactor": 3,
+    "costGrowth": 1.78
+  },
+  "transitions": [
+    {
+      "from": "Calculator",
+      "to": "Pocket Computer",
+      "previousPurchaseProductionPerCredit": 0.0013404154,
+      "previousMilestoneIncrementPerCredit": 0.000033649137,
+      "currentPurchaseProductionPerCredit": 0.0061111111,
+      "nextTierSavingSecondsAtReferenceRevenue": 120,
+      "newestTierDominanceFlag": false
+    },
+    {
+      "from": "Pocket Computer",
+      "to": "Laptop",
+      "previousPurchaseProductionPerCredit": 0.00032765711,
+      "previousMilestoneIncrementPerCredit": 0.0000082253447,
+      "currentPurchaseProductionPerCredit": 0.0076470588,
+      "nextTierSavingSecondsAtReferenceRevenue": 128.78788,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Laptop",
+      "to": "Gaming PC",
+      "previousPurchaseProductionPerCredit": 0.00036685842,
+      "previousMilestoneIncrementPerCredit": 0.0000082769335,
+      "currentPurchaseProductionPerCredit": 0.016923077,
+      "nextTierSavingSecondsAtReferenceRevenue": 83.333333,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Gaming PC",
+      "to": "Workstation",
+      "previousPurchaseProductionPerCredit": 0.0006346154,
+      "previousMilestoneIncrementPerCredit": 0.000011302843,
+      "currentPurchaseProductionPerCredit": 0.03,
+      "nextTierSavingSecondsAtReferenceRevenue": 68.181818,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Workstation",
+      "to": "Server Rack",
+      "previousPurchaseProductionPerCredit": 0.001125,
+      "previousMilestoneIncrementPerCredit": 0.000020036858,
+      "currentPurchaseProductionPerCredit": 0.015714286,
+      "nextTierSavingSecondsAtReferenceRevenue": 172.83951,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Server Rack",
+      "to": "GPU Cluster",
+      "previousPurchaseProductionPerCredit": 0.00041326703,
+      "previousMilestoneIncrementPerCredit": 0.000005235721,
+      "currentPurchaseProductionPerCredit": 0.0071428571,
+      "nextTierSavingSecondsAtReferenceRevenue": 530.30303,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "GPU Cluster",
+      "to": "Datacenter",
+      "previousPurchaseProductionPerCredit": 0.00018784865,
+      "previousMilestoneIncrementPerCredit": 0.0000023798732,
+      "currentPurchaseProductionPerCredit": 0.0004375,
+      "nextTierSavingSecondsAtReferenceRevenue": 10666.667,
+      "newestTierDominanceFlag": false
+    },
+    {
+      "from": "Datacenter",
+      "to": "Hyperscale Center",
+      "previousPurchaseProductionPerCredit": 0.0000091698929,
+      "previousMilestoneIncrementPerCredit": 9.3433388e-8,
+      "currentPurchaseProductionPerCredit": 0.00021818182,
+      "nextTierSavingSecondsAtReferenceRevenue": 26190.476,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Hyperscale Center",
+      "to": "Orbital Datacenter",
+      "previousPurchaseProductionPerCredit": 0.0000045730375,
+      "previousMilestoneIncrementPerCredit": 4.6595352e-8,
+      "currentPurchaseProductionPerCredit": 0.00011111111,
+      "nextTierSavingSecondsAtReferenceRevenue": 62500,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Orbital Datacenter",
+      "to": "Moon Compute Facility",
+      "previousPurchaseProductionPerCredit": 0.0000018160641,
+      "previousMilestoneIncrementPerCredit": 1.457394e-8,
+      "currentPurchaseProductionPerCredit": 0.000055882353,
+      "nextTierSavingSecondsAtReferenceRevenue": 141666.67,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Moon Compute Facility",
+      "to": "Mars Compute Grid",
+      "previousPurchaseProductionPerCredit": 9.133734e-7,
+      "previousMilestoneIncrementPerCredit": 7.3298345e-9,
+      "currentPurchaseProductionPerCredit": 0.0000275,
+      "nextTierSavingSecondsAtReferenceRevenue": 350877.19,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Mars Compute Grid",
+      "to": "Fusion Compute Network",
+      "previousPurchaseProductionPerCredit": 3.4419702e-7,
+      "previousMilestoneIncrementPerCredit": 2.137911e-9,
+      "currentPurchaseProductionPerCredit": 0.000013571429,
+      "nextTierSavingSecondsAtReferenceRevenue": 848484.85,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Fusion Compute Network",
+      "to": "Dyson Compute Array",
+      "previousPurchaseProductionPerCredit": 1.6986346e-7,
+      "previousMilestoneIncrementPerCredit": 1.0550729e-9,
+      "currentPurchaseProductionPerCredit": 0.000006,
+      "nextTierSavingSecondsAtReferenceRevenue": 2192982.5,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Dyson Compute Array",
+      "to": "Matrioshka Brain",
+      "previousPurchaseProductionPerCredit": 6.5518531e-8,
+      "previousMilestoneIncrementPerCredit": 3.5698964e-10,
+      "currentPurchaseProductionPerCredit": 0.0000025,
+      "nextTierSavingSecondsAtReferenceRevenue": 6666666.7,
+      "newestTierDominanceFlag": true
+    },
+    {
+      "from": "Matrioshka Brain",
+      "to": "Singularity Core",
+      "previousPurchaseProductionPerCredit": 2.7299388e-8,
+      "previousMilestoneIncrementPerCredit": 1.4874568e-10,
+      "currentPurchaseProductionPerCredit": 1.125e-7,
+      "nextTierSavingSecondsAtReferenceRevenue": 177777780,
+      "newestTierDominanceFlag": false
+    }
+  ]
+}

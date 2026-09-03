@@ -7,7 +7,7 @@ import { branchInvestment, hasTechnologyMechanic, purchasedTechnologyNodes, tech
 import { earnGems, spendGems } from './GemSystem.js';
 import { enqueueReward } from './RewardQueue.js';
 import { RESEARCH_PROJECTS, researchProjectCost, startResearchProject, tickResearchLabs, unlockedResearchLabs } from './ResearchSystem.js';
-import { marketSnapshot, potentialDemand as calculatePotentialDemand } from './MarketSystem.js';
+import { advanceUsers, marketSnapshot, potentialDemand as calculatePotentialDemand } from './MarketSystem.js';
 import { allocatedCompute, efficiencyFactor, hardwareUnitCost, modelTierScale, qualityRevenueFactor, trainingRequirement, withinModelLevelFactor } from './ProgressionSystem.js';
 import { patentLevelMultiplier as boundedPatentLevelMultiplier, researchComputePerSecond, researchPointsPerSecond, spendResearchOnPatent } from './ResearchEconomySystem.js';
 import { claimableInt, intEntitlement, lifetimeQualifyingCompute } from './PrestigeSystem.js';
@@ -190,10 +190,10 @@ export function tickGame(state, deltaMs, options={}) {
   const researchGain = researchEnabled ? researchPerSecond(state) * seconds : 0;
   const dataGain = produced * state.allocation.data / 100 * allocationEfficiency;
   const autonomy=state.model.deployed.reduce((sum,id)=>{const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'autonomy')*.015:0)},0);const agentGain = produced * state.allocation.agents / 100 * (1 + strategicBonus(state, 'agents') + autonomy) * allocationEfficiency * (1 + deployedIdentityBonus(state,'agents'));
-  // Users are Demand; only Capacity constrains how many can be served.
   const metrics=marketMetrics(state);
-  const users=metrics.potentialDemand;
-  const creditGain=metrics.revenuePerSecond*seconds;
+  const users=advanceUsers(state.resources.users,metrics.potentialDemand,seconds,metrics.factors.popularity);
+  const nextMarket=marketMetrics(state,users);
+  const creditGain=nextMarket.revenuePerSecond*seconds;
   const safety = state.model.deployed.reduce((sum,id) => {const model=MODEL_CATALOG.find(item=>item.id===id);return sum+(model?effectiveModelStat(state,model,'safety')*.1:0)}, 0);
   const reputation = Math.min(10, state.market.reputation + dataGain * 0.00004 * (1 + safety * 0.06 + strategicBonus(state, 'reputationGrowth')));
   const adoption = Math.min(100, state.market.adoption + agentGain * 0.0002 + users * seconds * 0.00004 * (1 + deployedIdentityBonus(state,'adoption')));

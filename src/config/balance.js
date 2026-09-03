@@ -16,31 +16,25 @@ export const BALANCE = Object.freeze({
   }),
   training: Object.freeze({
     maximumSimulationStepMs:10_000,
-    durationBaseSeconds:45,durationSqrtCoefficient:34,
-    tierTransitionSeconds:Object.freeze([0,60,180,420,900,1_800,3_600,7_200,14_400]),
-    // Log-interpolated static anchors derived from the first human run. The
-    // L25 anchor turns its observed 4s completion into a ~74s baseline while
-    // remaining wholly independent of the player's live throughput.
-    referenceRateAnchors:Object.freeze([
-      Object.freeze({level:1,rate:.38}),Object.freeze({level:5,rate:4.15}),Object.freeze({level:10,rate:39}),
-      Object.freeze({level:15,rate:170}),Object.freeze({level:20,rate:510}),Object.freeze({level:25,rate:1_395}),
-      Object.freeze({level:30,rate:3_030}),Object.freeze({level:50,rate:18_000}),Object.freeze({level:100,rate:180_000}),
-      Object.freeze({level:250,rate:5_000_000}),Object.freeze({level:500,rate:100_000_000}),
-    ]),
-    referenceRateByTier:Object.freeze([1,32,960,28_800,880_000,28_000_000,960_000_000,40_000_000_000,2_000_000_000_000]),
+    // Phase 2B.2: one expected-compute curve and one duration curve replace
+    // eleven hand-authored level anchors. Neither curve can inspect live state.
+    expectedRateBase:.5, expectedRateLevelGrowth:1.67,
+    durationBaseSeconds:28,durationLevelCoefficient:2,durationLevelPower:.72,
+    tierTransitionSeconds:Object.freeze([0,75,210,480,1_020,2_100,4_200,8_400,16_800]),
+    referenceRateByTier:Object.freeze([1,32,1_024,32_768,1_048_576,33_554_432,1_073_741_824,34_359_738_368,1_099_511_627_776]),
     skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4,
   }),
-  models:Object.freeze({tierScale:Object.freeze([1,3.5,12,42,160,650,2_800,14_000,80_000]),levelCoefficient:.16,levelPower:.62,qualityRevenueCoefficient:.12,efficiencyCoefficient:.20}),
+  models:Object.freeze({tierBase:4.2,tierAcceleration:1.08,levelCoefficient:.8,levelPower:.72,qualityRevenueCoefficient:.38,qualityRevenuePower:.48,efficiencyCoefficient:.42,efficiencyPower:.5}),
   market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.025, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
   marketV3: Object.freeze({
-    marketingCoefficient:.32,qualityDemandCoefficient:.18,
+    marketingCoefficient:.32,qualityDemandCoefficient:.5,qualityDemandPower:.5,
     reputation:Object.freeze({min:.75,max:1.25,steepness:2.2,midpoint:1}),
     adoption:Object.freeze({maxBonus:.5,halfSaturation:50}),
     wordOfMouth:Object.freeze({userScale:1_000,maxBonus:1.5,saturation:3}),
     price:Object.freeze({discountDemandCoefficient:.8,premiumElasticity:1.15,qualityToleranceCoefficient:.1}),
-    popularity:Object.freeze({sqrtCoefficient:.3,logCoefficient:.08}),
-    acquisition:Object.freeze({baseHalfLifeSeconds:180,minimumHalfLifeSeconds:30,popularityCoefficient:.08,marketingCoefficient:.06}),
-    churnHalfLifeSeconds:90,
+    popularity:Object.freeze({coefficient:.58,power:.5}),
+    userResponse95Seconds:4,minimumUserResponse95Seconds:1.25,
+    popularityResponse:Object.freeze({maximumSpeedBonus:2.2,halfSaturation:20}),
   }),
   patents: Object.freeze({ baseRequirement: 1_500, discoveryGrowth: 1.52, tierGrowth: 1.28 }),
   intelligence: Object.freeze({
