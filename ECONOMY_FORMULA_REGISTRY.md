@@ -46,3 +46,21 @@ Runtime, UI, telemetry, and offline progression consume `economySnapshot`, `tick
 
 ## Proposed future formula (inactive)
 `PROPOSED_FUTURE_FORMULA: PatentLevelMultiplier = 1 + (L-1)/(3+(L-1))`. This bounded candidate is exported only for comparison and is not called by live gameplay.
+# Phase 2B.2 superseding registry (2026-09-03)
+
+The following entries supersede older Training/Model/Market rows below. Canonical helpers are pure and shared by runtime, previews, offline ticks, telemetry snapshots, and simulators.
+
+| System | Canonical helper | Formula | Classification |
+|---|---|---|---|
+| Expected Training Rate | `referenceTrainingRate` | `0.5 × 1.67^(L-1) × 32^T` | `LOCKED_FORMULA`; inputs `TUNABLE_PARAMETER` / tier factor `DERIVED_PARAMETER` |
+| Training Requirement | `trainingRequirement` | expected rate × `(28 + 2L^0.72 + transition[T])` | `LOCKED_FORMULA` |
+| Model Level | `withinModelLevelFactor` | `1 + 0.8L^0.72` | `LOCKED_FORMULA`; coefficient/exponent `TUNABLE_PARAMETER` |
+| Model Tier | `modelTierScale` | `4.2^T × 1.08^(T(T-1)/2)` | `LOCKED_FORMULA` |
+| Quality Demand | `qualityDemandFactor` | `1 + 0.5Q^0.5` | `LOCKED_FORMULA` |
+| Quality Revenue | `qualityRevenueFactor` | `1 + 0.38Q^0.48` | `LOCKED_FORMULA` |
+| Efficiency | `efficiencyFactor` | `1 + 0.42E^0.5` | `LOCKED_FORMULA` |
+| Popularity Demand | `popularityDemandFactor` | `1 + 0.58P^0.5` | `LOCKED_FORMULA` |
+| User Response | `advanceUsers` | `Target +(U-Target)e^(-k dt)` | `LOCKED_FORMULA`; response95 `TUNABLE_PARAMETER` |
+| Served Users | `servedUsers` | `min(CurrentUsers, Demand, Capacity)` | `LOCKED_FORMULA` |
+| Revenue | `revenueRate` | `ServedUsers × RevenuePerUser` | `LOCKED_FORMULA` |
+| Hardware milestones | `rawHardwareContribution` | local cumulative output bonuses at 10/50/100 | `CONTENT_ANCHOR` |
