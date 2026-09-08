@@ -32,3 +32,6 @@ At 60,000 Research Compute/s, the restored formula produces approximately 76.2 R
 
 ## Remaining audit-only scope
 Patent level scaling and synergies, tapping, final Research content anchors, Development Cycles, INT, Technology, and Breakthroughs remain AUDIT_ONLY. No Phase 2C balancing was performed.
+# Phase 2B.2 supersession note
+
+The Training, Model power, Model skills, instant-user, and Hardware milestone findings in this audit are historical as of Phase 2B.2. Their replacement formulas and classifications are documented in `PHASE_2B_2_MATHEMATICAL_CALIBRATION.md`; Research, Patent, Development Cycle, INT, Technology, and Breakthrough findings remain unchanged.

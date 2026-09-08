@@ -2,8 +2,8 @@ import { BALANCE } from '../config/balance.js';
 import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
 export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 23;
-export const GAME_VERSION = '0.20.0';
+export const SAVE_VERSION = 24;
+export const GAME_VERSION = '0.21.0';
 
 export const HARDWARE_CATALOG = [
   ['calculator','⌗','Calculator','A programmable calculator running the first tiny tensor operations.'],
@@ -24,14 +24,14 @@ export const HARDWARE_CATALOG = [
   ['matrioshkaBrain','∞','Singularity Core','Self-improving infrastructure operating beyond human-scale planning.'],
 ].map(([id,icon,name,description],tier)=>({id,icon,name,description,baseCost:BALANCE.hardware.tierCosts[tier],computePerSecond:BALANCE.hardware.tierProduction[tier],costGrowth:BALANCE.hardware.tierGrowth[tier],targetPurchaseCount:BALANCE.hardware.targetPurchaseCounts[tier],targetFinalCostRatio:BALANCE.hardware.targetFinalCostRatios[tier],tier,
   milestones:[
-    {quantity:10,name:'Thermal Rhythm',description:`${name} output +10%`,effect:'hardwareOutput',value:.1},
+    {quantity:10,name:'Thermal Rhythm',description:`${name} output +35%`,effect:'hardwareOutput',value:.35},
     {quantity:25,name:'Bulk Procurement',description:`All hardware costs -${3+tier%3}%`,effect:'hardwareDiscount',value:(3+tier%3)/100},
-    {quantity:50,name:'Fleet Intelligence',description:`Market demand +${5+tier}%`,effect:'demand',value:(5+tier)/100},
-    {quantity:100,name:'Autonomous Operations',description:`Revenue +${4+tier}%`,effect:'revenue',value:(4+tier)/100},
+    {quantity:50,name:'Fleet Intelligence',description:`${name} output +75%`,effect:'hardwareOutput',value:.75},
+    {quantity:100,name:'Autonomous Operations',description:`${name} output +150%`,effect:'hardwareOutput',value:1.5},
   ],
 }));
 
-export const MODEL_SKILLS = ['quality','efficiency','popularity'];
+export const MODEL_SKILLS = ['quality','efficiency'];
 const MODEL_BASE = [
   {id:'tinyChat',name:'TinyChat',role:'Consumer',specialty:'Fast, efficient access for a large free audience.',intCost:0,unlockTech:null,trainingScale:1,identity:{adoption:.3,energyEfficiency:.2},stats:{quality:1,reasoning:1,knowledge:1,context:1,coding:1,vision:0,creativity:2,math:1,efficiency:8,energy:8,latency:8,popularity:5,enterprise:0,research:0,safety:3,autonomy:0}},
   {id:'smartChat',name:'SmartChat',role:'Developer',specialty:'Coding workflows, developer demand, and practical Research.',intCost:0,unlockTech:'model-1',trainingScale:4,identity:{research:.2,coding:.35},stats:{quality:3,reasoning:3,knowledge:3,context:3,coding:7,vision:1,creativity:3,math:4,efficiency:7,energy:7,latency:7,popularity:4,enterprise:2,research:4,safety:4,autonomy:1}},
@@ -268,7 +268,7 @@ export function createDefaultState() {
     company: { employees: { research: 0, marketing: 0, sales: 0, operations: 0, legal: 0, finance: 0, hr: 0 } },
     automation: { lastHardwarePurchaseMs: -1_000 },
     energy: { stored: 0, buildings: Object.fromEntries(ENERGY_BUILDINGS.map(({id}) => [id, 0])) },
-    patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: 3, researchActive:false, researchPointsSpent:0 },
+    patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: Number.MAX_SAFE_INTEGER, researchActive:false, researchPointsSpent:0 },
     premium: { purchases: [], adCooldowns: {}, freeGemClaimedAt:0 },
     retention: { lastLoginDate: null, loginDays:[], loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null, dailyCompletionStreak: 0, lastDailyCompletionPeriod: null, completedDailyPeriods: 0 },
     inventory: { instances: [], equipped: {}, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },
