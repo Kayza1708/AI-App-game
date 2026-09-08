@@ -895,7 +895,32 @@
     }
   ],
   "phase2B2": {
-    "status": "implemented",
+    "status": "SUPERSEDED_BY_CORE_LOOP_0_21",
     "legacyMagicNumbersIntroduced": 0
+  },
+  "coreLoop021": {
+    "status": "ACTIVE",
+    "formula": "Credits -> Hardware -> Compute -> Users -> Credits",
+    "removed": [
+      "Demand",
+      "Popularity skill",
+      "Allocation controls",
+      "Market controls",
+      "Patent slots"
+    ],
+    "parameters": {
+      "computePerUserBase": {
+        "value": 1,
+        "classification": "TUNABLE_PARAMETER"
+      },
+      "trainingComputeShare": {
+        "value": 0.25,
+        "classification": "TUNABLE_PARAMETER"
+      },
+      "revenueBase": {
+        "value": 0.24,
+        "classification": "TUNABLE_PARAMETER"
+      }
+    }
   }
 }

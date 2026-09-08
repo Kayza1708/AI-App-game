@@ -2,7 +2,7 @@
  * Milestone 11 progression controls. Gameplay formulas consume this object so
  * pacing can be tuned without hunting through simulation or UI code.
  */
-import { RESEARCH_UNLOCK_TECH_ID, TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
+import { TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
 import { PRESTIGE_PARAMETERS, TECHNOLOGY_COST_PARAMETERS } from '../systems/PrestigeSystem.js';
 export const BALANCE = Object.freeze({
   hardware: Object.freeze({
@@ -22,10 +22,10 @@ export const BALANCE = Object.freeze({
     durationBaseSeconds:28,durationLevelCoefficient:2,durationLevelPower:.72,
     tierTransitionSeconds:Object.freeze([0,75,210,480,1_020,2_100,4_200,8_400,16_800]),
     referenceRateByTier:Object.freeze([1,32,1_024,32_768,1_048_576,33_554_432,1_073_741_824,34_359_738_368,1_099_511_627_776]),
-    skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4,
+    computeShare:.25, skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4,
   }),
   models:Object.freeze({tierBase:4.2,tierAcceleration:1.08,levelCoefficient:.8,levelPower:.72,qualityRevenueCoefficient:.38,qualityRevenuePower:.48,efficiencyCoefficient:.42,efficiencyPower:.5}),
-  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.025, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
+  market: Object.freeze({ revenueBase: 0.24, computePerUserBase:1, capacityScale: 1.7, marketingBase:0, marketingCostBase:220, marketingCostGrowth:1.72 }),
   marketV3: Object.freeze({
     marketingCoefficient:.32,qualityDemandCoefficient:.5,qualityDemandPower:.5,
     reputation:Object.freeze({min:.75,max:1.25,steepness:2.2,midpoint:1}),
@@ -120,21 +120,19 @@ export function curveValue(base, growth, level) { return base * growth ** Math.m
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
 export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) => Number.isFinite(item.int) && !featureUnlocked(state,item.id)).sort((a, b) => a.int - b.int)[0] ?? null; }
 export function featureUnlocked(state, id) {
-  if (['core', 'modelSkills', 'marketing', 'missions'].includes(id)) return true;
+  if (['core', 'modelSkills', 'missions'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
   if (id === 'allocation') return (state.meta.cycles ?? 0) > 0 || (state.model?.level ?? 1) >= 4 || (state.hardware?.workstation ?? 0) > 0 || state.meta.techNodes.includes('system-allocation');
-  if (id === 'research') return isResearchUnlocked(state);
+  if (id === 'research') return true;
   if (TECHNOLOGY_NODES.some((node) => node.unlockFeature === id && state.meta.techNodes.includes(node.id))) return true;
   const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
   return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity);
 }
 export function isResearchUnlocked(state) {
-  const purchased = state?.meta?.techNodes ?? [];
-  const legacyEvidence=state?.meta?.featureUnlockTimes?.research!==undefined||(state?.resources?.research??0)>0||(state?.upgrades??[]).some(id=>id.startsWith('research-'))||purchased.includes('system-research');
-  return legacyEvidence||((state?.meta?.cycles??0)>=1&&purchased.includes(RESEARCH_UNLOCK_TECH_ID));
+  return Boolean(state);
 }
 export function viewUnlocked(state, view) {
-  if (view === 'market') return featureUnlocked(state,'marketing');
+  if (['market','allocation'].includes(view)) return false;
   if (view === 'gemshop') return true;
   if (view === 'company') return (state.meta.cycles ?? 0) > 0;
   if (view === 'allocation') return featureUnlocked(state,'allocation');

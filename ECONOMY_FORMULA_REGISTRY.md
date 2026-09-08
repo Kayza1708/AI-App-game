@@ -10,20 +10,20 @@ Statuses: **LOCKED** is specification-controlled, **DERIVED** is calculated from
 | Compute | canonical Hardware contribution sum | LOCKED boundary | `GameSystem.computePerSecond` |
 | Compute allocation | `TotalCompute × allocation/100`; total allocation ≤100% | LOCKED boundary | `ProgressionSystem.allocatedCompute` |
 | Training requirement | `StaticReferenceRate × TargetDuration` | LOCKED boundary / DERIVED anchors | `ProgressionSystem.trainingRequirement` |
-| Training throughput | allocated Training Compute × Efficiency × grouped modifiers | TUNABLE | `GameSystem.trainingRatePerSecond` |
-| Model level | `1 + 0.8 L^0.72` market factor | TUNABLE | `ProgressionSystem.withinModelLevelFactor` |
-| Model tiers | `4.2^T × 1.08^(T(T-1)/2)` | TUNABLE | `ProgressionSystem.modelTierScale` |
-| Quality | concave root Demand and Revenue; root price tolerance | TUNABLE | `MarketSystem`, `ProgressionSystem` |
-| Efficiency | `1 + 0.42 E^0.5` for Training and Capacity | TUNABLE | `ProgressionSystem.efficiencyFactor` |
-| Popularity | `1 + 0.58 P^0.5` | TUNABLE | `MarketSystem.popularityDemandFactor` |
-| Potential Demand | product of independent Market fundamentals; never Capacity | LOCKED boundary | `MarketSystem.potentialDemand` |
-| Price | discount linear / premium exponential | TUNABLE | `MarketSystem.priceDemandFactor` |
-| Marketing | `1 + 0.32 ln(1+M)` | TUNABLE | `MarketSystem.marketingFactor` |
-| Reputation | bounded logistic `[0.75,1.25]` | TUNABLE | `MarketSystem.reputationFactor` |
-| Adoption | `1 + 0.5A/(50+A)` | TUNABLE | `MarketSystem.adoptionFactor` |
-| Users | symmetric exponential response toward Potential Demand | LOCKED | `MarketSystem.advanceUsers` |
-| Inference Capacity | Inference Compute × Efficiency × modifier group | LOCKED boundary | `MarketSystem.inferenceCapacity` |
-| Served Users | `min(Demand, Capacity)` | LOCKED | `MarketSystem.servedUsers` |
+| Training throughput | Total Hardware Compute × fixed Training share × Training modifiers | TUNABLE | `GameSystem.trainingRatePerSecond` |
+| Model Training | static Compute Requirement; awards a Quality/Efficiency point | LOCKED boundary | `GameSystem`, `ProgressionSystem` |
+| Quality | concave Revenue/User multiplier | TUNABLE | `ProgressionSystem.qualityRevenueFactor` |
+| Efficiency | concave capacity multiplier; lowers Compute/User | TUNABLE | `ProgressionSystem.efficiencyFactor` |
+| User Capacity | Hardware Compute × Efficiency × capacity modifiers | LOCKED boundary | `MarketSystem.inferenceCapacity` |
+| Users | `Users = Capacity` (fully utilized) | LOCKED | `MarketSystem.marketSnapshot` |
+| Compute/User | Hardware Compute divided by User Capacity | DERIVED | `MarketSystem.inferenceCapacity` |
+| Research production | total Hardware Compute → RP/s, no allocation | LOCKED boundary | `GameSystem.researchPerSecond` |
+| Patents | discovered with RP; every discovered Patent permanently active | LOCKED boundary | `GameSystem`, `ResearchEconomySystem` |
+| Patent levels | improved with INT | AUDIT_ONLY legacy | `GameSystem.upgradePatent` |
+| Manual Compute | Optimize clicks add stored Compute | TUNABLE | `GameSystem.optimizeCode` |
+| Removed controls | Demand, Popularity skill, Allocation, Market pricing, Patent slots are inactive | LOCKED boundary | `navigation.js`, `GameSystem`, `MarketSystem` |
+| Capacity utilization | always 100% when Compute > 0 | LOCKED | `MarketSystem.marketSnapshot` |
+| Served Users | equals User Capacity | LOCKED | `MarketSystem.marketSnapshot` |
 | Revenue | Served Users × Revenue/User | LOCKED identity | `MarketSystem.revenueRate` |
 | Research Compute | Total Compute × Research allocation | LOCKED | `ResearchEconomySystem.researchComputePerSecond` |
 | RP production | `4 × (ResearchCompute/1000)^0.72 × modifiers` | LOCKED | `ResearchEconomySystem.researchPointsPerSecond` |

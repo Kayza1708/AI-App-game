@@ -2,20 +2,18 @@ import { BALANCE } from '../config/balance.js';
 
 const finiteNonNegative=value=>Number.isFinite(value)?Math.max(0,value):0;
 
-export function marketingFactor(level){return 1+BALANCE.marketV3.marketingCoefficient*Math.log1p(finiteNonNegative(level))}
-export function reputationFactor(value){const p=BALANCE.marketV3.reputation,r=Number.isFinite(value)?value:p.midpoint;return p.min+(p.max-p.min)/(1+Math.exp(-p.steepness*(r-p.midpoint)))}
-export function adoptionFactor(value){const p=BALANCE.marketV3.adoption,a=finiteNonNegative(value);return 1+p.maxBonus*a/(p.halfSaturation+a)}
-export function wordOfMouthFactor(users){const p=BALANCE.marketV3.wordOfMouth,z=Math.log1p(finiteNonNegative(users)/p.userScale);return 1+p.maxBonus*z/(p.saturation+z)}
-export function qualityDemandFactor(quality){return 1+BALANCE.marketV3.qualityDemandCoefficient*finiteNonNegative(quality)**BALANCE.marketV3.qualityDemandPower}
-export function popularityDemandFactor(popularity){const p=BALANCE.marketV3.popularity;return 1+p.coefficient*finiteNonNegative(popularity)**p.power}
-export function priceDemandFactor(price,quality,elasticityBonus=0){const p=BALANCE.marketV3.price,value=Math.min(3,Math.max(.5,Number(price)||1));if(value<=1)return 1+p.discountDemandCoefficient*(1-value);const tolerance=Math.max(.1,1+p.qualityToleranceCoefficient*Math.sqrt(finiteNonNegative(quality))+finiteNonNegative(elasticityBonus));return Math.exp(-p.premiumElasticity*(value-1)/tolerance)}
-export function userResponse95Seconds(popularity=0){const p=BALANCE.marketV3.popularityResponse,speed=1+p.maximumSpeedBonus*finiteNonNegative(popularity)/(p.halfSaturation+finiteNonNegative(popularity));return Math.max(BALANCE.marketV3.minimumUserResponse95Seconds,BALANCE.marketV3.userResponse95Seconds/speed)}
-/** Exact, symmetric continuous response; stable for both rising and falling demand. */
-export function advanceUsers(users,demand,deltaSeconds=0,popularity=0){const current=finiteNonNegative(users),target=finiteNonNegative(demand),dt=finiteNonNegative(deltaSeconds),k=-Math.log(.05)/userResponse95Seconds(popularity);return target+(current-target)*Math.exp(-k*dt)}
+/** Compute is the only User-capacity input; Efficiency lowers Compute/User. */
+export function inferenceCapacity(_state,totalComputePerSecond,modelEfficiency,inferenceModifiers=1){
+  const compute=finiteNonNegative(totalComputePerSecond);
+  const capacity=compute*finiteNonNegative(modelEfficiency)*finiteNonNegative(inferenceModifiers)/BALANCE.market.computePerUserBase;
+  return{inferenceComputePerSecond:compute,inferenceCapacity:finiteNonNegative(capacity),computePerUser:capacity>0?compute/capacity:0};
+}
 
-// Capacity must never feed Potential Demand. This prevents the V2 feedback loop.
-export function potentialDemand(_state,factors){const value=factors.baseMarket*factors.modelTier*factors.modelLevel*qualityDemandFactor(factors.quality)*popularityDemandFactor(factors.popularity)*factors.infrastructure*marketingFactor(factors.marketing)*reputationFactor(factors.reputation)*adoptionFactor(factors.adoption)*priceDemandFactor(factors.price,factors.quality,factors.priceElasticity)*factors.marketSizeModifiers*factors.demandModifiers*factors.appealModifiers;return finiteNonNegative(value)}
-export function inferenceCapacity(state,totalComputePerSecond,modelEfficiency,inferenceModifiers=1){const inferenceCompute=finiteNonNegative(totalComputePerSecond)*(finiteNonNegative(state.allocation.inference)/100),capacity=inferenceCompute*finiteNonNegative(modelEfficiency)*finiteNonNegative(inferenceModifiers);return{inferenceComputePerSecond:inferenceCompute,inferenceCapacity:finiteNonNegative(capacity)}}
-export function servedUsers(currentUsers,demand,capacity){return Math.min(finiteNonNegative(currentUsers),finiteNonNegative(demand),finiteNonNegative(capacity))}
-export function revenueRate(served,revenuePerUser){return finiteNonNegative(served)*finiteNonNegative(revenuePerUser)}
-export function marketSnapshot(state,context,currentUsers=state.resources.users){const factors={...context.factors,currentUsers:null},demand=potentialDemand(state,factors),users=finiteNonNegative(currentUsers),capacityResult=inferenceCapacity(state,context.totalComputePerSecond,context.modelEfficiency,context.inferenceModifiers),served=servedUsers(users,demand,capacityResult.inferenceCapacity),utilization=capacityResult.inferenceCapacity?Math.min(1,served/capacityResult.inferenceCapacity):0,rpu=finiteNonNegative(context.revenuePerUser),response95=userResponse95Seconds(factors.popularity);return{potentialDemand:demand,demand,currentUsers:users,users,servedUsers:served,...capacityResult,capacity:capacityResult.inferenceCapacity,utilization,revenuePerUser:rpu,revenuePerSecond:revenueRate(served,rpu),revenue:revenueRate(served,rpu),userResponse95Seconds:response95,acquisitionHalfLife:null,churnHalfLife:null,userGrowthPerSecond:(demand-users)*(-Math.log(.05)/response95),factors:{...factors,wordOfMouth:1},capacityDemand:0,organicDemand:demand,target:demand,bottleneck:demand<=capacityResult.inferenceCapacity?'DEMAND LIMITED':'CAPACITY LIMITED'} }
+export function revenueRate(users,revenuePerUser){return finiteNonNegative(users)*finiteNonNegative(revenuePerUser)}
+
+/** Capacity is always fully utilized: Current Users, Served Users and Capacity are identical. */
+export function marketSnapshot(state,context){
+  const capacityResult=inferenceCapacity(state,context.totalComputePerSecond,context.modelEfficiency,context.inferenceModifiers);
+  const users=capacityResult.inferenceCapacity,rpu=finiteNonNegative(context.revenuePerUser),revenue=revenueRate(users,rpu);
+  return{currentUsers:users,users,servedUsers:users,...capacityResult,capacity:users,utilization:users>0?1:0,revenuePerUser:rpu,revenuePerSecond:revenue,revenue,userGrowthPerSecond:0,factors:{quality:context.quality,efficiency:context.modelEfficiency},target:users,bottleneck:'FULLY UTILIZED'};
+}

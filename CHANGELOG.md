@@ -175,3 +175,10 @@
 
 - Stopped the live render loop from replacing the active reward modal DOM on every frame. Keeping the same button node alive from pointer-down through click restores reliable mouse and touch dismissal.
 - Added an explicit non-submit Continue button, touch input safeguards, and regression coverage proving repeated renders do not recreate the active reward presentation before dismissal.
+
+## 0.21.0 — Core economy rework
+- Replaced the Demand/Allocation market loop with Credits → Hardware → Compute → fully utilized Users → Credits.
+- Limited Model Training choices to Quality (Revenue/User) and Efficiency (Compute/User).
+- Made Research generation automatic from Hardware Compute.
+- Made every discovered Patent permanently active and removed Patent slots.
+- Removed Market and Allocation navigation and controls while preserving inert legacy save fields for migration.
