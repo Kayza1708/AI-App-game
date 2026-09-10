@@ -66,10 +66,10 @@ const HARDWARE_UPGRADE_TYPES = [
   ['routing', 'Dynamic Routing', 'inference', 0.07], ['psu', 'Efficient Power Supply', 'hardwareCost', 0.04],
 ];
 const COMPANY_UPGRADES = [
-  ['brand', 'Better Marketing', 'marketing', 0.12], ['pricing', 'Pricing Analytics', 'revenue', 0.1],
-  ['api', 'Developer API', 'demand', 0.12], ['enterprise', 'Enterprise Sales', 'marketSize', 0.15],
-  ['collection', 'Better Data Collection', 'reputation', 0.12], ['hiring', 'Better Hiring', 'allOutput', 0.06],
-  ['support', 'Customer Success', 'adoption', 0.14], ['partnerships', 'Strategic Partnerships', 'marketSize', 0.18],
+  ['brand', 'Revenue Operations', 'revenue', 0.12], ['pricing', 'Pricing Analytics', 'revenue', 0.1],
+  ['api', 'Developer API', 'quality', 0.12], ['enterprise', 'Enterprise Sales', 'revenue', 0.15],
+  ['collection', 'Better Data Collection', 'quality', 0.12], ['hiring', 'Better Hiring', 'allOutput', 0.06],
+  ['support', 'Customer Success', 'quality', 0.14], ['partnerships', 'Strategic Partnerships', 'revenue', 0.18],
 ];
 const MODEL_UPGRADES = [
   ['tokenizer', 'Better Tokenizer', 'quality', 0.12], ['training', 'Better Training', 'training', 0.15],
@@ -78,7 +78,7 @@ const MODEL_UPGRADES = [
 ];
 const RESEARCH_UPGRADES = [
   ['algorithms', 'Algorithmic Insight', 'training', 0.12], ['silicon', 'Silicon Research', 'hardwareOutput', 0.1],
-  ['behavior', 'Behavioral Science', 'demand', 0.14], ['compression', 'Neural Compression', 'inference', 0.13],
+  ['behavior', 'Behavioral Science', 'quality', 0.14], ['compression', 'Neural Compression', 'inference', 0.13],
   ['economics', 'Market Simulation', 'revenue', 0.1], ['automation', 'Lab Automation', 'allOutput', 0.08],
 ];
 
@@ -106,7 +106,6 @@ const objectiveTracks = [
   ['model-level','MODEL','Train a Model to Level {target}','level',[2,3,5,8,12,20,35,50]],
   ['training','MODEL','Complete {target} Training runs','trainings',[1,3,5,10,20,40,75,120]],
   ['skills','MODEL','Spend {target} Improvement Points','pointsSpent',[1,3,5,10,20,40,75,120]],
-  ['marketing','MARKET','Reach Marketing Level {target}','marketing',[1,3,5,10,20,35,60,100]],
   ['research','RESEARCH','Generate {target} Research','research',[1,10,100,1e3,1e4,1e5,1e7,1e9]],
   ['patents','RESEARCH','Discover {target} Patents','patents',[1,2,3,5,10,20,35,50]],
   ['cycles','PRESTIGE','Complete {target} Development Cycles','cycles',[1,2,3,5,10,20,50,100]],
@@ -118,13 +117,11 @@ export const OBJECTIVES = [
   objective('first-training','STARTUP','Complete your first Training','trainings',1,150,2),
   objective('first-point','STARTUP','Spend your first Improvement Point','pointsSpent',1,200,3),
   objective('users-1000','MARKET','Reach 1,000 active Users','users',1_000,500,4),
-  objective('marketing-3','MARKET','Launch 3 Marketing campaigns','marketing',3,750,5),
   objective('compute-rate-1000','INFRASTRUCTURE','Reach 1,000 Compute/sec','computeRate',1_000,1_000,6),
   objective('users-10000','MARKET','Reach 10,000 active Users','users',10_000,2_000,7),
   objective('training-6','MODEL','Complete {target} Trainings','trainings',6,3_000,8),
   objective('model-level-10','MODEL','Reach Model Level 10','level',10,5_000,9),
   objective('users-100000','MARKET','Reach 100,000 active Users','users',100_000,8_000,10),
-  objective('marketing-10','MARKET','Launch 10 Marketing campaigns','marketing',10,10_000,11),
   objective('mid-model-15','MODEL','Reach Model Level 15','level',15,15_000,12),
   objective('mid-model-18','MODEL','Reach Model Level 18','level',18,25_000,13),
   objective('mid-users-5m','MARKET','Reach 5,000,000 active Users','users',5_000_000,30_000,14),
@@ -135,7 +132,6 @@ export const OBJECTIVES = [
   objective('mid-compute-rate-50m','INFRASTRUCTURE','Reach 50,000,000 Compute/sec','computeRate',50_000_000,75_000,19),
   objective('mid-gpu-15','INFRASTRUCTURE','Own 15 GPU Clusters','hardware:enterpriseDatacenter',15,50_000,20),
   objective('mid-gpu-25','INFRASTRUCTURE','Own 25 GPU Clusters','hardware:enterpriseDatacenter',25,80_000,21),
-  objective('mid-marketing-25','MARKET','Reach Marketing Level 25','marketing',25,60_000,22),
   objective('mid-points-15','MODEL','Spend 15 Improvement Points','pointsSpent',15,40_000,23),
   objective('mid-training-15','MODEL','Complete 15 Trainings','trainings',15,40_000,24),
   objective('mid-training-20','MODEL','Complete 20 Trainings','trainings',20,65_000,25),
@@ -151,15 +147,25 @@ export const OBJECTIVES = [
 export const TECH_ERAS = TECHNOLOGY_ERAS;
 export const TECH_NODES = TECHNOLOGY_NODES;
 
-const ACHIEVEMENT_TRACKS = [
-  ['credits', 'Capital', 'totalCreditsEarned', 100], ['compute', 'Computation', 'totalComputeProduced', 100],
-  ['clicks', 'Optimizer', 'totalClicks', 25], ['users', 'Audience', 'users', 10], ['quality', 'Intelligence', 'quality', 2],
-  ['hardware', 'Infrastructure', 'hardware', 5], ['level', 'Model Builder', 'level', 3], ['research', 'Scientist', 'research', 10],
-  ['reputation', 'Trusted', 'reputation', 1.25], ['cycles', 'Rebuilder', 'cycles', 1],
+const achievementTrack = (category, id, label, metric, targets, description, reward=.005) => targets.map((target,index)=>({
+  id:`${id}-${index+1}`, category, name:`${label} ${index+1}`, description, metric, target,
+  reward:reward+index*.001, gemReward:index===targets.length-1?2:0, secret:false,
+}));
+export const ACHIEVEMENTS = [
+  ...achievementTrack('HARDWARE','hardware','Infrastructure','hardware',[1,25,100,500],'Own Hardware across your company.'),
+  ...achievementTrack('COMPUTE & ECONOMY','compute','Compute Frontier','totalComputeProduced',[1e3,1e6,1e12,1e24],'Produce Compute over all Development Cycles.'),
+  ...achievementTrack('COMPUTE & ECONOMY','users','Full House','users',[100,1e4,1e8,1e16],'Serve Users at fully utilized Compute capacity.'),
+  ...achievementTrack('COMPUTE & ECONOMY','credits','Capital Engine','totalCreditsEarned',[1e4,1e8,1e16,1e30],'Earn lifetime Credits from Users.'),
+  ...achievementTrack('TRAINING','level','Model Builder','level',[5,10,25,100],'Raise a Model through Stored Compute Training.'),
+  ...achievementTrack('QUALITY & EFFICIENCY','quality','Quality Standard','quality',[3,6,12,25],'Increase Revenue earned from every User.'),
+  ...achievementTrack('QUALITY & EFFICIENCY','efficiency','Lean Inference','efficiency',[3,6,12,25],'Reduce Compute required by every User.'),
+  ...achievementTrack('RESEARCH','research','Scientific Method','research',[100,1e4,1e7,1e12],'Accumulate Research Points from Hardware Compute.'),
+  ...achievementTrack('DEVELOPMENT & INT','cycles','Rebuilder','cycles',[1,3,10,50],'Complete Development Cycles while preserving permanent progress.',.007),
+  ...achievementTrack('PATENTS','patents','Patent Archive','patents',[1,5,20,50],'Discover permanently active Patents.',.006),
+  ...achievementTrack('ACTIVE & TAPPING','taps','Active Operator','totalClicks',[100,1e3,1e5,1e6],'Create Stored Compute through active taps.'),
+  {id:'secret-balanced-model',category:'LONG-TERM / SECRET',name:'Two Pillars',description:'Reach Quality 20 and Efficiency 20.',metric:'balancedModel',target:20,reward:.015,gemReward:5,secret:true},
+  {id:'secret-singularity-core',category:'LONG-TERM / SECRET',name:'Beyond Scale',description:'Own a Singularity Core.',metric:'hardware:matrioshkaBrain',target:1,reward:.02,gemReward:5,secret:true},
 ];
-export const ACHIEVEMENTS = ACHIEVEMENT_TRACKS.flatMap(([id, label, metric, base]) => Array.from({ length: 12 }, (_, tier) => ({
-  id: `${id}-${tier + 1}`, name: `${label} ${tier + 1}`, metric, target: base * 3 ** tier, reward: 0.002 + tier * 0.0005,
-}))).concat([100,1_000,10_000,100_000,1_000_000].map((target,index)=>({id:`taps-${index+1}`,name:`Active Operator ${index+1}`,metric:'totalClicks',target,reward:.002+index*.0005})));
 
 export const WORLD_EVENTS = [
   { id: 'shortage', title: 'Global GPU Shortage', description: 'Supply chains seize up as competitors buy every accelerator.', choices: [{ label: 'Secure inventory', cost: 500, effect: 'hardwareOutput', value: 0.2 }, { label: 'Wait it out', effect: 'hardwareDiscount', value: 0.15 }] },

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createDefaultState, MODEL_SKILLS, PATENTS } from '../src/data/defaultState.js';
+import { ACHIEVEMENTS, createDefaultState, MODEL_SKILLS, PATENTS } from '../src/data/defaultState.js';
 import { viewUnlocked } from '../src/config/balance.js';
 import { economySnapshot, marketMetrics, patentCurrentBonus, researchPerSecond, startPatentResearch, tickGame, upgradeModelSkill } from '../src/systems/GameSystem.js';
 
@@ -15,3 +15,7 @@ test('Research is generated automatically from total Hardware Compute',()=>{cons
 test('discovered Patents are all permanently active and remain INT-upgradeable',()=>{const state=runningState();state.meta.techNodes.push('system-patents');state.resources.research=1e9;const next=tickGame(startPatentResearch(state),0);assert.equal(next.patents.discovered[0],PATENTS[0].id);assert.deepEqual(next.patents.equipped,next.patents.discovered);assert(Number.isFinite(patentCurrentBonus(next,PATENTS[0].id)))});
 
 test('Demand, Market, Allocation, Popularity, and Patent-slot controls are not exposed',()=>{const state=createDefaultState();assert.equal(viewUnlocked(state,'market'),false);assert.equal(viewUnlocked(state,'allocation'),false);assert(!MODEL_SKILLS.includes('popularity'));assert.equal(state.patents.slots,Number.MAX_SAFE_INTEGER)});
+
+test('Training and Research run in parallel without reducing User capacity',()=>{const idle=runningState(),active=structuredClone(idle);active.model.trainingActive=true;active.allocation={training:99,inference:0,research:0,data:1,agents:0};const before=economySnapshot(idle),during=economySnapshot(active);assert.equal(during.capacity,before.capacity);assert.equal(during.users,before.users);assert.equal(during.researchPerSecond,before.researchPerSecond);assert.equal(during.computeWasted,0)});
+
+test('long-term Achievements cover the V1 systems and remain stored in permanent meta',()=>{const categories=new Set(ACHIEVEMENTS.map(item=>item.category));for(const expected of ['HARDWARE','COMPUTE & ECONOMY','TRAINING','QUALITY & EFFICIENCY','RESEARCH','DEVELOPMENT & INT','PATENTS','ACTIVE & TAPPING','LONG-TERM / SECRET'])assert(categories.has(expected));assert.equal(ACHIEVEMENTS.length,46);assert(ACHIEVEMENTS.every(item=>item.description&&item.reward>0));const state=createDefaultState();state.meta.achievements['hardware-1']=123;const persisted=structuredClone(state);assert.equal(persisted.meta.achievements['hardware-1'],123)});

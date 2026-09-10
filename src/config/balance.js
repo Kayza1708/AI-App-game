@@ -81,14 +81,12 @@ export const BALANCE = Object.freeze({
 export const FEATURE_UNLOCKS = Object.freeze([
   { id: 'core', name: 'Core Company', int: 0, views: ['dashboard', 'hardware', 'model', 'objectives'], description: 'Credits, Compute, TinyChat, Training, Model Development, and Objectives.' },
   { id: 'development', name: 'Development Cycles', int: 1, views: ['strategy'], description: 'Spend permanent Intelligence and plan the next run.' },
-  { id: 'marketing', name: 'Marketing Division', int: 4, views: ['company', 'market'], description: 'Demand, pricing, Marketing, Reputation, and Adoption.' },
-  { id: 'allocation', name: 'Compute Allocation', int: Infinity, views: ['allocation'], description: 'Split Compute between Training and Inference; Research joins after the first Development Cycle.' },
-  { id: 'research', name: 'Research Division', int: Infinity, views: ['research'], description: 'Convert allocated Compute into permanent scientific upgrades.' },
+  { id: 'research', name: 'Research Division', int: Infinity, views: ['research'], description: 'Hardware Compute automatically creates permanent scientific progress.' },
   { id: 'items', name: 'Model Equipment', int: 15, views: ['inventory'], description: 'Collect equipment and create specialized Model builds.' },
   { id: 'missions', name: 'Mission Network', int: 4, views: ['objectives'], description: 'Daily goals and long-term account challenges.' },
   { id: 'patents', name: 'Patent Office', int: 20, views: ['patents'], description: 'Permanent discoveries and Patent loadouts.' },
   { id: 'modelSkills', name: 'Model Development', int: 35, views: [], description: 'Spend Model Upgrade Points on specialized skills.' },
-  { id: 'automation', name: 'Automation', int: 80, views: ['strategy'], description: 'Automatic allocation, purchasing, and Training.' },
+  { id: 'automation', name: 'Automation', int: 80, views: ['strategy'], description: 'Automatic purchasing and Training.' },
   { id: 'agents', name: 'Agent Economy', int: 120, views: [], description: 'Agent Tasks and autonomous Model skills.' },
   { id: 'enterprise', name: 'Enterprise Customers', int: 170, views: [], description: 'Enterprise Models, revenue, and contracts.' },
   { id: 'globalMarkets', name: 'Global Markets', int: 240, views: [], description: 'Global demand and market-size technologies.' },
@@ -114,7 +112,7 @@ export const SYSTEM_TECH_NODES = Object.freeze([
   { id:'system-agents', feature:'agents', branch:'Automation', name:'Agent Systems', cost:20, visibleAt:30, requires:'system-automation', description:'Unlock autonomous workloads and Agent specialization.', unlocks:['Agent Tasks','Autonomy'] },
 ]);
 
-export const MODEL_SKILL_UNLOCKS = Object.freeze({ quality: 0, efficiency: 0, popularity: 0 });
+export const MODEL_SKILL_UNLOCKS = Object.freeze({ quality: 0, efficiency: 0 });
 
 export function curveValue(base, growth, level) { return base * growth ** Math.max(0, level); }
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
@@ -138,4 +136,4 @@ export function viewUnlocked(state, view) {
   if (view === 'allocation') return featureUnlocked(state,'allocation');
   return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id));
 }
-export function skillUnlocked(_state, skill) { return ['quality','efficiency','popularity'].includes(skill); }
+export function skillUnlocked(_state, skill) { return ['quality','efficiency'].includes(skill); }

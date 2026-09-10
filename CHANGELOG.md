@@ -9,6 +9,12 @@
 
 # Changelog
 
+## 0.21.1 — Core Loop finalization
+
+- Made legacy allocation, demand, popularity, marketing, and adoption inert across runtime, tutorials, goals, missions, and simulators.
+- Added a 46-goal persistent Achievement catalog spanning every V1 core system, with progress, rewards, and status in the UI.
+- Clarified parallel User capacity, Stored Compute Training, and passive Research accounting.
+
 ## 0.15.1 — Core-loop simplification and runtime stability
 
 - Fixed Runtime Inspector navigation crashing through the Missions renderer when its view host was absent, and isolated developer-tool rendering failures from gameplay.

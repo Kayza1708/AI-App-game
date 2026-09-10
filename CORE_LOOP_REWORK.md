@@ -13,3 +13,13 @@ Hardware Compute also generates Research Points automatically. The existing Rese
 Patents are purchased/researched with Research Points. Every discovered Patent is permanently active, there is no equipped-Patent limit or Patent-slot purchase, and INT continues to level discovered Patents. Development Cycles and cumulative INT entitlement remain intact.
 
 Legacy save fields for Market and allocation are retained only as inert migration data so existing saves can load safely. They are not exposed in navigation and do not enter the active Core Loop.
+
+## Training, Research, and achievements
+
+Training consumes tap-generated Stored Compute first and also receives a fixed parallel share of Hardware Compute/s. It never subtracts from User capacity. Every completion grants exactly one Model Level and one Model Point; the only normal point paths are Quality and Efficiency. Research Points are likewise generated in parallel from Hardware Compute/s, and existing Labs and Projects spend those points without reserving capacity.
+
+The long-term Achievement catalog contains 46 goals across Hardware, Compute/Economy/Users, Training, Quality/Efficiency, Research, Development/INT, Patents, Active/Tapping, and Secret categories. Each card exposes its description, progress, reward, and status. Achievement timestamps live in `meta.achievements`, which is preserved by Development Cycles and Breakthroughs.
+
+## Compatibility boundary
+
+`allocation` and `market` remain normalized in version-24 saves solely so historical saves and analytics payloads deserialize safely. Runtime capacity, revenue, Training, Research, goals, missions, navigation, and tutorials do not read those values. Removing the serialized fields is deferred to a future destructive save-format migration.
