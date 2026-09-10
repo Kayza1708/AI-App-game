@@ -1,0 +1,118 @@
+{
+  "phase": "2B.2",
+  "metric": "Training ETA around representative major Hardware acquisitions",
+  "acquisitions": [
+    {
+      "hardware": "Pocket Computer",
+      "modelLevel": 4,
+      "etaBeforeSeconds": 9.4873013,
+      "etaAfterSeconds": 8.0674331,
+      "reliefRatio": 1.176,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": "WEAK_RELIEF"
+    },
+    {
+      "hardware": "Laptop",
+      "modelLevel": 8,
+      "etaBeforeSeconds": 18.532881,
+      "etaAfterSeconds": 14.98983,
+      "reliefRatio": 1.2363636,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    },
+    {
+      "hardware": "Gaming PC",
+      "modelLevel": 12,
+      "etaBeforeSeconds": 26.395468,
+      "etaAfterSeconds": 19.720752,
+      "reliefRatio": 1.3384615,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    },
+    {
+      "hardware": "Workstation",
+      "modelLevel": 16,
+      "etaBeforeSeconds": 25.9352,
+      "etaAfterSeconds": 17.395561,
+      "reliefRatio": 1.4909091,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    },
+    {
+      "hardware": "Server Rack",
+      "modelLevel": 20,
+      "etaBeforeSeconds": 17.423926,
+      "etaAfterSeconds": 10.548117,
+      "reliefRatio": 1.6518519,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    },
+    {
+      "hardware": "GPU Cluster",
+      "modelLevel": 24,
+      "etaBeforeSeconds": 8.7615,
+      "etaAfterSeconds": 4.5893572,
+      "reliefRatio": 1.9090909,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    },
+    {
+      "hardware": "Datacenter",
+      "modelLevel": 28,
+      "etaBeforeSeconds": 3.1438741,
+      "etaAfterSeconds": 1.4829595,
+      "reliefRatio": 2.12,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    },
+    {
+      "hardware": "Hyperscale Center",
+      "modelLevel": 32,
+      "etaBeforeSeconds": 0.91212529,
+      "etaAfterSeconds": 0.38463114,
+      "reliefRatio": 2.3714286,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    },
+    {
+      "hardware": "Orbital Datacenter",
+      "modelLevel": 36,
+      "etaBeforeSeconds": 0.21542201,
+      "etaAfterSeconds": 0.080783253,
+      "reliefRatio": 2.6666667,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": null
+    }
+  ],
+  "flags": [
+    {
+      "hardware": "Pocket Computer",
+      "modelLevel": 4,
+      "etaBeforeSeconds": 9.4873013,
+      "etaAfterSeconds": 8.0674331,
+      "reliefRatio": 1.176,
+      "levelsTo1_5x": 1,
+      "levelsTo2x": 2,
+      "levelsTo3x": 3,
+      "flag": "WEAK_RELIEF"
+    }
+  ]
+}
