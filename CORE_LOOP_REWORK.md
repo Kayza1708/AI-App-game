@@ -16,10 +16,10 @@ Legacy save fields for Market and allocation are retained only as inert migratio
 
 ## Training, Research, and achievements
 
-Training consumes tap-generated Stored Compute first and also receives a fixed parallel share of Hardware Compute/s. It never subtracts from User capacity. Every completion grants exactly one Model Level and one Model Point; the only normal point paths are Quality and Efficiency. Research Points are likewise generated in parallel from Hardware Compute/s, and existing Labs and Projects spend those points without reserving capacity.
+Training consumes tap-generated Stored Compute first and also receives a fixed parallel share of Hardware Compute/s. It never subtracts from User capacity. Every completion grants exactly one Model Level and one Model Point; the only normal point paths are Quality and Efficiency. Research Points are likewise generated in parallel from Hardware Compute/s, and Labs spend those points without reserving capacity. The seven-branch, 27-node Research Tree is run progression and resets on a Development Cycle; Patents and INT remain separate permanent systems.
 
 The long-term Achievement catalog contains 46 goals across Hardware, Compute/Economy/Users, Training, Quality/Efficiency, Research, Development/INT, Patents, Active/Tapping, and Secret categories. Each card exposes its description, progress, reward, and status. Achievement timestamps live in `meta.achievements`, which is preserved by Development Cycles and Breakthroughs.
 
 ## Compatibility boundary
 
-`allocation` and `market` remain normalized in version-24 saves solely so historical saves and analytics payloads deserialize safely. Runtime capacity, revenue, Training, Research, goals, missions, navigation, and tutorials do not read those values. Removing the serialized fields is deferred to a future destructive save-format migration.
+`allocation` and `market` remain normalized in version-24 saves solely so historical saves and analytics payloads deserialize safely. Runtime capacity, revenue, Training, Research generation, goals, missions, navigation, and tutorials do not read those values. Removing the serialized fields is deferred to a future destructive save-format migration.

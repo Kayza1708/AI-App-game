@@ -76,11 +76,7 @@ const MODEL_UPGRADES = [
   ['rlhf', 'RLHF', 'appeal', 0.15], ['synthetic', 'Synthetic Data', 'quality', 0.16],
   ['context', 'Context Compression', 'inference', 0.14], ['moe', 'Mixture of Experts', 'allOutput', 0.1],
 ];
-const RESEARCH_UPGRADES = [
-  ['algorithms', 'Algorithmic Insight', 'training', 0.12], ['silicon', 'Silicon Research', 'hardwareOutput', 0.1],
-  ['behavior', 'Behavioral Science', 'quality', 0.14], ['compression', 'Neural Compression', 'inference', 0.13],
-  ['economics', 'Market Simulation', 'revenue', 0.1], ['automation', 'Lab Automation', 'allOutput', 0.08],
-];
+
 
 export const LEGACY_HARDWARE_UPGRADES = HARDWARE_CATALOG.flatMap((hardware) => HARDWARE_UPGRADE_TYPES.map(([key, name, effect, value], index) => ({
   id: `${hardware.id}-${key}`, name: `${hardware.name}: ${name}`, description: `Improve this ${hardware.name} fleet`, category: 'hardware', hardwareId: hardware.id,
@@ -93,7 +89,6 @@ const progressionUpgrades = (items, category, baseCost, multiplier) => items.map
 export const UPGRADES = [
   ...progressionUpgrades(COMPANY_UPGRADES, 'company', 80, 2.4),
   ...progressionUpgrades(MODEL_UPGRADES, 'model', 140, 3),
-  ...progressionUpgrades(RESEARCH_UPGRADES, 'research', BALANCE.research.upgradeBaseCost, BALANCE.research.upgradeFamilyGrowth),
 ];
 
 export const objectiveTitle = (titleTemplate,target) => titleTemplate.replaceAll('{target}',new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(target));

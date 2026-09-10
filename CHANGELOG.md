@@ -9,6 +9,12 @@
 
 # Changelog
 
+## Research Tree — Run progression
+
+- Replaced six flat Research upgrades with a seven-branch, 27-node prerequisite tree containing repeatables, systems, and keystones.
+- Added Research-based Lab and Automation unlocks, canonical Research effects, and a branch/status-driven Research UI.
+- Research Points, node levels, and active Labs now reset each Development Cycle; Patents and INT remain separate and persistent.
+
 ## 0.21.1 — Core Loop finalization
 
 - Made legacy allocation, demand, popularity, marketing, and adoption inert across runtime, tutorials, goals, missions, and simulators.
