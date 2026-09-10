@@ -25,21 +25,19 @@ export function withinModelLevelFactor(level) {
 }
 
 export function modelTierScale(tier) {
-  return BALANCE.models.tierScale[Math.min(BALANCE.models.tierScale.length - 1, Math.max(0, Math.floor(nonNegative(tier))))];
+  const value=Math.min(8,Math.max(0,Math.floor(nonNegative(tier))));
+  return BALANCE.models.tierBase ** value * BALANCE.models.tierAcceleration ** (value*(value-1)/2);
 }
 
 export function targetTrainingDuration(level, tier = 0) {
   const transition = BALANCE.training.tierTransitionSeconds[Math.min(BALANCE.training.tierTransitionSeconds.length - 1, Math.max(0, Math.floor(nonNegative(tier))))];
-  return BALANCE.training.durationBaseSeconds + BALANCE.training.durationSqrtCoefficient * Math.sqrt(Math.max(1, nonNegative(level))) + transition;
+  return BALANCE.training.durationBaseSeconds + BALANCE.training.durationLevelCoefficient * Math.max(1,nonNegative(level)) ** BALANCE.training.durationLevelPower + transition;
 }
 
 /** Static calibration anchor. It deliberately cannot inspect player state. */
 export function referenceTrainingRate(level, tier = 0) {
   const value=Math.max(1,nonNegative(level));
-  const anchors=BALANCE.training.referenceRateAnchors;
-  const upper=anchors.find(anchor=>anchor.level>=value)??anchors.at(-1);
-  const lower=[...anchors].reverse().find(anchor=>anchor.level<=value)??anchors[0];
-  const localRate=lower===upper?lower.rate:Math.exp(Math.log(lower.rate)+(Math.log(upper.rate)-Math.log(lower.rate))*(value-lower.level)/(upper.level-lower.level));
+  const localRate=BALANCE.training.expectedRateBase*BALANCE.training.expectedRateLevelGrowth**(value-1);
   const tierScale=BALANCE.training.referenceRateByTier[Math.min(BALANCE.training.referenceRateByTier.length-1,Math.max(0,Math.floor(nonNegative(tier))))];
   return localRate*tierScale;
 }
@@ -48,8 +46,8 @@ export function trainingRequirement(level, tier = 0) {
   return referenceTrainingRate(level, tier) * targetTrainingDuration(level, tier);
 }
 
-export function efficiencyFactor(efficiency) { return 1 + BALANCE.models.efficiencyCoefficient * Math.sqrt(nonNegative(efficiency)); }
-export function qualityRevenueFactor(quality) { return 1 + BALANCE.models.qualityRevenueCoefficient * Math.sqrt(nonNegative(quality)); }
+export function efficiencyFactor(efficiency) { return 1 + BALANCE.models.efficiencyCoefficient * nonNegative(efficiency) ** BALANCE.models.efficiencyPower; }
+export function qualityRevenueFactor(quality) { return 1 + BALANCE.models.qualityRevenueCoefficient * nonNegative(quality) ** BALANCE.models.qualityRevenuePower; }
 
 export function allocatedCompute(totalCompute, allocationPercent) {
   return nonNegative(totalCompute) * Math.min(100, nonNegative(allocationPercent)) / 100;

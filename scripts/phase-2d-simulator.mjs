@@ -6,7 +6,7 @@ import { referenceTrainingRate, targetTrainingDuration, trainingRequirement } fr
 import { patentLevelMultiplier, proposedBoundedPatentLevelMultiplier, researchLevelCost, researchPointsPerSecond } from '../src/systems/ResearchEconomySystem.js';
 import { simulatePolicy } from './phase-2b-simulator.mjs';
 
-export const STRATEGIES=['BALANCED','HARDWARE_HEAVY','TRAINING_HEAVY','MARKET_HEAVY','RESEARCH_HEAVY','PATENT_HEAVY','GREEDY_ROI','LOW_INTERACTION'];
+export const STRATEGIES=['BALANCED','HARDWARE_HEAVY','TRAINING_HEAVY','MODEL_HEAVY','RESEARCH_HEAVY','PATENT_HEAVY','GREEDY_ROI','LOW_INTERACTION'];
 const levels=[1,5,10,15,20,25,30,50,100,250,500];
 const humanRates={10:145,25:4033.3998};
 const trainingCurve=levels.map(level=>{const requirement=trainingRequirement(level),rate=humanRates[level]??referenceTrainingRate(level);return{level,referenceRate:referenceTrainingRate(level),targetDurationSeconds:targetTrainingDuration(level),requirement,comparisonRate:rate,etaSeconds:requirement/rate,etaAt125Percent:requirement/(rate*1.25),etaAt150Percent:requirement/(rate*1.5),etaAt200Percent:requirement/(rate*2)}});
