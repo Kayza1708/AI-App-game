@@ -2,7 +2,7 @@
  * Milestone 11 progression controls. Gameplay formulas consume this object so
  * pacing can be tuned without hunting through simulation or UI code.
  */
-import { RESEARCH_UNLOCK_TECH_ID, TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
+import { TECHNOLOGY_NODES } from '../data/technologyCatalog.js';
 import { PRESTIGE_PARAMETERS, TECHNOLOGY_COST_PARAMETERS } from '../systems/PrestigeSystem.js';
 export const BALANCE = Object.freeze({
   hardware: Object.freeze({
@@ -16,31 +16,25 @@ export const BALANCE = Object.freeze({
   }),
   training: Object.freeze({
     maximumSimulationStepMs:10_000,
-    durationBaseSeconds:45,durationSqrtCoefficient:34,
-    tierTransitionSeconds:Object.freeze([0,60,180,420,900,1_800,3_600,7_200,14_400]),
-    // Log-interpolated static anchors derived from the first human run. The
-    // L25 anchor turns its observed 4s completion into a ~74s baseline while
-    // remaining wholly independent of the player's live throughput.
-    referenceRateAnchors:Object.freeze([
-      Object.freeze({level:1,rate:.38}),Object.freeze({level:5,rate:4.15}),Object.freeze({level:10,rate:39}),
-      Object.freeze({level:15,rate:170}),Object.freeze({level:20,rate:510}),Object.freeze({level:25,rate:1_395}),
-      Object.freeze({level:30,rate:3_030}),Object.freeze({level:50,rate:18_000}),Object.freeze({level:100,rate:180_000}),
-      Object.freeze({level:250,rate:5_000_000}),Object.freeze({level:500,rate:100_000_000}),
-    ]),
-    referenceRateByTier:Object.freeze([1,32,960,28_800,880_000,28_000_000,960_000_000,40_000_000_000,2_000_000_000_000]),
-    skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4,
+    // Phase 2B.2: one expected-compute curve and one duration curve replace
+    // eleven hand-authored level anchors. Neither curve can inspect live state.
+    expectedRateBase:.5, expectedRateLevelGrowth:1.67,
+    durationBaseSeconds:28,durationLevelCoefficient:2,durationLevelPower:.72,
+    tierTransitionSeconds:Object.freeze([0,75,210,480,1_020,2_100,4_200,8_400,16_800]),
+    referenceRateByTier:Object.freeze([1,32,1_024,32_768,1_048_576,33_554_432,1_073_741_824,34_359_738_368,1_099_511_627_776]),
+    computeShare:.25, skillGain: 1, pointCosts: Object.freeze([1,1,1,2,2,3,3,4,5,6]), finishGemMinutesExponent:.68, finishGemBase:1, doublePointGemBase:4,
   }),
-  models:Object.freeze({tierScale:Object.freeze([1,3.5,12,42,160,650,2_800,14_000,80_000]),levelCoefficient:.16,levelPower:.62,qualityRevenueCoefficient:.12,efficiencyCoefficient:.20}),
-  market: Object.freeze({ revenueBase: 0.24, tierMarketGrowth: 1.88, demandScale: 0.075, demandFloor: 0.04, userConvergence: 0.025, capacityScale: 1.7, marketingBase: 0.12, marketingCostBase: 220, marketingCostGrowth: 1.72 }),
+  models:Object.freeze({tierBase:4.2,tierAcceleration:1.08,levelCoefficient:.8,levelPower:.72,qualityRevenueCoefficient:.38,qualityRevenuePower:.48,efficiencyCoefficient:.42,efficiencyPower:.5}),
+  market: Object.freeze({ revenueBase: 0.24, computePerUserBase:1, capacityScale: 1.7, marketingBase:0, marketingCostBase:220, marketingCostGrowth:1.72 }),
   marketV3: Object.freeze({
-    marketingCoefficient:.32,qualityDemandCoefficient:.18,
+    marketingCoefficient:.32,qualityDemandCoefficient:.5,qualityDemandPower:.5,
     reputation:Object.freeze({min:.75,max:1.25,steepness:2.2,midpoint:1}),
     adoption:Object.freeze({maxBonus:.5,halfSaturation:50}),
     wordOfMouth:Object.freeze({userScale:1_000,maxBonus:1.5,saturation:3}),
     price:Object.freeze({discountDemandCoefficient:.8,premiumElasticity:1.15,qualityToleranceCoefficient:.1}),
-    popularity:Object.freeze({sqrtCoefficient:.3,logCoefficient:.08}),
-    acquisition:Object.freeze({baseHalfLifeSeconds:180,minimumHalfLifeSeconds:30,popularityCoefficient:.08,marketingCoefficient:.06}),
-    churnHalfLifeSeconds:90,
+    popularity:Object.freeze({coefficient:.58,power:.5}),
+    userResponse95Seconds:4,minimumUserResponse95Seconds:1.25,
+    popularityResponse:Object.freeze({maximumSpeedBonus:2.2,halfSaturation:20}),
   }),
   patents: Object.freeze({ baseRequirement: 1_500, discoveryGrowth: 1.52, tierGrowth: 1.28 }),
   intelligence: Object.freeze({
@@ -87,14 +81,12 @@ export const BALANCE = Object.freeze({
 export const FEATURE_UNLOCKS = Object.freeze([
   { id: 'core', name: 'Core Company', int: 0, views: ['dashboard', 'hardware', 'model', 'objectives'], description: 'Credits, Compute, TinyChat, Training, Model Development, and Objectives.' },
   { id: 'development', name: 'Development Cycles', int: 1, views: ['strategy'], description: 'Spend permanent Intelligence and plan the next run.' },
-  { id: 'marketing', name: 'Marketing Division', int: 4, views: ['company', 'market'], description: 'Demand, pricing, Marketing, Reputation, and Adoption.' },
-  { id: 'allocation', name: 'Compute Allocation', int: Infinity, views: ['allocation'], description: 'Split Compute between Training and Inference; Research joins after the first Development Cycle.' },
-  { id: 'research', name: 'Research Division', int: Infinity, views: ['research'], description: 'Convert allocated Compute into permanent scientific upgrades.' },
+  { id: 'research', name: 'Research Division', int: Infinity, views: ['research'], description: 'Hardware Compute automatically creates permanent scientific progress.' },
   { id: 'items', name: 'Model Equipment', int: 15, views: ['inventory'], description: 'Collect equipment and create specialized Model builds.' },
   { id: 'missions', name: 'Mission Network', int: 4, views: ['objectives'], description: 'Daily goals and long-term account challenges.' },
   { id: 'patents', name: 'Patent Office', int: 20, views: ['patents'], description: 'Permanent discoveries and Patent loadouts.' },
   { id: 'modelSkills', name: 'Model Development', int: 35, views: [], description: 'Spend Model Upgrade Points on specialized skills.' },
-  { id: 'automation', name: 'Automation', int: 80, views: ['strategy'], description: 'Automatic allocation, purchasing, and Training.' },
+  { id: 'automation', name: 'Automation', int: 80, views: ['strategy'], description: 'Automatic purchasing and Training.' },
   { id: 'agents', name: 'Agent Economy', int: 120, views: [], description: 'Agent Tasks and autonomous Model skills.' },
   { id: 'enterprise', name: 'Enterprise Customers', int: 170, views: [], description: 'Enterprise Models, revenue, and contracts.' },
   { id: 'globalMarkets', name: 'Global Markets', int: 240, views: [], description: 'Global demand and market-size technologies.' },
@@ -120,30 +112,28 @@ export const SYSTEM_TECH_NODES = Object.freeze([
   { id:'system-agents', feature:'agents', branch:'Automation', name:'Agent Systems', cost:20, visibleAt:30, requires:'system-automation', description:'Unlock autonomous workloads and Agent specialization.', unlocks:['Agent Tasks','Autonomy'] },
 ]);
 
-export const MODEL_SKILL_UNLOCKS = Object.freeze({ quality: 0, efficiency: 0, popularity: 0 });
+export const MODEL_SKILL_UNLOCKS = Object.freeze({ quality: 0, efficiency: 0 });
 
 export function curveValue(base, growth, level) { return base * growth ** Math.max(0, level); }
 export function powerCurve(base, level, exponent) { return base * Math.max(1, level) ** exponent; }
 export function nextFeatureUnlock(state) { return FEATURE_UNLOCKS.filter((item) => Number.isFinite(item.int) && !featureUnlocked(state,item.id)).sort((a, b) => a.int - b.int)[0] ?? null; }
 export function featureUnlocked(state, id) {
-  if (['core', 'modelSkills', 'marketing', 'missions'].includes(id)) return true;
+  if (['core', 'modelSkills', 'missions'].includes(id)) return true;
   if (id === 'development') return (state.meta.cycles ?? 0) > 0 || (state.meta.totalIntelligence ?? 0) > 0;
   if (id === 'allocation') return (state.meta.cycles ?? 0) > 0 || (state.model?.level ?? 1) >= 4 || (state.hardware?.workstation ?? 0) > 0 || state.meta.techNodes.includes('system-allocation');
-  if (id === 'research') return isResearchUnlocked(state);
+  if (id === 'research') return true;
   if (TECHNOLOGY_NODES.some((node) => node.unlockFeature === id && state.meta.techNodes.includes(node.id))) return true;
   const node = SYSTEM_TECH_NODES.find((item) => item.feature === id);
   return node ? state.meta.techNodes.includes(node.id) : (state.meta.totalIntelligence ?? 0) >= (FEATURE_UNLOCKS.find((item) => item.id === id)?.int ?? Infinity);
 }
 export function isResearchUnlocked(state) {
-  const purchased = state?.meta?.techNodes ?? [];
-  const legacyEvidence=state?.meta?.featureUnlockTimes?.research!==undefined||(state?.resources?.research??0)>0||(state?.upgrades??[]).some(id=>id.startsWith('research-'))||purchased.includes('system-research');
-  return legacyEvidence||((state?.meta?.cycles??0)>=1&&purchased.includes(RESEARCH_UNLOCK_TECH_ID));
+  return Boolean(state);
 }
 export function viewUnlocked(state, view) {
-  if (view === 'market') return featureUnlocked(state,'marketing');
+  if (['market','allocation'].includes(view)) return false;
   if (view === 'gemshop') return true;
   if (view === 'company') return (state.meta.cycles ?? 0) > 0;
   if (view === 'allocation') return featureUnlocked(state,'allocation');
   return FEATURE_UNLOCKS.some((feature) => feature.views.includes(view) && featureUnlocked(state, feature.id));
 }
-export function skillUnlocked(_state, skill) { return ['quality','efficiency','popularity'].includes(skill); }
+export function skillUnlocked(_state, skill) { return ['quality','efficiency'].includes(skill); }

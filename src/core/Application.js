@@ -10,7 +10,7 @@ import { RenderPipeline } from './RenderPipeline.js';
 import { StateStore } from './StateStore.js';
 import { ensureGameState, validateGameState } from './GameStateContract.js';
 import { captureRuntimeException } from './RuntimeDiagnostics.js';
-import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, skipTutorial, buyGemShopItem, buyHardware, buyHardwareBulk, buyMarketing, buyPatentSlot, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, setAllocation, setPrice, startBreakthrough, startDevelopmentCycle, startPatentResearch, stopPatentResearch, tickGame, toggleModelDeployment, togglePatentEquipped, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
+import { acceptWorldEventConsequences, acquireModel, advanceTutorial, buyTrainingDoublePoints, finishTrainingWithGems, reconcileTutorial, skipTutorial, buyGemShopItem, buyHardware, buyHardwareBulk, buyUpgrade, claimLoginReward, claimObjective, dismissPatentDiscovery, economySnapshot, modelAvailablePoints, modelImprovementCost, optimizeCode, patentResearchRequired, resolveWorldEvent, startBreakthrough, startDevelopmentCycle, startPatentResearch, stopPatentResearch, tickGame, toggleModelDeployment, trainModel, technologyPurchaseEligibility, trainingRequiredForState, upgradeModelSkill, purchaseTechnology, upgradePatent } from '../systems/GameSystem.js';
 import { acquireItem, buyGemConvenience, equipItem, openCache, toggleItemFavorite, unequipItem, useConsumable } from '../systems/InventorySystem.js';
 import { claimAllMissions, claimMission, claimMissionTrack, ensureMissions } from '../systems/MissionSystem.js';
 import { activateGemBoost, RewardedBoostService } from '../systems/RewardedBoostService.js';
@@ -129,9 +129,6 @@ export class Application {
       this.#eventBus.on('model:finish-training', () => this.#store.update(finishTrainingWithGems, 'training-gem-finish')),
       this.#eventBus.on('model:double-points', () => this.#store.update(buyTrainingDoublePoints, 'training-gem-double')),
       this.#eventBus.on('compute:optimize', () => this.#store.update(optimizeCode, 'manual')),
-      this.#eventBus.on('allocation:set', ({ category, value }) => this.#store.update((state) => setAllocation(state, category, value), 'allocation')),
-      this.#eventBus.on('market:price', (value) => this.#store.update((state) => setPrice(state, value), 'market')),
-      this.#eventBus.on('market:marketing', () => this.#store.update(buyMarketing, 'market')),
       this.#eventBus.on('model:acquire', (modelId) => this.#store.update((state) => acquireModel(state, modelId), 'model')),
       this.#eventBus.on('upgrade:buy', (upgradeId) => this.#store.update((state) => buyUpgrade(state, upgradeId), 'upgrade')),
       this.#eventBus.on('objective:claim', (objectiveId) => this.#store.update((state) => claimObjective(state, objectiveId), 'objective')),
@@ -167,9 +164,7 @@ export class Application {
       this.#eventBus.on('patent:research-start', () => this.#store.update(startPatentResearch, 'patent-research-start')),
       this.#eventBus.on('patent:research-stop', () => this.#store.update(stopPatentResearch, 'patent-research-stop')),
       this.#eventBus.on('patent:dismiss', () => this.#store.update(dismissPatentDiscovery, 'patent')),
-      this.#eventBus.on('patent:equip', (patentId) => this.#store.update((state) => togglePatentEquipped(state, patentId), 'patent-equip')),
       this.#eventBus.on('patent:upgrade', (patentId) => this.#store.update((state) => upgradePatent(state, patentId), 'patent-upgrade')),
-      this.#eventBus.on('patent:slot', () => this.#store.update(buyPatentSlot, 'patent-slot')),
       this.#eventBus.on('developer:cheat', (payload) => this.#applyDeveloperCheat(payload)),
       this.#eventBus.on('developer:reset', () => this.#performDeveloperReset()),
       this.#eventBus.on('developer:clean-balance', () => this.#performCleanBalanceRun()),
