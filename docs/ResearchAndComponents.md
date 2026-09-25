@@ -25,5 +25,5 @@ The registry defines Circuits, Lasers, Graphene, Titanium Screws, Nanotubes, and
 - Mission-authored component rewards and later Prestige sources are named source contracts but remain future catalog integrations.
 - More recipes should only be added with a real effect and deterministic material path.
 - Tune base project anchors after longer human-session exports; do not change the locked global exponents without regenerating the report.
-- Connect the documented Titanium Screw source. The current runtime has no Titanium Screw grant, so all three recipes are unreachable through canonical component rewards. See [`BalanceExportAndEconomyAudit.md`](BalanceExportAndEconomyAudit.md).
+- Blueprint Analysis now deterministically grants two Circuits and two Titanium Screws per level. Material Analysis grants Graphene at every level and its existing Quantum Core at level ten. A production-helper regression simulation reaches and crafts all three recipes without synthetic grants or recipe/drop-rate changes. See [`BalanceExportAndEconomyAudit.md`](BalanceExportAndEconomyAudit.md).
 - Add and verify `public/assets/game/components-atlas-v1.png`; it is absent from this branch, so sprite integration is intentionally blocked.

@@ -21,7 +21,7 @@ This confirms a profile-dependent bottleneck: active early progression waits pri
 
 The registry contains all six requested components and three recipes. Runtime completion rewards currently implement Circuits (`research-compute-1`), Lasers (`research-science-1`), Graphene (`research-science-2`), Nanotubes (`research-model-2`), and a Quantum Core at `research-compute-2` level 10. Source and recipe events now preserve source, amount, active/offline context, exact ingredients, result, and item identity.
 
-**Confirmed blocker:** Titanium Screws have no implemented grant path. Their documented “25 total Hardware” and “Blueprint Analysis” sources are labels only. Hardware milestones also do not grant any components. Therefore Prototype GPU Cluster cannot be crafted from existing canonical rewards, and because that recipe gates the first craft, the documented “first item” Graphene source is not implemented either. The other two recipes also cannot be reached naturally in the current build. A successful run to craftable items would require inventing a source, so no such result is claimed and no recipe/drop tuning was made.
+Blueprint Analysis now grants two Circuits and two Titanium Screws per completed level. Material Analysis grants one Graphene per level in addition to its existing level-ten Quantum Core, connecting the catalog descriptions to production rewards. The production-helper simulation completes three Blueprint Analysis levels, ten Material Analysis levels, eight Data Generation levels, and three Model Architecture levels, then crafts all three recipes in order without direct component grants. No recipe quantity or random drop rate was changed.
 
 Open source contracts:
 
@@ -29,9 +29,9 @@ Open source contracts:
 - analysis actions other than deterministic Research completion: not implemented;
 - mission-authored component rewards: announced but not implemented;
 - later Prestige component/blueprint/item rewards: announced but not implemented;
-- Hardware component milestones and first-craft Graphene: described by the registry but not connected to runtime grants.
+- Hardware component milestones and first-craft Graphene remain unimplemented labels and are no longer presented as current component sources.
 
-The deterministic Research paths mean Circuits, Lasers, Graphene, Nanotubes, and Quantum Cores do not depend on rare random drops. Crafting as a whole is nevertheless blocked by the missing deterministic Titanium Screw path. This should be fixed as a content connection, then re-simulated before changing quantities.
+All six components now have deterministic Research paths and do not depend on rare random drops. The recipes remain unchanged; the new regression simulation proves that their cumulative ingredient requirements are reachable through the production Research and Crafting systems.
 
 ## Atlas prerequisite
 
@@ -40,7 +40,7 @@ The deterministic Research paths mean Circuits, Lasers, Graphene, Nanotubes, and
 ## Handoff / next validation
 
 1. Add the exact atlas asset and verify PNG dimensions before defining a 3×2 sprite grid.
-2. Connect at least one authored deterministic Titanium Screw source (preferably the already documented Blueprint Analysis or Hardware milestone contract).
-3. Run an active and offline canonical simulation through all three recipes. Export the ZIP and compare component/hour, time-to-craft, rate transitions, and blocked durations.
+2. Add mission and Prestige component sources only when their reward catalogs are implemented.
+3. Extend the canonical simulation with timed active/offline player strategies and compare component/hour, time-to-craft, rate transitions, and blocked durations.
 4. Instrument persistence duration at the SaveSystem boundary; current diagnostics truthfully reports this as unavailable unless a save/load event supplies it.
 5. Tune only after those runs demonstrate a measured problem; retain before/after exports alongside any parameter change.
