@@ -13,3 +13,7 @@ At 24 hours, active strategies reached roughly 2.8–3.8 INT/hour, while Prestig
 Balanced seven-day and 30-day smoke simulations complete in seconds and remain finite. Multi-strategy month sweeps are intentionally left as a CLI workload rather than automatically blocking every test run.
 
 These bots are deliberately simple, do not understand every unlock, and are not evidence of perfect strategy balance. Use their flags to form playtest questions, not to auto-tune production curves.
+
+## Local balance ZIP and component audit
+
+Developer Analytics can additionally package the current real-event playthrough as a bounded, abortable local ZIP. Research/component findings, confirmed crafting blockers, privacy constraints, open sources, and the current active/passive measurements are documented in [`BalanceExportAndEconomyAudit.md`](BalanceExportAndEconomyAudit.md). The component atlas requested by the UI contract is currently absent and remains a blocking prerequisite rather than receiving invented coordinates.

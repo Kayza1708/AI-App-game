@@ -25,3 +25,5 @@ The registry defines Circuits, Lasers, Graphene, Titanium Screws, Nanotubes, and
 - Mission-authored component rewards and later Prestige sources are named source contracts but remain future catalog integrations.
 - More recipes should only be added with a real effect and deterministic material path.
 - Tune base project anchors after longer human-session exports; do not change the locked global exponents without regenerating the report.
+- Connect the documented Titanium Screw source. The current runtime has no Titanium Screw grant, so all three recipes are unreachable through canonical component rewards. See [`BalanceExportAndEconomyAudit.md`](BalanceExportAndEconomyAudit.md).
+- Add and verify `public/assets/game/components-atlas-v1.png`; it is absent from this branch, so sprite integration is intentionally blocked.

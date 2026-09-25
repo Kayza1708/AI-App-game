@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T07:38:31.174Z",
+  "generatedAt": "2026-09-25T07:52:56.979Z",
   "formula": {
     "duration": "min(baseSeconds * 1.22^(level - 1), 259200)",
     "dataCost": "ceil(baseDataCost * 1.28^(level - 1))"
