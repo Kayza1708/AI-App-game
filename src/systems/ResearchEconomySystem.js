@@ -9,11 +9,14 @@ export function researchComputePerSecond(totalCompute,allocationPercent){return 
 /** Research Points/s. The sub-linear exponent compresses Compute's many orders of magnitude. */
 export function researchPointsPerSecond(researchCompute,modifier=1){const p=BALANCE.research;const compute=nonNegative(researchCompute);if(!compute)return 0;return p.researchRpScale*(compute/p.researchComputeNormalization)**p.researchComputeExponent*Math.max(0,nonNegative(modifier))}
 
-/** Locked level-cost family. Project researchCost is its content tier anchor. */
-export function researchLevelCost(baseTierCost,level){const p=BALANCE.research;return nonNegative(baseTierCost)*(1+p.costLevelCoefficient*nonNegative(level))**p.costExponent}
-
-/** Bounded permanent duration multiplier; Research speed never changes RP cost. */
-export function boundedResearchSpeed(rawBonus){const p=BALANCE.research,x=nonNegative(rawBonus);return 1+p.speedMaxBonus*x/(p.speedHalfSaturation+x)}
+/** Exact deterministic Data price for the requested one-based level. */
+export function researchDataCost(baseDataCost,level){return Math.ceil(nonNegative(baseDataCost)*BALANCE.research.dataCostLevelGrowth**Math.max(0,Math.floor(level)-1))}
+/** Exact fixed duration for the requested one-based level; only presentation may round it. */
+export function researchDurationSeconds(baseSeconds,level){return Math.min(nonNegative(baseSeconds)*BALANCE.research.durationLevelGrowth**Math.max(0,Math.floor(level)-1),BALANCE.research.durationCapSeconds)}
+/** Compatibility wrapper: historical callers supplied the zero-based current level. */
+export function researchLevelCost(baseTierCost,currentLevel){return researchDataCost(baseTierCost,Math.floor(nonNegative(currentLevel))+1)}
+/** Compatibility only. Research bonuses affect Data generation, never fixed project duration. */
+export function boundedResearchSpeed(){return 1}
 
 /** Pre-Phase-2D live compatibility. Bounded scaling remains AUDIT_ONLY. */
 export function patentLevelMultiplier(level){return 1+.5*Math.max(0,nonNegative(level)-1)}

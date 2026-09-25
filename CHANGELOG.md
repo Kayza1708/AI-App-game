@@ -194,3 +194,8 @@
 - Made Research generation automatic from Hardware Compute.
 - Made every discovered Patent permanently active and removed Patent slots.
 - Removed Market and Allocation navigation and controls while preserving inert legacy save fields for migration.
+
+## Fixed Research and Component Crafting
+- Locked repeatable Research to precise fixed-at-start durations and deterministic Data costs, with atomic idempotent completion and offline progression.
+- Added five mechanically connected repeatable themes, six permanent sourced components, and three functional Item blueprints.
+- Added version-25 lossless migration, balance simulation output, completion diagnostics, mobile-ready Inventory/Research cards, and regression tests.
