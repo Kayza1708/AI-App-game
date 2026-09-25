@@ -38,3 +38,7 @@ Model equipment now provides a playable build loop: feature-gated mission reward
 ## Milestone 13 — Offline progression and Balance Lab
 
 Returning players now receive capped, canonical offline simulation and one aggregated Welcome Back presentation. Seeded baseline-relative missions, forgiving completion streaks, three-horizon goals, clearer build effects, contextual rewarded mocks, and a long-duration Balance Lab support the next human playtest without automatically retuning subjective pacing. See [`docs/OfflineProgress.md`](docs/OfflineProgress.md), [`docs/RetentionLoop.md`](docs/RetentionLoop.md), and [`docs/BalanceLab.md`](docs/BalanceLab.md).
+
+### Balance export roadmap
+
+Developer Analytics includes a privacy-filtered, abortable local ZIP export of real events, 30-second/transition snapshots, effective economy parameters, summaries, and diagnostics. The measured Research/component audit and explicit open prerequisites are tracked in [`docs/BalanceExportAndEconomyAudit.md`](docs/BalanceExportAndEconomyAudit.md). Component sprite integration remains open because the required atlas file is not present on this branch.
