@@ -18,6 +18,7 @@ import { doubleOfflineRewardWithGems, reconcileOffline } from '../systems/Offlin
 import { dismissReward } from '../systems/RewardQueue.js';
 import { earnGems } from '../systems/GemSystem.js';
 import { claimDailyFreeGems, purchaseResearchLab } from '../systems/ResearchSystem.js';
+import { craftBlueprint } from '../systems/CraftingSystem.js';
 
 export class Application {
   #eventBus = new EventBus();
@@ -153,6 +154,7 @@ export class Application {
       this.#eventBus.on('retention:claim', (missionId) => this.#store.update((state) => claimMission(state, missionId), 'mission')),
       this.#eventBus.on('retention:claim-all', (period) => this.#store.update((state) => claimAllMissions(state, period), 'mission-claim-all')),
       this.#eventBus.on('retention:claim-track', ({period,target}) => this.#store.update((state) => claimMissionTrack(state,period,target), 'mission-track')),
+      this.#eventBus.on('blueprint:craft', (id) => this.#store.update((state)=>craftBlueprint(state,id),'blueprint-crafted')),
       this.#eventBus.on('item:equip', ({instanceId,modelId}) => this.#store.update((state)=>equipItem(state,instanceId,modelId),'item-equipped')),
       this.#eventBus.on('item:unequip', ({modelId,slotType}) => this.#store.update((state)=>unequipItem(state,modelId,slotType),'item-unequipped')),
       this.#eventBus.on('item:favorite', (instanceId) => this.#store.update((state)=>toggleItemFavorite(state,instanceId),'item-favorited')),

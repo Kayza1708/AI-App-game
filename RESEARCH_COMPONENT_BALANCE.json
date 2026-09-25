@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-09-25T07:38:31.174Z",
+  "formula": {
+    "duration": "min(baseSeconds * 1.22^(level - 1), 259200)",
+    "dataCost": "ceil(baseDataCost * 1.28^(level - 1))"
+  },
+  "project": {
+    "id": "research-science-1",
+    "baseSeconds": 75,
+    "baseDataCost": 100
+  },
+  "profiles": [
+    {
+      "name": "early-active",
+      "dataPerSecond": 0.5306334491276712,
+      "computePerSecond": 60.475,
+      "rows": [
+        {
+          "level": 1,
+          "durationSeconds": 75,
+          "dataCost": 100,
+          "saveSeconds": 188.4540074968773
+        },
+        {
+          "level": 5,
+          "durationSeconds": 166.15009199999997,
+          "dataCost": 269,
+          "saveSeconds": 506.94128016659994
+        },
+        {
+          "level": 10,
+          "durationSeconds": 449.0552099648309,
+          "dataCost": 923,
+          "saveSeconds": 1739.4304891961774
+        },
+        {
+          "level": 20,
+          "durationSeconds": 3280.182793970683,
+          "dataCost": 10890,
+          "saveSeconds": 20522.641416409937
+        },
+        {
+          "level": 50,
+          "durationSeconds": 259200,
+          "dataCost": 17917958,
+          "saveSeconds": 33767109.91260733
+        }
+      ]
+    },
+    {
+      "name": "established-passive",
+      "dataPerSecond": 37.765315603155294,
+      "computePerSecond": 22605.425,
+      "rows": [
+        {
+          "level": 1,
+          "durationSeconds": 75,
+          "dataCost": 100,
+          "saveSeconds": 2.6479323263392773
+        },
+        {
+          "level": 5,
+          "durationSeconds": 166.15009199999997,
+          "dataCost": 269,
+          "saveSeconds": 7.122937957852655
+        },
+        {
+          "level": 10,
+          "durationSeconds": 449.0552099648309,
+          "dataCost": 923,
+          "saveSeconds": 24.440415372111527
+        },
+        {
+          "level": 20,
+          "durationSeconds": 3280.182793970683,
+          "dataCost": 10890,
+          "saveSeconds": 288.3598303383473
+        },
+        {
+          "level": 50,
+          "durationSeconds": 259200,
+          "dataCost": 17917958,
+          "saveSeconds": 474455.4021018946
+        }
+      ]
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import { BALANCE } from '../config/balance.js';
 import { TECHNOLOGY_ERAS, TECHNOLOGY_NODES } from './technologyCatalog.js';
 export { TECHNOLOGY_BRANCHES, TECHNOLOGY_NODES } from './technologyCatalog.js';
 
-export const SAVE_VERSION = 24;
+export const SAVE_VERSION = 25;
 export const GAME_VERSION = '0.21.0';
 
 export const HARDWARE_CATALOG = [
@@ -272,7 +272,7 @@ export function createDefaultState() {
     patents: { discovered: [], progress: 0, history: [], equipped: [], levels: {}, intInvested: {}, slots: Number.MAX_SAFE_INTEGER, researchActive:false, researchPointsSpent:0 },
     premium: { purchases: [], adCooldowns: {}, freeGemClaimedAt:0 },
     retention: { lastLoginDate: null, loginDays:[], loginStreak: 0, claimedDaily: {}, claimedWeekly: {}, claimedMonthly: null, dailyCompletionStreak: 0, lastDailyCompletionPeriod: null, completedDailyPeriods: 0 },
-    inventory: { instances: [], equipped: {}, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },
+    inventory: { instances: [], equipped: {}, components: {}, componentHistory: [], craftHistory: [], craftedCount: 0, nextInstanceId: 1, capacity: BALANCE.items.inventoryCapacity, collection: { items: [], rarities: [], sets: [] }, newItem: null },
     consumables: {}, rewardCaches: {},
     missions: { dailyPeriodId: null, weeklyPeriodId: null, monthlyPeriodId: null, daily: [], weekly: [], monthly: [], claims: {}, claimHistory:[], tracks:{}, generatedAt: null, seeds: {} },
     gemEconomy: { earned: 0, spent: 0, consumablesUsed: 0, history: [] },

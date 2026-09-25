@@ -70,7 +70,7 @@ export const BALANCE = Object.freeze({
     gems:Object.freeze({daily:2,weekly:7,monthly:24}),
     repeatableCreditWarningShare:.25,
   }),
-  research: Object.freeze({ researchRpScale:4,researchComputeNormalization:1_000,researchComputeExponent:.72,costLevelCoefficient:.55,costExponent:1.7,upgradeBaseCost:25_000,upgradeFamilyGrowth:2.4,maxLabs:5,labGemCosts:Object.freeze({3:120,4:360,5:900}),baseSpeed:1,speedMaxBonus:1.5,speedHalfSaturation:20 }),
+  research: Object.freeze({ researchRpScale:4,researchComputeNormalization:1_000,researchComputeExponent:.72,durationLevelGrowth:1.22,durationCapSeconds:72*60*60,dataCostLevelGrowth:1.28,maxLabs:5,labGemCosts:Object.freeze({3:120,4:360,5:900}) }),
   rewardedAds:Object.freeze({dailyGemClaims:2,gemReward:2}),
   offline: Object.freeze({ capMs: 2 * 60 * 60 * 1000, maxCapMs:8 * 60 * 60 * 1000, efficiency:.6, doubleGemCost:8, shortChunkMs: 1_000, longChunkMs: 10_000, longThresholdMs: 30 * 60 * 1000, minimumRewardMs: 10_000 }),
   tapping:Object.freeze({base:1.5,modelLevelsPerStep:5,modelLevelBonus:.04,pocketComputersPerStep:10,pocketComputerBonus:.03,calculatorUnitsPerStep:25,calculatorFlatBonus:1,techBonus:.025,datacenterShare:.002}),
